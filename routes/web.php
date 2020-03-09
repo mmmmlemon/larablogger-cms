@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    $site_title = App\Settings::all()->first()->site_title;
+    $site_subtitle = App\Settings::all()->first()->site_subtitle;
+    return view('index', compact('site_title', 'site_subtitle'));
 });
 
 Auth::routes();

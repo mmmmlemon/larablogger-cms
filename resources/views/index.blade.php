@@ -34,10 +34,10 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title web-site-title">
-                  Web-site Title
+                  {{$site_title ?? ''}}
                 </h1>
                 <h2 class="subtitle web-site-subtitle">
-                  some random text
+                  {{$site_subtitle ?? ''}}
                 </h2>
             </div>
         </div>
