@@ -45,7 +45,7 @@
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="https://bulma.io">
+            <a class="navbar-item">
 
             </a>
 
@@ -79,21 +79,19 @@
             Links
             </a>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                    [blank]
+            <div class="navbar-dropdown">
+
+                @foreach($social_media as $item)
+                <a class="navbar-item" target="_blank" href={{$item->url}}>
+                    {{$item->platform_name}}
                 </a>
-                        <a class="navbar-item">
-                    [blank]
+                @endforeach
+
+                <hr class="navbar-divider">
+                <a class="navbar-item">
+                    Contact
                 </a>
-                        <a class="navbar-item">
-                    [blank]
-                </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                   Contact
-                </a>
-                    </div>
+            </div>
                 </div>
             </div>
         </div>

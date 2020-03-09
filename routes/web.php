@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $site_title = App\Settings::all()->first()->site_title;
     $site_subtitle = App\Settings::all()->first()->site_subtitle;
-    return view('index', compact('site_title', 'site_subtitle'));
+    $social_media = App\SocialMedia::all();
+    return view('index', compact('site_title', 'site_subtitle', 'social_media'));
 });
 
 Auth::routes();
