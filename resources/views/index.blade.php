@@ -20,6 +20,8 @@
     
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
         
         <!-- jQuery -->
         <script
@@ -28,6 +30,19 @@
         crossorigin="anonymous"></script>
     </head>
     <body>
+        <section class="hero is-primary">
+            <div class="hero-body">
+              <div class="container has-text-centered">
+                <h1 class="title web-site-title">
+                  Web-site Title
+                </h1>
+                <h2 class="subtitle web-site-subtitle">
+                  some random text
+                </h2>
+              </div>
+            </div>
+          </section>
+  
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
             <a class="navbar-item" href="https://bulma.io">
@@ -40,55 +55,60 @@
                 <span aria-hidden="true"></span>
             </a>
             </div>
-        
-            <div class="header">
-                
-            </div>
+   
 
-            <div id="nav-menu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                Home
-                </a>
-        
-                <a class="navbar-item">
-                Videos
-                </a>
+    <div id="nav-menu" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item">
+            Home
+            </a>
+    
+            <a class="navbar-item">
+            Videos
+            </a>
 
-                <a class="navbar-item">
-                Gallery
-                </a>
+            <a class="navbar-item">
+            Gallery
+            </a>
 
+            <a class="navbar-item">
+            About
+            </a>
+    
+            <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+            Links
+            </a>
+    
+            <div class="navbar-dropdown">
                 <a class="navbar-item">
-                About
+                    [blank]
                 </a>
-        
-                <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                Links
+                <a class="navbar-item">
+                    [blank]
                 </a>
-        
-                <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        [blank]
-                    </a>
-                    <a class="navbar-item">
-                        [blank]
-                    </a>
-                    <a class="navbar-item">
-                        [blank]
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                       Contact
-                    </a>
-                </div>
-                </div>
+                <a class="navbar-item">
+                    [blank]
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item">
+                   Contact
+                </a>
             </div>
             </div>
+        </div>
+        </div>
+
+          
         </nav>
-    <div id="app"></div>
+    
     </body>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+           <h5>Some random text here</h5>
+        </div>
+      </footer>
 </html>
 
 
