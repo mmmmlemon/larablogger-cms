@@ -14,6 +14,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/scripts.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -108,11 +109,3 @@
 
 </html>
 
-<script>
-    //вызов меню в мобильной версии сайта
-    $("#nav-toggle").click(function() {
-        var nav = $("#nav-menu");
-        var className = $(nav).attr("class");
-        $(nav).toggleClass("is-active");
-    });
-</script>
