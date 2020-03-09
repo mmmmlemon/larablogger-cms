@@ -7,24 +7,25 @@ body, html {
 
 /*шапка сайта, div блок*/
 .header {
-    background-color: aquamarine;
-    height: 25%;
+    background-color: rgba(218, 134, 40, 0.171);
 }
 
 /*заголовок сайта, h1*/
 .web-site-title {
+    color:white;
     font-size: 45pt;
     text-shadow: 2px 2px 0px #000000;
 }
 
 /*подзаголовок сайтаю, h2*/
 .web-site-subtitle {
+    color:white;
     font-weight: bold;
     text-shadow: 2px 2px 0px #000000;
 }
 
 .footer {
-    background-color: beige;
+    background-color: rgba(189, 153, 112, 0.397);
     position: absolute;
     height: 10%;
     width: 100%;
