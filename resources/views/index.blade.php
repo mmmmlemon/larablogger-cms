@@ -41,6 +41,10 @@
             </a>
             </div>
         
+            <div class="header">
+                
+            </div>
+
             <div id="nav-menu" class="navbar-menu">
             <div class="navbar-start">
                 <a class="navbar-item">
@@ -52,40 +56,31 @@
                 </a>
 
                 <a class="navbar-item">
+                Gallery
+                </a>
+
+                <a class="navbar-item">
                 About
                 </a>
         
                 <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
-                    Links
+                Links
                 </a>
         
                 <div class="navbar-dropdown">
                     <a class="navbar-item">
-                    About
+                        [blank]
                     </a>
                     <a class="navbar-item">
-                    Jobs
+                        [blank]
                     </a>
                     <a class="navbar-item">
-                    Contact
+                        [blank]
                     </a>
                     <hr class="navbar-divider">
                     <a class="navbar-item">
-                    Report an issue
-                    </a>
-                </div>
-                </div>
-            </div>
-        
-            <div class="navbar-end">
-                <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                    <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                    Log in
+                       Contact
                     </a>
                 </div>
                 </div>
