@@ -107,10 +107,10 @@
         </main>
     </div>
 </body>
-
+<!--
 <footer class="footer">
     <div class="content has-text-centered">
         <h5>Some random text here</h5>
     </div>
-</footer>
+</footer> -->
 </html>
