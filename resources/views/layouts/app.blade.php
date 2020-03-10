@@ -1,11 +1,11 @@
 <!--ОСНОВНОЙ ЛЕЙАУТ САЙТА-->
 @php
-    //получаю название и подзаголовок сайта с соц.сетями для шапки сайта
+    //получаю название и подзаголовок сайта с соц.сетями для шапки сайта (и другую инфу если она понадобится)
     //так делать нельзя конечно, ну здесь пусть будет (может потом поправлю)
     $site_title = App\Settings::all()->first()->site_title;
     $site_subtitle = App\Settings::all()->first()->site_subtitle;
     $social_media = App\SocialMedia::all();   
-@endphp
+ @endphp
 
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('images/bg/bg.jpg') }})">
@@ -97,11 +97,30 @@
                         </a>
                     </div>
                 </div>
+
+          
             </div>
+
+            @if(Auth::check())
+            <div class="navbar-item has-dropdown is-hoverable navbar-end user-button">
+                <a class="navbar-link">
+                    {{Auth::user()->name}}
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="{{ route('logout') }}" 
+                    onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+            @endif
         </div>
 
     </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
