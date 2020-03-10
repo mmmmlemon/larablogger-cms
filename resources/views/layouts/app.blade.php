@@ -1,5 +1,14 @@
+<!--ОСНОВНОЙ ЛЕЙАУТ САЙТА-->
+@php
+    //получаю название и подзаголовок сайта с соц.сетями для шапки сайта
+    //так делать нельзя конечно, ну здесь пусть будет (может потом поправлю)
+    $site_title = App\Settings::all()->first()->site_title;
+    $site_subtitle = App\Settings::all()->first()->site_subtitle;
+    $social_media = App\SocialMedia::all();   
+@endphp
+
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('images/bg/bg.jpg') }})">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,65 +25,92 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <!-- Styles -->
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+    <section class="hero header">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title web-site-title">
+                  {{$site_title ?? ''}}
+                </h1>
+                <h2 class="subtitle web-site-subtitle">
+                  {{$site_subtitle ?? ''}}
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item">
+
+            </a>
+
+            <a role="button" id="nav-toggle" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="nav-menu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">
+                    Home
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                <a class="navbar-item" href="/videos">
+                    Videos
+                </a>
 
-                    </ul>
+                <a class="navbar-item" href="/gallery">
+                    Gallery
+                </a>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                <a class="navbar-item" href="/about">
+                    About
+                </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Links
+                    </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                    <div class="navbar-dropdown">
+
+                        @foreach($social_media as $item)
+                        <a class="navbar-item" target="_blank" href={{$item->url}}>
+                            {{$item->platform_name}}
+                        </a>
+                        @endforeach
+
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
+
+    </nav>
 
         <main class="py-4">
             @yield('content')
         </main>
     </div>
 </body>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <h5>Some random text here</h5>
+    </div>
+</footer>
 </html>

@@ -6,10 +6,10 @@
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
-          HOME PAGE    
+         ABOUT PAGE
         </h1>
         <h2 class="subtitle">
-          Здесь будут последние посты (c видео и фото)
+          Здесь будут страница с информацией о сайте\владельце
         </h2>
       </div>
     </div>

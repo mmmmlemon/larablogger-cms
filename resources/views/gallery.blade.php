@@ -6,10 +6,10 @@
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
-          HOME PAGE    
+         GALLERY PAGE
         </h1>
         <h2 class="subtitle">
-          Здесь будут последние посты (c видео и фото)
+          Здесь будет галерея фото
         </h2>
       </div>
     </div>

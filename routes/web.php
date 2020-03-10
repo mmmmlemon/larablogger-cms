@@ -14,12 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $site_title = App\Settings::all()->first()->site_title;
-    $site_subtitle = App\Settings::all()->first()->site_subtitle;
-    $social_media = App\SocialMedia::all();
-    return view('index', compact('site_title', 'site_subtitle', 'social_media'));
+    return view('home');
+});
+
+Route::get('/videos', function () {
+    return view('videos');
+});
+
+Route::get('/gallery', function () {
+    return view('gallery');
+});
+
+Route::get('/about', function () {
+    return view('about');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
