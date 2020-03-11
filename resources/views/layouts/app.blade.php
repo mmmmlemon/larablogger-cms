@@ -112,7 +112,7 @@
                 <a class="navbar-item has-tooltip-bottom" data-tooltip="It's you! :)">
                     {{Auth::user()->name}}
                 </a>
-                <a class="navbar-item">
+                <a class="navbar-item" href="/control">
                     Control panel
                 </a>
                 <a class="navbar-item">
