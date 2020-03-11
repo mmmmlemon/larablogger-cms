@@ -29,9 +29,12 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/control', function() {
-    return view('user/control_panel');
+Route::group(['middleware' => ['auth', 'admin']], function(){
+    Route::get('/control', function() {
+        return view('user/control_panel');
+    });    
 });
+
 
 Auth::routes();
 

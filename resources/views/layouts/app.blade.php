@@ -112,9 +112,11 @@
                 <a class="navbar-item has-tooltip-bottom" data-tooltip="It's you! :)">
                     {{Auth::user()->name}}
                 </a>
+                @if(Auth::user()->user_type == 0)
                 <a class="navbar-item" href="/control">
                     Control panel
                 </a>
+                @endif
                 <a class="navbar-item">
                     <span class="icon has-text-info has-tooltip-left" data-tooltip="Logout">
                         <i class="fas fa-sign-out-alt"></i>
