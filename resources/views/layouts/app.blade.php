@@ -32,6 +32,9 @@
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- FontAwesome -->
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
 </head>
 <body>
     <section class="hero header">
@@ -102,21 +105,21 @@
             </div>
 
             @if(Auth::check())
-            <div class="navbar-item has-dropdown is-hoverable navbar-end user-button">
-                <a class="navbar-link">
+
+            <div class="navbar-end">
+                <a class="navbar-item">
                     {{Auth::user()->name}}
                 </a>
-                <div class="navbar-dropdown">
-                    <a class="navbar-item" href="{{ route('logout') }}" 
-                    onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
+                <a class="navbar-item">
+                    Control panel
+                </a>
+                <a class="navbar-item">
+                    <span class="icon has-text-info">
+                        <i class="fas fa-sign-out-alt"></i>
+                      </span>
+                </a>
             </div>
+
             @endif
         </div>
 
