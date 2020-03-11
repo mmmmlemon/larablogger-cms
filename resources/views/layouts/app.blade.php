@@ -30,6 +30,8 @@
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
   <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
 
+  <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">
+
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <!-- FontAwesome -->
@@ -107,14 +109,14 @@
             @if(Auth::check())
 
             <div class="navbar-end">
-                <a class="navbar-item">
+                <a class="navbar-item has-tooltip-bottom" data-tooltip="It's you! :)">
                     {{Auth::user()->name}}
                 </a>
                 <a class="navbar-item">
                     Control panel
                 </a>
                 <a class="navbar-item">
-                    <span class="icon has-text-info">
+                    <span class="icon has-text-info has-tooltip-left" data-tooltip="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                       </span>
                 </a>
