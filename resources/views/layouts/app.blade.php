@@ -118,9 +118,14 @@
                 </a>
                 @endif
                 <a class="navbar-item">
-                    <span class="icon has-text-info has-tooltip-left" data-tooltip="Logout">
+                    <span class="icon has-text-info has-tooltip-left" data-tooltip="Logout"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i>
                       </span>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </a>
             </div>
 
