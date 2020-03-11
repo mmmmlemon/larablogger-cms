@@ -46,7 +46,9 @@
   <div class="columns">
     <div class="column is-12 has-text-centered">
       <h3 class="subtitle">Web-site settings</h3>
-
+  
+  
+  <form action="control/update_settings" method="POST">
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">Site title</label>
@@ -54,7 +56,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Web-site name">
+            <input class="input" type="text" placeholder="Web-site name" value="{{$site_title}}">
             </p>
           </div>
         </div>
@@ -67,7 +69,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Subtitle">
+              <input class="input" type="text" placeholder="Subtitle" value="{{$site_subtitle}}">
             </p>
           </div>
         </div>
@@ -93,7 +95,11 @@
         </div>
       </div>
 
+    </form>
+
     </div>
+
+    
   </div>
 
 

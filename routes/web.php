@@ -30,9 +30,8 @@ Route::get('/about', function () {
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function(){
-    Route::get('/control', function() {
-        return view('user/control_panel');
-    });    
+    Route::get('/control', 'ControlPanelController@index')->name('control');
+    Route::post('/control/update_settings', 'ControlPanelController@update');
 });
 
 
