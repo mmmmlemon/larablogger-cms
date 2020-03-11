@@ -30,7 +30,9 @@
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
   <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
 
+  <!-- Bulma Extensions -->
   <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bulma-divider.min.css') }}" rel="stylesheet">
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
