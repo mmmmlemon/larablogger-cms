@@ -49,6 +49,7 @@
   
   
   <form action="control/update_settings" method="POST">
+    @csrf
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">Site title</label>
@@ -56,7 +57,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-            <input class="input" type="text" placeholder="Web-site name" value="{{$site_title}}">
+            <input class="input" name="site_title" type="text" placeholder="Web-site name" value="{{$site_title}}">
             </p>
           </div>
         </div>
@@ -69,7 +70,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Subtitle" value="{{$site_subtitle}}">
+              <input class="input" name="site_subtitle" type="text" placeholder="Subtitle" value="{{$site_subtitle}}">
             </p>
           </div>
         </div>
