@@ -21,8 +21,9 @@ class ControlPanelController extends Controller
         $site_title = $settings->site_title;
         $site_subtitle = $settings->site_subtitle;
         $id = $settings->id;
+        $social_media = App\SocialMedia::all();
 
-        return view('user/control_panel', compact('site_title', 'site_subtitle', 'id'));
+        return view('user/control_panel', compact('site_title', 'site_subtitle', 'id', 'social_media'));
     }
 
 
