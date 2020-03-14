@@ -18,16 +18,13 @@ class ControlPanelController extends Controller
     public function index()
     {
         $settings = App\Settings::all()->first();
-        $site_title = $settings->site_title;
-        $site_subtitle = $settings->site_subtitle;
-        $id = $settings->id;
         $social_media = App\SocialMedia::all();
 
-        return view('user/control_panel', compact('site_title', 'site_subtitle', 'id', 'social_media'));
+        return view('user/control_panel', compact('settings', 'social_media'));
     }
 
-
-    public function update(Request $request)
+    //обновление общих настроек сайта
+    public function update_settings(Request $request)
     {
         $request->validate([
             'site_title'=>'required',
@@ -43,6 +40,12 @@ class ControlPanelController extends Controller
         return redirect()->back();
 
         //dd($request->site_subtitle);
+    }
+
+    //обновление соц.сетей
+    public function update_social(Request $request, $num)
+    {
+        
     }
  
 }

@@ -57,7 +57,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-            <input class="input" name="site_title" type="text" placeholder="Web-site name" value="{{$site_title}}">
+            <input class="input" name="site_title" type="text" placeholder="Web-site name" value="{{$settings->site_title}}">
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-              <input class="input" name="site_subtitle" type="text" placeholder="Subtitle" value="{{$site_subtitle}}">
+              <input class="input" name="site_subtitle" type="text" placeholder="Subtitle" value="{{$settings->site_subtitle}}">
             </p>
           </div>
         </div>
@@ -99,51 +99,71 @@
     </div>
   </div>
 
-  <div class="column is-12 has-text-centered">
-    <h3 class="subtitle">Social media (Links)</h3>
-  
-        @foreach($social_media as $item)
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <!-- пустой лейбл для того чтобы поля input были вровень с полями формы выше-->
-            <label class="label">  </label>
-          </div>
-          <div class="field-body">
-        <div class="field">
-        <input class="input" type="text" placeholder="Web-site (or social media platform) name" value="{{$item->platform_name}}">
+  <div class="columns">
+    <div class="column is-12 has-text-centered">
+      <h3 class="subtitle">Social media (Links)</h3>
+      @php
+      $count = 0;   
+     @endphp
+    <form id = "form_social" action="control/update_social/" method="POST">
+    @csrf
+   
+    @foreach($social_media as $item)
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+        <label class="label">{{$item->platform_name}} {{$count}}</label>
         </div>
-        <div class="field">
-          <input class="input" type="text" placeholder="URL" value="{{$item->url}}">
+        <div class="field-body">
+          <div class="field">
+          <input class="input" type="text" placeholder="Web-site (or social media platform) name" name="platform_{{$count}}" value="{{$item->platform_name}}">
+            </div>
+            <div class="field">
+              <input class="input" type="text" placeholder="URL" name="url_{{$count}}" value="{{$item->url}}">
+            </div>
         </div>
       </div>
-    </div>
-        @endforeach
-   
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <!-- Left empty for spacing -->
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <button type="submit" class="button is-link">
-                  <span class="icon">
-                    <i class="fas fa-save"></i>
-                  </span>
-                  <span>
-                    Save
-                  </span>
-              </button>
-              </div>
+    @php
+     $count += 1;   
+    @endphp
+    @endforeach
+      
+    <!--govnokod alert-->
+    <!-- в элементе num_of_fields сохраняем количество полей для соцсетей, чтобы передать это значение при отправке формы -->
+    <!-- при добавлении нового поля делаем +1 при помощи jQuery -->
+    <div id="num_of_fields" style="display: none;">{{$count}}</div>
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="button is-link"  onclick="event.preventDefault();
+              submit_social_media();">
+                <span class="icon">
+                  <i class="fas fa-save"></i>
+                </span>
+                <span>
+                  Save
+                </span>
+            </button>
             </div>
           </div>
         </div>
-
+      </div>
+    </form>
+    </div>
   </div>
-
-
-
-
 </div>
 
 @endsection
+
+<script>
+  function submit_social_media(){
+    var num_of_fields = $('#num_of_fields').html();
+    var action = $("#form_social").attr("action");
+    $("#form_social").attr("action", action + num_of_fields);
+    $("#form_social").submit();
+  }
+  
+</script>
