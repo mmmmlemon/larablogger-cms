@@ -60,9 +60,7 @@ class ControlPanelController extends Controller
             $data->platform_name = $request->get('platform_'.$i);
             $data->url = $request->get('url_'.$i);
             $data->save();
-           }
-         
-          
+           }   
        }
 
        return redirect()->back();

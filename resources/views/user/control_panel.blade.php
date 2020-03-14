@@ -110,6 +110,7 @@
    
     @foreach($social_media as $item)
       <div class="field is-horizontal" id="soc-media-field-{{$count}}">
+        
         <div class="field-label is-normal">
         <label class="label"># {{$count+1}}</label>
         </div>
@@ -121,7 +122,7 @@
             <div class="field">
               <input class="input" type="text" placeholder="URL" name="url_{{$count}}" value="{{$item->url}}">
             </div>
-        </div>
+        </div> 
       </div>
       
     @php
@@ -171,32 +172,6 @@
 
 @endsection
 
-<script>
-  //отправка формы настроек соц. сетей
-  function submit_social_media(){
-    //получаем кол-во полей в форме из элемента с id num_of_fields
-    var num_of_fields = $('#num_of_fields').html();
-    //получаем форму
-    var action = $("#form_social").attr("action");
-    //меняем атрибут action формы, добавляя параметр с кол-вом полей в конец
-    //и отправляем форму
-    $("#form_social").attr("action", action + num_of_fields);
-    $("#form_social").submit();
-  }
-
-  //добавление нового поля в форму соц. сетей
-  function add_soc_media_field(){
-    var num_of_fields = $('#num_of_fields').html();
-    var html = '<div class="field is-horizontal" id="soc-media-field-'+ (num_of_fields)+'">' +
-        '<div class="field-label is-normal">'+
-        '<label class="label"># '+ (num_of_fields* 1.0+1 )+'</label></div>'+
-        '<div class="field-body">'+
-          '<div class="field">'+
-          '<input class="input invisible" type="text" name="id_'+ (num_of_fields)+'" value="0">'+
-          '<input class="input" type="text" placeholder="Web-site (or social media platform) name" name="platform_'+ (num_of_fields)+'"></div>'+ 
-            '<div class="field"><input class="input" type="text" placeholder="URL" name="url_'+ (num_of_fields)+'" ></div></div></div>';
-    $(html).insertAfter("#soc-media-field-"+(num_of_fields - 1));
-    $('#num_of_fields').html(num_of_fields*1.0 + 1);
-  }
-  
-</script>
+@push('scripts')
+  <script src="{{ asset('js/control_panel.js') }}"></script>
+@endpush

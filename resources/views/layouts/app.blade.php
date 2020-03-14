@@ -147,3 +147,5 @@
     </div>
 </footer> -->
 </html>
+
+@stack('scripts')
