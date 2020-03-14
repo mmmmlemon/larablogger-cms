@@ -48,7 +48,7 @@
       <h3 class="subtitle">Web-site general settings</h3>
   
   
-  <form action="control/update_settings" method="GET">
+  <form action="control/update_settings" method="POST">
     @csrf
       <div class="field is-horizontal">
         <div class="field-label is-normal">
