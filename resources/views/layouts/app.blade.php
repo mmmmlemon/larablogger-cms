@@ -125,7 +125,7 @@
                     document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i>
                       </span>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="invisible">
                         @csrf
                     </form>
                 </a>

@@ -48,7 +48,7 @@
       <h3 class="subtitle">Web-site general settings</h3>
   
   
-  <form action="control/update_settings" method="POST">
+  <form action="control/update_settings" method="GET">
     @csrf
       <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -111,10 +111,11 @@
     @foreach($social_media as $item)
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-        <label class="label">{{$item->platform_name}} {{$count}}</label>
+        <label class="label">{{$item->platform_name}}</label>
         </div>
         <div class="field-body">
           <div class="field">
+          <input class="input invisible" type="text" name="id_{{$count}}" value="{{$item->id}}">
           <input class="input" type="text" placeholder="Web-site (or social media platform) name" name="platform_{{$count}}" value="{{$item->platform_name}}">
             </div>
             <div class="field">
@@ -130,7 +131,7 @@
     <!--govnokod alert-->
     <!-- в элементе num_of_fields сохраняем количество полей для соцсетей, чтобы передать это значение при отправке формы -->
     <!-- при добавлении нового поля делаем +1 при помощи jQuery -->
-    <div id="num_of_fields" style="display: none;">{{$count}}</div>
+    <div id="num_of_fields" class="invisible">{{$count}}</div>
       <div class="field is-horizontal">
         <div class="field-label">
           <!-- Left empty for spacing -->

@@ -45,7 +45,16 @@ class ControlPanelController extends Controller
     //обновление соц.сетей
     public function update_social(Request $request, $num)
     {
-        
+       for($i = 0; $i < $num; $i++){
+           $id = $request->get('id_'. $i);
+           $data = App\SocialMedia::where('id','=', $id)->first();
+           $data->platform_name = $request->get('platform_'.$i);
+           $data->url = $request->get('url_'.$i);
+           $data->save();
+       }
+
+       return redirect()->back();
     }
- 
 }
+ 
+

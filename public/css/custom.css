@@ -5,6 +5,10 @@ body, html {
     height: 100%;
 }
 
+.invisible {
+    display: none;
+}
+
 /*шапка сайта, div блок*/
 .header {
     background-color: rgba(218, 134, 40, 0.171);
