@@ -48,9 +48,21 @@ class ControlPanelController extends Controller
        for($i = 0; $i < $num; $i++){
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
-           $data->platform_name = $request->get('platform_'.$i);
-           $data->url = $request->get('url_'.$i);
-           $data->save();
+
+           if($data == null){
+            //dd($request->get('platform_'.$i));
+            $new_data = new App\SocialMedia;
+            $new_data->platform_name =  $request->get('platform_'.$i);
+            $new_data->url =  $request->get('url_'.$i);
+            $new_data->save();
+           }
+           else{
+            $data->platform_name = $request->get('platform_'.$i);
+            $data->url = $request->get('url_'.$i);
+            $data->save();
+           }
+         
+          
        }
 
        return redirect()->back();
