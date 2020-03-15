@@ -14,7 +14,6 @@ class ControlPanelController extends Controller
         $this->middleware('auth');
     }
 
-
     public function index()
     {
         $settings = App\Settings::all()->first();
@@ -55,23 +54,22 @@ class ControlPanelController extends Controller
             'url_2'=>'url|nullable',
             'url_3'=>'url|nullable',
         ]);
-
-
+       
+       //четыре раза прогняем цикл for и перезаписываем информацию о соц. сетях
        for($i = 0; $i < 4; $i++){
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
-
+            
            if($data == null){
-            //dd($request->get('platform_'.$i));
             $new_data = new App\SocialMedia;
             $new_data->platform_name =  $request->get('platform_'.$i);
             $new_data->url =  $request->get('url_'.$i);
             $new_data->save();
            }
            else{
-            $data->platform_name = $request->get('platform_'.$i);
-            $data->url = $request->get('url_'.$i);
-            $data->save();
+            // $data->platform_name = $request->get('platform_'.$i);
+            // $data->url = $request->get('url_'.$i);
+            // $data->save();
            }   
        }
 
