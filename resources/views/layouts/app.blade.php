@@ -2,8 +2,7 @@
 @php
     //получаю название и подзаголовок сайта с соц.сетями для шапки сайта (и другую инфу если она понадобится)
     //так делать нельзя конечно (наверное), но здесь пусть будет (может потом поправлю)
-    $site_title = App\Settings::all()->first()->site_title;
-    $site_subtitle = App\Settings::all()->first()->site_subtitle;
+    $settings = App\Settings::all()->first();
     $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
  @endphp
 
@@ -46,10 +45,10 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title web-site-title">
-                  {{$site_title ?? ''}}
+                  {{$settings->site_title}}
                 </h1>
                 <h2 class="subtitle web-site-subtitle">
-                  {{$site_subtitle ?? ''}}
+                  {{$settings->site_subtitle}}
                 </h2>
             </div>
         </div>
@@ -100,7 +99,7 @@
                         @endforeach
 
                         <hr class="navbar-divider">
-                        <a class="navbar-item">
+                        <a class="navbar-item" id="showModal">
                             Contact
                         </a>
                     </div>
@@ -140,7 +139,24 @@
             @yield('content')
         </main>
     </div>
+
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <article class="message">
+                <div class="message-header">
+                  <p>Contact</p>
+                </div>
+                <div class="message-body">
+                    {{$settings->contact_email}}
+                </div>
+              </article>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
 </body>
+
+
 <!--
 <footer class="footer">
     <div class="content has-text-centered">
@@ -148,5 +164,9 @@
     </div>
 </footer> -->
 </html>
+
+
+
+
 
 @stack('scripts')

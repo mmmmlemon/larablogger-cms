@@ -20,18 +20,21 @@
                     <span>Settings</span>
                 </a>
             </li>
+ 
             <li>
                 <a>
-                    <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
-                    <span>Users</span>
+                    <span class="icon is-small"><i class="fas fa-paint-brush" aria-hidden="true"></i></span>
+                    <span>Design</span>
                 </a>
             </li>
+
             <li>
-                <a>
-                    <span class="icon is-small"><i class="fas fa-file-alt" aria-hidden="true"></i></span>
-                    <span>~</span>
-                </a>
-            </li>
+              <a>
+                  <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
+                  <span>Users</span>
+              </a>
+          </li>
+
             <li>
                 <a>
                     <span class="icon is-small"><i class="far fa-file-alt" aria-hidden="true"></i></span>
