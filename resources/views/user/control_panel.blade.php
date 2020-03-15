@@ -117,8 +117,9 @@
         <div class="field-body">
           <div class="field">
           <input class="input invisible" type="text" name="id_{{$count}}" value="{{$item->id}}">
-          <input class="input" type="text" placeholder="Web-site (or social media platform) name" name="platform_{{$count}}" value="{{$item->platform_name}}">
-            </div>
+          <input class="input" type="text" placeholder="Web-site (or social media platform) name" name="platform_{{$count}}" maxlength="20" value="{{$item->platform_name}}">
+          
+        </div>
             <div class="field">
               <input class="input" type="text" placeholder="URL" name="url_{{$count}}" value="{{$item->url}}">
             </div>
@@ -141,8 +142,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <button type="submit" class="button is-link"  onclick="event.preventDefault();
-              submit_social_media();">
+              <button type="submit" class="button is-link">
                 <span class="icon">
                   <i class="fas fa-save"></i>
                 </span>

@@ -43,9 +43,21 @@ class ControlPanelController extends Controller
     }
 
     //обновление соц.сетей
-    public function update_social(Request $request, $num)
+    public function update_social(Request $request)
     {
-       for($i = 0; $i < $num; $i++){
+        $request->validate([
+            'platform_0'=>'max:20|nullable',
+            'platform_1'=>'max:20|nullable',
+            'platform_2'=>'max:20|nullable',
+            'platform_3'=>'max:20|nullable',
+            'url_0'=>'url|nullable',
+            'url_1'=>'url|nullable',
+            'url_2'=>'url|nullable',
+            'url_3'=>'url|nullable',
+        ]);
+
+
+       for($i = 0; $i < 4; $i++){
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
 
