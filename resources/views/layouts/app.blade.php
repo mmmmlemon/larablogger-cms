@@ -1,10 +1,10 @@
 <!--ОСНОВНОЙ ЛЕЙАУТ САЙТА-->
 @php
     //получаю название и подзаголовок сайта с соц.сетями для шапки сайта (и другую инфу если она понадобится)
-    //так делать нельзя конечно, ну здесь пусть будет (может потом поправлю)
+    //так делать нельзя конечно (наверное), но здесь пусть будет (может потом поправлю)
     $site_title = App\Settings::all()->first()->site_title;
     $site_subtitle = App\Settings::all()->first()->site_subtitle;
-    $social_media = App\SocialMedia::all();   
+    $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
  @endphp
 
 <!doctype html>
