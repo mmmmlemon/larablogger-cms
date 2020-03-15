@@ -27,13 +27,15 @@ class ControlPanelController extends Controller
     {
         $request->validate([
             'site_title'=>'required',
-            'site_subtitle'=>'required'
+            'site_subtitle'=>'required',
+            'contact_email'=>'required|email'
         ]);
 
         $settings = App\Settings::all()->first();
 
         $settings->site_title = $request->get('site_title');
         $settings->site_subtitle = $request->get('site_subtitle');
+        $settings->contact_email = $request->get('contact_email');
         $settings->save();
 
         return redirect()->back();

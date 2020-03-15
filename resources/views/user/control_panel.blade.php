@@ -57,7 +57,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded">
-                                <input class="input" name="site_title" type="text" placeholder="Web-site name" value="{{$settings->site_title}}">
+                                <input class="input" name="site_title" type="text" required placeholder="Web-site name" value="{{$settings->site_title}}">
                             </p>
                         </div>
                     </div>
@@ -70,11 +70,24 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded">
-                                <input class="input" name="site_subtitle" type="text" placeholder="Subtitle" value="{{$settings->site_subtitle}}">
+                                <input class="input" name="site_subtitle" type="text" required placeholder="Subtitle" value="{{$settings->site_subtitle}}">
                             </p>
                         </div>
                     </div>
                 </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                      <label class="label">Contact E-Mail</label>
+                  </div>
+                  <div class="field-body">
+                      <div class="field">
+                          <p class="control is-expanded">
+                              <input class="input" name="contact_email" type="email" required placeholder="example@yourmail.com" value="{{$settings->contact_email}}">
+                          </p>
+                      </div>
+                  </div>
+              </div>
 
                 <div class="field is-horizontal">
                     <div class="field-label">
