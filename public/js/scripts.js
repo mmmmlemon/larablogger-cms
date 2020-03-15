@@ -6,10 +6,11 @@
         $(nav).toggleClass("is-active");
     });
 
-    $("#showModal").click(function() {
-        $(".modal").addClass("is-active");  
+    //вызвать модальное окно Contacts
+    $("#showModalContact").click(function() {
+        $(".modal").addClass("is-active fade-in");  
       });
       
-      $(".modal-close").click(function() {
-         $(".modal").removeClass("is-active");
-      });
+    $(".modal-close").click(function() {
+        $(".modal").removeClass("is-active");
+    });

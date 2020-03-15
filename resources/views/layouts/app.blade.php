@@ -27,7 +27,8 @@
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/animations.css') }}" rel="stylesheet">
+  
 
   <!-- Bulma Extensions -->
   <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">
@@ -99,7 +100,7 @@
                         @endforeach
 
                         <hr class="navbar-divider">
-                        <a class="navbar-item" id="showModal">
+                        <a class="navbar-item" id="showModalContact">
                             Contact
                         </a>
                     </div>
