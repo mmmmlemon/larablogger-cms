@@ -150,16 +150,6 @@
                   Save
                 </span>
             </button>
-
-            <button class="button is-primary" onclick="event.preventDefault(); 
-            add_soc_media_field()">
-              <span class="icon">
-                <i class="fas fa-plus"></i>
-              </span>
-              <span>
-                Add another social media link
-              </span>
-          </button>
             </div>
           </div>
 
