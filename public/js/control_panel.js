@@ -15,9 +15,12 @@
   //смена вкладки с настройками по клику 
   //(id div-блока который нужено показать и id вкладки которую нужно подсветить)
   function change_tab(div_name, tab_name){
+    //убираем текущий div-блок, добавляя класс invisible
     $(".current-content").removeClass("current-content").addClass("invisible");
+    //показываем новый div-блок
     $("#"+div_name).removeClass("invisible").addClass("current-content fade-in");
 
+    //подсвечиваем вкладку
     $(".current-tab").removeClass("current-tab is-active");
     $("#"+tab_name).addClass("is-active current-tab");
   }
