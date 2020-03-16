@@ -11,3 +11,13 @@
     $("#form_social").attr("action", action + num_of_fields);
     $("#form_social").submit();
   }
+
+  //смена вкладки с настройками по клику 
+  //(id div-блока который нужено показать и id вкладки которую нужно подсветить)
+  function change_tab(div_name, tab_name){
+    $(".current-content").removeClass("current-content").addClass("invisible");
+    $("#"+div_name).removeClass("invisible").addClass("current-content fade-in");
+
+    $(".current-tab").removeClass("current-tab is-active");
+    $("#"+tab_name).addClass("is-active current-tab");
+  }

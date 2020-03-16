@@ -14,21 +14,21 @@
     </div>
     <div class="tabs is-boxed is-centered is-medium">
         <ul>
-            <li class="is-active">
+            <li class="is-active current-tab" id="settings_tab" onclick="change_tab('settings_content','settings_tab');">
                 <a>
                     <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
                     <span>Settings</span>
                 </a>
             </li>
  
-            <li>
+            <li id="design_tab" onclick="change_tab('design_content','design_tab');">
                 <a>
                     <span class="icon is-small"><i class="fas fa-paint-brush" aria-hidden="true"></i></span>
                     <span>Design</span>
                 </a>
             </li>
 
-            <li>
+            <li id="users_tab" onclick="change_tab('users_content','users_tab');">
               <a>
                   <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
                   <span>Users</span>
@@ -44,6 +44,8 @@
         </ul>
     </div>
 
+    <div id="settings_content" class="current-content">
+        
     <div class="columns">
         <div class="column is-12 has-text-centered">
             <span class="icon">
@@ -114,6 +116,7 @@
             </form>
         </div>
     </div>
+    
 
     <div class="columns">
         <div class="column is-12 has-text-centered">
@@ -169,6 +172,18 @@
             </form>
         </div>
     </div>
+
+    </div>
+
+    <div id="users_content" class="invisible">
+        <div class="columns">
+            <h1>users</h1>    
+        </div>
+      
+    </div>
+
+
+
 </div>
 
 @endsection @push('scripts')
