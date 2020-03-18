@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use Auth;
 
 class ControlPanelController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -19,9 +18,9 @@ class ControlPanelController extends Controller
         $settings = App\Settings::all()->first();
         $social_media = App\SocialMedia::all();
         $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users');
+        $current_user = Auth::user();
 
-
-        return view('user/control_panel', compact('settings', 'social_media', 'users'));
+        return view('user/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
     }
 
     //обновление общих настроек сайта

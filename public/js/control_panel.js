@@ -40,6 +40,10 @@
     {
       $("#users_tab").click();
     }
+    else if (hash == 'profile')
+    {
+      $("#profile_tab").click();
+    }
     else
     {//do nothing}
   }
