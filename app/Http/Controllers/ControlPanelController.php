@@ -18,7 +18,7 @@ class ControlPanelController extends Controller
     {
         $settings = App\Settings::all()->first();
         $social_media = App\SocialMedia::all();
-        $users = App\User::orderBy('user_type','asc')->paginate(2);
+        $users = App\User::orderBy('user_type','asc')->paginate(15);
 
 
         return view('user/control_panel', compact('settings', 'social_media', 'users'));
