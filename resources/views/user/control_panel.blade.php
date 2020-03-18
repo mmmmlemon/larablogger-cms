@@ -247,6 +247,12 @@
                 @endforeach
                 </tbody>
             </table>  
+            <br>
+           
+          
+        </div>
+        <div>
+            {{ $users->links('pagination.default') }}
         </div>
       
     </div>
