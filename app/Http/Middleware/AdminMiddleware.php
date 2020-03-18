@@ -18,7 +18,7 @@ class AdminMiddleware
     
      public function handle($request, Closure $next)
     {
-        if(Auth::user()->user_type != 0)
+        if(Auth::user()->user_type != 0 && Auth::user()->user_type != 1)
         {
             abort(403, 'Unauthorized action');
         }

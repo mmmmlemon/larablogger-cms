@@ -18,8 +18,10 @@ class ControlPanelController extends Controller
     {
         $settings = App\Settings::all()->first();
         $social_media = App\SocialMedia::all();
+        $users = App\User::orderBy('user_type','asc')->get();
 
-        return view('user/control_panel', compact('settings', 'social_media'));
+
+        return view('user/control_panel', compact('settings', 'social_media', 'users'));
     }
 
     //обновление общих настроек сайта
@@ -77,6 +79,29 @@ class ControlPanelController extends Controller
        }
 
        return redirect()->back();
+    }
+
+    public function change_user_type(Request $request){
+        
+        $request->validate([
+            'user_type' => 'string|in:admin,user',
+        ]);
+            
+        $user = App\User::find($request->user_id);
+
+        if($user != null && $request->user_type == 'admin'){
+            $user->user_type = 2;
+            $user->save();
+        }
+        else if ($user != null && $request->user_type == 'user'){
+            $user->user_type = 1;
+            $user->save();
+        }
+        else{
+            //do nothing
+        }
+
+        return redirect()->back();
     }
 }
  

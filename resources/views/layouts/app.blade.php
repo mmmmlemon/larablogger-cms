@@ -115,7 +115,7 @@
                 <a class="navbar-item has-tooltip-bottom" data-tooltip="It's you! :)">
                     {{Auth::user()->name}}
                 </a>
-                @if(Auth::user()->user_type == 0)
+                @if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                 <a class="navbar-item" href="/control">
                     Control panel
                 </a>

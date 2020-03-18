@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control', 'ControlPanelController@index')->name('control');
     Route::post('/control/update_settings', 'ControlPanelController@update_settings');
     Route::post('/control/update_social', 'ControlPanelController@update_social');
+    Route::post('/control/change_user_type', 'ControlPanelController@change_user_type');
 });
 
 
