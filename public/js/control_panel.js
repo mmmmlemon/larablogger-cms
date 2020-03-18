@@ -24,3 +24,25 @@
     $(".current-tab").removeClass("current-tab is-active");
     $("#"+tab_name).addClass("is-active current-tab");
   }
+
+  if(window.location.hash){
+    var hash = window.location.hash.substring(1);
+    
+    if(hash == 'settings')
+    {
+      $("#settings_tab").click();
+    }
+    else if(hash == 'design')
+    {
+      $("#design_tab").click();
+    }
+    else if (hash == 'users')
+    {
+      $("#users_tab").click();
+    }
+    else
+    {//do nothing}
+  }
+
+}
+  

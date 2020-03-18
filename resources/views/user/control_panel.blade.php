@@ -15,21 +15,21 @@
     <div class="tabs is-boxed is-centered is-medium">
         <ul>
             <li class="is-active current-tab" id="settings_tab" onclick="change_tab('settings_content','settings_tab');">
-                <a>
+                <a href="#settings">
                     <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
                     <span>Settings</span>
                 </a>
             </li>
  
             <li id="design_tab" onclick="change_tab('design_content','design_tab');">
-                <a>
+                <a href="#design">
                     <span class="icon is-small"><i class="fas fa-paint-brush" aria-hidden="true"></i></span>
                     <span>Design</span>
                 </a>
             </li>
 
             <li id="users_tab" onclick="change_tab('users_content','users_tab');">
-              <a>
+              <a href="#users">
                   <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
                   <span>Users</span>
               </a>
