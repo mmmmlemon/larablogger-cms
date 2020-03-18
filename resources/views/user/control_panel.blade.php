@@ -44,6 +44,7 @@
         </ul>
     </div>
 
+    <!--НАСТРОЙКИ -->
     <div id="settings_content" class="current-content">
         
     <div class="columns">
@@ -175,6 +176,7 @@
 
     </div>
 
+    <!-- ПОЛЬЗОВАТЕЛИ -->
     <div id="users_content" class="invisible">
         <div class="columns">
             <h1>users</h1>    

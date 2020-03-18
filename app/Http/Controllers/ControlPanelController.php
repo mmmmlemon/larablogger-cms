@@ -46,18 +46,19 @@ class ControlPanelController extends Controller
     //обновление соц.сетей
     public function update_social(Request $request)
     {
-        // $request->validate([
-        //     'platform_0'=>'max:20|nullable',
-        //     'platform_1'=>'max:20|nullable',
-        //     'platform_2'=>'max:20|nullable',
-        //     'platform_3'=>'max:20|nullable',
-        //     'url_0'=>'url|nullable',
-        //     'url_1'=>'url|nullable',
-        //     'url_2'=>'url|nullable',
-        //     'url_3'=>'url|nullable',
-        // ]);
+        $request->validate([
+            'platform_0'=>'max:20|nullable',
+            'platform_1'=>'max:20|nullable',
+            'platform_2'=>'max:20|nullable',
+            'platform_3'=>'max:20|nullable',
+            'url_0'=>'url|nullable',
+            'url_1'=>'url|nullable',
+            'url_2'=>'url|nullable',
+            'url_3'=>'url|nullable',
+        ]);
        
-       //четыре раза прогняем цикл for и перезаписываем информацию о соц. сетях
+       //четыре раза прогоняем цикл for (потому что четыре поля для соц сетей) 
+       //и перезаписываем информацию о соц. сетях
        for($i = 0; $i < 4; $i++){
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
