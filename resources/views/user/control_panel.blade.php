@@ -280,9 +280,12 @@
                     </div>
                     <div class="field-body">
                         <div class="field">
-                            <p class="control is-expanded">
-                                <input class="input" name="username" type="text" required placeholder="Web-site name" value="{{$current_user->name}}">
-                            </p>
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" name="username" type="email" placeholder="User">
+                                <span class="icon is-small is-left">
+                                  <i class="fas fa-user"></i>
+                                </span>
+                              </p>
                         </div>
                     </div>
                 </div>
@@ -293,9 +296,12 @@
                     </div>
                     <div class="field-body">
                         <div class="field">
-                            <p class="control is-expanded">
-                                <input class="input" name="email" type="email" required placeholder="Subtitle" value="{{$current_user->email}}">
-                            </p>
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" name="email" type="email" placeholder="example@yourmail.com">
+                                <span class="icon is-small is-left">
+                                  <i class="fas fa-envelope"></i>
+                                </span>
+                              </p>
                         </div>
                     </div>
                 </div>
