@@ -100,7 +100,25 @@ class ControlPanelController extends Controller
             //do nothing
         }
 
-        return redirect()->back();
+        return redirect(url()->previous() . "#users");
+    }
+
+    public function update_profile(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:15',
+            'email' => 'required|email'
+        ]);
+
+        $user = App\User::find(Auth::user()->id)->first();
+        
+        $user->name = $request->username;
+        $user->email = $request->email;
+
+        $user->save();
+
+        return redirect(url()->previous() . "#profile");
+        
     }
 }
  

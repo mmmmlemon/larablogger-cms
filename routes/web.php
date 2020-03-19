@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_settings', 'ControlPanelController@update_settings');
     Route::post('/control/update_social', 'ControlPanelController@update_social');
     Route::post('/control/change_user_type', 'ControlPanelController@change_user_type');
+    Route::post('/control/update_profile', 'ControlPanelController@update_profile');
 });
 
 
