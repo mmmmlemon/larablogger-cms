@@ -14,3 +14,8 @@
     $(".modal-close").click(function() {
         $(".modal").removeClass("is-active");
     });
+
+    $(document).ready(function(){
+        var height = $(document).height();
+        $("#footer").css("top", height);
+    })
