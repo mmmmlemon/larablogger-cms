@@ -20,7 +20,7 @@ class ControlPanelController extends Controller
         $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users');
         $current_user = Auth::user();
 
-        return view('user/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
+        return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
     }
 
     //обновление общих настроек сайта

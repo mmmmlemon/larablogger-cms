@@ -138,6 +138,7 @@
     </nav>
         <main class="py-4">
             @yield('content')
+            @yield('settings')
         </main>
     </div>
 
