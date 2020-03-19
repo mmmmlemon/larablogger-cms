@@ -1,5 +1,10 @@
 //скрипты связанные со странцией Control Panel
 
+//убирает красную подсветку у инпутов после ошибки
+$("input").change(function(){
+  $(this).removeClass("is-danger")
+});
+
 //отправка формы настроек соц. сетей
   function submit_social_media(){
     //получаем кол-во полей в форме из элемента с id num_of_fields

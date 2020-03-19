@@ -27,8 +27,8 @@ class ControlPanelController extends Controller
     public function update_settings(Request $request)
     {
         $request->validate([
-            'site_title'=>'required',
-            'site_subtitle'=>'required',
+            'site_title'=>'required|max:25',
+            'site_subtitle'=>'required|max:55',
             'contact_email'=>'required|email'
         ]);
 
