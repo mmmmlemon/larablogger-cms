@@ -159,7 +159,7 @@
 </body>
 
 
-
+<!--
 <footer class="footer" id="footer">
     <div class="content has-text-centered">
       <p>
@@ -170,7 +170,7 @@
     </div>
   </footer> 
 </html>
-
+-->
 
 
 
