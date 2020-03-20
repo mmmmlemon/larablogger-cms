@@ -23,11 +23,16 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                            <input class="input" name="username" type="email" placeholder="User" value="{{$current_user->name}}">
+                            <input class="input @error('username') is-danger @enderror" maxlength="25" name="username" 
+                            type="text" placeholder="User" 
+                            value="@if($errors->any()){{old('username')}}@else{{$current_user->name}}@endif">
                                 <span class="icon is-small is-left">
                                   <i class="fas fa-user"></i>
                                 </span>
                               </p>
+                              @error('username')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -39,11 +44,15 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                <input class="input" name="email" type="email" placeholder="example@yourmail.com" value="{{$current_user->email}}">
+                                <input class="input @error('email') is-danger @enderror" name="email" type="email" placeholder="example@yourmail.com" 
+                                value="@if($errors->any()){{old('email')}}@else{{$current_user->email}}@endif">
                                 <span class="icon is-small is-left">
                                   <i class="fas fa-envelope"></i>
                                 </span>
                               </p>
+                                @error('email')
+                                <p class="help is-danger"><b> {{ $message }}</b></p>  
+                                @enderror
                         </div>
                     </div>
                 </div>

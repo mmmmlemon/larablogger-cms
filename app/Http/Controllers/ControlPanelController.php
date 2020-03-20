@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App;
 use Auth;
+use Validator;
 
 class ControlPanelController extends Controller
 {
@@ -105,10 +106,15 @@ class ControlPanelController extends Controller
 
     public function update_profile(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:15',
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|max:25',
             'email' => 'required|email'
         ]);
+
+        //если валидатор фейлит, то редиректим назад с якорем
+        if($validator->fails()){
+            return redirect(url()->previous() . "#profile")->withErrors($validator)->withInput();
+        }
 
         $user = App\User::find(Auth::user()->id)->first();
         
