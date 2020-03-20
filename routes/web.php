@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,10 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_social', 'ControlPanelController@update_social');
     Route::post('/control/change_user_type', 'ControlPanelController@change_user_type');
     Route::post('/control/update_profile', 'ControlPanelController@update_profile');
+    Route::get('/control/create_post', function(){
+        $current_date = Carbon::now();
+        return view('control_panel/create_post', compact('current_date'));
+    });
 });
 
 

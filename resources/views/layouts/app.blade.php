@@ -20,6 +20,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -33,6 +34,7 @@
   <!-- Bulma Extensions -->
   <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">
   <link href="{{ asset('css/bulma-divider.min.css') }}" rel="stylesheet">
+  <link href="{{asset('css/bulma-checkradio.min.css')}}" rel="stylesheet">
   <link href="{{asset('css/bulma-radio-checkbox.min.css')}}" rel="stylesheet">
 
   <!-- jQuery -->

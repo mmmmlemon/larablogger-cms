@@ -4,12 +4,12 @@
     
     <div class="columns">
         <div class="column is-4">
-            <button class="button is-link is-medium">
+            <a href="control/create_post" class="button is-link is-medium" data-tooltip="Create new post">
                 <span class="icon">
             <i class="fas fa-pen"></i>
           </span>
                 <span>Create post</span>
-            </button>
+            </a>
         </div>
 
     </div>
