@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
         $current_date = Carbon::now();
         return view('control_panel/create_post', compact('current_date'));
     });
+    Route::get('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
 });
 
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App;
 use Auth;
 use Validator;
+use Carbon\Carbon;
 
 class ControlPanelController extends Controller
 {
@@ -126,6 +127,33 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#profile");
         
     }
+
+    public function create_post(Request $request)
+    {
+    //     $request->validate([
+    //         'post_title' => 'string|max:35',
+    //         'post_content' => 'string',
+    //         'publish' => 'integer|max: 1',
+    //         'publish_date' => 'date'
+    //     ]);
+
+        $post = new App\Post;
+        $post->post_title = $request->post_title;
+        $post->post_content = $request->post_content;
+        if($request->publish = 'on'){
+            $post->status = 1;
+            $post->date = Carbon::now()->format('Y-m-d');
+        } else {
+            $post->status = 0;
+            $post->date = $request->publish_date;
+        }
+
+        $post->save();
+        //dd($post);
+       return redirect(url()->previous());
+    }
+
+
 }
  
 
