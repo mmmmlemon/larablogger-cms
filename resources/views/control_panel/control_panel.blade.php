@@ -60,7 +60,7 @@
 
     @yield('profile', View::make('control_panel/profile', compact('current_user')))
 
-    @yield('posts', View::make('control_panel/posts'))
+    @yield('posts', View::make('control_panel/posts', compact('posts')))
 
 
 </div>

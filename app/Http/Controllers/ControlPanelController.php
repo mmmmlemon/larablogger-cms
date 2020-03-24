@@ -21,8 +21,9 @@ class ControlPanelController extends Controller
         $social_media = App\SocialMedia::all();
         $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users');
         $current_user = Auth::user();
+        $posts = App\Post::all();
 
-        return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
+        return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user', 'posts'));
     }
 
     //обновление общих настроек сайта
