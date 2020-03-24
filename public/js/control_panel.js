@@ -49,6 +49,10 @@ $("input").change(function(){
     {
       $("#profile_tab").click();
     }
+    else if (hash == 'posts')
+    {
+      $("#posts_tab").click();
+    }
     else
     {//do nothing}
   }

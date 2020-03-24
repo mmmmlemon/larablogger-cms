@@ -150,7 +150,7 @@ class ControlPanelController extends Controller
 
         $post->save();
         //dd($post);
-       return redirect(url()->previous());
+       return redirect(url('/control'));
     }
 
 

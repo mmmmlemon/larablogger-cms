@@ -42,6 +42,13 @@
                     <span>My Profile</span>
                 </a>
             </li>
+
+            <li id="posts_tab" onclick="change_tab('posts_content','posts_tab');">
+                <a href="#posts">
+                    <span class="icon is-small"><i class="fas fa-file"></i></span>
+                    <span>Posts</span>
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -52,6 +59,8 @@
     @yield('design', View::make('control_panel/design'))
 
     @yield('profile', View::make('control_panel/profile', compact('current_user')))
+
+    @yield('posts', View::make('control_panel/posts'))
 
 
 </div>
