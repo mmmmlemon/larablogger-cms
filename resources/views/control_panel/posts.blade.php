@@ -78,7 +78,12 @@
             @endif
             </div>
         </div>
+
       
+      
+    </div>
+    <div>
+        {{ $posts->links('pagination.default') }}
     </div>
 </div>
 

@@ -43,13 +43,13 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
 
     Route::get('/control/posts', function(){
-        $posts = App\Post::orderBy('date','desc')->get();
+        $posts = App\Post::orderBy('date','desc')->paginate(10);
         $page='normal';
         return view('control_panel/posts', compact('posts','page'));
     
     });
     Route::get('/control/posts/date', function(){
-        $posts = App\Post::orderBy('date','asc')->get();
+        $posts = App\Post::orderBy('date','asc')->paginate(10);
         $page = 'date_desc';
         return view('control_panel/posts', compact('posts', 'page'));
     });
