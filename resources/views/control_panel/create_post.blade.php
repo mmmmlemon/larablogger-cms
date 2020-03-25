@@ -37,8 +37,8 @@
                   </div>
 
                   <div class="field">
-                    <input class="is-checkradio is-link" name="publish" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked">
-                    <label for="exampleCheckbox">Publish</label>
+                    <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" checked="checked">
+                    <label for="publish_checkbox">Publish</label>
                     <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be published immediately, otherwise you have to pick a different date">  <i class="fas fa-question-circle"></i> </span>
                   
                   </div>
@@ -47,7 +47,7 @@
                     <p class="help">Publish date</p>
                     <p class="control has-icons-left">
                        
-                      <input class="input" type="date" name="publish_date" placeholder="Date" value={{$current_date}}>
+                      <input class="input" type="date" name="publish_date" id="publish_date" placeholder="Date" value={{$current_date}} disabled>
                       <span class="icon is-small is-left">
                         <i class="fas fa-calendar"></i>
                       </span>
@@ -70,3 +70,7 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/create_post.js') }}"></script>
+@endpush

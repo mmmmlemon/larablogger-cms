@@ -141,6 +141,9 @@ class ControlPanelController extends Controller
         $post = new App\Post;
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
+
+        //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
+        //если нет, то ту дату которая указана в поле с датой
         if($request->publish = 'on'){
             $post->status = 1;
             $post->date = Carbon::now()->format('Y-m-d');
@@ -149,8 +152,7 @@ class ControlPanelController extends Controller
             $post->date = $request->publish_date;
         }
 
-        $post->save();
-        //dd($post);
+       $post->save();
        return redirect(url('/control'));
     }
 
