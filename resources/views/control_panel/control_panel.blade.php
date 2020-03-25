@@ -10,6 +10,13 @@
           </span>
                 <span>Create post</span>
             </a>
+
+            <a href="control/posts" class="button is-link is-medium" data-tooltip="View posts">
+                <span class="icon">
+            <i class="fas fa-file"></i>
+          </span>
+                <span>Posts</span>
+            </a>
         </div>
 
     </div>
@@ -42,13 +49,6 @@
                     <span>My Profile</span>
                 </a>
             </li>
-
-            <li id="posts_tab" onclick="change_tab('posts_content','posts_tab');">
-                <a href="#posts">
-                    <span class="icon is-small"><i class="fas fa-file"></i></span>
-                    <span>Posts</span>
-                </a>
-            </li>
         </ul>
     </div>
 
@@ -60,7 +60,7 @@
 
     @yield('profile', View::make('control_panel/profile', compact('current_user')))
 
-    @yield('posts', View::make('control_panel/posts', compact('posts')))
+
 
 
 </div>
