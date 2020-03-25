@@ -135,7 +135,7 @@ class ControlPanelController extends Controller
             'post_title' => 'string|max:35',
             'post_content' => 'string',
             'publish' => 'string',
-            'publish_date' => 'date'
+            'publish_date' => 'date|after:yesterday'
         ]);
 
         $post = new App\Post;

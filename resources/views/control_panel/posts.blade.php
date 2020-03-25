@@ -40,7 +40,7 @@
                 </a>
                 @endif
                 <a href="/control/delete_post/{{$post->id}}" class="button is-danger">
-                    <span class="icon is-small">
+                    <span class="icon is-small" data-tooltip="Delete this post">
                         <i class="fas fa-trash"></i>
                     </span>
                 </a>
