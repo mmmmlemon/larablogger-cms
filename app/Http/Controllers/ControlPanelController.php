@@ -179,6 +179,14 @@ class ControlPanelController extends Controller
 
     }
 
+    public function delete_post($id)
+    {
+        $post = App\Post::find($id);
+        $post->delete();
+        return redirect(url()->previous());
+
+    }
+
 
 }
  
