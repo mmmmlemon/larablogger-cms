@@ -48,13 +48,13 @@
                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                     <td>
                         @if($post->status == 1)
-                            <a href="/control/hide_post/{{$post->id}}" class="button is-warning">
+                            <a href="/control/post_status/{{$post->id}}/0" class="button is-warning">
                                 <span class="icon is-small" data-tooltip="Hide this post">
                                     <i class="fas fa-eye-slash"></i>
                                 </span>
                             </a>
                         @else
-                        <a href="/control/show_post/{{$post->id}}" class="button is-primary">
+                        <a href="/control/post_status/{{$post->id}}/1" class="button is-primary">
                             <span class="icon is-small" data-tooltip="Show this post"> 
                                 <i class="fas fa-eye"></i>
                             </span>

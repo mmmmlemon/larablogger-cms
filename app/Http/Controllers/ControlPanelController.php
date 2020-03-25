@@ -157,6 +157,29 @@ class ControlPanelController extends Controller
     }
 
 
+    public function change_post_status($id, $status)
+    {
+        $post = App\Post::find($id);    
+
+        $stat = 0;
+
+        if($status == 1)
+        {$stat = 1;}
+
+        if($post->status != $stat)
+        {
+            $post->status = $stat;
+            $post->save();
+        }
+        else{
+            abort(403);
+        }
+
+        return redirect(url()->previous());
+
+    }
+
+
 }
  
 

@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
         $page = 'date_desc';
         return view('control_panel/posts', compact('posts', 'page'));
     });
+    Route::GET('/control/post_status/{id}/{status}', 'ControlPanelController@change_post_status');
 });
 
 
