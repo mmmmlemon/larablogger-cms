@@ -25,7 +25,9 @@
                 <thead>
                     <th>Title</th>
                     <th>Status</th>
-                    <th><a href="/control/#posts">Date</a></th>
+                    <th><a @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>Date</a>  
+                        @if($page=="normal")<i class="fas fa-sort-down"></i></th>@else <i class="fas fa-sort-up"></i></th>@endif
+                        
                     <th>Actions</th>
                 </thead>
                 <tbody>

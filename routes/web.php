@@ -41,9 +41,17 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
         return view('control_panel/create_post', compact('current_date'));
     });
     Route::get('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
+
     Route::get('/control/posts', function(){
-        $posts = App\Post::all();
-        return view('control_panel/posts', compact('posts'));
+        $posts = App\Post::orderBy('date','desc')->get();
+        $page='normal';
+        return view('control_panel/posts', compact('posts','page'));
+    
+    });
+    Route::get('/control/posts/date', function(){
+        $posts = App\Post::orderBy('date','asc')->get();
+        $page = 'date_desc';
+        return view('control_panel/posts', compact('posts', 'page'));
     });
 });
 
