@@ -2,7 +2,7 @@
     <!-- ПОЛЬЗОВАТЕЛИ -->
     <div id="users_content" class="invisible">
         <div class="columns">
-            <table class="table is-fullwidth is-hoverable is-striped">
+            <table class="table is-fullwidth is-hoverable">
                 <thead>
                 <th>
                 Username  

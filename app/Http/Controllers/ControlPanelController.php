@@ -131,12 +131,12 @@ class ControlPanelController extends Controller
 
     public function create_post(Request $request)
     {
-    //     $request->validate([
-    //         'post_title' => 'string|max:35',
-    //         'post_content' => 'string',
-    //         'publish' => 'integer|max: 1',
-    //         'publish_date' => 'date'
-    //     ]);
+        $request->validate([
+            'post_title' => 'string|max:35',
+            'post_content' => 'string',
+            'publish' => 'string',
+            'publish_date' => 'date'
+        ]);
 
         $post = new App\Post;
         $post->post_title = $request->post_title;

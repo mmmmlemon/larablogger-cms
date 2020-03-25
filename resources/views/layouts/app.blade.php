@@ -29,6 +29,7 @@
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
   <link href="{{ asset('css/animations.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
   
 
   <!-- Bulma Extensions -->
