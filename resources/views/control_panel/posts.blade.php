@@ -32,6 +32,7 @@
                 <thead>
                     <th>Title</th>
                     <th>Visibility</th>
+                    <th>Category</th>
                     <th><a @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>Date</a>  
                         @if($page=="normal")<i class="fas fa-sort-down"></i></th>@else <i class="fas fa-sort-up"></i></th>@endif
                         
@@ -52,6 +53,7 @@
                             </span>
                         @endif
                     </td>
+                <td>{{App\Category::find($post->category_id)->category_name}}</td>
                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                     <td>
                         @if($post->visibility == 1)

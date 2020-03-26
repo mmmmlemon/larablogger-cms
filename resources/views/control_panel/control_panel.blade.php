@@ -1,7 +1,11 @@
 @extends('layouts.app') @section('content')
 
 <div class="container white-bg">
-    
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li class="is-active"><a href="#" aria-current="page">Control panel</a></li>
+        </ul>
+      </nav>
     <div class="columns">
         <div class="column is-4">
             <a href="control/create_post" class="button is-link is-medium" data-tooltip="Create new post">
