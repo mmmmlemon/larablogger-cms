@@ -4,7 +4,7 @@
 <div class="container white-bg">
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-          <li><a href="#">Category</a></li>
+          <li><a href="#">{{App\Category::find($post->category_id)->category_name}}</a></li>
           <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
         </ul>
       </nav>

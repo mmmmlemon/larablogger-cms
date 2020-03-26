@@ -23,6 +23,20 @@
             <div class="is-divider"></div>
 
             <form action="control_panel/create_new_post" method="GET">
+
+              <div class="field">
+                <label class="label">Category</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="category">
+                      @foreach($categories as $categ)
+                    <option value="{{$categ->id}}">{{$categ->category_name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+
+
                 <div class="field">
                     <div class="control">
                         <p class="help">Title</p>

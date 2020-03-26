@@ -38,7 +38,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_profile', 'ControlPanelController@update_profile');
     Route::get('/control/create_post', function(){
         $current_date = Carbon::now();
-        return view('control_panel/create_post', compact('current_date'));
+        $categories = App\Category::all();
+        return view('control_panel/create_post', compact('current_date', 'categories'));
     });
     Route::get('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
 
