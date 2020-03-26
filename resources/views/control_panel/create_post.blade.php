@@ -10,7 +10,7 @@
   </nav>
     <div class="columns">
         <div class="column">
-        <a href="{{url()->previous()}}" class="button is-link" data-tooltip="Back to Control panel">
+        <a href="{{url()->previous()}}" class="button is-link">
                 <span class="icon">
                     <i class="fas fa-arrow-left"></i>
                 </span>
@@ -18,6 +18,7 @@
                  Back
                 </span>
             </a>
+
             <h1 class="title has-text-centered">Create Post</h1>
             <div class="is-divider"></div>
 

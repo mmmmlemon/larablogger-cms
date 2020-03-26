@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
 });
 
+Route::get('/post/{id}', 'PostsController@show_post');
+
 
 Auth::routes();
 

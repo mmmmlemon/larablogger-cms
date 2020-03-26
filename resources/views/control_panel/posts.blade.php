@@ -10,7 +10,7 @@
         </ul>
       </nav>
     <div class="column">
-        <a href="{{url()->previous()}}" class="button is-link" data-tooltip="Back to Control panel">
+        <a href="{{url()->previous()}}" class="button is-link">
             <span class="icon">
                 <i class="fas fa-arrow-left"></i>
             </span>
