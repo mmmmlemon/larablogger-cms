@@ -24,7 +24,7 @@
             <table class="table is-fullwidth is-hoverable">
                 <thead>
                     <th>Title</th>
-                    <th>Status</th>
+                    <th>Visibility</th>
                     <th><a @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>Date</a>  
                         @if($page=="normal")<i class="fas fa-sort-down"></i></th>@else <i class="fas fa-sort-up"></i></th>@endif
                         
@@ -36,11 +36,11 @@
                     <td><b><a href="/post/{{$post->id}}">{{$post->post_title}}</a></b></td>
                     <td>
                         @if($post->status == 1)
-                            <span class="icon is-small" data-tooltip="Post is published">
+                            <span class="icon is-small" data-tooltip="Post is visible">
                                 <i class="fas fa-check"></i>
                             </span>
                         @else
-                            <span class="icon is-small" data-tooltip="Post is not published">
+                            <span class="icon is-small" data-tooltip="Post is hidden">
                                 <i class="fas fa-times"></i>
                             </span>
                         @endif

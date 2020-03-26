@@ -148,7 +148,7 @@ class ControlPanelController extends Controller
             $post->status = 1;
             $post->date = Carbon::now()->format('Y-m-d');
         } else {
-            $post->status = 0;
+            $post->status = 1;
             $post->date = $request->publish_date;
         }
 
