@@ -1,7 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
+
 <div class="container white-bg">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="/control">Control panel</a></li>
+          <li class="is-active"><a href="#" aria-current="page">Posts</a></li>
+        </ul>
+      </nav>
     <div class="column">
         <a href="{{url()->previous()}}" class="button is-link" data-tooltip="Back to Control panel">
             <span class="icon">
