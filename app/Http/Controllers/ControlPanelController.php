@@ -145,10 +145,10 @@ class ControlPanelController extends Controller
         //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
         //если нет, то ту дату которая указана в поле с датой
         if($request->publish == 'on'){
-            $post->status = 1;
+            $post->visibility = 1;
             $post->date = Carbon::now()->format('Y-m-d');
         } else {
-            $post->status = 1;
+            $post->visibility = 1;
             $post->date = $request->publish_date;
         }
 
@@ -166,9 +166,9 @@ class ControlPanelController extends Controller
         if($status == 1)
         {$stat = 1;}
 
-        if($post->status != $stat)
+        if($post->visibility != $stat)
         {
-            $post->status = $stat;
+            $post->visibility = $stat;
             $post->save();
         }
         else{

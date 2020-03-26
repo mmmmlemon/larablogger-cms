@@ -42,7 +42,7 @@
                     <tr>
                     <td><b><a href="/post/{{$post->id}}">{{$post->post_title}}</a></b></td>
                     <td>
-                        @if($post->status == 1)
+                        @if($post->visibility == 1)
                             <span class="icon is-small" data-tooltip="Post is visible">
                                 <i class="fas fa-check"></i>
                             </span>
@@ -54,7 +54,7 @@
                     </td>
                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                     <td>
-                        @if($post->status == 1)
+                        @if($post->visibility == 1)
                             <a href="/control/post_status/{{$post->id}}/0" class="button is-warning">
                                 <span class="icon is-small" data-tooltip="Hide this post">
                                     <i class="fas fa-eye-slash"></i>
