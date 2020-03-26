@@ -18,13 +18,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/videos', function () {
-    return view('videos');
-});
-
-Route::get('/gallery', function () {
-    return view('gallery');
-});
+Route::get('/category/{category_name}', 'CategoryController@index');
 
 Route::get('/about', function () {
     return view('about');

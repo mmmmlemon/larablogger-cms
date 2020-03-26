@@ -4,6 +4,7 @@
     //так делать нельзя конечно (наверное), но здесь пусть будет (может потом поправлю)
     $settings = App\Settings::all()->first();
     $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
+    $categories = App\Category::all();
  @endphp
 
 <!doctype html>
@@ -77,13 +78,11 @@
                     Home
                 </a>
 
-                <a class="navbar-item" href="/videos">
-                    Videos
-                </a>
-
-                <a class="navbar-item" href="/gallery">
-                    Gallery
-                </a>
+                @foreach($categories as $categ)
+                    <a class="navbar-item" href="/category/{{strtolower($categ->category_name)}}">
+                    {{$categ->category_name}}
+                    </a>
+                @endforeach
 
                 <a class="navbar-item" href="/about">
                     About
