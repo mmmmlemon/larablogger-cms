@@ -64,9 +64,6 @@
 
     @yield('profile', View::make('control_panel/profile', compact('current_user')))
 
-
-
-
 </div>
 
 @endsection @push('scripts')
