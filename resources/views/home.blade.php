@@ -1,17 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-
-<section class="hero is-medium is-bold">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          HOME PAGE    
-        </h1>
-        <h2 class="subtitle">
-          Здесь будут последние посты (c видео и фото)
-        </h2>
+<div class="container">
+  <div class="">
+    @foreach($posts as $post)
+    <div class="column is-12 white-bg">
+      <a href="/post/{{$post->id}}">
+        <h1 class="title">{{$post->post_title}}</h1>
+      </a> 
+    <div class="is-divider"></div>
+    <div class="media-content">
+      <div class="content">
+        <p> 
+         {{$post->post_content}}
+        </p>
       </div>
+    
+      <div>
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+          <ul>
+          <li class=""><a href="/category/{{App\Category::find($post->category_id)->category_name}}" aria-current="page">{{App\Category::find($post->category_id)->category_name}}</a></li>
+          <li><a href="/post/{{$post->id}}#comments">5 comments</a></li>
+          </ul>
+        </nav>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+           <a class="level-item">
+            <span class="icon is-large"><i class="fas fa-2x fa-share"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-large"><i class="fas fa-2x fa-heart"></i></span>
+          </a>
+        </div>
+      </nav>
     </div>
-  </section>
+ 
+    </div>
+    @endforeach
+  </div>
+</div>
 @endsection

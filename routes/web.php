@@ -14,10 +14,7 @@ use Carbon\Carbon;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
+Route::get('/', 'HomePageController@index');
 Route::get('/category/{category_name}', 'CategoryController@index');
 
 Route::get('/about', function () {
