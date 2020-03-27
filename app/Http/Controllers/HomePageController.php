@@ -10,7 +10,7 @@ class HomePageController extends Controller
 {
     public function index(){
 
-        $posts = App\Post::orderBy('date', 'desc')->get();
+        $posts = App\Post::where('visibility','=','1')->orderBy('date', 'desc')->get();
 
         return view('home', compact('posts'));
     }

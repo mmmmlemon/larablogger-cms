@@ -11,6 +11,8 @@ class CategoryController extends Controller
     {
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
-        return view('category_view', compact('categ'));
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->get();
+
+        return view('category_view', compact('categ', 'posts'));
     }
 }
