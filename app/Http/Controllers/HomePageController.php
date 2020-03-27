@@ -10,7 +10,7 @@ class HomePageController extends Controller
 {
     public function index(){
 
-        $posts = App\Post::where('visibility','=','1')->orderBy('date', 'desc')->get();
+        $posts = App\Post::where('visibility','=','1')->orderBy('date', 'desc')->paginate(15);
 
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);

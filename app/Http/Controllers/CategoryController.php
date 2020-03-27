@@ -11,7 +11,7 @@ class CategoryController extends Controller
     {
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->get();
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->paginate(15);
 
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
