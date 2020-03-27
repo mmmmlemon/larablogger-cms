@@ -16,8 +16,12 @@
                {{$post->post_content}}
               </p>
             </div>
-          
             <div>
+                @if(count($post->tags) > 1)
+                @foreach($post->tags as $tag)
+                    <span class="tag is-info">{{$tag}}</span>
+                @endforeach
+                @endif
               <nav class="breadcrumb" aria-label="breadcrumbs">
                 <ul>
                 <li class=""><a href="/category/{{App\Category::find($post->category_id)->category_name}}" aria-current="page">{{App\Category::find($post->category_id)->category_name}}</a></li>

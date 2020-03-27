@@ -13,6 +13,12 @@ class CategoryController extends Controller
 
         $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->get();
 
+        foreach($posts as $post){
+            $tags_separate = explode(",", $post->tags);
+            $post->tags = $tags_separate;
+        }
+
+
         return view('category_view', compact('categ', 'posts'));
     }
 }
