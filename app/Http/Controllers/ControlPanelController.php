@@ -142,6 +142,7 @@ class ControlPanelController extends Controller
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
         $post->category_id = $request->category;
+        $post->tags = $request->tags;
 
         //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
         //если нет, то ту дату которая указана в поле с датой

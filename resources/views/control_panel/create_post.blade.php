@@ -76,6 +76,14 @@
                    
                   </div>
 
+                  <div class="field">
+                    <div class="control">
+                        <p class="help">Tags</p>
+                      <input class="input" type="text" name="tags" placeholder="video,post,meme,text,whatever">
+                    </div>
+                    
+                  </div>
+
                   <button type="submit" class="button is-link">
                     <span class="icon">
                         <i class="fas fa-save"></i>
