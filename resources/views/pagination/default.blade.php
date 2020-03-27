@@ -1,7 +1,7 @@
 
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
     @if ($paginator->lastPage() > 1)
-<a href="{{ $paginator->url(1) }}" class="pagination-previous" @if($paginator->currentPage() == 1) disabled @endif>
+<a href="{{ $paginator->previousPageUrl() }}" class="pagination-previous" @if($paginator->currentPage() == 1) disabled @endif>
   <span class="icon">
     <i class="fas fa-chevron-left" ></i>
   </span>
