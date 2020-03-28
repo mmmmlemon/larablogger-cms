@@ -54,5 +54,22 @@ class PostsController extends Controller
 
         return view('control_panel/edit_post', compact('post','categories'));
     }
+
+    public function edit_post(Request $request, $id){
+        
+        $post = App\Post::find($id);
+        $post->post_title = $request->post_title;
+        $post->post_content = $request->post_content;
+        $post->tags = $request->tags;
+        $post->category_id = $request->category;
+
+        if($request->publish == 'on'){
+            $post->visibility = 1;
+        } else {
+            $post->visibility = 0;
+        }
+        $post->save();
+        return redirect(url('/control/posts'));
+    }
 } 
 

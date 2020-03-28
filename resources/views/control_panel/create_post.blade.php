@@ -22,8 +22,8 @@
             <h1 class="title has-text-centered">Create Post</h1>
             <div class="is-divider"></div>
 
-            <form action="control_panel/create_new_post" method="GET">
-
+            <form action="control_panel/create_new_post" method="POST">
+              @csrf
               <div class="field">
                 <label class="label">Category</label>
                 <div class="control">

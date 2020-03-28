@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/delete_post/{id}', 'ControlPanelController@delete_post');
     Route::delete('/control/delete_post/{id}', 'ControlPanelController@delete_post');
     Route::get('/post/{id}/edit', 'PostsController@show_edit_post');
+    Route::post('/post/{id}/edit', 'PostsController@edit_post');
 
 });
 
