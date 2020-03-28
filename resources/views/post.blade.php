@@ -30,6 +30,11 @@
                 </p>
               </div>
               <div class="is-divider"></div>
+              @if(count($post->tags) > 1)
+              @foreach($post->tags as $tag)
+              <span class="tag is-info">{{$tag}}</span>
+              @endforeach
+            @endif
               <nav class="level is-mobile">
                 <div class="level-left">
                    <a class="level-item">

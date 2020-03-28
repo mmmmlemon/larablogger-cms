@@ -15,6 +15,9 @@ class PostsController extends Controller
         //если такой пост существует, то выводим его
         if($post != null)
         {
+            
+            $tags_separate = explode(",", $post->tags);
+            $post->tags = $tags_separate;
             //проверяем статус поста, если visibility == 0
             //то пост будем видимым только для админа
             if($post->visibility == 1)
