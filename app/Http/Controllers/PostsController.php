@@ -46,5 +46,13 @@ class PostsController extends Controller
             return abort(404);
         }
     }
+
+    public function show_edit_post($id){
+
+        $post = App\Post::find($id);
+        $categories = App\Category::all();
+
+        return view('control_panel/edit_post', compact('post','categories'));
+    }
 } 
 

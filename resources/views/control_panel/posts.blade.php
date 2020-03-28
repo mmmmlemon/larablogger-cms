@@ -69,6 +69,11 @@
                             </span>
                         </a>
                         @endif
+                        <a href="/post/{{$post->id}}/edit" class="button is-info">
+                            <span class="icon is-small" data-tooltip="Edit this post">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </a>
                         <a href="/control/delete_post/{{$post->id}}" class="button is-danger">
                             <span class="icon is-small" data-tooltip="Delete this post">
                                 <i class="fas fa-trash"></i>
