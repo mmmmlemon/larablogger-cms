@@ -12,3 +12,8 @@
 </div>
 </div>
 @endsection
+
+
+@push('scripts')
+<script src="{{ asset('js/home_page.js') }}"></script>
+@endpush
