@@ -22,6 +22,11 @@ class CreateTableCategories extends Migration
         DB::table('categories')->insert(
             array(
                 array(
+                    'category_name' => 'blank',
+                    'created_at' => Carbon\Carbon::now(),
+                    'updated_at' => Carbon\Carbon::now()
+                ),
+                 array(
                     'category_name' => 'Videos',
                     'created_at' => Carbon\Carbon::now(),
                     'updated_at' => Carbon\Carbon::now()
