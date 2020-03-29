@@ -40,7 +40,7 @@
                 <div class="field">
                     <div class="control">
                         <p class="help">Title</p>
-                      <input class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
+                      <input maxlength="35" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
                       placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else @endif">
                     </div>
                     @error('post_title')
