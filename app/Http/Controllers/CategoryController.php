@@ -53,10 +53,27 @@ class CategoryController extends Controller
         $request->validate([
             'category_name' => 'string|max:20',
         ]);
-        
+
         $categ = App\Category::find($id);
         $categ->category_name = $request->category_name;
         $categ->save();
+        return redirect(url('/control/categories'));
+    }
+
+    public function delete_category($id)
+    {   
+        $blank_id = App\Category::where('category_name','=', 'blank')->first()->id;
+
+        $posts = App\Post::where('category_id','=', $id)->get();
+        foreach($posts as $post){
+            $p = App\Post::find($post->id);
+            $p->category_id = 0;
+            $p->save();
+        }
+        
+        $categ = App\Category::find($id);
+        $categ->delete();
+
         return redirect(url('/control/categories'));
     }
 }

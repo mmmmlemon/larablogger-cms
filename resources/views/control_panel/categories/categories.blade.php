@@ -43,11 +43,14 @@
                                         <i class="fas fa-edit"></i>
                                     </span>
                                 </a>
-                                <a href="/category/delete/{{$categ->id}}" class="button is-danger">
-                                    <span class="icon is-small" data-tooltip="Delete this category">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </a>
+                                <form action="/control/categories/delete/{{$categ->id}}" method="post">
+                                    @method('DELETE')
+                                    @csrf
+
+                                    
+                                    <button class="button is-danger"><i class="fas fa-trash"></i></button>
+                                 </form>
+                              
                             </td>
                         </tr>
                     @endforeach

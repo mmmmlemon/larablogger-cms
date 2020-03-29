@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::post('/control/categories/edit/{id}','CategoryController@save_category');
 
+    Route::delete('/control/categories/delete/{id}','CategoryController@delete_category');
+
 });
 
 Route::get('/post/{id}', 'PostsController@show_post');
