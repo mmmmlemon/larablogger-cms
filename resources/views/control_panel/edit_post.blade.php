@@ -40,9 +40,12 @@
                 <div class="field">
                     <div class="control">
                         <p class="help">Title</p>
-                    <input class="input" type="text" name="post_title" value="{{$post->post_title}}" placeholder="Post title">
+                        <input class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
+                      placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
                     </div>
-                    
+                    @error('post_title')
+                    <p class="help is-danger"><b> {{ $message }}</b></p>  
+                   @enderror
                   </div>
 
                   <div class="field">
