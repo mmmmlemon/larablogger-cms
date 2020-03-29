@@ -57,6 +57,12 @@ class PostsController extends Controller
 
     public function edit_post(Request $request, $id){
         
+        $request->validate([
+            'post_title' => 'string|max:35',
+            'post_content' => 'string',
+            'publish' => 'string'
+        ]);
+
         $post = App\Post::find($id);
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;

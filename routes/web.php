@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
         $categories = App\Category::all();
         return view('control_panel/create_post', compact('current_date', 'categories'));
     });
-    Route::get('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
+    Route::post('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
 
     Route::get('/control/posts', function(){
         $posts = App\Post::orderBy('date','desc')->paginate(10);
