@@ -4,7 +4,7 @@
     //так делать нельзя конечно (наверное), но здесь пусть будет (может потом поправлю)
     $settings = App\Settings::all()->first();
     $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
-    $categories = App\Category::all();
+    $categories = App\Category::where('category_name','!=','blank')->get();
  @endphp
 
 <!doctype html>

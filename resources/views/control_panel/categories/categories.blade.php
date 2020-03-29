@@ -38,7 +38,7 @@
                                 {{$categ->category_name}}
                             </td>
                             <td>
-                                <a href="/category/edit/{{$categ->id}}" class="button is-info">
+                                <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
                                     <span class="icon is-small" data-tooltip="Edit">
                                         <i class="fas fa-edit"></i>
                                     </span>

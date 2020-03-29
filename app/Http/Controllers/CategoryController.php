@@ -38,6 +38,25 @@ class CategoryController extends Controller
         $categ->category_name = $request->category_name;
         $categ->save();
 
+       
+        return redirect(url('/control/categories'));
+    }
+
+    public function edit_category($id){
+        $categ = App\Category::find($id);
+
+        return view('control_panel/categories/edit_category', compact('categ'));
+    }
+
+    public function save_category(Request $request, $id)
+    {
+        $request->validate([
+            'category_name' => 'string|max:20',
+        ]);
+        
+        $categ = App\Category::find($id);
+        $categ->category_name = $request->category_name;
+        $categ->save();
         return redirect(url('/control/categories'));
     }
 }

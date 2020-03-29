@@ -57,6 +57,10 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     });
     Route::post('/control/categories/add', 'CategoryController@create_category');
 
+    Route::get('/control/categories/edit/{id}','CategoryController@edit_category');
+
+    Route::post('/control/categories/edit/{id}','CategoryController@save_category');
+
 });
 
 Route::get('/post/{id}', 'PostsController@show_post');
