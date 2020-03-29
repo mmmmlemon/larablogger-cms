@@ -2,6 +2,12 @@
 @section('content')
 
 <div class="container white-bg">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="/control">Control panel</a></li>
+          <li class="is-active"><a href="#" aria-current="page">Categories</a></li>
+        </ul>
+      </nav>
     <div class="column is-12">
         <a href="{{url()->previous()}}" class="button is-link">
             <span class="icon">

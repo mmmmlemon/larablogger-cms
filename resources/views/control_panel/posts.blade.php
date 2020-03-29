@@ -18,6 +18,14 @@
              Back
             </span>
         </a>
+        <a href="/control/create_post" class="button is-link">
+            <span class="icon">
+                <i class="fas fa-pen"></i>
+            </span>
+            <span>
+            Add post
+            </span>
+        </a>
     </div>
     <div class="is-divider"></div>
     <div class="columns">

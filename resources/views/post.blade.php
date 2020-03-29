@@ -2,10 +2,21 @@
 @section('content')
 
 <div class="container white-bg">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      @if(Auth::check())
+        @if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
+        <li><a href="/control">Control panel</a></li>
+        <li><a href="/control/posts" aria-current="page">Posts</a></li>
+        @endif
+      @endif
+      <li><a href="/category/{{App\Category::find($post->category_id)->category_name}}">{{App\Category::find($post->category_id)->category_name}}</a></li>
+      <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
+    </ul>
+  </nav>
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-          <li><a href="#">{{App\Category::find($post->category_id)->category_name}}</a></li>
-          <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
+         
         </ul>
       </nav>
       <a href="{{url()->previous()}}" class="button is-link">
@@ -16,6 +27,7 @@
          Back
         </span>
     </a>
+    
     <div>&nbsp;</div>
     <div class="columns">
         <div class="column">

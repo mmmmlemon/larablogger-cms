@@ -5,7 +5,8 @@
   <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
       <li><a href="/control">Control panel</a></li>
-      <li class="is-active"><a href="#" aria-current="page">Create post</a></li>
+      <li><a href="/control/posts" aria-current="page">Posts</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Add post</a></li>
     </ul>
   </nav>
     <div class="columns">
@@ -19,7 +20,7 @@
                 </span>
             </a>
 
-            <h1 class="title has-text-centered">Create Post</h1>
+            <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
             <form action="control_panel/create_new_post" method="POST">

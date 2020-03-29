@@ -12,7 +12,7 @@
                 <span class="icon">
             <i class="fas fa-pen"></i>
           </span>
-                <span>Create post</span>
+                <span>Add post</span>
             </a>
 
             <a href="control/posts" class="button is-link is-medium" data-tooltip="View/edit posts">
