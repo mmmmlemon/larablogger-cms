@@ -7,7 +7,7 @@ use App;
 
 class CategoryController extends Controller
 {
-    public function index($category_name)
+    public function show_posts_by_category($category_name)
     {
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
@@ -20,5 +20,24 @@ class CategoryController extends Controller
 
 
         return view('category_view', compact('categ', 'posts'));
+    }
+
+    public function index()
+    {
+        $categs = App\Category::where('category_name','!=','blank')->get();
+        return view('control_panel/categories/categories', compact('categs'));    
+    }
+
+    public function create_category(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'string|max:20',
+        ]);
+
+        $categ = new App\Category;
+        $categ->category_name = $request->category_name;
+        $categ->save();
+
+        return redirect(url('/control/categories'));
     }
 }

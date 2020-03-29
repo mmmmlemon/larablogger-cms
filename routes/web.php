@@ -15,7 +15,7 @@ use Carbon\Carbon;
 */
 
 Route::get('/', 'HomePageController@index');
-Route::get('/category/{category_name}', 'CategoryController@index');
+Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category');
 
 Route::get('/about', function () {
     return view('about');
@@ -51,6 +51,11 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::delete('/control/delete_post/{id}', 'ControlPanelController@delete_post');
     Route::get('/post/{id}/edit', 'PostsController@show_edit_post');
     Route::post('/post/{id}/edit', 'PostsController@edit_post');
+    Route::get('/control/categories', 'CategoryController@index');
+    Route::get('/control/categories/add', function(){
+        return view('control_panel/categories/add_category');
+    });
+    Route::post('/control/categories/add', 'CategoryController@create_category');
 
 });
 
