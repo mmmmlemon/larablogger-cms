@@ -77,5 +77,18 @@ class PostsController extends Controller
         $post->save();
         return redirect(url('/control/posts'));
     }
+
+
+    public function show_posts_by_tag($tag){
+
+        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->paginate(15);
+
+        foreach($posts as $post){
+            $tags_separate = explode(",", $post->tags);
+            $post->tags = $tags_separate;
+        }
+
+        return view('home', compact('posts'));
+    }
 } 
 

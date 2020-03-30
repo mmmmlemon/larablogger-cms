@@ -12,7 +12,7 @@
     <div>
       @if(count($post->tags) > 1)
         @foreach($post->tags as $tag)
-        <span class="tag is-info">{{$tag}}</span>
+    <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
         @endforeach
       @endif
       <nav class="breadcrumb" aria-label="breadcrumbs">

@@ -17,6 +17,10 @@ use Carbon\Carbon;
 Route::get('/', 'HomePageController@index');
 Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category');
 
+Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag');
+Route::get('/post/{id}', 'PostsController@show_post');
+
+
 Route::get('/about', function () {
     return view('about');
 });
@@ -65,7 +69,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
 });
 
-Route::get('/post/{id}', 'PostsController@show_post');
+
 
 
 Auth::routes();
