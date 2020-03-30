@@ -63,13 +63,13 @@
         </ul>
     </div>
 
-    @yield('settings', View::make('control_panel/settings', compact('settings', 'social_media')))
+    @yield('settings', View::make('control_panel/general/settings', compact('settings', 'social_media')))
 
-    @yield('users', View::make('control_panel/users', compact('users')))
+    @yield('users', View::make('control_panel/general/users', compact('users')))
 
-    @yield('design', View::make('control_panel/design'))
+    @yield('design', View::make('control_panel/general/design'))
 
-    @yield('profile', View::make('control_panel/profile', compact('current_user')))
+    @yield('profile', View::make('control_panel/general/profile', compact('current_user')))
 
 </div>
 

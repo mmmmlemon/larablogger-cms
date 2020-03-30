@@ -52,7 +52,7 @@ class PostsController extends Controller
         $post = App\Post::find($id);
         $categories = App\Category::all();
 
-        return view('control_panel/edit_post', compact('post','categories'));
+        return view('control_panel/posts/edit_post', compact('post','categories'));
     }
 
     public function edit_post(Request $request, $id){
@@ -75,7 +75,7 @@ class PostsController extends Controller
             $post->visibility = 0;
         }
         $post->save();
-        return redirect(url('/control/posts'));
+        return redirect(url('/control/posts/posts'));
     }
 
 

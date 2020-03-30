@@ -34,20 +34,20 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/create_post', function(){
         $current_date = Carbon::now();
         $categories = App\Category::all();
-        return view('control_panel/create_post', compact('current_date', 'categories'));
+        return view('control_panel/posts/create_post', compact('current_date', 'categories'));
     });
     Route::post('/control/control_panel/create_new_post', 'ControlPanelController@create_post');
 
     Route::get('/control/posts', function(){
         $posts = App\Post::orderBy('date','desc')->paginate(10);
         $page='normal';
-        return view('control_panel/posts', compact('posts','page'));
+        return view('control_panel/posts/posts', compact('posts','page'));
     
     });
     Route::get('/control/posts/date', function(){
         $posts = App\Post::orderBy('date','asc')->paginate(10);
         $page = 'date_desc';
-        return view('control_panel/posts', compact('posts', 'page'));
+        return view('control_panel/posts/posts', compact('posts', 'page'));
     });
     Route::get('/control/post_status/{id}/{status}', 'ControlPanelController@change_post_status');
     Route::post('/control/post_status/{id}/{status}', 'ControlPanelController@change_post_status');
