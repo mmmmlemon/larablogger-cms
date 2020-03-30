@@ -129,66 +129,7 @@ class ControlPanelController extends Controller
         
     }
 
-    public function create_post(Request $request)
-    {
-        $request->validate([
-            'post_title' => 'string|max:35',
-            'post_content' => 'string',
-            'publish' => 'string',
-            'publish_date' => 'date|after:yesterday'
-        ]);
-
-        $post = new App\Post;
-        $post->post_title = $request->post_title;
-        $post->post_content = $request->post_content;
-        $post->category_id = $request->category;
-        $post->tags = $request->tags;
-
-        //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
-        //если нет, то ту дату которая указана в поле с датой
-        if($request->publish == 'on'){
-            $post->visibility = 1;
-            $post->date = Carbon::now()->format('Y-m-d');
-        } else {
-            $post->visibility = 1;
-            $post->date = $request->publish_date;
-        }
-
-       $post->save();
-       return redirect(url('/control'));
-    }
-
-
-    public function change_post_status($id, $status)
-    {
-        $post = App\Post::find($id);    
-
-        $stat = 0;
-
-        if($status == 1)
-        {$stat = 1;}
-
-        if($post->visibility != $stat)
-        {
-            $post->visibility = $stat;
-            $post->save();
-        }
-        else{
-            abort(403);
-        }
-
-        return redirect(url()->previous());
-
-    }
-
-    public function delete_post($id)
-    {
-        $post = App\Post::find($id);
-        $post->delete();
-        return redirect(url()->previous());
-
-    }
-
+   
 
 }
  
