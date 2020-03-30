@@ -5,9 +5,9 @@
   <div class="is-divider"></div>
   <div class="media-content">
     <div class="content">
-      <p> 
-       {{$post->post_content}}
-      </p>
+     
+       {!!$post->post_content!!}
+     
     </div>
     <div>
       @if(count($post->tags) > 1)

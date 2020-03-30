@@ -104,3 +104,14 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+<script>
+  $('.textarea').richText({
+    imageUpload:false,
+    videoEmbed:false
+  });
+
+</script>
+@endpush

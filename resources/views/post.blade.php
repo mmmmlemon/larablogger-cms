@@ -37,9 +37,9 @@
 
             <div class="media-content">
               <div class="content">
-                <p> 
-                 {{$post->post_content}}
-                </p>
+               
+                 {!!$post->post_content!!}
+              
               </div>
               <div class="is-divider"></div>
               @if(count($post->tags) > 1)

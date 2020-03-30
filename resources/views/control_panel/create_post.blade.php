@@ -106,4 +106,12 @@
 
 @push('scripts')
 <script src="{{ asset('js/create_post.js') }}"></script>
+<script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+<script>
+  $('.textarea').richText({
+    imageUpload:false,
+    videoEmbed:false
+  });
+
+</script>
 @endpush
