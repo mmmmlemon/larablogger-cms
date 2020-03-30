@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     });
     Route::get('/control/post_status/{id}/{status}', 'ControlPanelController@change_post_status');
     Route::post('/control/post_status/{id}/{status}', 'ControlPanelController@change_post_status');
-    Route::get('/control/delete_post/{id}', 'ControlPanelController@delete_post');
+   // Route::get('/control/delete_post/{id}', 'ControlPanelController@delete_post');
     Route::delete('/control/delete_post/{id}', 'ControlPanelController@delete_post');
     Route::get('/post/{id}/edit', 'PostsController@show_edit_post');
     Route::post('/post/{id}/edit', 'PostsController@edit_post');

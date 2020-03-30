@@ -82,11 +82,14 @@
                                 <i class="fas fa-edit"></i>
                             </span>
                         </a>
-                        <a href="/control/delete_post/{{$post->id}}" class="button is-danger">
-                            <span class="icon is-small" data-tooltip="Delete this post">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </a>
+                        <form action="/control/delete_post/{{$post->id}}" method="post">
+                            @method('DELETE')
+                            @csrf
+
+                            
+                            <button class="button is-danger"><i class="fas fa-trash"></i></button>
+                         </form>
+                   
                     </td>
                     </tr>
                     
