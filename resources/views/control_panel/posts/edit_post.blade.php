@@ -84,7 +84,7 @@
                   <div class="field">
                     <div class="control">
                         <p class="help">Tags</p>
-                    <input class="input" type="text" name="tags" value="{{$post->tags}}" placeholder="video,post,meme,text,whatever">
+                    <input class="input" type="text" id="tags" name="tags" value="{{$post->tags}}" placeholder="video,post,meme,text,whatever">
                     </div>
                     
                   </div>
@@ -107,11 +107,15 @@
 
 @push('scripts')
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+<script src="{{ asset('js/jquery.caret.min.js') }}"></script>
+<script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
 <script>
   $('.textarea').richText({
     imageUpload:false,
     videoEmbed:false
   });
+
+  $('#tags').tagEditor();
 
 </script>
 @endpush

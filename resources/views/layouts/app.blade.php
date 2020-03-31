@@ -32,7 +32,7 @@
   <link href="{{ asset('css/animations.css') }}" rel="stylesheet">
   <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
   <link href="{{ asset('css/richtext.min.css') }}" rel="stylesheet">
-  
+  <link href="{{ asset('css/jquery.tag-editor.css') }}" rel="stylesheet">
 
   <!-- Bulma Extensions -->
   <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">
