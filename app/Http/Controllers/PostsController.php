@@ -10,6 +10,20 @@ use Carbon\Carbon;
 
 class PostsController extends Controller
 {
+
+    public function index(){
+
+        $posts = App\Post::where('visibility','=','1')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+
+        foreach($posts as $post){
+            $tags_separate = explode(",", $post->tags);
+            $post->tags = $tags_separate;
+        }
+
+        return view('home', compact('posts'));
+    }
+
+
     public function show_post($id)
     {
         $post = App\Post::find($id);
@@ -51,9 +65,15 @@ class PostsController extends Controller
     public function show_edit_post($id){
 
         $post = App\Post::find($id);
-        $categories = App\Category::all();
+        $categories = App\Category::where('category_name','!=','blank')->get();
 
         return view('control_panel/posts/edit_post', compact('post','categories'));
+    }
+
+    public function show_create_post(){
+        $current_date = Carbon::now();
+        $categories = App\Category::where('category_name','!=','blank')->get();
+        return view('control_panel/posts/create_post', compact('categories','current_date'));
     }
 
     public function edit_post(Request $request, $id){
@@ -82,7 +102,7 @@ class PostsController extends Controller
 
     public function show_posts_by_tag($tag){
 
-        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->paginate(15);
+        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);

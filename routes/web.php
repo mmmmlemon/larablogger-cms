@@ -14,7 +14,7 @@ use Carbon\Carbon;
 |
 */
 
-Route::get('/', 'HomePageController@index');
+Route::get('/', 'PostsController@index');
 Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category');
 
 Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag');
@@ -31,15 +31,12 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_social', 'ControlPanelController@update_social');
     Route::post('/control/change_user_type', 'ControlPanelController@change_user_type');
     Route::post('/control/update_profile', 'ControlPanelController@update_profile');
-    Route::get('/control/create_post', function(){
-        $current_date = Carbon::now();
-        $categories = App\Category::all();
-        return view('control_panel/posts/create_post', compact('current_date', 'categories'));
-    });
+    Route::get('/control/create_post', 'PostsController@show_create_post');
+
     Route::post('/control/control_panel/create_new_post', 'PostsController@create_post');
 
     Route::get('/control/posts', function(){
-        $posts = App\Post::orderBy('date','desc')->paginate(10);
+        $posts = App\Post::orderBy('date','desc')->orderBy('id','desc')->paginate(10);
         $page='normal';
         return view('control_panel/posts/posts', compact('posts','page'));
     
