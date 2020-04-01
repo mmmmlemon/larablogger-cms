@@ -19,7 +19,17 @@ class PostsController extends Controller
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
+            $post->category = App\Category::find($post->category_id)->category_name;
+            if($post->category == "blank")
+            {$post->category = "";}
             $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->get());
+            if($post->comment_count > 1 || $post->comment_count == 0)
+            {
+                $post->comment_count .= " comments"; 
+            } else {
+                $post->comment_count .= " comment"; 
+            }
+       
         }
 
         return view('home', compact('posts'));
@@ -39,10 +49,18 @@ class PostsController extends Controller
             {$username="";}
 
             $comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();
-
+            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->get());
+            if($post->comment_count > 1 || $post->comment_count == 0)
+            {
+                $post->comment_count .= " comments"; 
+            } else {
+                $post->comment_count .= " comment"; 
+            }
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
-
+            $post->category = App\Category::find($post->category_id)->category_name;
+            if($post->category == "blank")
+            {$post->category = "";}
 
             //проверяем статус поста, если visibility == 0
             //то пост будем видимым только для админа

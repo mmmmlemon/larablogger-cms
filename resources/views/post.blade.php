@@ -10,7 +10,9 @@
         <li><a href="/control/posts" aria-current="page">Posts</a></li>
         @endif
       @endif
-      <li><a href="/category/{{App\Category::find($post->category_id)->category_name}}">{{App\Category::find($post->category_id)->category_name}}</a></li>
+      @if($post->category != "")
+        <li><a href="/category/){{$post->category}}">{{$post->category}}</a></li>
+      @endif
       <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
     </ul>
   </nav>
@@ -92,7 +94,7 @@
 <div class="container white-bg" id="comments">
   <div class="columns">
     <div class="column">
-    <div class="subtitle">{{count($comments)}} comments / <a href="#comment_form">Leave a comment</a></div> 
+    <div class="subtitle">{{$post->comment_count}} / <a href="#comment_form">Leave a comment</a></div> 
       @foreach($comments as $comment)
       <article class="media">
         <div class="media-content">
