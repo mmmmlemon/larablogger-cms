@@ -44,7 +44,7 @@
               
               </div>
               <div class="is-divider"></div>
-              @if(count($post->tags) > 1)
+              @if(count($post->tags) > 0)
               @foreach($post->tags as $tag)
               <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
               @endforeach

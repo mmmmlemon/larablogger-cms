@@ -188,7 +188,7 @@ class PostsController extends Controller
         }
 
        $post->save();
-       return redirect(url('/control'));
+       return redirect(url('/control/posts'));
     }
 
 
