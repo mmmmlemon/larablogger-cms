@@ -107,7 +107,7 @@
                   <form action="/post/hide_comment/" method="POST" style="display:inline">
                     @csrf
                     <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
-                    <button type="submit" class="admin-comment-button" data-tooltip="Hide this comment">
+                    <button type="submit" class="action-button" data-tooltip="Hide this comment">
                       <span class="icon has-text-danger">
                           <i class="fas fa-ban"></i>
                       </span>
@@ -117,7 +117,7 @@
                 <form action="/post/show_comment/" method="POST" style="display:inline">
                   @csrf
                   <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
-                    <button type="submit" class="admin-comment-button" data-tooltip="Show this comment">
+                    <button type="submit" class="action-button" data-tooltip="Show this comment">
                       <span class="icon has-text-primary">
                           <i class="fas fa-check"></i>
                       </span>

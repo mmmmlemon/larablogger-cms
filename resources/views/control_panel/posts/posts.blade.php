@@ -65,7 +65,7 @@
                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                     <td>
                         @if($post->visibility == 1)
-                            <a href="/control/post_status/{{$post->id}}/0" class="button is-warning">
+                          <a href="/control/post_status/{{$post->id}}/0" class="button  is-warning">
                                 <span class="icon is-small" data-tooltip="Hide this post">
                                     <i class="fas fa-eye-slash"></i>
                                 </span>
@@ -82,12 +82,12 @@
                                 <i class="fas fa-edit"></i>
                             </span>
                         </a>
-                        <form action="/control/delete_post/{{$post->id}}" method="post">
+                        <form action="/control/delete_post/{{$post->id}}" method="post" style="display:inline;">
                             @method('DELETE')
                             @csrf
 
                             
-                            <button class="button is-danger"><i class="fas fa-trash"></i></button>
+                            <button class="button is-danger" data-tooltip="Delete this post"><i class="fas fa-trash"></i></button>
                          </form>
                    
                     </td>
