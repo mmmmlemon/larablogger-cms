@@ -214,9 +214,9 @@ class PostsController extends Controller
 
     }
 
-    public function delete_post($id)
+    public function delete_post(Request $request)
     {
-        $post = App\Post::find($id);
+        $post = App\Post::find($request->modal_form_input);
         $post->delete();
         return redirect(url()->previous());
 

@@ -52,8 +52,6 @@
                                 <form action="/control/categories/delete/{{$categ->id}}" method="post" style="display:inline;">
                                     @method('DELETE')
                                     @csrf
-
-                                    
                                     <button class="button is-danger" data-tooltip="Delete category"><i class="fas fa-trash"></i></button>
                                  </form>
                               

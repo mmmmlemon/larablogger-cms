@@ -82,14 +82,17 @@
                                 <i class="fas fa-edit"></i>
                             </span>
                         </a>
-                        <form action="/control/delete_post/{{$post->id}}" method="post" style="display:inline;">
+                        {{-- <form action="/control/delete_post/{{$post->id}}" method="post" style="display:inline;">
                             @method('DELETE')
                             @csrf
 
                             
-                            <button class="button is-danger" data-tooltip="Delete this post"><i class="fas fa-trash"></i></button>
-                         </form>
-                   
+                            <button class="button is-danger showModalDelete" data-tooltip="Delete this post"><i class="fas fa-trash"></i></button>
+                         </form> --}}
+                         <button class="button is-danger showModalDelete" 
+                        data-tooltip="Delete this post" data-title="{{$post->post_title}}" data-id="{{$post->id}}">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
                     </tr>
                     
@@ -112,7 +115,54 @@
     </div>
 </div>
 
-    
+@endsection
 
+@section('modals')
+<div class="modal modalDelete">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">You sure?</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <p>Are you sure you want to delete this post?</p>
+        <b id="modal_post_title"></b>
+        <p class="has-text-danger">This action cannot be undone.</p>
+      </section>
+      <footer class="modal-card-foot">
+          <form id="modal_form" action="/control/delete_post" method="post" style="display:inline;">
+                @method('DELETE')
+                @csrf
+                <input type="text" class="invisible" id="modal_form_input" name="modal_form_input">
+        </form>
+        <button class="button is-danger" id="submit_modal">Delete</button>
+        <button class="button cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>>
 
 @endsection
+
+@push('scripts')
+<script>
+    $("#submit_modal").on('click', function(){
+        $("#modal_form").submit();
+    });
+
+     //вызвать модальное окно Contacts
+     $(".showModalDelete").click(function() {
+        $(".modalDelete").addClass("is-active fade-in");  
+        $("#modal_post_title").text($(this).data("title"));
+        $("#modal_form_input").val($(this).data("id"));
+      });
+      
+    $(".delete").click(function() {
+        $(".modalDelete").removeClass("is-active");
+    });
+
+    $(".cancel").click(function() {
+        $(".modalDelete").removeClass("is-active");
+    });
+</script>
+@endpush
