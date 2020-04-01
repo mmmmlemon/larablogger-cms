@@ -95,12 +95,22 @@
   <div class="columns">
     <div class="column">
     <div class="subtitle">{{$post->comment_count}} / <a href="#comment_form">Leave a comment</a></div> 
+
       @foreach($comments as $comment)
       <article class="media">
         <div class="media-content">
           <div class="content">
             <p>
               <strong>{{$comment->username}}</strong>
+              @if($is_admin == true)
+            <form action="post/hide_comment/{{$comment->id}}" method="POST">
+                <button type="submit" class="">
+                  <span class="icon has-text-danger" data-tooltip="Hide this comment">
+                    <i class="fas fa-ban"></i>
+                  </span>
+              </button>
+            </form>
+            @endif
               <br>
               <div class="content">
                 {!!$comment->comment_content!!}

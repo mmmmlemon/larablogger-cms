@@ -22,7 +22,7 @@ class PostsController extends Controller
             $post->category = App\Category::find($post->category_id)->category_name;
             if($post->category == "blank")
             {$post->category = "";}
-            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->get());
+            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
             if($post->comment_count > 1 || $post->comment_count == 0)
             {
                 $post->comment_count .= " comments"; 
@@ -44,11 +44,17 @@ class PostsController extends Controller
         {   
             //получаем юзернейм, если юзер залогинен
             if(Auth::check())
-            {$username = Auth::user()->name;}
+            {
+                $username = Auth::user()->name;
+                if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
+                {$is_admin = true;}
+                else {$is_admin == false;}
+            }
             else
-            {$username="";}
+            {$username="";
+            $is_admin = false;}
 
-            $comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();
+            $comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();
             $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->get());
             if($post->comment_count > 1 || $post->comment_count == 0)
             {
@@ -61,13 +67,12 @@ class PostsController extends Controller
             $post->category = App\Category::find($post->category_id)->category_name;
             if($post->category == "blank")
             {$post->category = "";}
-
+           
             //проверяем статус поста, если visibility == 0
             //то пост будем видимым только для админа
             if($post->visibility == 1)
             {   
-        
-                return view('post', compact('post','username','comments'));
+                 return view('post', compact('post','username','comments','is_admin'));
             }
             else
             {
