@@ -92,7 +92,7 @@
 <div class="container white-bg" id="comments">
   <div class="columns">
     <div class="column">
-    <h1 class="subtitle">{{count($comments)}} comments</h1>
+    <div class="subtitle">{{count($comments)}} comments / <a href="#comment_form">Leave a comment</a></div> 
       @foreach($comments as $comment)
       <article class="media">
         <div class="media-content">
@@ -100,8 +100,10 @@
             <p>
               <strong>{{$comment->username}}</strong>
               <br>
-              {{$comment->comment_content}}
-              <br><br>
+              <div class="content">
+                {!!$comment->comment_content!!}
+              </div>
+              
                <i>{{date('d.m.Y', strtotime($comment->date))}}</i>
             </p>
           </div>
@@ -157,5 +159,15 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+<script src="{{ asset('js/jquery.caret.min.js') }}"></script>
+<script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
+<script>
+   $('.textarea').richText({
+    imageUpload:false,
+    videoEmbed:false
+  });
+
+</script>
 <script src="{{ asset('js/home_page.js') }}"></script>
 @endpush
