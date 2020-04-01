@@ -113,36 +113,45 @@
   </div>
 </div>
 
-<div class="container white-bg">
+<div class="container white-bg" id="comment_form">
+<form action="/submit_comment/{{$post->id}}" method="POST">
+  @csrf
   <article class="media">
     <div class="media-content">
       <div class="field">
         <p class="control">
-          <input class="input" placeholder="username"/>
+        <input class="input" name="username" placeholder="username" value="{{$username}}"/>
         </p>
+            @error('username')
+              <p class="help is-danger"><b> {{ $message }}</b></p>  
+            @enderror
       </div>
       <div class="field">
         <p class="control">
-          <textarea class="textarea" placeholder="Add a comment..."></textarea>
+          <textarea class="textarea" name="comment_content" placeholder="Add a comment..."></textarea>
         </p>
+        @error('comment_content')
+        <p class="help is-danger"><b> {{ $message }}</b></p>  
+      @enderror
       </div>
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
-            <a class="button is-info">
+            <button type="submit" class="button is-link">
               <span class="icon">
                 <i class="fas fa-comment"></i>
             </span>
             <span>
               Submit comment
             </span>
-             </a>
+          </button>
             
           </div>
         </div>
       </nav>
     </div>
   </article>
+</form>
 </div>
 
 @endsection

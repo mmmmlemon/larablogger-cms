@@ -67,6 +67,9 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
 
 
+Route::post('/submit_comment/{id}', 'PostsController@submit_comment');
+
+
 
 Auth::routes();
 

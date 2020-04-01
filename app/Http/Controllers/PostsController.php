@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App;
 use Auth;
 use Carbon\Carbon;
+use Validator;
 
 class PostsController extends Controller
 {
@@ -30,21 +31,25 @@ class PostsController extends Controller
         //если такой пост существует, то выводим его
         if($post != null)
         {
-            
+            if(Auth::check())
+            {$username = Auth::user()->name;}
+            else
+            {$username="";}
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
             //проверяем статус поста, если visibility == 0
             //то пост будем видимым только для админа
             if($post->visibility == 1)
-            {
-                return view('post', compact('post'));
+            {   
+        
+                return view('post', compact('post','username'));
             }
             else
             {
                 if(Auth::user()){
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
-                    {
-                        return view('post', compact('post'));
+                    {   
+                        return view('post', compact('post','username'));
                     } 
                     else
                     {
@@ -170,6 +175,28 @@ class PostsController extends Controller
         $post->delete();
         return redirect(url()->previous());
 
+    }
+
+    public function submit_comment(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|max:25',
+            'comment_content' => 'required|max:1000'
+        ]);
+
+        //если валидатор фейлит, то редиректим назад с якорем
+        if($validator->fails()){
+            return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput();
+        }
+
+
+        $comment = new App\Comment;
+
+        $comment->username = $request->username;
+        $comment->comment_content = $request->comment_content;
+        $comment->post_id = $id;
+        $comment->save();
+        return redirect(url()->previous());
     }
 
 } 
