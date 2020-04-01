@@ -67,7 +67,7 @@
 <div class="container white-bg" id="comments">
   <div class="columns">
     <div class="column">
-      <h1 class="subtitle">Comments</h1>
+    <h1 class="subtitle">{{count($comments)}} comments</h1>
       @foreach($comments as $comment)
       <article class="media">
         <div class="media-content">

@@ -18,7 +18,7 @@
       <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
         <li class=""><a href="/category/{{App\Category::find($post->category_id)->category_name}}" aria-current="page">{{App\Category::find($post->category_id)->category_name}}</a></li>
-        <li><a href="/post/{{$post->id}}#comments">5 comments</a></li>
+        <li><a href="/post/{{$post->id}}#comments">{{$post->comment_count}} comments</a></li>
         </ul>
       </nav>
     </div>

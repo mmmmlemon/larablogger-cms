@@ -19,6 +19,7 @@ class PostsController extends Controller
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
+            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->get());
         }
 
         return view('home', compact('posts'));
@@ -37,7 +38,7 @@ class PostsController extends Controller
             else
             {$username="";}
 
-            $comments = App\Comment::where('post_id','=',$id)->orderBy('date','desc')->orderBy('id','desc')->get();
+            $comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();
 
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
