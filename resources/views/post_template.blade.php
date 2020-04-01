@@ -27,7 +27,7 @@
       <div class="level-left">
       <a class="level-item share-button" for="share_{{$post->id}}">
           <span class="icon is-large"><i class="fas fa-2x fa-share"></i></span>
-        </a>
+      </a>
 
       <nav class="breadcrumb invisible" aria-label="breadcrumbs" id="share_{{$post->id}}">
           <ul>
