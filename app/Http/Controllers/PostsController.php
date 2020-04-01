@@ -96,7 +96,7 @@ class PostsController extends Controller
             $post->visibility = 0;
         }
         $post->save();
-        return redirect(url('/control/posts/posts'));
+        return redirect(url('/control/posts'));
     }
 
 
