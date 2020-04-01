@@ -103,13 +103,27 @@
             <p>
               <strong>{{$comment->username}}</strong>
               @if($is_admin == true)
-            <form action="post/hide_comment/{{$comment->id}}" method="POST">
-                <button type="submit" class="">
-                  <span class="icon has-text-danger" data-tooltip="Hide this comment">
-                    <i class="fas fa-ban"></i>
-                  </span>
-              </button>
-            </form>
+                @if($comment->visibility == 1)
+                <form action="/post/hide_comment/" method="POST">
+                  @csrf
+                   <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
+                    <button type="submit" class="">
+                      <span class="icon has-text-danger" data-tooltip="Hide this comment">
+                        <i class="fas fa-ban"></i>
+                      </span>
+                  </button>
+                </form>
+              @else
+              <form action="/post/show_comment/" method="POST">
+                @csrf
+                 <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
+                  <button type="submit" class="">
+                    <span class="icon has-text-primary" data-tooltip="Show this comment">
+                      <i class="fas fa-check"></i>
+                    </span>
+                </button>
+              </form>
+              @endif
             @endif
               <br>
               <div class="content">

@@ -63,6 +63,10 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::delete('/control/categories/delete/{id}','CategoryController@delete_category');
 
+    Route::post('/post/hide_comment','PostsController@hide_comment');
+    
+    Route::post('/post/show_comment','PostsController@show_comment');
+
 });
 
 

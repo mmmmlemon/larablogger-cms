@@ -42,57 +42,72 @@ class PostsController extends Controller
         //если такой пост существует, то выводим его
         if($post != null)
         {   
-            //получаем юзернейм, если юзер залогинен
+            //если юзер залогинен
             if(Auth::check())
-            {
-                $username = Auth::user()->name;
+            {   
+                $username = Auth::user()->name; //получаем его юзернейм
+                //если юзер - админ
                 if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
-                {$is_admin = true;}
-                else {$is_admin == false;}
+                {$is_admin = true;} //то указываем что он админ
+                else  //или не админ
+                {$is_admin == false;}
             }
-            else
-            {$username="";
-            $is_admin = false;}
-
-            $comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();
-            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->get());
-            if($post->comment_count > 1 || $post->comment_count == 0)
+            else //если не залогинен, то юзернейм пустой, а не админ
             {
-                $post->comment_count .= " comments"; 
-            } else {
-                $post->comment_count .= " comment"; 
+                $username="";
+                $is_admin = false;
             }
-            $tags_separate = explode(",", $post->tags);
-            $post->tags = $tags_separate;
+
+            //получаем комменты к посту
+            if($is_admin == true) //если админ, то получаем все комменты, если нет то только видимые
+            {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
+            else
+            {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
+           
+            //считаем количество комментов
+            $post->comment_count = count($comments);
+
+            //если комментов больше одного, или их ноль
+            if($post->comment_count > 1 || $post->comment_count == 0)
+            {$post->comment_count .= " comments";}  //тогда приписка будет comments
+            else
+            {$post->comment_count .= " comment";} //или comment
+
+            //получаем теги поста
+            $post->tags = explode(",", $post->tags);
+            
+            //получаем категорию поста
             $post->category = App\Category::find($post->category_id)->category_name;
+            //если категория "blank", то не будем выводить её название
             if($post->category == "blank")
             {$post->category = "";}
            
-            //проверяем статус поста, если visibility == 0
-            //то пост будем видимым только для админа
+            //проверяем статус поста, если visibility == 1, то пост виден всем без исключения
             if($post->visibility == 1)
             {   
                  return view('post', compact('post','username','comments','is_admin'));
             }
-            else
-            {
-                if(Auth::user()){
+            else //если visibility == 0, то пост виден только админу
+            {   //проверяем залогинен ли юзер
+                if(Auth::check()){
+                    //если он админ
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
                         return view('post', compact('post','username','comments'));
                     } 
-                    else
+                    else //если залогинен, но не админ, то 404
                     {
                         return abort(404);
                     }
                 }
-                else
+                else //если не залогинен вообще, то 404
                 {
                     return abort(404);
                 }
             } 
         }
-        else{
+        else //если поста не существует, то 404
+        {
             return abort(404);
         }
     }
@@ -228,5 +243,18 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
+    public function hide_comment(Request $request){
+        $comment = App\Comment::find($request->comment_id);
+        $comment->visibility = 0;
+        $comment->save();
+        return redirect(url()->previous());
+    }
+
+    public function show_comment(Request $request){
+        $comment = App\Comment::find($request->comment_id);
+        $comment->visibility = 1;
+        $comment->save();
+        return redirect(url()->previous());
+    }
 } 
 
