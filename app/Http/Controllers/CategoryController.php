@@ -11,11 +11,15 @@ class CategoryController extends Controller
     {
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->paginate(15);
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
-            $tags_separate = explode(",", $post->tags);
-            $post->tags = $tags_separate;
+          //получаем теги поста
+          $tags= explode(",", $post->tags);
+          if(count($tags) == 1 && $tags[0]=="")
+          {$post->tags = null;}
+          else
+          {$post->tags = $tags;}
         }
 
 

@@ -43,9 +43,10 @@
                  {!!$post->post_content!!}
               
               </div>
-              <div class="is-divider"></div>
-              @if(count($post->tags) > 0)
+            <div class="is-divider"></div>
+              @if($post->tags != null)
               @foreach($post->tags as $tag)
+
               <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
               @endforeach
             @endif

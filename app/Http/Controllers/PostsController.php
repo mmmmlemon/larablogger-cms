@@ -17,8 +17,12 @@ class PostsController extends Controller
         $posts = App\Post::where('visibility','=','1')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
-            $tags_separate = explode(",", $post->tags);
-            $post->tags = $tags_separate;
+            //получаем теги поста
+            $tags= explode(",", $post->tags);
+            if(count($tags) == 1 && $tags[0]=="")
+            {$post->tags = null;}
+            else
+            {$post->tags = $tags;}
             $post->category = App\Category::find($post->category_id)->category_name;
             if($post->category == "blank")
             {$post->category = "";}
@@ -74,8 +78,12 @@ class PostsController extends Controller
             {$post->comment_count .= " comment";} //или comment
 
             //получаем теги поста
-            $post->tags = explode(",", $post->tags);
-            
+            $tags= explode(",", $post->tags);
+            if(count($tags) == 1 && $tags[0]=="")
+            {$post->tags = null;}
+            else
+            {$post->tags = $tags;}
+
             //получаем категорию поста
             $post->category = App\Category::find($post->category_id)->category_name;
             //если категория "blank", то не будем выводить её название
@@ -175,7 +183,11 @@ class PostsController extends Controller
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
         $post->category_id = $request->category;
-        $post->tags = $request->tags;
+        if($request->tags == "")
+        {$post->tags =  NULL;}
+        else
+        {$post->tags = $request->tags;}
+        
 
         //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
         //если нет, то ту дату которая указана в поле с датой
