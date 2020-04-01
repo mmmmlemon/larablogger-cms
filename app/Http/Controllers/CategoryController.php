@@ -64,18 +64,18 @@ class CategoryController extends Controller
         return redirect(url('/control/categories'));
     }
 
-    public function delete_category($id)
+    public function delete_category(Request $request)
     {   
         $blank_id = App\Category::where('category_name','=', 'blank')->first()->id;
 
-        $posts = App\Post::where('category_id','=', $id)->get();
+        $posts = App\Post::where('category_id','=', $request->modal_form_input)->get();
         foreach($posts as $post){
             $p = App\Post::find($post->id);
             $p->category_id = 0;
             $p->save();
         }
         
-        $categ = App\Category::find($id);
+        $categ = App\Category::find($request->modal_form_input);
         $categ->delete();
 
         return redirect(url('/control/categories'));

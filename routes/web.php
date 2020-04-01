@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::post('/control/categories/edit/{id}','CategoryController@save_category');
 
-    Route::delete('/control/categories/delete/{id}','CategoryController@delete_category');
+    Route::delete('/control/categories/delete','CategoryController@delete_category');
 
     Route::post('/post/hide_comment','PostsController@hide_comment');
     
