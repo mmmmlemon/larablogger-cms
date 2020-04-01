@@ -100,38 +100,39 @@
       <article class="media">
         <div class="media-content">
           <div class="content">
-            <p>
-              <strong>{{$comment->username}}</strong>
-              @if($is_admin == true)
-                @if($comment->visibility == 1)
-                <form action="/post/hide_comment/" method="POST">
+            <div class="is-4">
+                <strong>{{$comment->username}}</strong>
+                  @if($is_admin == true)
+                  @if($comment->visibility == 1)
+                  <form action="/post/hide_comment/" method="POST" style="display:inline">
+                    @csrf
+                    <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
+                    <button type="submit" class="admin-comment-button" data-tooltip="Hide this comment">
+                      <span class="icon has-text-danger">
+                          <i class="fas fa-ban"></i>
+                      </span>
+                  </button>
+                  </form>
+                @else
+                <form action="/post/show_comment/" method="POST" style="display:inline">
                   @csrf
-                   <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
-                    <button type="submit" class="">
-                      <span class="icon has-text-danger" data-tooltip="Hide this comment">
-                        <i class="fas fa-ban"></i>
+                  <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
+                    <button type="submit" class="admin-comment-button" data-tooltip="Show this comment">
+                      <span class="icon has-text-primary">
+                          <i class="fas fa-check"></i>
                       </span>
                   </button>
                 </form>
-              @else
-              <form action="/post/show_comment/" method="POST">
-                @csrf
-                 <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
-                  <button type="submit" class="">
-                    <span class="icon has-text-primary" data-tooltip="Show this comment">
-                      <i class="fas fa-check"></i>
-                    </span>
-                </button>
-              </form>
+                @endif
               @endif
-            @endif
+          </div>
               <br>
               <div class="content">
                 {!!$comment->comment_content!!}
               </div>
               
                <i>{{date('d.m.Y', strtotime($comment->date))}}</i>
-            </p>
+           
           </div>
         </div>
       </article>
