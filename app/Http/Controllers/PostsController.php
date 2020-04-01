@@ -30,26 +30,32 @@ class PostsController extends Controller
         $post = App\Post::find($id);
         //если такой пост существует, то выводим его
         if($post != null)
-        {
+        {   
+            //получаем юзернейм, если юзер залогинен
             if(Auth::check())
             {$username = Auth::user()->name;}
             else
             {$username="";}
+
+            $comments = App\Comment::where('post_id','=',$id)->orderBy('date','desc')->orderBy('id','desc')->get();
+
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
+
+
             //проверяем статус поста, если visibility == 0
             //то пост будем видимым только для админа
             if($post->visibility == 1)
             {   
         
-                return view('post', compact('post','username'));
+                return view('post', compact('post','username','comments'));
             }
             else
             {
                 if(Auth::user()){
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
-                        return view('post', compact('post','username'));
+                        return view('post', compact('post','username','comments'));
                     } 
                     else
                     {
@@ -188,13 +194,12 @@ class PostsController extends Controller
         if($validator->fails()){
             return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput();
         }
-
-
         $comment = new App\Comment;
 
         $comment->username = $request->username;
         $comment->comment_content = $request->comment_content;
         $comment->post_id = $id;
+        $comment->date = Carbon::now();
         $comment->save();
         return redirect(url()->previous());
     }

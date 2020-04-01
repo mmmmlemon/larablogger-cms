@@ -68,47 +68,22 @@
   <div class="columns">
     <div class="column">
       <h1 class="subtitle">Comments</h1>
+      @foreach($comments as $comment)
       <article class="media">
         <div class="media-content">
           <div class="content">
             <p>
-              <strong>Username</strong>
+              <strong>{{$comment->username}}</strong>
               <br>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
-              <br>
-               <i>date</i>
+              {{$comment->comment_content}}
+              <br><br>
+               <i>{{date('d.m.Y', strtotime($comment->date))}}</i>
             </p>
           </div>
         </div>
       </article>
 
-      <article class="media">
-        <div class="media-content">
-          <div class="content">
-            <p>
-              <strong>Username</strong>
-              <br>
-              i poo and also pee
-              <br>
-               <i>date</i>
-            </p>
-          </div>
-        </div>
-      </article>
-
-      <article class="media">
-        <div class="media-content">
-          <div class="content">
-            <p>
-              <strong>Username</strong>
-              <br>
-             damn bro he really vibin tho owo
-              <br>
-               <i>date</i>
-            </p>
-          </div>
-        </div>
-      </article>
+     @endforeach
     </div>
   </div>
 </div>
