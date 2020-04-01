@@ -64,4 +64,85 @@
     </div>
 </div>
 
+<div class="container white-bg" id="comments">
+  <div class="columns">
+    <div class="column">
+      <h1 class="subtitle">Comments</h1>
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>Username</strong>
+              <br>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
+              <br>
+               <i>date</i>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>Username</strong>
+              <br>
+              i poo and also pee
+              <br>
+               <i>date</i>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>Username</strong>
+              <br>
+             damn bro he really vibin tho owo
+              <br>
+               <i>date</i>
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+
+<div class="container white-bg">
+  <article class="media">
+    <div class="media-content">
+      <div class="field">
+        <p class="control">
+          <input class="input" placeholder="username"/>
+        </p>
+      </div>
+      <div class="field">
+        <p class="control">
+          <textarea class="textarea" placeholder="Add a comment..."></textarea>
+        </p>
+      </div>
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <a class="button is-info">
+              <span class="icon">
+                <i class="fas fa-comment"></i>
+            </span>
+            <span>
+              Submit comment
+            </span>
+             </a>
+            
+          </div>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>
+
 @endsection

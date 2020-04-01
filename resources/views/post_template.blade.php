@@ -54,8 +54,7 @@
           </li>
           </ul>
         </nav>
-      
-       
+        
         
         {{-- <a class="level-item">
           <span class="icon is-large"><i class="fas fa-2x fa-heart"></i></span>
