@@ -96,31 +96,112 @@
             <span class="icon">
         <i class="fas fa-link"></i>
       </span>
-            <h3 class="subtitle">Social media (Links)</h3> @php $count = 0; @endphp
+            <h3 class="subtitle">Social media (Links)</h3>
             <form id="form_social" action="control/update_social/" method="POST">
-                @csrf @foreach($social_media as $item)
-                <div class="field is-horizontal" id="soc-media-field-{{$count}}">
+                @csrf 
+                <!-- FIELD # 1 -->
+                <div class="field is-horizontal" id="soc-media-field-0">
 
                     <div class="field-label is-normal">
-                        <label class="label"># {{$count+1}}</label>
+                        <label class="label">#1</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
-                            <input class="input invisible" type="text" name="id_{{$count}}" value="{{$item->id}}">
-                            <input class="input" type="text" placeholder="Web-site (or social media platform) name" name="platform_{{$count}}" maxlength="20" value="{{$item->platform_name}}">
+                            <input class="input invisible" type="text" name="id_0" value="{{$social_media[0]->id}}">
+                            <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
+                            name="platform_0" maxlength="320" value="{{$social_media[0]->platform_name}}">
+                            @error('platform_0')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
                         </div>
                         <div class="field">
-                            <input class="input" type="url" placeholder="https://web-site.com" name="url_{{$count}}" value="{{$item->url}}">
+                            <input class="input" type="text" placeholder="https://web-site.com" name="url_0" 
+                            value="{{$social_media[0]->url}}">
+                            @error('url_0')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div> 
+                    </div>
+                </div>
+
+                <!-- FIELD # 2 -->
+                <div class="field is-horizontal" id="soc-media-field-0">
+
+                    <div class="field-label is-normal">
+                        <label class="label">#2</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <input class="input invisible" type="text" name="id_1" value="{{$social_media[1]->id}}">
+                            <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
+                            name="platform_1" maxlength="320" value="{{$social_media[1]->platform_name}}">
+                            @error('platform_1')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div>
+                        <div class="field">
+                            <input class="input" type="url" placeholder="https://web-site.com" name="url_1" 
+                            value="{{$social_media[1]->url}}">
+                            @error('url_1')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div>    
+                    </div>
+                </div>
+
+                <!-- FIELD # 3 -->
+                <div class="field is-horizontal" id="soc-media-field-0">
+
+                    <div class="field-label is-normal">
+                        <label class="label">#3</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <input class="input invisible" type="text" name="id_2" value="{{$social_media[2]->id}}">
+                            <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
+                            name="platform_2" maxlength="20" value="{{$social_media[2]->platform_name}}">
+                            @error('platform_2')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div>
+                        <div class="field">
+                            <input class="input" type="url" placeholder="https://web-site.com" name="url_2" 
+                            value="{{$social_media[2]->url}}">
+                            @error('url_2')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div>       
+                    </div>
+                </div>
+
+                <!-- FIELD # 4 -->
+                <div class="field is-horizontal" id="soc-media-field-0">
+
+                    <div class="field-label is-normal">
+                        <label class="label">#4</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <input class="input invisible" type="text" name="id_3" value="{{$social_media[3]->id}}">
+                            <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
+                            name="platform_3" maxlength="320" value="{{$social_media[3]->platform_name}}">
+                            @error('platform_3')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div>
+                        <div class="field">
+                            <input class="input" type="url" placeholder="https://web-site.com" name="url_3" 
+                            value="{{$social_media[3]->url}}">
+                            @error('url_3')
+                            <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
                         </div>
                     </div>
                 </div>
 
-                @php $count += 1; @endphp @endforeach
-
                 <!--govnokod alert-->
                 <!-- в элементе num_of_fields сохраняем количество полей для соцсетей, чтобы передать это значение при отправке формы -->
                 <!-- при добавлении нового поля делаем +1 при помощи jQuery -->
-                <div id="num_of_fields" class="invisible">{{$count}}</div>
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <!-- Left empty for spacing -->
