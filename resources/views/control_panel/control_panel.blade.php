@@ -75,4 +75,5 @@
 
 @endsection @push('scripts')
 <script src="{{ asset('js/control_panel.js') }}"></script>
+
 @endpush

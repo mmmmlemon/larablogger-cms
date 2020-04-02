@@ -26,10 +26,13 @@
                             <input class="input @error('username') is-danger @enderror" maxlength="25" name="username" 
                             type="text" placeholder="User" 
                             value="@if($errors->any()){{old('username')}}@else{{$current_user->name}}@endif">
+                      
                                 <span class="icon is-small is-left">
                                   <i class="fas fa-user"></i>
                                 </span>
+                                <p class="help is-dark has-text-left">0/25</p>
                               </p>
+                              
                               @error('username')
                             <p class="help is-danger"><b> {{ $message }}</b></p>  
                             @enderror

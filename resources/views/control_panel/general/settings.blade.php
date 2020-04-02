@@ -20,9 +20,10 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded">
-                                <input class="input  @error('site_title') is-danger @enderror" name="site_title" type="text" 
+                                <input class="input" id="site_title" @error('site_title') is-danger @enderror" name="site_title" type="text" 
                                 required placeholder="Web-site name" maxlength="25"
                             value="@if($errors->any()){{old('site_title')}}@else{{$settings->site_title}}@endif">
+                            <p class="help is-dark">0/25</p>
                             </p>
                             @error('site_title')
                             <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -41,6 +42,7 @@
                                 <input class="input @error('site_subtitle') is-danger @enderror" name="site_subtitle" 
                                 type="text" required placeholder="Subtitle" maxlength="55"
                                 value="@if($errors->any()){{old('site_subtitle')}}@else{{$settings->site_subtitle}}@endif">
+                                <p class="help is-dark">0/55</p>
                             </p>
                             @error('site_subtitle')
                             <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -227,3 +229,7 @@
     </div>
 
     </div>
+
+    @push('scripts')
+   
+    @endpush
