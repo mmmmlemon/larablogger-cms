@@ -23,7 +23,7 @@
                                 <input class="input" id="site_title" @error('site_title') is-danger @enderror" name="site_title" type="text" 
                                 required placeholder="Web-site name" maxlength="25"
                             value="@if($errors->any()){{old('site_title')}}@else{{$settings->site_title}}@endif">
-                            <p class="help is-dark" id="counter_for_site_title">0/25</p>
+                
                             </p>
                             @error('site_title')
                             <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -40,9 +40,9 @@
                         <div class="field">
                             <p class="control is-expanded">
                                 <input class="input @error('site_subtitle') is-danger @enderror" name="site_subtitle" 
-                                type="text" required placeholder="Subtitle" maxlength="55"
+                                type="text" required placeholder="Subtitle" id="site_subtitle" maxlength="55"
                                 value="@if($errors->any()){{old('site_subtitle')}}@else{{$settings->site_subtitle}}@endif">
-                                <p class="help is-dark" id="counter_for_subtitle">0/55</p>
+                           
                             </p>
                             @error('site_subtitle')
                             <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -235,8 +235,8 @@
 @push('scripts')
 <script>
    $(document).ready(function(){
-    $('#counter_for_site_title').charCounter();
-    $('#counter_for_subtitle').charCounter();
+    $('#site_title').charCounter();
+    $('#site_subtitle').charCounter();
    });
 </script>
 @endpush

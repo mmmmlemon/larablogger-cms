@@ -23,14 +23,13 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                            <input class="input @error('username') is-danger @enderror" maxlength="25" name="username" 
+                            <input class="input @error('username') is-danger @enderror" id="username" maxlength="25" name="username" 
                             type="text" placeholder="User" 
                             value="@if($errors->any()){{old('username')}}@else{{$current_user->name}}@endif">
                       
                                 <span class="icon is-small is-left">
                                   <i class="fas fa-user"></i>
                                 </span>
-                                <p class="help is-dark has-text-left" id="counter_for_username">0/25</p>
                               </p>
                               
                               @error('username')
@@ -87,6 +86,6 @@
 
     <script>
         $(document).ready(function(){
-         $('#counter_for_username').charCounter();
+         $('#username').charCounter();
         });
      </script>

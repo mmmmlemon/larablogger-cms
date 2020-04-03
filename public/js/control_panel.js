@@ -61,21 +61,31 @@ $("input").change(function(){
 
 
 $.fn.charCounter = function () {
-  var counter = this;
-  var input = $(this).prev().find("input");
-  var txt = $(input).attr("value");
-  $(this).text(txt.length + "/" + $(input).attr("maxlength"));
+  var input = this;
+  var maxlength = $(input).attr("maxlength");
+  $("<p class='help is-dark' id='counter_for_subtitle'>0/"+maxlength+"</p>").insertAfter(input);
+  var counter = $(input).next();
+
+  function count_chars(){
+    var txt = $(input).val();
+    $(counter).text(txt.length+"/"+maxlength);
+  } 
+
+  count_chars();
 
   $(input).keyup(function(){
-    var txt = $(input).val();
-    $(counter).text(txt.length + "/" + $(input).attr("maxlength"));
+    count_chars();
+  });
+
+  $(input).keydown(function(){
+    count_chars();
   });
 
   $(input).change(function(){
-    var txt = $(input).val();
-    $(counter).text(txt.length + "/" + $(input).attr("maxlength"));
+    count_chars();
   });
 
+  
   return this;
 };
 
