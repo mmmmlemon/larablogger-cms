@@ -1,5 +1,4 @@
 //скрипты связанные со странцией Control Panel
-
 //убирает красную подсветку у инпутов после ошибки
 $("input").change(function(){
   $(this).removeClass("is-danger")
@@ -57,5 +56,28 @@ $("input").change(function(){
     {//do nothing}
   }
 
+
 }
-  
+
+
+$.fn.charCounter = function () {
+  var counter = this;
+  var input = $(this).prev().find("input");
+  var txt = $(input).attr("value");
+  $(this).text(txt.length + "/" + $(input).attr("maxlength"));
+
+  $(input).keyup(function(){
+    var txt = $(input).val();
+    $(counter).text(txt.length + "/" + $(input).attr("maxlength"));
+  });
+
+  $(input).change(function(){
+    var txt = $(input).val();
+    $(counter).text(txt.length + "/" + $(input).attr("maxlength"));
+  });
+
+  return this;
+};
+
+
+

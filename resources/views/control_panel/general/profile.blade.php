@@ -30,7 +30,7 @@
                                 <span class="icon is-small is-left">
                                   <i class="fas fa-user"></i>
                                 </span>
-                                <p class="help is-dark has-text-left">0/25</p>
+                                <p class="help is-dark has-text-left" id="counter_for_username">0/25</p>
                               </p>
                               
                               @error('username')
@@ -84,3 +84,9 @@
 
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+         $('#counter_for_username').charCounter();
+        });
+     </script>

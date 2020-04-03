@@ -1,3 +1,4 @@
+
 @extends('layouts.app') @section('content')
 
 <div class="container white-bg">
@@ -64,7 +65,7 @@
     </div>
 
     @yield('settings', View::make('control_panel/general/settings', compact('settings', 'social_media')))
-
+   
     @yield('users', View::make('control_panel/general/users', compact('users')))
 
     @yield('design', View::make('control_panel/general/design'))
@@ -73,7 +74,9 @@
 
 </div>
 
-@endsection @push('scripts')
-<script src="{{ asset('js/control_panel.js') }}"></script>
+@endsection 
 
+@push('scripts')
+<script src="{{ asset('js/control_panel.js') }}"></script>
 @endpush
+
