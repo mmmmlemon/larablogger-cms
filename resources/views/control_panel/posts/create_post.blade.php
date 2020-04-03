@@ -41,7 +41,7 @@
                 <div class="field">
                     <div class="control">
                         <p class="help">Title</p>
-                      <input maxlength="35" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
+                      <input maxlength="35" id="title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
                       placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else @endif">
                     </div>
                     @error('post_title')
@@ -54,7 +54,7 @@
                       <div class="field">
                         <div class="control">
                         <p class="help">Content</p>
-                          <textarea class="textarea" name="post_content" placeholder="Write your post here"></textarea>
+                          <textarea class="textarea" id="textarea" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
                         </div>
                         
                       </div>
@@ -109,6 +109,7 @@
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
+<script src="{{ asset('js/char_counter.js') }}"></script>
 <script>
   $('.textarea').richText({
     imageUpload:false,
@@ -116,6 +117,10 @@
   });
 
   $('#tags').tagEditor();
+
+  $(document).ready(function(){
+    $('#title').charCounter();
+  });
 
 </script>
 @endpush

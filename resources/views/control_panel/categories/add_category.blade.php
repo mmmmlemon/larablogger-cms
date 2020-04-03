@@ -28,7 +28,7 @@
                     <label class="label">Category name</label>
                     <div class="control">
                       <input class="input @error('category_name') is-danger @enderror"
-                       name="category_name" type="text" placeholder="Category name"
+                       name="category_name" type="text" maxlength="20" placeholder="Category name" id="title"
                        value="@if($errors->any()){{old('category_name')}}@else @endif">
                     </div>
                     @error('category_name')
@@ -43,3 +43,14 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/char_counter.js') }}"></script>
+<script>
+    
+  $(document).ready(function(){
+    $('#title').charCounter();
+  });
+
+</script>
+@endpush

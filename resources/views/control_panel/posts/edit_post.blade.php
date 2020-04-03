@@ -43,7 +43,7 @@
                     <div class="control">
                         <p class="help">Title</p>
                         <input maxlength="35" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
-                      placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
+                      placeholder="Post title" id="title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
                     </div>
                     @error('post_title')
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -109,6 +109,7 @@
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
+<script src="{{ asset('js/char_counter.js') }}"></script>
 <script>
   $('.textarea').richText({
     imageUpload:false,
@@ -117,5 +118,11 @@
 
   $('#tags').tagEditor();
 
+  $(document).ready(function(){
+    $('#title').charCounter();
+  });
+
+
 </script>
+
 @endpush

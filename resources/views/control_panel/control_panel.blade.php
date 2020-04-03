@@ -78,5 +78,6 @@
 
 @push('scripts')
 <script src="{{ asset('js/control_panel.js') }}"></script>
+<script src="{{ asset('js/char_counter.js') }}"></script>
 @endpush
 
