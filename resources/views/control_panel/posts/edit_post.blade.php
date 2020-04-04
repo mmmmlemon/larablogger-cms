@@ -56,6 +56,9 @@
                         <div class="control">
                         <p class="help">Content</p>
                           <textarea class="textarea" name="post_content"  placeholder="Write your post here">{{$post->post_content}}</textarea>
+                          @error('post_content')
+                          <p class="help is-danger"><b> {{ $message }}</b></p>  
+                         @enderror
                         </div>
                         
                       </div>

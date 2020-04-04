@@ -138,7 +138,7 @@ class PostsController extends Controller
         
         $request->validate([
             'post_title' => 'string|max:35',
-            'post_content' => 'string',
+            'post_content' => 'string|max:10000',
             'publish' => 'string'
         ]);
 
