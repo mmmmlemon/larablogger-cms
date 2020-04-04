@@ -150,7 +150,7 @@
     <div class="media-content">
       <div class="field">
         <p class="control">
-        <input class="input" name="username" placeholder="username" value="{{$username}}"/>
+        <input class="input" name="username" placeholder="username" maxlength="25" id="username" value="{{$username}}"/>
         </p>
             @error('username')
               <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -190,10 +190,15 @@
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
+<script src="{{ asset('js/char_counter.js') }}"></script>
 <script>
    $('.textarea').richText({
     imageUpload:false,
     videoEmbed:false
+  });
+
+  $(document).ready(function(){
+    $('#username').charCounter();
   });
 
 </script>
