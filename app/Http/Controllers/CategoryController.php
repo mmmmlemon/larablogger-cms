@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use Carbon\Carbon;
 
 class CategoryController extends Controller
 {
@@ -11,7 +12,7 @@ class CategoryController extends Controller
     {
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
           //получаем теги поста

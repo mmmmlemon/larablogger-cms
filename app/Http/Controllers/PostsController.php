@@ -14,7 +14,7 @@ class PostsController extends Controller
 
     public function index(){
 
-        $posts = App\Post::where('visibility','=','1')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
             //получаем теги поста
