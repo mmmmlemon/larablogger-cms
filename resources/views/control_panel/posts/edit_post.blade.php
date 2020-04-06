@@ -10,8 +10,7 @@
       <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
     </ul>
   </nav>
-    <div class="columns">
-        <div class="column">
+ 
         <a href="{{url()->previous()}}" class="button is-link">
                 <span class="icon">
                     <i class="fas fa-arrow-left"></i>
@@ -50,21 +49,14 @@
                    @enderror
                   </div>
 
-                  <div class="field">
-                    <div class="field-body">
-                      <div class="field">
-                        <div class="control">
+              
                         <p class="help">Content</p>
                           <textarea class="textarea" name="post_content"  placeholder="Write your post here">{{$post->post_content}}</textarea>
                           @error('post_content')
                           <p class="help is-danger"><b> {{ $message }}</b></p>  
                          @enderror
                         </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-
+              
                   <div class="field">
                     <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" @if($post->visibility == 1) checked @endif>
                     <label for="publish_checkbox">Visibility</label>
@@ -101,9 +93,7 @@
                     </span>
                 </button>
             </form>
-        </div>
-      
-    </div>
+   
 </div>
 
 @endsection
