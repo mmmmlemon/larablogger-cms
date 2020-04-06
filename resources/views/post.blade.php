@@ -146,7 +146,7 @@
 <div class="container white-bg" id="comment_form">
 <form action="/submit_comment/{{$post->id}}" method="POST">
   @csrf
-  <article class="media">
+  <article>
     <div class="media-content">
       <div class="field">
         <p class="control">
@@ -156,14 +156,13 @@
               <p class="help is-danger"><b> {{ $message }}</b></p>  
             @enderror
       </div>
-      <div class="field">
-        <p class="control">
+    
           <textarea class="textarea" name="comment_content" placeholder="Add a comment..."></textarea>
         </p>
         @error('comment_content')
         <p class="help is-danger"><b> {{ $message }}</b></p>  
       @enderror
-      </div>
+   
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
