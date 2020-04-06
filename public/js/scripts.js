@@ -8,11 +8,11 @@
 
     //вызвать модальное окно Contacts
     $("#showModalContact").click(function() {
-        $(".modal").addClass("is-active fade-in");  
+        $("#contact-modal").addClass("is-active fade-in");  
       });
       
     $(".modal-close").click(function() {
-        $(".modal").removeClass("is-active");
+        $("#contact-modal").removeClass("is-active");
     });
 
     $(document).ready(function(){

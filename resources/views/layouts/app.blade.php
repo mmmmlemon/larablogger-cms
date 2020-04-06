@@ -144,7 +144,7 @@
         </main>
     </div>
 
-    <div class="modal">
+    <div class="modal" id="contact-modal">
         <div class="modal-background"></div>
         <div class="modal-content">
             <article class="message">

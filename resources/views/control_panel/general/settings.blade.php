@@ -69,6 +69,25 @@
                   </div>
               </div>
 
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Contact text</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <input class="input @error('contact_text') is-danger @enderror" name="contact_text" 
+                            type="text" required placeholder="Disclaimer for your contact form" maxlength="200"
+                            value="@if($errors->any()){{old('contact_text')}}@else{{$settings->contact_text}}@endif">
+                        </p>
+                        @error('contact_email')
+                        <p class="help is-danger"><b> {{ $message }}</b></p>  
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <!-- Left empty for spacing -->
