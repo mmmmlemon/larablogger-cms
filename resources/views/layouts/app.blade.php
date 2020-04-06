@@ -151,8 +151,32 @@
                 <div class="message-header">
                   <p>Contact</p>
                 </div>
-                <div class="message-body">
-                    {{$settings->contact_email}}
+                <div class="message-body"> 
+                      <p>You can contact me (for whatever reason) through this form. </p>
+                      <p>E-mail: {{$settings->contact_email}}</p>
+                      <div class="is-divider"></div>
+                      <div class="field">
+                        <div class="control">
+                         <input type="email" class="input" placeholder="Your email (optional)">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="control">
+                          <textarea class="textarea" placeholder="Your message"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link">
+                                <span class="icon">
+                                  <i class="fa fa-envelope"></i>
+                                </span>
+                                <span>Submit</span>
+                              </button>
+                        </div>
+                      </div>
+                    
                 </div>
               </article>
         </div>
