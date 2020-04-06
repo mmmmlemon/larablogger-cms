@@ -228,6 +228,11 @@ class PostsController extends Controller
 
     public function delete_post(Request $request)
     {
+        //сначала удаляем все комментрии связанные с этим постом
+        $comments = App\Comment::where('post_id', $request->modal_form_input)->get();
+        foreach($comments as $comment){
+            $comment->delete();
+        }
         $post = App\Post::find($request->modal_form_input);
         $post->delete();
         return redirect(url()->previous());
