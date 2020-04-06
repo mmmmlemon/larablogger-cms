@@ -193,7 +193,17 @@
 <script>
    $('.textarea').richText({
     imageUpload:false,
-    videoEmbed:false
+    videoEmbed:false,
+    table: false,
+    fileUpload:false,
+    heading: false,
+    fonts: false,
+    ul: false,
+    leftAlign: false,
+    centerAlign: false,
+    rightAlign: false,
+    justify: false,
+    code: false
   });
 
   $(document).ready(function(){

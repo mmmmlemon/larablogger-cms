@@ -106,7 +106,9 @@
 <script>
   $('.textarea').richText({
     imageUpload:false,
-    videoEmbed:false
+    videoEmbed:false,
+    fileUpload: false,
+    fileUpload: false,
   });
 
   $('#tags').tagEditor();
