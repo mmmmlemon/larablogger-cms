@@ -67,6 +67,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     
     Route::post('/post/show_comment','PostsController@show_comment');
 
+    Route::delete('/post/delete_comment','PostsController@delete_comment');
+
 });
 
 

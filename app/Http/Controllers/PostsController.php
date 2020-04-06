@@ -273,5 +273,11 @@ class PostsController extends Controller
         $comment->save();
         return redirect(url()->previous());
     }
+
+    public function delete_comment(Request $request){
+        $comment = App\Comment::find($request->comment_id);
+        $comment->delete();
+        return redirect(url()->previous());
+    }
 } 
 

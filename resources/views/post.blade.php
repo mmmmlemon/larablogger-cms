@@ -125,7 +125,18 @@
                   </button>
                 </form>
                 @endif
+                <form action="/post/delete_comment/" method="POST" style="display:inline">
+                  @csrf
+                  @method('DELETE')
+                  <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
+                    <button type="submit" class="action-button" data-tooltip="Delete this comment">
+                      <span class="icon has-text-dark">
+                          <i class="fas fa-trash"></i>
+                      </span>
+                  </button>
+                </form>
               @endif
+              
           </div>
               <br>
               <div class="content">
