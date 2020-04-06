@@ -32,7 +32,8 @@ class ControlPanelController extends Controller
         $request->validate([
             'site_title'=>'required|max:25',
             'site_subtitle'=>'required|max:55',
-            'contact_email'=>'required|email'
+            'contact_email'=>'required|email',
+            'contact_email'=>'string'
         ]);
 
         $settings = App\Settings::all()->first();
@@ -40,6 +41,7 @@ class ControlPanelController extends Controller
         $settings->site_title = $request->get('site_title');
         $settings->site_subtitle = $request->get('site_subtitle');
         $settings->contact_email = $request->get('contact_email');
+        $settings->contact_text = $request->get('contact_text');
         $settings->save();
 
         return redirect()->back();

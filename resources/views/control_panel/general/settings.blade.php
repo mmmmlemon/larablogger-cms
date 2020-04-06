@@ -77,10 +77,10 @@
                     <div class="field">
                         <p class="control is-expanded">
                             <input class="input @error('contact_text') is-danger @enderror" name="contact_text" 
-                            type="text" required placeholder="Disclaimer for your contact form" maxlength="200"
+                            type="text" placeholder="Disclaimer for your contact form" maxlength="200"
                             value="@if($errors->any()){{old('contact_text')}}@else{{$settings->contact_text}}@endif">
                         </p>
-                        @error('contact_email')
+                        @error('contact_text')
                         <p class="help is-danger"><b> {{ $message }}</b></p>  
                         @enderror
                     </div>

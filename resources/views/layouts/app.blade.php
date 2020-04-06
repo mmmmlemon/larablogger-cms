@@ -152,9 +152,15 @@
                   <p>Contact</p>
                 </div>
                 <div class="message-body"> 
-                      <p>You can contact me (for whatever reason) through this form. </p>
+                      @if($settings->contact_text)
+                      <p>{{$settings->contact_text}}</p>
+                      @endif
+                      @if($settings->contact_email !=null)
                       <p>E-mail: {{$settings->contact_email}}</p>
+                      @endif
+                      @if($settings->contact_text || $settings->contact_email)
                       <div class="is-divider"></div>
+                      @endif
                       <div class="field">
                         <div class="control">
                          <input type="email" class="input" placeholder="Your email (optional)">
