@@ -82,23 +82,30 @@
                     
                   </div>
 
-                  <div id="file-js-example" class="file has-name">
-                    <label class="file-label">
-                      <input type="file" name="media_input" />
-                      <span class="file-cta">
-                        <span class="file-icon">
-                          <i class="fas fa-upload"></i>
-                        </span>
-                        <span class="file-label">
-                          Choose a file…
-                        </span>
-                      </span>
-                      <span class="file-name">
-                        No file uploaded
-                      </span>
-                    </label>
+                  <div class="field">
+                    <div class="control">
+                      <div id="file-js-example" class="file has-name">
+                        <label class="file-label">
+                          <input class="file-input" type="file" name="media_input">
+                          <span class="file-cta">
+                            <span class="file-icon">
+                              <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                              Choose a file…
+                            </span>
+                          </span>
+                          <span class="file-name">
+                            No file uploaded
+                          </span>
+                        </label>
+                      </div>
+    
+                    </div>
+                    
                   </div>
 
+              
                   <button type="submit" class="button is-link">
                     <span class="icon">
                         <i class="fas fa-save"></i>

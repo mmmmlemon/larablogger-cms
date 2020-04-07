@@ -8,6 +8,7 @@ use App;
 use Auth;
 use Carbon\Carbon;
 use Validator;
+use Storage;
 
 class PostsController extends Controller
 {
@@ -199,24 +200,27 @@ class PostsController extends Controller
         }
         
         $post->save();
-  
+        
+        //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
         if($request->media_input != null)
-        {
+        {   
+            //если это картинка, то сохраняем в images
             if(substr($request->media_input->getMimeType(), 0, 5) == 'image') 
             {
-                $request->media_input->storeAs('images/',$post->post_title.'_image.jpg');
+                $request->media_input->storeAs("images/",$post->post_title."_image.jpg");
                 $media = new App\Media;
                 $media->post_id = $post->id;
-                $media->media_url = "'images/',$post->post_title.'_image.jpg'";
+                $media->media_url = "images/".$post->post_title."_image.jpg";
                 $media->save();
             }   
 
+            //если видео, то в videos
             if(substr($request->media_input->getMimeType(), 0, 5) == 'video') 
             {
-                $request->media_input->storeAs('videos/',$post->post_title.'_video.mp4');
+                $request->media_input->storeAs("videos/",$post->post_title."_video.mp4");
                 $media = new App\Media;
                 $media->post_id = $post->id;
-                $media->media_url = "'images/',$post->post_title.'_image.jpg'";
+                $media->media_url = "videos/".$post->post_title."_video.jpg";
                 $media->save();
             }
         }
@@ -255,6 +259,13 @@ class PostsController extends Controller
         foreach($comments as $comment){
             $comment->delete();
         }
+        //и медиа файлы тоже
+        $media = App\Media::where('post_id', $request->modal_form_input)->get();
+        foreach($media as $m){
+            unlink(storage_path('app\\'.$m->media_url));
+            $m->delete();
+        }
+
         $post = App\Post::find($request->modal_form_input);
         $post->delete();
         return redirect(url()->previous());
