@@ -187,7 +187,6 @@ class PostsController extends Controller
         {$post->tags =  NULL;}
         else
         {$post->tags = $request->tags;}
-        
 
         //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
         //если нет, то ту дату которая указана в поле с датой
@@ -198,9 +197,32 @@ class PostsController extends Controller
             $post->visibility = 1;
             $post->date = $request->publish_date;
         }
+        
+        $post->save();
+  
+        if($request->media_input != null)
+        {
+            if(substr($request->media_input->getMimeType(), 0, 5) == 'image') 
+            {
+                $request->media_input->storeAs('images/',$post->post_title.'_image.jpg');
+                $media = new App\Media;
+                $media->post_id = $post->id;
+                $media->media_url = "'images/',$post->post_title.'_image.jpg'";
+                $media->save();
+            }   
 
-       $post->save();
-       return redirect(url('/control/posts'));
+            if(substr($request->media_input->getMimeType(), 0, 5) == 'video') 
+            {
+                $request->media_input->storeAs('videos/',$post->post_title.'_video.mp4');
+                $media = new App\Media;
+                $media->post_id = $post->id;
+                $media->media_url = "'images/',$post->post_title.'_image.jpg'";
+                $media->save();
+            }
+        }
+
+        return redirect(url('/control/posts'));
+
     }
 
 

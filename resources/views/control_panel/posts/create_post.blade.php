@@ -22,7 +22,7 @@
             <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
-            <form action="control_panel/create_new_post" method="POST">
+            <form action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
               @csrf
               <div class="field">
                 <label class="label">Category</label>
@@ -82,6 +82,23 @@
                     
                   </div>
 
+                  <div id="file-js-example" class="file has-name">
+                    <label class="file-label">
+                      <input type="file" name="media_input" />
+                      <span class="file-cta">
+                        <span class="file-icon">
+                          <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                          Choose a file…
+                        </span>
+                      </span>
+                      <span class="file-name">
+                        No file uploaded
+                      </span>
+                    </label>
+                  </div>
+
                   <button type="submit" class="button is-link">
                     <span class="icon">
                         <i class="fas fa-save"></i>
@@ -115,5 +132,15 @@
     $('#title').charCounter();
   });
 
+</script>
+
+<script>
+  const fileInput = document.querySelector('#file-js-example input[type=file]');
+  fileInput.onchange = () => {
+    if (fileInput.files.length > 0) {
+      const fileName = document.querySelector('#file-js-example .file-name');
+      fileName.textContent = fileInput.files[0].name;
+    }
+  }
 </script>
 @endpush
