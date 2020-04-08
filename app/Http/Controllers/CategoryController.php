@@ -21,6 +21,20 @@ class CategoryController extends Controller
           {$post->tags = null;}
           else
           {$post->tags = $tags;}
+          $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
+          if($post->comment_count > 1 || $post->comment_count == 0)
+          {
+              $post->comment_count .= " comments"; 
+          } else {
+              $post->comment_count .= " comment"; 
+          }
+          $media = App\Media::where('post_id','=',$post->id)->get();
+   
+            if(count($media) != 0)
+            {
+                $post->media = $media;
+                $post->media_type = $media[0]->media_type;
+            }
         }
 
 
