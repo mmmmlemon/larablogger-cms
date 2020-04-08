@@ -36,7 +36,7 @@
         <h1 class="title">{{$post->post_title}}</h1>
         <div class="is-divider"></div>
 
-        @if($media[0]->media_type == "image")
+        @if(count($media) > 0 && $media[0]->media_type == "image")
         <article class="has-text-center">
 
           <div class="media-content">
@@ -46,7 +46,7 @@
         </article>
         @endif
 
-        @if($media[0]->media_type == "video")
+        @if(count($media) > 0 && $media[0]->media_type == "video")
         <article class="has-text-center">
 
           <div class="media-content">
