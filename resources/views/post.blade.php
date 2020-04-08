@@ -35,6 +35,29 @@
         <div class="column">
         <h1 class="title">{{$post->post_title}}</h1>
         <div class="is-divider"></div>
+
+        @if($media[0]->media_type == "image")
+        <article class="has-text-center">
+
+          <div class="media-content">
+          <img src="{{asset("storage/".$media[0]->media_url)}}" alt="">
+          </div>
+
+        </article>
+        @endif
+
+        @if($media[0]->media_type == "video")
+        <article class="has-text-center">
+
+          <div class="media-content">
+            <video controls="controls">
+              <source src="{{asset("storage/".$media[0]->media_url)}}">
+             </video>
+          </div>
+
+        </article>
+        @endif
+
         <article class="media">
 
             <div class="media-content">

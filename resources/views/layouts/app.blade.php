@@ -191,13 +191,13 @@
       @yield('modals')
 </body>
 
-<footer class="footer" id="footer">
+{{-- <footer class="footer" id="footer">
     <div class="content has-text-centered">
       <p>
        {{$settings->footer_text}}
       </p>
     </div>
-  </footer> 
+  </footer>  --}}
 </html>
 
 

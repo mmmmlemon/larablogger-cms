@@ -34,8 +34,18 @@ class PostsController extends Controller
             } else {
                 $post->comment_count .= " comment"; 
             }
+            $media = App\Media::where('post_id','=',$post->id)->get();
+   
+            if(count($media) != 0)
+            {
+                $post->media = $media;
+                $post->media_type = $media[0]->media_type;
+            }
+            
        
         }
+
+      
 
         return view('home', compact('posts'));
     }
@@ -44,6 +54,7 @@ class PostsController extends Controller
     public function show_post($id)
     {
         $post = App\Post::find($id);
+        $media = App\Media::where('post_id',$id)->get();
         //если такой пост существует, то выводим его
         if($post != null)
         {   
@@ -94,7 +105,7 @@ class PostsController extends Controller
             //проверяем статус поста, если visibility == 1, то пост виден всем без исключения
             if($post->visibility == 1)
             {   
-                 return view('post', compact('post','username','comments','is_admin'));
+                 return view('post', compact('post','username','comments','media','is_admin'));
             }
             else //если visibility == 0, то пост виден только админу
             {   //проверяем залогинен ли юзер
@@ -102,7 +113,7 @@ class PostsController extends Controller
                     //если он админ
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
-                        return view('post', compact('post','username','comments'));
+                        return view('post', compact('post','username','media','comments'));
                     } 
                     else //если залогинен, но не админ, то 404
                     {
@@ -207,20 +218,22 @@ class PostsController extends Controller
             //если это картинка, то сохраняем в images
             if(substr($request->media_input->getMimeType(), 0, 5) == 'image') 
             {
-                $request->media_input->storeAs("images/",$post->post_title."_image.jpg");
+                $request->media_input->storeAs("public/images/",$post->post_title."_image.jpg");
                 $media = new App\Media;
                 $media->post_id = $post->id;
                 $media->media_url = "images/".$post->post_title."_image.jpg";
+                $media->media_type = "image";
                 $media->save();
             }   
 
             //если видео, то в videos
             if(substr($request->media_input->getMimeType(), 0, 5) == 'video') 
             {
-                $request->media_input->storeAs("videos/",$post->post_title."_video.mp4");
+                $request->media_input->storeAs("public/videos/",$post->post_title."_video.mp4");
                 $media = new App\Media;
                 $media->post_id = $post->id;
-                $media->media_url = "videos/".$post->post_title."_video.jpg";
+                $media->media_url = "videos/".$post->post_title."_video.mp4";
+                $media->media_type = "video";
                 $media->save();
             }
         }

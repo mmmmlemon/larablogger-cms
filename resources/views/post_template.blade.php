@@ -3,6 +3,26 @@
       <h1 class="title">{{$post->post_title}}</h1>
     </a> 
   <div class="is-divider"></div>
+
+ 
+
+  <article class="has-text-center">
+
+    <div class="media-content">
+    @if($post->media_type == "image")
+      
+  <img src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
+    @endif
+    @if($post->media_type == "video")
+    <video controls="controls">
+      <source src="{{asset("storage/".$post->media[0]->media_url)}}">
+    </video>
+    @endif
+    </div>
+
+  </article>
+
+
   <div class="media-content">
     <div class="content">
      
