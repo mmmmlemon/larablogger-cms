@@ -10,13 +10,18 @@
 
     <div class="media-content">
     @if($post->media_type == "image")
-      
-  <img src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
+    <figure class="has-text-centered">
+      <img class="img-border" src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
+    </figure>
+ 
     @endif
     @if($post->media_type == "video")
-    <video controls="controls">
-      <source src="{{asset("storage/".$post->media[0]->media_url)}}">
-    </video>
+    <div class="has-text-centered">
+      <video class="img-border" controls="controls">
+        <source src="{{asset("storage/".$post->media[0]->media_url)}}">
+      </video>
+    </div>
+  
     @endif
     </div>
 

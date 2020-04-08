@@ -40,7 +40,9 @@
         <article class="has-text-center">
 
           <div class="media-content">
-          <img src="{{asset("storage/".$media[0]->media_url)}}" alt="">
+            <figure class="has-text-centered">
+              <img class="img-border" src="{{asset("storage/".$media[0]->media_url)}}" alt="">
+            </figure>
           </div>
 
         </article>
@@ -50,9 +52,11 @@
         <article class="has-text-center">
 
           <div class="media-content">
-            <video controls="controls">
-              <source src="{{asset("storage/".$media[0]->media_url)}}">
-             </video>
+            <div class="has-text-centered">
+              <video class="img-border" controls="controls">
+                <source src="{{asset("storage/".$media[0]->media_url)}}">
+              </video>
+            </div>
           </div>
 
         </article>
