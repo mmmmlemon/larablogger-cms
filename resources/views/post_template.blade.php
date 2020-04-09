@@ -17,7 +17,7 @@
     @endif
     @if($post->media_type == "video")
     <div class="has-text-centered">
-      <video class="img-border" controls="controls">
+      <video class="video-player" controls="controls">
         <source src="{{asset("storage/".$post->media[0]->media_url)}}">
       </video>
     </div>

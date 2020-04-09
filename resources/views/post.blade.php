@@ -53,7 +53,7 @@
 
           <div class="media-content">
             <div class="has-text-centered">
-              <video class="img-border" controls="controls">
+              <video controls="controls" id="player">
                 <source src="{{asset("storage/".$media[0]->media_url)}}">
               </video>
             </div>
@@ -250,4 +250,8 @@
 
 </script>
 <script src="{{ asset('js/home_page.js') }}"></script>
+<script src="{{ asset('js/plyr.js') }}"></script>
+<script>
+    const player = new Plyr('#player');
+</script>
 @endpush
