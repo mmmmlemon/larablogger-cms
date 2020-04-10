@@ -95,14 +95,18 @@
                               Choose a file…
                             </span>
                           </span>
-                          <span class="file-name">
-                            No file uploaded
-                          </span>
+                   
+                            <button class="button is-dark is-outlined" id="clear_files">Clear</button>
+                   
                         </label>
                       </div>
     
                     </div>
                     
+                  </div>
+
+                  <div class="white-bg" id="file_container">
+                    <h1 class='title is-5'>Files (0)</h1>
                   </div>
 
               
@@ -126,6 +130,7 @@
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
 <script src="{{ asset('js/char_counter.js') }}"></script>
+<script src="{{ asset('js/file_container.js') }}"></script>
 <script>
   $('.textarea').richText({
     imageUpload:false,
@@ -137,17 +142,12 @@
 
   $(document).ready(function(){
     $('#title').charCounter();
+    $("#file_container").fileContainer();
   });
 
+  
+
 </script>
 
-<script>
-  const fileInput = document.querySelector('#file-js-example input[type=file]');
-  fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-      const fileName = document.querySelector('#file-js-example .file-name');
-      fileName.textContent = fileInput.files[0].name;
-    }
-  }
-</script>
+
 @endpush
