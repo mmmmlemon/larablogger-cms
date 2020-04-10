@@ -223,27 +223,30 @@ class PostsController extends Controller
         //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
         if($request->media_input != null)
         {   
+            foreach($request->media_input as $file){
             //если это картинка, то сохраняем в images
-            if(substr($request->media_input->getMimeType(), 0, 5) == 'image') 
-            {
-                $request->media_input->storeAs("public/images/",$post->post_title."_image.jpg");
+            if(substr($file->getMimeType(), 0, 5) == 'image') 
+            {   
+                $file->storeAs("public/images/",$post->post_title."_image_".$file->getClientOriginalName());
                 $media = new App\Media;
                 $media->post_id = $post->id;
-                $media->media_url = "images/".$post->post_title."_image.jpg";
+                $media->media_url = "images/".$post->post_title."_image_".$file->getClientOriginalName();
                 $media->media_type = "image";
                 $media->save();
             }   
 
             //если видео, то в videos
-            if(substr($request->media_input->getMimeType(), 0, 5) == 'video') 
+            if(substr($file->getMimeType(), 0, 5) == 'video') 
             {
-                $request->media_input->storeAs("public/videos/",$post->post_title."_video.mp4");
+                $file->storeAs("public/videos/",$post->post_title."_video_".$file->getClientOriginalName());
                 $media = new App\Media;
                 $media->post_id = $post->id;
-                $media->media_url = "videos/".$post->post_title."_video.mp4";
+                $media->media_url = "videos/".$post->post_title."_video_".$file->getClientOriginalName();
                 $media->media_type = "video";
                 $media->save();
             }
+            }
+         
         }
 
         return redirect(url('/control/posts'));
@@ -283,7 +286,7 @@ class PostsController extends Controller
         //и медиа файлы тоже
         $media = App\Media::where('post_id', $request->modal_form_input)->get();
         foreach($media as $m){
-            unlink(storage_path('app\\'.$m->media_url));
+            unlink(storage_path('app\\public\\'.$m->media_url));
             $m->delete();
         }
 

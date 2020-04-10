@@ -36,31 +36,34 @@
         <h1 class="title">{{$post->post_title}}</h1>
         <div class="is-divider"></div>
 
-        @if(count($media) > 0 && $media[0]->media_type == "image")
-        <article class="has-text-center">
+        @if(count($media) > 0)
+        @foreach($media as $m)
+          @if($m->media_type == "image")
+          <article class="has-text-center">
 
-          <div class="media-content">
-            <figure class="has-text-centered">
-              <img class="img-border" src="{{asset("storage/".$media[0]->media_url)}}" alt="">
-            </figure>
-          </div>
-
-        </article>
-        @endif
-
-        @if(count($media) > 0 && $media[0]->media_type == "video")
-        <article class="has-text-center">
-
-          <div class="media-content">
-            <div class="has-text-centered">
-              <video controls="controls" id="player">
-                <source src="{{asset("storage/".$media[0]->media_url)}}">
-              </video>
+            <div class="media-content">
+              <figure class="has-text-centered">
+                <img class="img-border" src="{{asset("storage/".$m->media_url)}}" alt="">
+              </figure>
             </div>
-          </div>
+  
+          </article>
+          @elseif($m->media_type == "video")
+          <article class="has-text-center">
 
-        </article>
-        @endif
+            <div class="media-content">
+              <div class="has-text-centered">
+                <video controls="controls" id="player">
+                  <source src="{{asset("storage/".$m->media_url)}}">
+                </video>
+              </div>
+            </div>
+  
+          </article>
+          @endif
+
+        @endforeach
+          @endif
 
         <article class="media">
 
