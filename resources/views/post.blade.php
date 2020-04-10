@@ -43,7 +43,8 @@
 
             <div class="media-content">
               <figure class="has-text-centered">
-                <img class="img-border" src="{{asset("storage/".$m->media_url)}}" alt="">
+                <img class="img-border imagee" width="900px" src="{{asset("storage/".$m->media_url)}}" alt=""
+                data-src="{{asset("storage/".$m->media_url)}}">
               </figure>
             </div>
   
@@ -226,6 +227,19 @@
 
 @endsection
 
+@section('modals')
+<div class="modal" id="img-modal">
+  <div class="modal-background"></div>
+  <div class="modal-content column is-two-thirds-desktop is-12-mobile">
+    <p class="image has-text-centered">
+      <img id="img-in-modal" width="90%" src="" alt="">
+      <a id="link-in-modal" target="_blank" href="">Download</a>
+    </p>
+  </div>
+  <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
+</div>
+@endsection
+
 @push('scripts')
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
@@ -256,5 +270,18 @@
 <script src="{{ asset('js/plyr.js') }}"></script>
 <script>
     const player = new Plyr('#player');
+
+      //вызвать модальное окно Contacts
+      $(".imagee").click(function() {
+        $("#img-modal").addClass("is-active fade-in"); 
+        $("#img-in-modal").attr("src", $(this).attr("src"));
+        $("#link-in-modal").attr("href", $(this).attr("src"));
+      });
+      
+    $("#modal-close").click(function() {
+        $("#img-modal").removeClass("is-active");
+    });
+
+
 </script>
 @endpush
