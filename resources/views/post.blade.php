@@ -43,8 +43,7 @@
 
             <div class="media-content">
               <figure class="has-text-centered">
-                <img class="img-border imagee" width="900px" src="{{asset("storage/".$m->media_url)}}" alt=""
-                data-src="{{asset("storage/".$m->media_url)}}">
+                <img class="imagee" width="900px" src="{{asset("storage/".$m->media_url)}}" alt="">
               </figure>
             </div>
   

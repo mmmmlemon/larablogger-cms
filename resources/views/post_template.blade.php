@@ -11,7 +11,11 @@
     <div class="media-content">
     @if($post->media_type == "image")
     <figure class="has-text-centered">
-      <img class="img-border" src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
+      <img class="imagee" src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
+      @if(count($post->media) > 1)
+      <p><a href="/post/{{$post->id}}">(and {{count($post->media)-1}} more images)</a></p>
+      @endif
+      
     </figure>
  
     @endif
