@@ -141,7 +141,8 @@
         <button class="button cancel">Cancel</button>
       </footer>
     </div>
-  </div>>
+  </div>
+
 
 @endsection
 
