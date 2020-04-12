@@ -128,6 +128,7 @@
       <section class="modal-card-body">
         <p>Are you sure you want to delete this post?</p>
         <b id="modal_post_title"></b>
+        <p>This action will also delete all media attached to this post.</p>
         <p class="has-text-danger">This action cannot be undone.</p>
       </section>
       <footer class="modal-card-foot">
