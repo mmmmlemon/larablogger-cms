@@ -34,6 +34,8 @@
   <link href="{{ asset('css/richtext.min.css') }}" rel="stylesheet">
   <link href="{{ asset('css/jquery.tag-editor.css') }}" rel="stylesheet">
   <link href="{{ asset('css/plyr.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/basic.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet">
 
   <!-- Bulma Extensions -->
   <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">

@@ -192,65 +192,89 @@ class PostsController extends Controller
 
     public function create_post(Request $request)
     {
-        $request->validate([
-            'post_title' => 'string|max:35',
-            'post_content' => 'string',
-            'publish' => 'string',
-            'publish_date' => 'date|after:yesterday'
-        ]);
+        // $request->validate([
+        //     'post_title' => 'string|max:35',
+        //     'post_content' => 'string',
+        //     'publish' => 'string',
+        //     'publish_date' => 'date|after:yesterday'
+        // ]);
 
-        $post = new App\Post;
-        $post->post_title = $request->post_title;
-        $post->post_content = $request->post_content;
-        $post->category_id = $request->category;
-        if($request->tags == "")
-        {$post->tags =  NULL;}
-        else
-        {$post->tags = $request->tags;}
+        // $post = new App\Post;
+        // $post->post_title = $request->post_title;
+        // $post->post_content = $request->post_content;
+        // $post->category_id = $request->category;
+        // if($request->tags == "")
+        // {$post->tags =  NULL;}
+        // else
+        // {$post->tags = $request->tags;}
 
-        //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
-        //если нет, то ту дату которая указана в поле с датой
-        if($request->publish == 'on'){
-            $post->visibility = 1;
-            $post->date = Carbon::now()->format('Y-m-d');
-        } else {
-            $post->visibility = 1;
-            $post->date = $request->publish_date;
-        }
+        // //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
+        // //если нет, то ту дату которая указана в поле с датой
+        // if($request->publish == 'on'){
+        //     $post->visibility = 1;
+        //     $post->date = Carbon::now()->format('Y-m-d');
+        // } else {
+        //     $post->visibility = 1;
+        //     $post->date = $request->publish_date;
+        // }
         
-        $post->save();
+        // $post->save();
         
-        //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
-        if($request->media_input != null)
-        {   
-            foreach($request->media_input as $file){
-            //если это картинка, то сохраняем в images
-            if(substr($file->getMimeType(), 0, 5) == 'image') 
-            {   
-                $file->storeAs("public/images/",$post->post_title."_image_".$file->getClientOriginalName());
-                $media = new App\Media;
-                $media->post_id = $post->id;
-                $media->media_url = "images/".$post->post_title."_image_".$file->getClientOriginalName();
-                $media->media_type = "image";
-                $media->save();
-            }   
+        // //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
+        // if($request->media_input != null)
+        // {   
+        //     foreach($request->media_input as $file){
+        //     //если это картинка, то сохраняем в images
+        //     if(substr($file->getMimeType(), 0, 5) == 'image') 
+        //     {   
+        //         $file->storeAs("public/images/",$post->post_title."_image_".$file->getClientOriginalName());
+        //         $media = new App\Media;
+        //         $media->post_id = $post->id;
+        //         $media->media_url = "images/".$post->post_title."_image_".$file->getClientOriginalName();
+        //         $media->media_type = "image";
+        //         $media->save();
+        //     }   
 
-            //если видео, то в videos
-            if(substr($file->getMimeType(), 0, 5) == 'video') 
-            {
-                $file->storeAs("public/videos/",$post->post_title."_video_".$file->getClientOriginalName());
-                $media = new App\Media;
-                $media->post_id = $post->id;
-                $media->media_url = "videos/".$post->post_title."_video_".$file->getClientOriginalName();
-                $media->media_type = "video";
-                $media->save();
-            }
-            }
+        //     //если видео, то в videos
+        //     if(substr($file->getMimeType(), 0, 5) == 'video') 
+        //     {
+        //         $file->storeAs("public/videos/",$post->post_title."_video_".$file->getClientOriginalName());
+        //         $media = new App\Media;
+        //         $media->post_id = $post->id;
+        //         $media->media_url = "videos/".$post->post_title."_video_".$file->getClientOriginalName();
+        //         $media->media_type = "video";
+        //         $media->save();
+        //     }
+        //     }
          
+        // }
+        $count = rand();
+       $file = $request->file;
+       $file->storeAs("public/bob/",$count."__".$file->getClientOriginalName());
+        
+       // return redirect(url('/control/posts'));
+
+       return response()->json([
+        'result' => 'SUCCESS'
+    ]);
+
+    }
+
+    public function merge(){
+        $target_path = storage_path('app/public/bob/');
+        $directory = opendir($target_path); //get all files in the path
+        $files = array();
+
+        $c =0;
+        while ($archivo = readdir($directory)) //
+        {
+            $files[] = $target_path.$archivo;
+            $c++;
         }
-
-        return redirect(url('/control/posts'));
-
+        $final_file_path =$target_path;
+        $catCmd = "type " . implode(" ", $files) . " > " . "file.mp4";
+        exec($catCmd);
+        dd($catCmd);
     }
 
 

@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::delete('/post/delete_comment','PostsController@delete_comment');
 
+    Route::get('/merge', 'PostsController@merge');
+
 });
 
 

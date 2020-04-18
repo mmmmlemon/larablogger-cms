@@ -22,7 +22,7 @@
             <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
-            <form id="form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
+            {{-- <form id="form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
               @csrf
               <div class="field">
                 <label class="label">Category</label>
@@ -121,7 +121,24 @@
                       Save post
                     </span>
                 </button>
-            </form>
+            </form> --}}
+    
+              <form action="control_panel/create_new_post" enctype="multipart/form-data" id="form" class="dropzone" method="POST">
+                @csrf
+                <div class="fallback">
+                  <input name="file" type="file" multiple />
+                     
+             
+                </div>
+          
+              </form>
+              <button onclick="$('#form').submit()" type="submit" id="submit" class="button is-link">
+                Submit
+              </button>
+        
+
+            </div>
+  
         
 </div>
 
@@ -160,25 +177,46 @@
 <script src="{{ asset('js/char_counter.js') }}"></script>
 <script src="{{ asset('js/file_container.js') }}"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="{{ asset('js/dropzone.min.js') }}"></script>
 <script>
+
+Dropzone.autoDiscover = false;
+
+
+$("#form").dropzone({ paramName: "file", // The name that will be used to transfer the file
+  maxFiles: 1,
+  maxFilesize: 3000,
+  chunking: true,
+  chunkSize:10000000,
+  chunksUploaded: function(file, done){
+    done();
+    console.log("Chunks uploaded");
+  }
+} );
 
 $(document).ready(function(){
 
+
+
+
+
     //richText
-    $('.textarea').richText({
-      imageUpload:false,
-      videoEmbed:false,
-      fileUpload:false
-    });
+    // $('.textarea').richText({
+    //   imageUpload:false,
+    //   videoEmbed:false,
+    //   fileUpload:false
+    // });
 
     //tagEditor
-    $('#tags').tagEditor();
+    // $('#tags').tagEditor();
 
     //character counter
-    $('#title').charCounter();
+    // $('#title').charCounter();
 
-    //file display
-    $("#file_container").fileContainer();
+    // //file display
+    // $("#file_container").fileContainer();
+
+    //$("#form").dropzone({ url: "/control_panel/create_new_post" });
 
     // //progress bar
     // var bar = $('#progress-bar');
