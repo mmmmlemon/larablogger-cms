@@ -20,6 +20,7 @@ class CreateSocialMediaTable extends Migration
             $table->timestamps();
         });
 
+        //добавляем три соц. сети по умолчанию и одно пустое поле
         DB::table('social_media')->insert(
             array(
                 ['platform_name' => 'YouTube',
@@ -32,6 +33,10 @@ class CreateSocialMediaTable extends Migration
                 'updated_at' => Carbon\Carbon::now()],
                 ['platform_name' => 'Instagram',
                 'url' => 'https://instagram.com',
+                'created_at' => Carbon\Carbon::now(),
+                'updated_at' => Carbon\Carbon::now()],
+                ['platform_name' => null,
+                'url' => null,
                 'created_at' => Carbon\Carbon::now(),
                 'updated_at' => Carbon\Carbon::now()],
             )
