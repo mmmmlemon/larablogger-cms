@@ -274,6 +274,14 @@ class PostsController extends Controller
         dd($catCmd);
     }
 
+    public function chunk_test(Request $request){
+        $filename = $request->filename;
+        $f = fopen("$filename","a");
+        fputs($f,base64_decode($request->chunk));
+        fclose($f);
+        //dd($request);
+    }
+
 
     public function change_post_status($id, $status)
     {

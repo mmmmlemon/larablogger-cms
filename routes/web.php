@@ -71,6 +71,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::get('/merge', 'PostsController@merge');
 
+    Route::post('/chunk_test', 'PostsController@chunk_test');
+
 });
 
 

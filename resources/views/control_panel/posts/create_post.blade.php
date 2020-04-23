@@ -22,7 +22,7 @@
             <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
-            <form id="form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
+            {{-- <form id="form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
               @csrf
               <div class="field">
                 <label class="label">Category</label>
@@ -121,10 +121,14 @@
                       Save post
                     </span>
                 </button>
-            </form>
+            </form> --}}
     
         
-        
+            <form>
+              <input type="file" id="myfile">
+            </form>
+            
+            <a href="#" onclick="big_file_upload('#myfile')">Send</a>
 
             </div>
   
@@ -134,7 +138,7 @@
 @endsection
 
 
-@section('modals')
+{{-- @section('modals')
 <div class="modal" id="progress-modal">
   <div class="modal-background"></div>
   <div class="modal-content">
@@ -154,9 +158,7 @@
     </div>
   </div>
 </div>
-
-
-@endsection
+@endsection --}}
 
 @push('scripts')
 <script src="{{ asset('js/create_post.js') }}"></script>
@@ -166,7 +168,66 @@
 <script src="{{ asset('js/char_counter.js') }}"></script>
 <script src="{{ asset('js/file_container.js') }}"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+
 <script>
+  var upload_chunk_size = 10000000;
+
+  function getBase64(file, onLoadCallback) {
+    return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function() { resolve(reader.result); };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+function big_file_upload(id)
+{
+  var file = document.querySelector(id).files[0];
+  var filename = document.querySelector(id).files[0].name;
+  var promise = getBase64(file);
+  promise.then(function(result) {
+      var data = result;
+      console.log(data)
+      var comma = data.indexOf(',');
+      if (comma>0) data = data.substring(comma+1);
+      
+      var pos = 0;
+      var count = 1;
+ 
+      $.ajaxSetup({async:false});
+console.log("Beginning upload");
+
+ while (pos<data.length) {
+  console.log(`uploading... [${count}]`);
+  count += count + 1 * 1.0;
+  $.ajax({
+            type: "POST",
+            url: "/chunk_test",
+            data: {
+              "_token": $('meta[name="csrf-token"]').attr('content'),
+              chunk: data.substring(pos,pos+upload_chunk_size),
+              filename: filename
+              },
+            success: function (response) {
+                //service.php response
+                console.log(response);
+            }
+        });
+ 
+    pos += upload_chunk_size;
+    if(pos >= data.length)
+    {
+      console.log("File uploaded");
+    }
+  }
+     
+  });
+}
+;
+</script>
+
+{{-- <script>
 
 
 $(document).ready(function(){
@@ -273,5 +334,5 @@ $(document).ready(function(){
     
   });
 
-</script>
+</script> --}}
 @endpush
