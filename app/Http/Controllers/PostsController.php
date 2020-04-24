@@ -257,71 +257,7 @@ class PostsController extends Controller
     ]);
 
     }
-
-    public function merge(){
-        $target_path = storage_path('app/public/bob/');
-        $directory = opendir($target_path); //get all files in the path
-        $files = array();
-
-        $c =0;
-        while ($archivo = readdir($directory)) //
-        {
-            $files[] = $target_path.$archivo;
-            $c++;
-        }
-        $final_file_path =$target_path;
-        $catCmd = "type " . implode(" ", $files) . " > " . "file.mp4";
-        exec($catCmd);
-        dd($catCmd);
-    }
-
-    public function chunk_test(Request $request){
-        $count = $request->dzchunkindex + 1;
-        $file = $request->file;
-        $file->storeAs("public/bob/",$count."_".$file->getClientOriginalName());
  
-        // return redirect(url('/control/posts'));
- 
- 
-         return redirect(url('/control/posts'));	       
-         return response()->json([
-         'result' => 'SUCCESS']);
-    }
-
-    public function chunk_merge(Request $request, $chunkCount){
-         $path = storage_path('app/public/bob/');;
-        // File::put($path.$chunkCount.'.txt','John Doe');
-        // }
-        $foil = fopen("final.mp4","a");
-     
-            $f = fopen($path."1_meme.mp4","a");
-            $content = file_get_contents($path."1_meme.mp4");
-            fputs($foil,$content);
-            fclose($foil);
-
-            $foil = fopen("final.mp4","a");
-            $f = fopen($path."2_meme.mp4","a");
-            $content = file_get_contents($path."1_meme.mp4");
-            fputs($foil,$content);
-            fclose($foil);
-            $foil = fopen("final.mp4","a");
-            $f = fopen($path."3_meme.mp4","a");
-            $content = file_get_contents($path."1_meme.mp4");
-            fputs($foil,$content);
-            fclose($foil);
-            $foil = fopen("final.mp4","a");
-            $f = fopen($path."4_meme.mp4","a");
-            $content = file_get_contents($path."1_meme.mp4");
-            fputs($foil,$content);
-
-            fclose($foil);
-     
-
-    }
-     
-    
-
-
     public function change_post_status($id, $status)
     {
         $post = App\Post::find($id);    

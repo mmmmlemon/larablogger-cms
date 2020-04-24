@@ -69,13 +69,6 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::delete('/post/delete_comment','PostsController@delete_comment');
 
-    Route::get('/merge', 'PostsController@merge');
-
-    Route::post('/chunk_test', 'PostsController@chunk_test');
-
-    Route::post('/chunk_merge_test/{chunkCount}', 'PostsController@chunk_merge');
-
-
 });
 
 
