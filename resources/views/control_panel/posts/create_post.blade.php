@@ -124,8 +124,11 @@
             </form> --}}
     
         
-            <form>
-              <input type="file" id="myfile">
+            <form action="/chunk_test" class="dropzone" id="form">
+              @csrf
+              <div class="fallback">
+                <input name="file" type="file" multiple />
+              </div>
             </form>
             
             <a href="#" onclick="big_file_upload('#myfile')">Send</a>
@@ -168,63 +171,90 @@
 <script src="{{ asset('js/char_counter.js') }}"></script>
 <script src="{{ asset('js/file_container.js') }}"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="{{ asset('js/dropzone.min.js') }}"></script>
 
 <script>
-  var upload_chunk_size = 10000000;
+Dropzone.autoDiscover = false;
+Dropzone.autoProcessQueue = true;
 
-  function getBase64(file, onLoadCallback) {
-    return new Promise(function(resolve, reject) {
-        var reader = new FileReader();
-        reader.onload = function() { resolve(reader.result); };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-}
-
-function big_file_upload(id)
-{
-  var file = document.querySelector(id).files[0];
-  var filename = document.querySelector(id).files[0].name;
-  var promise = getBase64(file);
-  promise.then(function(result) {
-      var data = result;
-      console.log(data)
-      var comma = data.indexOf(',');
-      if (comma>0) data = data.substring(comma+1);
-      
-      var pos = 0;
-      var count = 1;
- 
-      $.ajaxSetup({async:false});
-console.log("Beginning upload");
-
- while (pos<data.length) {
-  console.log(`uploading... [${count}]`);
-  count += count + 1 * 1.0;
-  $.ajax({
+$("#form").dropzone({ paramName: "file", // The name that will be used to transfer the file
+  maxFiles: 1,
+  maxFilesize: 3000,
+  chunking: true,
+  chunkSize:10000000,
+  chunksUploaded: function(file, done){
+    let currentFile = file;
+    $.ajax({
             type: "POST",
-            url: "/chunk_test",
+            url: "/chunk_merge_test/"+currentFile.upload.totalChunkCount,
             data: {
               "_token": $('meta[name="csrf-token"]').attr('content'),
-              chunk: data.substring(pos,pos+upload_chunk_size),
-              filename: filename
               },
             success: function (response) {
-                //service.php response
                 console.log(response);
+                done();
             }
         });
- 
-    pos += upload_chunk_size;
-    if(pos >= data.length)
-    {
-      console.log("File uploaded");
-    }
+  
+    console.log("Chunks uploaded");
   }
+} );
+
+//   var upload_chunk_size = 10000000;
+
+//   function getBase64(file, onLoadCallback) {
+//     return new Promise(function(resolve, reject) {
+//         var reader = new FileReader();
+//         reader.onload = function() { resolve(reader.result); };
+//         reader.onerror = reject;
+//         reader.readAsDataURL(file);
+//     });
+// }
+
+// function big_file_upload(id)
+// {
+//   var file = document.querySelector(id).files[0];
+//   var filename = document.querySelector(id).files[0].name;
+//   var promise = getBase64(file);
+//   promise.then(function(result) {
+//       var data = result;
+//       console.log(data)
+//       var comma = data.indexOf(',');
+//       if (comma>0) data = data.substring(comma+1);
+      
+//       var pos = 0;
+//       var count = 1;
+ 
+//       $.ajaxSetup({async:false});
+// console.log("Beginning upload");
+
+//  while (pos<data.length) {
+//   console.log(`uploading... [${count}]`);
+//   count += count + 1 * 1.0;
+//   $.ajax({
+//             type: "POST",
+//             url: "/chunk_test",
+//             data: {
+//               "_token": $('meta[name="csrf-token"]').attr('content'),
+//               chunk: data.substring(pos,pos+upload_chunk_size),
+//               filename: filename
+//               },
+//             success: function (response) {
+//                 //service.php response
+//                 console.log(response);
+//             }
+//         });
+ 
+//     pos += upload_chunk_size;
+//     if(pos >= data.length)
+//     {
+//       console.log("File uploaded");
+//     }
+//   }
      
-  });
-}
-;
+//   });
+// }
+
 </script>
 
 {{-- <script>

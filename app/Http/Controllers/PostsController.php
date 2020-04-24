@@ -9,6 +9,7 @@ use Auth;
 use Carbon\Carbon;
 use Validator;
 use Storage;
+use File;
 
 class PostsController extends Controller
 {
@@ -275,12 +276,50 @@ class PostsController extends Controller
     }
 
     public function chunk_test(Request $request){
-        $filename = $request->filename;
-        $f = fopen("$filename","a");
-        fputs($f,base64_decode($request->chunk));
-        fclose($f);
-        //dd($request);
+        $count = $request->dzchunkindex + 1;
+        $file = $request->file;
+        $file->storeAs("public/bob/",$count."_".$file->getClientOriginalName());
+ 
+        // return redirect(url('/control/posts'));
+ 
+ 
+         return redirect(url('/control/posts'));	       
+         return response()->json([
+         'result' => 'SUCCESS']);
     }
+
+    public function chunk_merge(Request $request, $chunkCount){
+         $path = storage_path('app/public/bob/');;
+        // File::put($path.$chunkCount.'.txt','John Doe');
+        // }
+        $foil = fopen("final.mp4","a");
+     
+            $f = fopen($path."1_meme.mp4","a");
+            $content = file_get_contents($path."1_meme.mp4");
+            fputs($foil,$content);
+            fclose($foil);
+
+            $foil = fopen("final.mp4","a");
+            $f = fopen($path."2_meme.mp4","a");
+            $content = file_get_contents($path."1_meme.mp4");
+            fputs($foil,$content);
+            fclose($foil);
+            $foil = fopen("final.mp4","a");
+            $f = fopen($path."3_meme.mp4","a");
+            $content = file_get_contents($path."1_meme.mp4");
+            fputs($foil,$content);
+            fclose($foil);
+            $foil = fopen("final.mp4","a");
+            $f = fopen($path."4_meme.mp4","a");
+            $content = file_get_contents($path."1_meme.mp4");
+            fputs($foil,$content);
+
+            fclose($foil);
+     
+
+    }
+     
+    
 
 
     public function change_post_status($id, $status)
