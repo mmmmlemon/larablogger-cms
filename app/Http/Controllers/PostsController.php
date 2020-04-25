@@ -257,6 +257,26 @@ class PostsController extends Controller
     ]);
 
     }
+
+
+    public function chunk_test(Request $request)
+    {
+    //    // $filename = $request->filename;	       
+    //     $count = $request->dzchunkindex + 1;
+    //    //$file = fopen(storage_path('app\\public\\bob\\')."meme.mp4","a");
+    //    $file = $request->file;	        
+    //    //fputs($file,base64_encode($request->file));	        
+    //     $file->storeAs("public/bob/",$count."_".$file->getClientOriginalName());
+    //    //fclose($file);	
+    
+     
+
+       $filename = "example.mp4";
+       $f = fopen(storage_path('app\\public\\bob\\')."$filename","a");
+       fputs($f,file_get_contents($request->file));
+       fclose($f);
+   
+    }	    
  
     public function change_post_status($id, $status)
     {

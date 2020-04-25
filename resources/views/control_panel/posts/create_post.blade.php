@@ -171,7 +171,26 @@
 <script src="{{ asset('js/char_counter.js') }}"></script>
 <script src="{{ asset('js/file_container.js') }}"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
-<script src="{{ asset('js/dropzone.min.js') }}"></script>
+<script src="{{ asset('js/dropzone.js') }}"></script>
+
+<script>
+  Dropzone.autoDiscover = false;
+
+  $("#form").dropzone({
+    chunking: true,
+    chunkSize: 20000000,
+    retryChunks: true,
+    retryChunksLimit: 5,
+    paramName: 'file',
+    forceChunking: true,
+    maxFiles: 1,
+    maxFilesize: 4000,
+    chunksUploaded: function(file, done){
+      done();
+      console.log("Chunks uploaded");
+    }
+  });
+</script>
 
 {{-- <script>
 
