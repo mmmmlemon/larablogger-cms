@@ -191,6 +191,7 @@ class PostsController extends Controller
         return view('home', compact('posts'));
     }
 
+    //создание (сохранение) поста
     public function create_post(Request $request)
     {
         $request->validate([
@@ -200,6 +201,7 @@ class PostsController extends Controller
             'publish_date' => 'date|after:yesterday'
         ]);
 
+        //создаем новый пост и набиваем его данными
         $post = new App\Post;
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
@@ -223,24 +225,26 @@ class PostsController extends Controller
         $temp_files = File::files(storage_path("app\\public\\temp"));
 
         //создаем папку для медиа файлов ассоциируемых с постом
+        //posts/[date + post_title]
         $folder_name = date('d-m-Y')."-".$request->post_title;
         $folder_created= Storage::disk('public')->makeDirectory("posts\\". $folder_name);
 
+        //если папка создалась, то перемещаем файлы из temp
         if($folder_created == true)
         {
             foreach($temp_files as $file){
                 //путь по которому будет перемещен файл
                 $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
                 $move = File::move($file->getPathname(), $new_path);
+                //если переместить файл не удалось, то редиректим с ошибкой
                 if($move != true) 
-                {
-                    return Redirect::back()->withErrors(['err', 'Something went wronge while moving the files.']);
-                }
+                {return Redirect::back()->withErrors(['err', 'Something went wronge while moving the files.']);}
                 else
                 {   
+                   //сохраняем пост перед сохранением медиа (чтобы был $post->id)
                    $post->save();
-                   $mime = substr(File::mimeType($new_path), 0, 5);
-                   $media = new App\Media;
+                   $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
+                   $media = new App\Media; //создаем запись о медиа и сохраняем
                    $media->post_id = $post->id;
                    $media->media_url = "posts/". $folder_name."/".$file->getFilename();
                    $media->media_type = $mime;
@@ -250,53 +254,14 @@ class PostsController extends Controller
 
          
         }
-    
-        
-    
-
-
-        
-        // //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
-        // if($request->media_input != null)
-        // {   
-        //     foreach($request->media_input as $file){
-        //     //если это картинка, то сохраняем в images
-        //     if(substr($file->getMimeType(), 0, 5) == 'image') 
-        //     {   
-        //         $file->storeAs("public/images/",$post->post_title."_image_".$file->getClientOriginalName());
-        //         $media = new App\Media;
-        //         $media->post_id = $post->id;
-        //         $media->media_url = "images/".$post->post_title."_image_".$file->getClientOriginalName();
-        //         $media->media_type = "image";
-        //         $media->save();
-        //     }   
-
-        //     //если видео, то в videos
-        //     if(substr($file->getMimeType(), 0, 5) == 'video') 
-        //     {
-        //         $file->storeAs("public/videos/",$post->post_title."_video_".$file->getClientOriginalName());
-        //         $media = new App\Media;
-        //         $media->post_id = $post->id;
-        //         $media->media_url = "videos/".$post->post_title."_video_".$file->getClientOriginalName();
-        //         $media->media_type = "video";
-        //         $media->save();
-        //     }
-        //     }
-         
-        // }
-    
        return redirect(url('/control/posts'));
-
-       return response()->json([
-        'result' => 'SUCCESS'
-    ]);
-
     }
 
 
+    //загрузка файлов перед сохранением поста
     public function upload_files(Request $request)
     {  
-       //генерируем имя файла из uuid
+       //получаем имя файла
        $filename = $request->filename;
     
        //создаем файл в нужной папке, и открываем его в режиме append
