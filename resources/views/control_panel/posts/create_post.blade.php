@@ -22,7 +22,7 @@
             <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
-            {{-- <form id="form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
+            <form id="post_form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
               @csrf
               <div class="field">
                 <label class="label">Category</label>
@@ -82,56 +82,23 @@
                     
                   </div>
 
-                  <div class="field">
-                    <div class="control">
-                      <div id="file-js-example" class="file has-name">
-                        <label class="file-label">
-                          <input class="file-input" type="file" name="media_input[]" multiple>
-                          <span class="file-cta">
-                            <span class="file-icon">
-                              <i class="fas fa-upload"></i>
-                            </span>
-                            <span class="file-label">
-                              Choose a file…
-                            </span>
-                          </span>
-                   
-                            <button class="button is-dark is-outlined" id="clear_files">Clear</button>
-                   
-                        </label>
-                      </div>
-    
-                    </div>
-                    
-                  </div>
-                  
-            
-
-           
-                  <div class="white-bg" id="file_container">
+          
+                  {{-- <div class="white-bg" id="file_container">
                     <h1 class='title is-5'>Files (0)</h1>
-                  </div>
+                  </div> --}}
 
               
-                  <button type="submit" id="submit" class="button is-link">
-                    <span class="icon">
-                        <i class="fas fa-save"></i>
-                    </span>
-                    <span>
-                      Save post
-                    </span>
-                </button>
-            </form> --}}
+            </form>
     
         
-            <form action="/chunk_test" class="dropzone" id="form">
+            <form action="/post/upload_files" class="dropzone" id="file_form">
               @csrf
               <div class="fallback">
                 <input name="file" type="file" multiple />
               </div>
             </form>
             
-            <a href="#" onclick="big_file_upload('#myfile')">Send</a>
+            <a id="submit" class="button is-info">Save post</a>
 
             </div>
   
@@ -176,20 +143,51 @@
 <script>
   Dropzone.autoDiscover = false;
 
-  $("#form").dropzone({
+  var dropzone = $("#file_form").dropzone({
+    autoProcessQueue: false,
     chunking: true,
     chunkSize: 20000000,
-    retryChunks: true,
+    retryChunks: false,
     retryChunksLimit: 5,
     paramName: 'file',
     forceChunking: true,
-    maxFiles: 1,
+    maxFiles: 20,
     maxFilesize: 4000,
+    uploadMultiple: false,
+    parallelUploads: 20,
+
+    //вешаем ивенты на дропзону, при инициализации
+    init: function(){
+      //при отправке файла, так же будет отправляться имя файла
+      this.on('sending', function(file, xhr, data){
+        console.log(`%cSending file ${file.name}`, 'color:grey;');
+        data.append("filename", file.name);
+      });
+
+     //при нажатии на кнопку отправки, запустится загрузка файлов
+     var dropzone = this;
+      $("#submit").click(function(){
+       dropzone.processQueue();
+      });
+     
+     //когда все файлы будут загружены, форма с постом будет отправлена
+     this.on("complete", function (file) {
+        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) 
+        {
+          console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
+          $("#post_form").submit();
+        }
+     });
+        
+    },
+    //когда загрузится файл (или его чанки) выводим сообщение в консоль
     chunksUploaded: function(file, done){
       done();
-      console.log("Chunks uploaded");
+      console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }
   });
+
+
 </script>
 
 {{-- <script>

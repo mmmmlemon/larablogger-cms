@@ -218,37 +218,72 @@ class PostsController extends Controller
             $post->visibility = 1;
             $post->date = $request->publish_date;
         }
-        
-        $post->save();
-        
-        //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
-        if($request->media_input != null)
-        {   
-            foreach($request->media_input as $file){
-            //если это картинка, то сохраняем в images
-            if(substr($file->getMimeType(), 0, 5) == 'image') 
-            {   
-                $file->storeAs("public/images/",$post->post_title."_image_".$file->getClientOriginalName());
-                $media = new App\Media;
-                $media->post_id = $post->id;
-                $media->media_url = "images/".$post->post_title."_image_".$file->getClientOriginalName();
-                $media->media_type = "image";
-                $media->save();
-            }   
 
-            //если видео, то в videos
-            if(substr($file->getMimeType(), 0, 5) == 'video') 
-            {
-                $file->storeAs("public/videos/",$post->post_title."_video_".$file->getClientOriginalName());
-                $media = new App\Media;
-                $media->post_id = $post->id;
-                $media->media_url = "videos/".$post->post_title."_video_".$file->getClientOriginalName();
-                $media->media_type = "video";
-                $media->save();
+        //получаем список файлов в папке temp
+        $temp_files = File::files(storage_path("app\\public\\temp"));
+
+        //создаем папку для медиа файлов ассоциируемых с постом
+        $folder_name = date('d-m-Y')."-".$request->post_title;
+        $folder_created= Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+
+        if($folder_created == true)
+        {
+            foreach($temp_files as $file){
+                //путь по которому будет перемещен файл
+                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
+                $move = File::move($file->getPathname(), $new_path);
+                if($move != true) 
+                {
+                    return Redirect::back()->withErrors(['err', 'Something went wronge while moving the files.']);
+                }
+                else
+                {   
+                   $post->save();
+                   $mime = substr(File::mimeType($new_path), 0, 5);
+                   $media = new App\Media;
+                   $media->post_id = $post->id;
+                   $media->media_url = "posts/". $folder_name."/".$file->getFilename();
+                   $media->media_type = $mime;
+                   $media->save(); 
+                }
             }
-            }
+
          
         }
+    
+        
+    
+
+
+        
+        // //если к посту прикреплен файл, то заливаем его и добавляем запись о нём в БД
+        // if($request->media_input != null)
+        // {   
+        //     foreach($request->media_input as $file){
+        //     //если это картинка, то сохраняем в images
+        //     if(substr($file->getMimeType(), 0, 5) == 'image') 
+        //     {   
+        //         $file->storeAs("public/images/",$post->post_title."_image_".$file->getClientOriginalName());
+        //         $media = new App\Media;
+        //         $media->post_id = $post->id;
+        //         $media->media_url = "images/".$post->post_title."_image_".$file->getClientOriginalName();
+        //         $media->media_type = "image";
+        //         $media->save();
+        //     }   
+
+        //     //если видео, то в videos
+        //     if(substr($file->getMimeType(), 0, 5) == 'video') 
+        //     {
+        //         $file->storeAs("public/videos/",$post->post_title."_video_".$file->getClientOriginalName());
+        //         $media = new App\Media;
+        //         $media->post_id = $post->id;
+        //         $media->media_url = "videos/".$post->post_title."_video_".$file->getClientOriginalName();
+        //         $media->media_type = "video";
+        //         $media->save();
+        //     }
+        //     }
+         
+        // }
     
        return redirect(url('/control/posts'));
 
@@ -259,23 +294,17 @@ class PostsController extends Controller
     }
 
 
-    public function chunk_test(Request $request)
-    {
-    //    // $filename = $request->filename;	       
-    //     $count = $request->dzchunkindex + 1;
-    //    //$file = fopen(storage_path('app\\public\\bob\\')."meme.mp4","a");
-    //    $file = $request->file;	        
-    //    //fputs($file,base64_encode($request->file));	        
-    //     $file->storeAs("public/bob/",$count."_".$file->getClientOriginalName());
-    //    //fclose($file);	
+    public function upload_files(Request $request)
+    {  
+       //генерируем имя файла из uuid
+       $filename = $request->filename;
     
-     
+       //создаем файл в нужной папке, и открываем его в режиме append
+       $file = fopen(storage_path('app\\public\\temp\\')."$filename","a");
 
-       $filename = "example.mp4";
-       $f = fopen(storage_path('app\\public\\bob\\')."$filename","a");
-       fputs($f,file_get_contents($request->file));
-       fclose($f);
-   
+       //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
+       fputs($file,file_get_contents($request->file));
+       fclose($file);
     }	    
  
     public function change_post_status($id, $status)
