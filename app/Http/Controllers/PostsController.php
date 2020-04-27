@@ -304,8 +304,15 @@ class PostsController extends Controller
         //и медиа файлы тоже
         $media = App\Media::where('post_id', $request->modal_form_input)->get();
         foreach($media as $m){
-            unlink(storage_path('app\\public\\'.$m->media_url));
+            $pos = strripos($m->media_url,"/");
+            $path = substr($m->media_url, 0, $pos);
+            //dd(storage_path('app\\public\\'.$path));
+
+           File::deleteDirectory(storage_path('app\\public\\'.$path));
+            // unlink(storage_path('app\\public\\'.$m->media_url));
             $m->delete();
+           
+
         }
 
         $post = App\Post::find($request->modal_form_input);
