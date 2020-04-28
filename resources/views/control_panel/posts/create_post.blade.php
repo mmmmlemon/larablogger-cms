@@ -154,6 +154,7 @@
     chunking: true, //разбиение на чанки
     chunkSize: 20000000, //макс размер чанка: 20 мб
     retryChunks: false, 
+    addRemoveLinks: true,
     retryChunksLimit: 5,
     paramName: 'file',
     forceChunking: true,
