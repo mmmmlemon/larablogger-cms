@@ -14,6 +14,7 @@ use File;
 class PostsController extends Controller
 {
 
+    //вывод постов на главной странице 
     public function index(){
 
         $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
@@ -42,16 +43,26 @@ class PostsController extends Controller
                 $post->media = $media;
                 $post->media_type = $media[0]->media_type;
             }
-            
-       
         }
-
-      
 
         return view('home', compact('posts'));
     }
 
+    //вывод постов в меню постов
+    public function show_list_of_posts(){
+        $posts = App\Post::orderBy('date','desc')->orderBy('id','desc')->paginate(10);
+        $page='normal';
+        return view('control_panel/posts/posts', compact('posts','page'));
+    }
 
+    //вывод постов в меню постов по дате
+    public function show_list_of_posts_by_date(){
+        $posts = App\Post::orderBy('date','asc')->paginate(10);
+        $page = 'date_desc';
+        return view('control_panel/posts/posts', compact('posts', 'page'));
+    }
+
+    //показать пост
     public function show_post($id)
     {
         $post = App\Post::find($id);
@@ -133,6 +144,7 @@ class PostsController extends Controller
         }
     }
 
+    //показать страницу редактирования поста
     public function show_edit_post($id){
 
         $post = App\Post::find($id);
@@ -141,14 +153,9 @@ class PostsController extends Controller
         return view('control_panel/posts/edit_post', compact('post','categories'));
     }
 
-    public function show_create_post(){
-        $current_date = Carbon::now();
-        $categories = App\Category::where('category_name','!=','blank')->get();
-        return view('control_panel/posts/create_post', compact('categories','current_date'));
-    }
-
+    //редактировать пост, сохранение измененений
     public function edit_post(Request $request, $id){
-        
+    
         $request->validate([
             'post_title' => 'string|max:35',
             'post_content' => 'string|max:10000',
@@ -170,25 +177,11 @@ class PostsController extends Controller
         return redirect(url('/control/posts'));
     }
 
-
-    public function show_posts_by_tag($tag){
-
-        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
-
-        foreach($posts as $post){
-            $tags_separate = explode(",", $post->tags);
-            $post->tags = $tags_separate;
-        }
-
-        $media = App\Media::where('post_id','=',$post->id)->get();
-   
-        if(count($media) != 0)
-        {
-            $post->media = $media;
-            $post->media_type = $media[0]->media_type;
-        }
-
-        return view('home', compact('posts'));
+    //показать страницу создания поста
+    public function show_create_post(){
+        $current_date = Carbon::now();
+        $categories = App\Category::where('category_name','!=','blank')->get();
+        return view('control_panel/posts/create_post', compact('categories','current_date'));
     }
 
     //создание (сохранение) поста
@@ -258,16 +251,14 @@ class PostsController extends Controller
                     $media->media_type = $mime;
                     $media->save(); 
                     }
-                }
-
-            
+                }         
             }
         }
-   
-       return redirect(url('/control/posts'));
+    
+        return redirect(url('/control/posts'));
     }
 
-
+    
     //загрузка файлов перед сохранением поста
     public function upload_files(Request $request)
     {  
@@ -291,8 +282,30 @@ class PostsController extends Controller
             unlink($file->getPathname());
         }
     }
- 
-    public function change_post_status($id, $status)
+
+    //показать все посты по тегу N
+    public function show_posts_by_tag ($tag){
+
+        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+
+        foreach($posts as $post){
+            $tags_separate = explode(",", $post->tags);
+            $post->tags = $tags_separate;
+        }
+
+        $media = App\Media::where('post_id','=',$post->id)->get();
+   
+        if(count($media) != 0)
+        {
+            $post->media = $media;
+            $post->media_type = $media[0]->media_type;
+        }
+
+        return view('home', compact('posts'));
+    }
+
+    //изменить видимость поста
+    public function change_post_visibility($id, $status)
     {
         $post = App\Post::find($id);    
 
@@ -314,6 +327,7 @@ class PostsController extends Controller
 
     }
 
+    //удалить пост
     public function delete_post(Request $request)
     {
         //сначала удаляем все комментрии связанные с этим постом
@@ -339,6 +353,7 @@ class PostsController extends Controller
 
     }
 
+    //отправить комментарий
     public function submit_comment(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -360,6 +375,9 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
+
+    //объединить вот это все ниже в одну ф-цию !!!!!!!!!!!!!!!!!!!
+    //спрятать комментарий
     public function hide_comment(Request $request){
         $comment = App\Comment::find($request->comment_id);
         $comment->visibility = 0;
@@ -367,6 +385,7 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
+    //сделать коммент видимым
     public function show_comment(Request $request){
         $comment = App\Comment::find($request->comment_id);
         $comment->visibility = 1;
@@ -374,10 +393,12 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
+    //удалить коммент
     public function delete_comment(Request $request){
         $comment = App\Comment::find($request->comment_id);
         $comment->delete();
         return redirect(url()->previous());
     }
+
 } 
 

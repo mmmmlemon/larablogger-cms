@@ -15,15 +15,16 @@ class ControlPanelController extends Controller
         $this->middleware('auth');
     }
 
+    //вывод страницы панели управления
     public function index()
-    {
-        $settings = App\Settings::all()->first();
-        $social_media = App\SocialMedia::all();
-        $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users');
-        $current_user = Auth::user();
-        $posts = App\Post::all();
+    {   
+        //получаем данные необходимые на этой странице
+        $settings = App\Settings::all()->first(); //общие настройки сайта
+        $social_media = App\SocialMedia::all(); //соц. сети
+        $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users'); //список пользователей
+        $current_user = Auth::user(); //текущий пользователь
 
-        return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user', 'posts'));
+        return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
     }
 
     //обновление общих настроек сайта
@@ -47,8 +48,6 @@ class ControlPanelController extends Controller
         $settings->save();
 
         return redirect()->back();
-
-        //dd($request->site_subtitle);
     }
 
     //обновление соц.сетей
@@ -71,6 +70,7 @@ class ControlPanelController extends Controller
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
             
+           //что за нах тут творится, надо исправить
            if($data == null){
             // $new_data = new App\SocialMedia;
             // $new_data->platform_name =  $request->get('platform_'.$i);
@@ -87,6 +87,7 @@ class ControlPanelController extends Controller
        return redirect()->back();
     }
 
+    //изменить тип пользователя
     public function change_user_type(Request $request){
         
         $request->validate([
@@ -95,14 +96,15 @@ class ControlPanelController extends Controller
             
         $user = App\User::find($request->user_id);
 
+        //если пользователь существует и он админ, то делаем его просто юзером
         if($user != null && $request->user_type == 'admin'){
             $user->user_type = 2;
             $user->save();
-        }
+        }//если существует и просто юзер, то делаем его админом
         else if ($user != null && $request->user_type == 'user'){
             $user->user_type = 1;
             $user->save();
-        }
+        }//если ни то, ни то, то ничего не делаем
         else{
             //do nothing
         }
@@ -110,6 +112,7 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#users");
     }
 
+    //обновить настройки профиля
     public function update_profile(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -132,11 +135,6 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#profile");
         
     }
-
-    
-
-   
-
 }
  
 

@@ -9,7 +9,8 @@
       <li class="is-active"><a href="#" aria-current="page">Add post</a></li>
     </ul>
   </nav>
-
+        
+        <!--кнопка назад-->
         <a href="{{url()->previous()}}" class="button is-link">
                 <span class="icon">
                     <i class="fas fa-arrow-left"></i>
@@ -17,13 +18,14 @@
                 <span>
                  Back
                 </span>
-            </a>
+          </a>
 
             <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
             <form id="post_form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
               @csrf
+              <!--категория-->
               <div class="field">
                 <label class="label">Category</label>
                 <div class="control">
@@ -39,7 +41,8 @@
 
                 <div class="field">
                     <div class="control">
-                        <p class="help">Title</p>
+                      <!--название поста-->
+                      <p class="help">Title</p>
                       <input maxlength="35" id="title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
                       placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else @endif">
                     </div>
@@ -48,20 +51,21 @@
                     @enderror
                   </div>
 
-              
-                        <p class="help">Content</p>
-                          <textarea class="textarea" id="textarea" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
-                          @error('post_content')
-                            <p class="help is-danger"><b> {{ $message }}</b></p>  
-                          @enderror
+                  <!--textarea, содержимое поста-->
+                  <p class="help">Content</p>
+                    <textarea class="textarea" id="textarea" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
+                    @error('post_content')
+                      <p class="help is-danger"><b> {{ $message }}</b></p>
+                    @enderror
 
+                  <!--чекбокс, опубликовать сейчас-->
                   <div class="field">
                     <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" checked="checked">
                     <label for="publish_checkbox">Publish now</label>
                     <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be published immediately, otherwise you have to pick at the picked date">  <i class="fas fa-question-circle"></i> </span>
                   
                   </div>
-
+                  <!--дата публикации-->
                   <div class="field">
                     <p class="help">Publish date</p>
                     <p class="control has-icons-left">
@@ -73,16 +77,14 @@
                     </p>
                    
                   </div>
-
+                  <!--теги-->
                   <div class="field">
                     <div class="control">
                         <p class="help">Tags</p>
                       <input class="input" type="text" id="tags" name="tags" placeholder="video,post,meme,text,whatever">
                     </div>
                     
-                  </div>
-
-                     
+                  </div>     
             </form>
     
             <!--форма для загрузки файлов-->
@@ -108,6 +110,7 @@
               <span>Save Post</span>
             </a>
 
+            <!--кнопка отмены-->
             <a id="cancel" class="invisible button is-danger" data-tooltip="Cancel upload">
               <span class="icon">
                 <i class="fas fa-times"></i>
@@ -118,7 +121,6 @@
   
         
 </div>
-
 @endsection
 
 @push('scripts')
@@ -130,124 +132,5 @@
 <script src="{{ asset('js/file_container.js') }}"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="{{ asset('js/dropzone.js') }}"></script>
-
-<script>
-
-  //выключаем autodiscover у Dropzone
-  Dropzone.autoDiscover = false;
-  var count = 0;
-  var length = 0;
-  var canceled = false;
-
-  //ajax-функция для очистки папки temp
-  var clear_temp = function() {
-    $.ajax('/clear_temp',
-        {
-          success: function (data, status, xhr){
-          console.log("%cTemp directory has been p u r g e d", "color: red;");
-        }});
-  }
-
-  //инициализируем dropzone с опициями
-  var dropzone = $("#file_form").dropzone({
-    autoProcessQueue: false, //автозагрузка файлов: 
-    chunking: true, //разбиение на чанки
-    chunkSize: 20000000, //макс размер чанка: 20 мб
-    retryChunks: false, 
-    addRemoveLinks: true,
-    retryChunksLimit: 5,
-    paramName: 'file',
-    forceChunking: true,
-    maxFiles: 20,
-    maxFilesize: 4000,
-    parallelUploads: 20,
-
-    //вешаем ивенты на дропзону, при инициализации
-    init: function(){
-
-      var dropzone = this;
-      //при отправке файла, так же будет отправляться имя файла
-      this.on('sending', function(file, xhr, data){
-        console.log(`%cSending file ${file.name}`, 'color:grey;');
-        data.append("filename", file.name);
-        length = dropzone.files.length;
-        $("#n_of_n").text(`Uploaded ${count} of ${length}`)
-      });
-
-     //при нажатии на кнопку отправки, запустится загрузка файлов
-      $("#submit").click(function(){
-       clear_temp();
-       if(dropzone.files.length === 0)
-       {
-         //если файлы не были добавлены в дропзону, то отправляем пост
-        $("#post_form").submit();
-       }
-       else
-       {
-        dropzone.processQueue();
-        $("#cancel").removeClass("invisible");
-        $("#n_of_n").removeClass("invisible").addClass("fade-in");
-        $("#loader").removeClass("invisible");
-        $("#upload_msg").removeClass("invisible").addClass("blinking-anim");
-       }
-      });
-
-      $("#cancel").click(function(){
-        canceled = true;
-        console.log(dropzone.removeAllFiles(true));
-        clear_temp();
-      });
-     
-     //когда все файлы будут загружены, форма с постом будет отправлена
-     this.on("complete", function (file) {
-        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) 
-        {
-          if(canceled === false)
-          {
-            console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
-            $("#post_form").submit();
-          }
-          else
-          {
-            console.info("Uploads were canceled by user.");
-            canceled = false;
-            $("#cancel").addClass("invisible");
-            $("#n_of_n").addClass("invisible");
-            $("#loader").addClass("invisible");
-            $("#upload_msg").addClass("invisible");
-          }
-        }
-     });
-        
-    },
-    //когда загрузится файл (или его чанки) выводим сообщение в консоль
-    chunksUploaded: function(file, done){
-      count++;
-      console.log(done)
-      $("#n_of_n").text(`Uploaded ${count} of ${length}`)
-      done();
-      console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
-    }
-  });
-
-
-
-
-  //richText
-  $('.textarea').richText({
-  imageUpload:false,
-  videoEmbed:false,
-  fileUpload:false
-});
-
-//tagEditor
-$('#tags').tagEditor();
-
-//character counter
-$('#title').charCounter();
-
-
-</script>
-
-
+<script src="{{ asset('js/control_panel/create_post.js') }}"></script>
 @endpush
