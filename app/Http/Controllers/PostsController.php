@@ -223,37 +223,47 @@ class PostsController extends Controller
 
         //получаем список файлов в папке temp
         $temp_files = File::files(storage_path("app\\public\\temp"));
-
-        //создаем папку для медиа файлов ассоциируемых с постом
-        //posts/[date + post_title]
-        $folder_name = date('d-m-Y')."-".$request->post_title;
-        $folder_created= Storage::disk('public')->makeDirectory("posts\\". $folder_name);
-
-        //если папка создалась, то перемещаем файлы из temp
-        if($folder_created == true)
-        {
-            foreach($temp_files as $file){
-                //путь по которому будет перемещен файл
-                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
-                $move = File::move($file->getPathname(), $new_path);
-                //если переместить файл не удалось, то редиректим с ошибкой
-                if($move != true) 
-                {return Redirect::back()->withErrors(['err', 'Something went wronge while moving the files.']);}
-                else
-                {   
-                   //сохраняем пост перед сохранением медиа (чтобы был $post->id)
-                   $post->save();
-                   $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
-                   $media = new App\Media; //создаем запись о медиа и сохраняем
-                   $media->post_id = $post->id;
-                   $media->media_url = "posts/". $folder_name."/".$file->getFilename();
-                   $media->media_type = $mime;
-                   $media->save(); 
-                }
-            }
-
-         
+        if(count($temp_files) == 0)
+        {   
+            //если в папке временных файлов нет ни одного файла, т.е
+            //юзер не загружал файлы с постом, то просто сохраняем пост
+            $post->save(); 
         }
+        else //иначе переносим файлы из temp в новую папку и сохраняем пост
+        {
+            //создаем папку для медиа файлов ассоциируемых с постом
+            //posts/[date + post_title]
+            $folder_name = date('d-m-Y')."-".$request->post_title;
+            $folder_created= Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+            //если папка создалась, то перемещаем файлы из temp
+            if($folder_created == true)
+            {
+                foreach($temp_files as $file){
+                    //путь по которому будет перемещен файл
+                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
+                    $move = File::move($file->getPathname(), $new_path);
+                
+
+                    //если переместить файл не удалось, то редиректим с ошибкой
+                    if($move != true) 
+                    {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                    else
+                    {   
+                    //сохраняем пост перед сохранением медиа (чтобы был $post->id)
+                    $post->save();
+                    $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
+                    $media = new App\Media; //создаем запись о медиа и сохраняем
+                    $media->post_id = $post->id;
+                    $media->media_url = "posts/". $folder_name."/".$file->getFilename();
+                    $media->media_type = $mime;
+                    $media->save(); 
+                    }
+                }
+
+            
+            }
+        }
+   
        return redirect(url('/control/posts'));
     }
 
@@ -311,8 +321,6 @@ class PostsController extends Controller
            File::deleteDirectory(storage_path('app\\public\\'.$path));
             // unlink(storage_path('app\\public\\'.$m->media_url));
             $m->delete();
-           
-
         }
 
         $post = App\Post::find($request->modal_form_input);

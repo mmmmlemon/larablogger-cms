@@ -159,10 +159,19 @@
 
      //при нажатии на кнопку отправки, запустится загрузка файлов
       $("#submit").click(function(){
-       dropzone.processQueue();
-       $("#n_of_n").removeClass("invisible").addClass("fade-in");
-       $("#loader").removeClass("invisible");
-       $("#upload_msg").removeClass("invisible").addClass("blinking-anim");
+       if(dropzone.files.length === 0)
+       {
+         //если файлы не были добавлены в дропзону, то отправляем пост
+        $("#post_form").submit();
+       }
+       else
+       {
+        dropzone.processQueue();
+        $("#n_of_n").removeClass("invisible").addClass("fade-in");
+        $("#loader").removeClass("invisible");
+        $("#upload_msg").removeClass("invisible").addClass("blinking-anim");
+       }
+
 
       });
      
@@ -171,7 +180,7 @@
         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) 
         {
           console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
-         // $("#post_form").submit();
+          $("#post_form").submit();
         }
      });
         
