@@ -1,6 +1,22 @@
 /*здесь хранятся кастомные стили не связанные с bulma*/
 /*стили элементов созданных вручную (например, шапка сайта и т.д)*/
 
+.blinking-anim{
+	animation:blink 1.5s infinite ease-in;
+}
+@keyframes blink {
+    0% {
+           color: rgba(0,0,0,1)
+    }
+    50% {
+           color: rgba(0,0,0,0.1)
+    }
+    100% {
+           color: rgba(0,0,0,1)
+    }
+}
+
+
 body, html {
     height: 100%;
     background-repeat: no-repeat;

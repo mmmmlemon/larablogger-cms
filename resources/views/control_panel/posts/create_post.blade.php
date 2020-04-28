@@ -82,53 +82,37 @@
                     
                   </div>
 
-          
-                  {{-- <div class="white-bg" id="file_container">
-                    <h1 class='title is-5'>Files (0)</h1>
-                  </div> --}}
-
-              
+                     
             </form>
     
-        
+            <!--форма для загрузки файлов-->
             <form action="/post/upload_files" class="dropzone" id="file_form">
               @csrf
               <div class="fallback">
                 <input name="file" type="file" multiple />
               </div>
             </form>
-            
-            <a id="submit" class="button is-info">Save post</a>
-
+            <!--спиннер и сообщения о загрузке-->
+            <div class="subtitle has-text-centered">
+              <h1 class="invisible" id="n_of_n"># of #</h1>
+              <span id ="loader" class="invisible icon has-text-info">
+                <i class="fas fa-spinner fa-pulse"></i>
+              </span>
+              <h1 class="invisible" id="upload_msg">Uploading files, please don't leave this page</h1>
+            </div>
+            <!--кнопка отправки формы-->
+            <a id="submit" class="button is-info">
+              <span class="icon">
+                <i class="fas fa-save"></i>
+              </span>
+              <span>Save Post</span>
+            </a>
             </div>
   
         
 </div>
 
 @endsection
-
-
-{{-- @section('modals')
-<div class="modal" id="progress-modal">
-  <div class="modal-background"></div>
-  <div class="modal-content">
-
-    <div class="box">
-      <article class="media">
-        <div class="media-content">
-          <div class="content has-text-centered">
-            <p id="progress-modal-message">Your files are uploading, this might take a while</p>
-            <p class="subtitle" id="progress-modal-countdown"></p>
-            <progress id="progress-bar" class="progress is-large is-info" value="0" max="100">0%</progress>
-            <button class="button is-danger" id="cancel_upload">Cancel upload</button>
-          </div>
-    
-        </div>
-      </article>
-    </div>
-  </div>
-</div>
-@endsection --}}
 
 @push('scripts')
 <script src="{{ asset('js/create_post.js') }}"></script>
@@ -144,6 +128,9 @@
 
   //выключаем autodiscover у Dropzone
   Dropzone.autoDiscover = false;
+  var count = 0;
+  var length = 0;
+
 
   //инициализируем dropzone с опициями
   var dropzone = $("#file_form").dropzone({
@@ -160,16 +147,23 @@
 
     //вешаем ивенты на дропзону, при инициализации
     init: function(){
+
+      var dropzone = this;
       //при отправке файла, так же будет отправляться имя файла
       this.on('sending', function(file, xhr, data){
         console.log(`%cSending file ${file.name}`, 'color:grey;');
         data.append("filename", file.name);
+        length = dropzone.files.length;
+        $("#n_of_n").text(`Uploaded ${count} of ${length}`)
       });
 
      //при нажатии на кнопку отправки, запустится загрузка файлов
-     var dropzone = this;
       $("#submit").click(function(){
        dropzone.processQueue();
+       $("#n_of_n").removeClass("invisible").addClass("fade-in");
+       $("#loader").removeClass("invisible");
+       $("#upload_msg").removeClass("invisible").addClass("blinking-anim");
+
       });
      
      //когда все файлы будут загружены, форма с постом будет отправлена
@@ -177,13 +171,16 @@
         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) 
         {
           console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
-          $("#post_form").submit();
+         // $("#post_form").submit();
         }
      });
         
     },
     //когда загрузится файл (или его чанки) выводим сообщение в консоль
     chunksUploaded: function(file, done){
+      count++;
+      console.log(done)
+      $("#n_of_n").text(`Uploaded ${count} of ${length}`)
       done();
       console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }
@@ -205,94 +202,5 @@ $('#title').charCounter();
 
 </script>
 
-{ <script>
 
-
-$(document).ready(function(){
-
-  //   //progress bar
-  //   var bar = $('#progress-bar');
-  //   var cancel_button = $("#cancel_upload");
-  //   var uploaded = false;
-  //   //form + ajaxForm
-  //   var form = $('#form').ajaxForm({
-  //       //beforeSubmit: validate,
-  //       beforeSend: function(xhr) {
-  //           var percentVal = '0';
-  //           var posterValue = $('input[name=file]').fieldValue();
-  //           bar.val(percentVal);
-  //       },
-  //       uploadProgress: function(event, position, total, percentComplete) {
-  //           var percentVal = percentComplete;
-  //           bar.val(percentVal);
-  //           bar.text(percentVal + "%");
-  //       },
-  //       success: function() {
-  //           var percentVal = '100';
-  //           bar.val(percentVal);
-  //           bar.text(percentVal + "%");
-  //       },
-  //       complete: function(xhr) {
-  //           //если запрос был отменен
-  //           if(xhr.responseText == undefined)
-  //           { //то пишем в консоль ошибку и убираем окошко
-  //             console.warn("File upload canceled. ajaxForm has been aborted by the user.");
-  //             bar.val(0);
-  //             bar.text("0%");
-  //           }
-  //           else
-  //           {
-  //             //если загрузка завершилась успешно, то оповещаем пользователя и редиректим его через 5 секунд
-  //             //на страницу с постами
-  //             uploaded = true;
-  //             bar.removeClass("is-info").addClass("is-primary");
-  //             cancel_button.removeClass("is-danger").addClass("is-info").attr("href","/control/posts").text("Redirect");
-  //             var msg = $("#progress-modal-message");
-  //             msg.text("Your files have been successfully uploaded and the post has been saved. Redirecting to 'Posts' in ")
-  //             var countdown = $("#progress-modal-countdown");
-  //             var counter = 10;
-  //             var interval = setInterval(function() {
-  //                 counter--;
-  //                 countdown.addClass("fade-in").text(`${counter} seconds`)
-  //                 if (counter == 0) {
-  //                     // Display a login box
-  //                     clearInterval(interval);
-  //                     countdown.addClass("fade-in").text("Redirecting...")
-  //                     window.location.href = "/control/posts";
-  //                 }
-  //             }, 1000);
-              
-  //           }    
-  //       }
-  //   });
-
-  //   //если была нажата кнопка "Cancel upload", то отменяем ajax запрос
-  //   $("#cancel_upload").click(function(){
-  //     if(uploaded == true)
-  //     {
-  //       window.location.href = "/control/posts";
-  //     }
-  //     else
-  //     { 
-  //       var xhr = form.data('jqxhr');
-  //       if(xhr != undefined)
-  //       {
-  //         $("#progress-modal").removeClass("is-active");
-  //         xhr.abort();
-  //       }
-  //       else
-  //       {
-  //         $("#progress-modal").text("ERROR. xhr is undefined.")
-  //       }
-  //     }
-  //   });
-
-  //    //вызвать модальное окно с прогресс баром
-  //    $("#submit").click(function() {
-  //       $("#progress-modal").addClass("is-active fade-in"); 
-  //     });
-    
-  // });
-
-</script>
 @endpush
