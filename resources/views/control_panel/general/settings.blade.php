@@ -268,14 +268,3 @@
     </div>
 
     </div>
-
-
-    
-@push('scripts')
-<script>
-   $(document).ready(function(){
-    $('#site_title').charCounter();
-    $('#site_subtitle').charCounter();
-   });
-</script>
-@endpush

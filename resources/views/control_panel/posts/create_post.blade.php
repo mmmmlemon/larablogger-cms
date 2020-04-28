@@ -124,13 +124,11 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/create_post.js') }}"></script>
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
-<script src="{{ asset('js/char_counter.js') }}"></script>
-<script src="{{ asset('js/file_container.js') }}"></script>
+<script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="{{ asset('js/dropzone.js') }}"></script>
-<script src="{{ asset('js/control_panel/create_post.js') }}"></script>
+<script src="{{ asset('js/custom/control_panel/create_post.js') }}"></script>
 @endpush

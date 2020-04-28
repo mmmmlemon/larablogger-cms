@@ -102,20 +102,8 @@
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
-<script src="{{ asset('js/char_counter.js') }}"></script>
+<script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script>
-  $('.textarea').richText({
-    imageUpload:false,
-    videoEmbed:false,
-    fileUpload: false,
-    fileUpload: false,
-  });
-
-  $('#tags').tagEditor();
-
-  $(document).ready(function(){
-    $('#title').charCounter();
-  });
 
 
 </script>

@@ -45,12 +45,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/char_counter.js') }}"></script>
-<script>
-    
-  $(document).ready(function(){
-    $('#title').charCounter();
-  });
-
-</script>
+<script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
+<script src="{{ asset('js/custom/control_panel/create_category.js') }}"></script>
 @endpush

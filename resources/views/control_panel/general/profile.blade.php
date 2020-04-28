@@ -83,11 +83,3 @@
 
         </div>
     </div>
-
-    @push('scripts')
-    <script>
-        $(document).ready(function(){
-         $('#username').charCounter();
-        });
-     </script>
-     @endpush
