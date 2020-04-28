@@ -71,6 +71,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     Route::post('/post/upload_files','PostsController@upload_files');
 
+    Route::get('/clear_temp', 'PostsController@clear_temp');
+
 });
 
 

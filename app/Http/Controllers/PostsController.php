@@ -281,6 +281,16 @@ class PostsController extends Controller
        fputs($file,file_get_contents($request->file));
        fclose($file);
     }	    
+
+    //очистить папку temp
+    public function clear_temp()
+    {
+        $temp_files = File::files(storage_path("app\\public\\temp"));
+        foreach($temp_files as $file)
+        {
+            unlink($file->getPathname());
+        }
+    }
  
     public function change_post_status($id, $status)
     {

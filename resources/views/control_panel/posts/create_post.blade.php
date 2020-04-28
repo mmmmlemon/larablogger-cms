@@ -107,6 +107,13 @@
               </span>
               <span>Save Post</span>
             </a>
+
+            <a id="cancel" class="invisible button is-danger" data-tooltip="Cancel upload">
+              <span class="icon">
+                <i class="fas fa-times"></i>
+              </span>
+              <span>Cancel</span>
+            </a>
             </div>
   
         
@@ -130,7 +137,16 @@
   Dropzone.autoDiscover = false;
   var count = 0;
   var length = 0;
+  var canceled = false;
 
+  //ajax-функция для очистки папки temp
+  var clear_temp = function() {
+    $.ajax('/clear_temp',
+        {
+          success: function (data, status, xhr){
+          console.log("%cTemp directory has been p u r g e d", "color: red;");
+        }});
+  }
 
   //инициализируем dropzone с опициями
   var dropzone = $("#file_form").dropzone({
@@ -159,6 +175,7 @@
 
      //при нажатии на кнопку отправки, запустится загрузка файлов
       $("#submit").click(function(){
+       clear_temp();
        if(dropzone.files.length === 0)
        {
          //если файлы не были добавлены в дропзону, то отправляем пост
@@ -167,20 +184,37 @@
        else
        {
         dropzone.processQueue();
+        $("#cancel").removeClass("invisible");
         $("#n_of_n").removeClass("invisible").addClass("fade-in");
         $("#loader").removeClass("invisible");
         $("#upload_msg").removeClass("invisible").addClass("blinking-anim");
        }
+      });
 
-
+      $("#cancel").click(function(){
+        canceled = true;
+        console.log(dropzone.removeAllFiles(true));
+        clear_temp();
       });
      
      //когда все файлы будут загружены, форма с постом будет отправлена
      this.on("complete", function (file) {
         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) 
         {
-          console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
-          $("#post_form").submit();
+          if(canceled === false)
+          {
+            console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
+            $("#post_form").submit();
+          }
+          else
+          {
+            console.info("Uploads were canceled by user.");
+            canceled = false;
+            $("#cancel").addClass("invisible");
+            $("#n_of_n").addClass("invisible");
+            $("#loader").addClass("invisible");
+            $("#upload_msg").addClass("invisible");
+          }
         }
      });
         
@@ -194,6 +228,9 @@
       console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }
   });
+
+
+
 
   //richText
   $('.textarea').richText({
