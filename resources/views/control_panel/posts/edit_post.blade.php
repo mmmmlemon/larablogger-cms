@@ -87,7 +87,7 @@
                   <div class="field">
                     <div class="white-bg">
                       <div class="subtitle">Attached media</div>
-                      <table class="table is-fullwidth is-hoverable">
+                      <table class="table is-fullwidth is-hoverable is-narrow">
                         <thead>
                           <th>Filename</th>
                           <th>Type</th>
@@ -170,59 +170,7 @@
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="{{ asset('js/plyr.js') }}"></script>
+<script src="{{ asset('js/custom/control_panel/edit_post.js') }}"></script>
 
-<script>
-
-const player = new Plyr('#player');
-  $(".preview").click(function() {
-        $("#preview-modal").addClass("is-active fade-in"); 
-        if($(this).data("type")==="image")
-        { $("#content-in-modal").attr("style", "display: block");
-          $("#content-in-modal").attr("src", $(this).data("url"));
-        }
-        if($(this).data("type")==="video")
-        { $("#player").attr("style", "display: block;");
-          $("#content-video").attr("src", $(this).data("url"));
-        }
-      });
-
-  $("#modal-close").click(function() {
-    $("#preview-modal").removeClass("is-active");
-    player.stop();
-    $("#content-in-modal").attr("style", "display: none");
-    $("#player").attr("style", "display: none;");
-  });
-
-  $(".delete_media").click(function(){
-    $(".modalDelete").addClass("is-active fade-in");
-    $("#submit_modal").data("id", $(this).data("id"));
-  });
-
-  $("#close_delete_modal").click(function() {
-    $(".modalDelete").removeClass("is-active fade-in");
-  });
-
-  $("#submit_modal").click(function(){
-    send_delete_media_request($(this).data("id"));
-    $(".modalDelete").removeClass("is-active fade-in");
-  })
-
-  function send_delete_media_request(media_id)
-  {
-    $.ajaxSetup({
-        headers: {
-       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }});
-
-    $.ajax({
-      type:'POST',
-      url: '/delete_media',
-      data: {id: media_id},
-      success: function(){
-        console.log("%cThe file has been succesfully p u r g e d from existance.", "color: red;");
-      }
-    });
-  }
-</script>
 
 @endpush
