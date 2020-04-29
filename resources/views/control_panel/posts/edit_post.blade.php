@@ -84,6 +84,28 @@
                     
                   </div>
 
+                  <div class="field">
+                    <div class="white-bg">
+                      <div class="subtitle">Attached media</div>
+                      <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                          <th>Filename</th>
+                          <th>Type</th>
+                          <th>Actions</th>
+                        </thead>
+                      <tbody>
+                      @foreach($media as $m)
+                      <tr>
+                      <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
+                      <td>{{$m->media_type}}</td>
+                      </tr>
+                    
+                      @endforeach
+                    </tbody>
+                  </table>
+                    </div>
+                  </div>
+
                   <button type="submit" class="button is-link">
                     <span class="icon">
                         <i class="fas fa-save"></i>
@@ -98,13 +120,50 @@
 
 @endsection
 
+@section('modals')
+<div class="modal" id="preview-modal">
+  <div class="modal-background"></div>
+  <div class="modal-content column is-two-thirds-desktop is-12-mobile">
+    <p class="image has-text-centered">
+      <img style="display:none;" id="content-in-modal" width="90%" src="" alt="">
+      <video style="display: none;" controls="controls" id="player">
+        <source src="" id="content-video">
+      </video>
+    </p>
+  </div>
+  <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
+</div>
+@endsection
+
+
 @push('scripts')
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
+<script src="{{ asset('js/plyr.js') }}"></script>
+
 <script>
 
+const player = new Plyr('#player');
+  $(".preview").click(function() {
+        $("#preview-modal").addClass("is-active fade-in"); 
+        if($(this).data("type")==="image")
+        { $("#content-in-modal").attr("style", "display: block");
+          $("#content-in-modal").attr("src", $(this).data("url"));
+        }
+        if($(this).data("type")==="video")
+        { $("#player").attr("style", "display: block;");
+          $("#content-video").attr("src", $(this).data("url"));
+        }
+      });
+
+  $("#modal-close").click(function() {
+    $("#preview-modal").removeClass("is-active");
+    player.stop();
+    $("#content-in-modal").attr("style", "display: none");
+    $("#player").attr("style", "display: none;");
+  });
 
 </script>
 

@@ -247,8 +247,4 @@
 <script src="{{ asset('js/plyr.js') }}"></script>
 <script src="{{ asset('js/custom/post.js') }}"></script>
 <script src="{{ asset('js/custom/home_page.js') }}"></script>
-
-<script>
-
-</script>
 @endpush

@@ -149,8 +149,14 @@ class PostsController extends Controller
 
         $post = App\Post::find($id);
         $categories = App\Category::where('category_name','!=','blank')->get();
-
-        return view('control_panel/posts/edit_post', compact('post','categories'));
+        $media = App\Media::where('post_id','=',$id)->get();
+        foreach($media as $m){
+            $url = $m->media_url;
+            $substr = strrchr($url, "/");
+            $filename = substr($substr,1, strlen($substr));
+            $m->filename = $filename;
+        }
+        return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
     }
 
     //редактировать пост, сохранение измененений
