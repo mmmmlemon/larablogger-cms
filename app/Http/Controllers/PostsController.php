@@ -190,6 +190,18 @@ class PostsController extends Controller
         return view('control_panel/posts/create_post', compact('categories','current_date'));
     }
 
+    //удаление файла из поста
+    public function delete_media(Request $request){
+        $media = App\Media::find($request->id);
+        $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
+        if($check_delete == true) 
+        {
+            $media->delete();
+            return response()->json(['result'=>'success']); 
+        }
+        else { return response()->json(['result'=>'failure']);}
+    }
+
     //создание (сохранение) поста
     public function create_post(Request $request)
     {

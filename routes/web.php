@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::delete('/post/delete_comment','PostsController@delete_comment'); //удалить комментарий
     Route::post('/post/upload_files','PostsController@upload_files'); //загрузить файлы, прикрепленные к посту
     Route::get('/clear_temp', 'PostsController@clear_temp'); //очистить папку temp с временными файлами
+    Route::post('/delete_media', 'PostsController@delete_media'); //удалить прикрепленный файл из поста
 
     //КАТЕГОРИИ
     Route::get('/control/categories', 'CategoryController@index'); //вывод списка категорий в панели управления

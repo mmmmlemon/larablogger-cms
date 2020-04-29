@@ -99,7 +99,7 @@
                       <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
                       <td>{{$m->media_type}}</td>
                       <td>
-                        <a class="button is-small is-danger delete_media" data-tooltip="Delete this media">
+                      <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">
                           <span class="icon">
                             <i class="fas fa-trash"></i>
                           </span>
@@ -155,7 +155,7 @@
       <p class="has-text-danger">This action cannot be undone.</p>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-danger" id="submit_modal">Delete</button>
+      <button class="button is-danger" id="submit_modal" data-id="">Delete</button>
       <button class="button cancel">Cancel</button>
     </footer>
   </div>
@@ -195,12 +195,34 @@ const player = new Plyr('#player');
 
   $(".delete_media").click(function(){
     $(".modalDelete").addClass("is-active fade-in");
+    $("#submit_modal").data("id", $(this).data("id"));
   });
 
   $("#close_delete_modal").click(function() {
     $(".modalDelete").removeClass("is-active fade-in");
   });
 
+  $("#submit_modal").click(function(){
+    send_delete_media_request($(this).data("id"));
+    $(".modalDelete").removeClass("is-active fade-in");
+  })
+
+  function send_delete_media_request(media_id)
+  {
+    $.ajaxSetup({
+        headers: {
+       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }});
+
+    $.ajax({
+      type:'POST',
+      url: '/delete_media',
+      data: {id: media_id},
+      success: function(){
+        console.log("%cThe file has been succesfully p u r g e d from existance.", "color: red;");
+      }
+    });
+  }
 </script>
 
 @endpush
