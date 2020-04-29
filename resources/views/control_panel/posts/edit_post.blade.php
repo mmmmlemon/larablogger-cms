@@ -98,6 +98,13 @@
                       <tr>
                       <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
                       <td>{{$m->media_type}}</td>
+                      <td>
+                        <a class="button is-small is-danger delete_media" data-tooltip="Delete this media">
+                          <span class="icon">
+                            <i class="fas fa-trash"></i>
+                          </span>
+                        </a>
+                      </td>
                       </tr>
                     
                       @endforeach
@@ -121,6 +128,7 @@
 @endsection
 
 @section('modals')
+
 <div class="modal" id="preview-modal">
   <div class="modal-background"></div>
   <div class="modal-content column is-two-thirds-desktop is-12-mobile">
@@ -133,6 +141,26 @@
   </div>
   <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
 </div>
+
+<div class="modal modalDelete">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">You sure?</p>
+      <button class="delete" id="close_delete_modal" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Are you sure you want to delete this file?</p>
+      <b id="modal_file_title"></b>
+      <p class="has-text-danger">This action cannot be undone.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" id="submit_modal">Delete</button>
+      <button class="button cancel">Cancel</button>
+    </footer>
+  </div>
+</div>
+
 @endsection
 
 
@@ -163,6 +191,14 @@ const player = new Plyr('#player');
     player.stop();
     $("#content-in-modal").attr("style", "display: none");
     $("#player").attr("style", "display: none;");
+  });
+
+  $(".delete_media").click(function(){
+    $(".modalDelete").addClass("is-active fade-in");
+  });
+
+  $("#close_delete_modal").click(function() {
+    $(".modalDelete").removeClass("is-active fade-in");
   });
 
 </script>
