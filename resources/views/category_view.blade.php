@@ -16,6 +16,7 @@
 
 @endsection
 
+@section('modals')
 <div class="modal" id="img-modal">
   <div class="modal-background"></div>
   <div class="modal-content column" style="width: 50%;">
@@ -29,19 +30,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/custom/category_view.js') }}"></script>
 <script src="{{ asset('js/plyr.js') }}"></script>
-<script>
-   const players = Plyr.setup('.video-player');
 
-        //вызвать модальное окно с картинкой
-        $(".imagee").click(function() {
-        $("#img-modal").addClass("is-active fade-in"); 
-        $("#img-in-modal").attr("src", $(this).attr("src"));
-        $("#link-in-modal").attr("href", $(this).attr("src"));
-      });
-      
-    $("#modal-close").click(function() {
-        $("#img-modal").removeClass("is-active");
-    });
-</script>
 @endpush

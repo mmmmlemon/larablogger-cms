@@ -27,7 +27,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/home_page.js') }}"></script>
+<script src="{{ asset('js/custom/home_page.js') }}"></script>
 <script src="{{ asset('js/plyr.js') }}"></script>
 <script>
    const players = Plyr.setup('.video-player');

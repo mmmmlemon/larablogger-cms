@@ -243,44 +243,12 @@
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
-<script src="{{ asset('js/char_counter.js') }}"></script>
-<script>
-   $('.textarea').richText({
-    imageUpload:false,
-    videoEmbed:false,
-    table: false,
-    fileUpload:false,
-    heading: false,
-    fonts: false,
-    ul: false,
-    leftAlign: false,
-    centerAlign: false,
-    rightAlign: false,
-    justify: false,
-    code: false
-  });
-
-  $(document).ready(function(){
-    $('#username').charCounter();
-  });
-
-</script>
-<script src="{{ asset('js/home_page.js') }}"></script>
+<script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="{{ asset('js/plyr.js') }}"></script>
+<script src="{{ asset('js/custom/post.js') }}"></script>
+<script src="{{ asset('js/custom/home_page.js') }}"></script>
+
 <script>
-    const player = new Plyr('#player');
-
-      //вызвать модальное окно Contacts
-      $(".imagee").click(function() {
-        $("#img-modal").addClass("is-active fade-in"); 
-        $("#img-in-modal").attr("src", $(this).attr("src"));
-        $("#link-in-modal").attr("href", $(this).attr("src"));
-      });
-      
-    $("#modal-close").click(function() {
-        $("#img-modal").removeClass("is-active");
-    });
-
 
 </script>
 @endpush
