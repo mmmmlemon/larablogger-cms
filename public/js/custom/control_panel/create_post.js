@@ -12,7 +12,7 @@ $("#publish_checkbox").click(function(){
 });
 
 //выключаем autodiscover у Dropzone
-Dropzone.autoDiscover = false;
+
 var count = 0;
 var length = 0;
 var canceled = false;

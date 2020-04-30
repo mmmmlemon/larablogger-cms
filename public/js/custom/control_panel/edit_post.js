@@ -80,3 +80,54 @@ const player = new Plyr('#player');
       }
     });
   }
+
+
+//табы
+
+$("#browse_files").click(function(){
+  $(this).addClass("is-active");
+  $("#add_files").removeClass("is-active");
+  $("#file_form").addClass("invisible");
+  $("#file_browser").removeClass("invisible").addClass("fade-in");
+});
+
+$("#add_files").click(function(){
+  $(this).addClass("is-active");
+  $("#browse_files").removeClass("is-active");
+  $("#file_browser").addClass("invisible");
+  $("#file_form").removeClass("invisible").addClass("fade-in");
+});
+
+Dropzone.autoDiscover = false;
+
+//dropzone
+var dropzone = $("#dropzone_form").dropzone({
+  //autoProcessQueue: false, //автозагрузка файлов: 
+  chunking: true, //разбиение на чанки
+  chunkSize: 20000000, //макс размер чанка: 20 мб
+  retryChunks: false, 
+  addRemoveLinks: true, //кнопка удаления файлов
+  paramName: 'file',
+  forceChunking: true,
+  maxFiles: 20,
+  maxFilesize: 4000, //максимальный размер файла: 4 гб
+  parallelUploads: 20,
+  init: function(){
+    this.on('sending', function(file, xhr, data){
+      console.log(`%cSending file ${file.name}`, 'color:grey;');
+      data.append("filename", file.name);
+    });
+
+    this.on("success", function(file, responseText) {
+      console.log(responseText);
+  });
+  },
+  chunksUploaded: function(xhr, done){
+    done();
+    console.log("The file has been uploaded.");
+  },
+  success: function(file, xhr){
+
+    console.log(JSON.parse(file.xhr.response));
+}
+});

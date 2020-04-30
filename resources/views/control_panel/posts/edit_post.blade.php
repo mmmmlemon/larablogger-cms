@@ -20,7 +20,7 @@
                 </span>
             </a>
 
-            <h1 class="title has-text-centered">Create Post</h1>
+            <h1 class="title has-text-centered">Edit Post</h1>
             <div class="is-divider"></div>
 
         <form action="/post/{{$post->id}}/edit" method="POST">
@@ -73,55 +73,67 @@
                         <i class="fas fa-calendar"></i>
                       </span>
                     </p>
-                   
                   </div>
-
-                  <div class="field">
-                    <div class="control">
-                        <p class="help">Tags</p>
-                    <input class="input" type="text" id="tags" name="tags" value="{{$post->tags}}" placeholder="video,post,meme,text,whatever">
-                    </div>
-                    
-                  </div>
-
-                  <div class="field">
-                    <div class="white-bg">
-                      <div class="subtitle">Attached media</div>
-                      <table class="table is-fullwidth is-hoverable is-narrow">
-                        <thead>
-                          <th>Filename</th>
-                          <th>Type</th>
-                          <th>Actions</th>
-                        </thead>
-                      <tbody>
-                      @foreach($media as $m)
-                      <tr>
-                      <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
-                      <td>{{$m->media_type}}</td>
-                      <td>
-                      <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">
-                          <span class="icon">
-                            <i class="fas fa-trash"></i>
-                          </span>
-                        </a>
-                      </td>
-                      </tr>
-                    
-                      @endforeach
-                    </tbody>
-                  </table>
-                    </div>
-                  </div>
-
-                  <button type="submit" class="button is-link">
-                    <span class="icon">
-                        <i class="fas fa-save"></i>
-                    </span>
-                    <span>
-                      Save post
-                    </span>
-                </button>
             </form>
+
+            @if(count($media)==0)
+            <div class="field" id="file_browser">
+              <div class="white-bg">
+                <div class="subtitle">No files attached</div>
+              </div>
+            </div>
+            @else
+            <div class="field" id="file_browser">
+              <div class="white-bg">
+                <div class="subtitle">Attached media</div>
+                <table class="table is-fullwidth is-hoverable is-narrow">
+                  <thead>
+                    <th>Filename</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </thead>
+                <tbody>
+                @foreach($media as $m)
+                <tr>
+                <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
+                <td>{{$m->media_type}}</td>
+                <td>
+                <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">
+                    <span class="icon">
+                      <i class="fas fa-trash"></i>
+                    </span>
+                  </a>
+                </td>
+                </tr>
+              
+                @endforeach
+              </tbody>
+            </table>
+
+      
+
+
+              </div>
+            </div>
+            @endif
+
+            <form action="/upload_files" method="POST" class="dropzone" id="dropzone_form">
+              @csrf
+              <div class="fallback">
+              <input type="text" name="post_id" value="{{$post->id}}">
+                <input name="file" type="file" multiple />
+              </div>
+            </form>
+
+
+            <button type="submit" class="button is-link">
+              <span class="icon">
+                  <i class="fas fa-save"></i>
+              </span>
+              <span>
+                Save post
+              </span>
+          </button>
    
 </div>
 
@@ -156,7 +168,6 @@
     </section>
     <footer class="modal-card-foot">
       <button class="button is-danger" id="submit_modal" data-id="">Delete</button>
-      <button class="button cancel">Cancel</button>
     </footer>
   </div>
 </div>
@@ -170,6 +181,7 @@
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="{{ asset('js/plyr.js') }}"></script>
+<script src="{{ asset('js/dropzone.js') }}"></script>
 <script src="{{ asset('js/custom/control_panel/edit_post.js') }}"></script>
 
 

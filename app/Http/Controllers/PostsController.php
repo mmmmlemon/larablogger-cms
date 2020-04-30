@@ -183,11 +183,9 @@ class PostsController extends Controller
         return redirect(url('/control/posts'));
     }
 
-    //показать страницу создания поста
-    public function show_create_post(){
-        $current_date = Carbon::now();
-        $categories = App\Category::where('category_name','!=','blank')->get();
-        return view('control_panel/posts/create_post', compact('categories','current_date'));
+    //загрузить файлы в temp
+    public function upload_to_temp(Request $request){
+        dd($request->file);
     }
 
     //удаление файла из поста
@@ -201,6 +199,15 @@ class PostsController extends Controller
         }
         else { return response()->json(['result'=>'failure']);}
     }
+
+
+    //показать страницу создания поста
+    public function show_create_post(){
+        $current_date = Carbon::now();
+        $categories = App\Category::where('category_name','!=','blank')->get();
+        return view('control_panel/posts/create_post', compact('categories','current_date'));
+    }
+
 
     //создание (сохранение) поста
     public function create_post(Request $request)
@@ -289,6 +296,11 @@ class PostsController extends Controller
        //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
        fputs($file,file_get_contents($request->file));
        fclose($file);
+
+       return response()->json([
+        'file_url' => asset("storage/temp/".$filename),
+        'filename' =>  $filename
+    ]);
     }	    
 
     //очистить папку temp
