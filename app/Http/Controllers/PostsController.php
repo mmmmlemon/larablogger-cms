@@ -296,10 +296,13 @@ class PostsController extends Controller
        //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
        fputs($file,file_get_contents($request->file));
        fclose($file);
+       
+
 
        return response()->json([
         'file_url' => asset("storage/temp/".$filename),
-        'filename' =>  $filename
+        'filename' =>  $filename,
+        'mime' => substr(File::mimeType(storage_path('app\\public\\temp\\')."$filename"),0,5)
     ]);
     }	    
 

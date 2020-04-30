@@ -92,7 +92,7 @@
                     <th>Type</th>
                     <th>Actions</th>
                   </thead>
-                <tbody>
+                <tbody id="tbody">
                 @foreach($media as $m)
                 <tr>
                 <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
@@ -109,9 +109,6 @@
                 @endforeach
               </tbody>
             </table>
-
-      
-
 
               </div>
             </div>

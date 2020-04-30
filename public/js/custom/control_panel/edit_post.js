@@ -18,20 +18,7 @@ var tr;
 
 const player = new Plyr('#player');
 
-  //принажатии на имя файла показать превью файла
-  $(".preview").click(function() {
-        $("#preview-modal").addClass("is-active fade-in"); 
-        //если картинка, то показываем тег img
-        if($(this).data("type")==="image")
-        { $("#content-in-modal").attr("style", "display: block");
-          $("#content-in-modal").attr("src", $(this).data("url"));
-        }
-        //если видео, то показываем плеер
-        if($(this).data("type")==="video")
-        { $("#player").attr("style", "display: block;");
-          $("#content-video").attr("src", $(this).data("url"));
-        }
-      });
+ 
 
   //закрыть модальное окно с превью
   $("#modal-close").click(function() {
@@ -98,6 +85,9 @@ $("#add_files").click(function(){
   $("#file_form").removeClass("invisible").addClass("fade-in");
 });
 
+
+var files_appended = false;
+
 Dropzone.autoDiscover = false;
 
 //dropzone
@@ -126,8 +116,36 @@ var dropzone = $("#dropzone_form").dropzone({
     done();
     console.log("The file has been uploaded.");
   },
+  //после успешной загрузки файла выводим его в списке файлов
   success: function(file, xhr){
+    //получаем ответ с сервера
+    var response = JSON.parse(file.xhr.response);
+    
+    var tbody = $("#tbody");
+    if(files_appended === false)
+    {
+      files_appended = true;
+      tbody.append("<tr><td colspan='3'><b>Appended files</b></td>");
+    }
 
-    console.log(JSON.parse(file.xhr.response));
-}
+    tbody.append(`<tr><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td></tr>`);
+
+
+}});
+
+$(document).on('click', ".preview", function(){
+  $("#preview-modal").addClass("is-active fade-in"); 
+  //если картинка, то показываем тег img
+  if($(this).data("type")==="image")
+  { $("#content-in-modal").attr("style", "display: block");
+    $("#content-in-modal").attr("src", $(this).data("url"));
+    console.log( $(this).data("url"))
+  }
+  //если видео, то показываем плеер
+  if($(this).data("type")==="video")
+  { $("#player").attr("style", "display: block;");
+    $("#content-video").attr("src", $(this).data("url"));
+  }
 });
+
+ 
