@@ -23,7 +23,7 @@
             <h1 class="title has-text-centered">Edit Post</h1>
             <div class="is-divider"></div>
 
-        <form action="/post/{{$post->id}}/edit" method="POST">
+        <form id="post_form" action="/post/{{$post->id}}/edit" method="POST">
             @csrf
               <div class="field">
                 <label class="label">Category</label>
@@ -123,7 +123,7 @@
             </form>
 
 
-            <button type="submit" class="button is-link">
+            <button id="submit_post" type="submit" class="button is-link">
               <span class="icon">
                   <i class="fas fa-save"></i>
               </span>

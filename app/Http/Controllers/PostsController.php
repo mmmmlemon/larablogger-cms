@@ -179,7 +179,51 @@ class PostsController extends Controller
         } else {
             $post->visibility = 0;
         }
-        $post->save();
+
+        //получаем список файлов в папке temp
+        $temp_files = File::files(storage_path("app\\public\\temp"));
+        if(count($temp_files) == 0) //если там нет файлов, то сохраняем пост
+        {$post->save();}
+        else //если есть, то переносим файлы из temp в папку с медиафайлами поста
+        {
+         
+         $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
+            //проверяем была ли создана папка для файлов текущего поста
+         $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
+         
+           // dd($check);
+         
+         if($check != true)
+         {
+            Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+         }
+
+        
+                foreach($temp_files as $file){
+                    //путь по которому будет перемещен файл
+                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
+                    $move = File::move($file->getPathname(), $new_path);
+                
+
+                    //если переместить файл не удалось, то редиректим с ошибкой
+                    if($move != true) 
+                    {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                    else
+                    {   
+                    //сохраняем пост перед сохранением медиа (чтобы был $post->id)
+                    $post->save();
+                    $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
+                    $media = new App\Media; //создаем запись о медиа и сохраняем
+                    $media->post_id = $post->id;
+                    $media->media_url = "posts/". $folder_name."/".$file->getFilename();
+                    $media->media_type = $mime;
+                    $media->save(); 
+                    }
+                }         
+            
+         }
+        
+        
         return redirect(url('/control/posts'));
     }
 
@@ -208,7 +252,6 @@ class PostsController extends Controller
         }
 
     }
-
 
     //показать страницу создания поста
     public function show_create_post(){

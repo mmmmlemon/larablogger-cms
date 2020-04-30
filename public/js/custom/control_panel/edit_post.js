@@ -175,4 +175,6 @@ $(document).on('click', ".preview", function(){
   }
 });
 
- 
+$("#submit_post").click(function(){
+$("#post_form").submit();
+});
