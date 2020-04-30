@@ -191,35 +191,32 @@ class PostsController extends Controller
             //проверяем была ли создана папка для файлов текущего поста
          $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
          
-           // dd($check);
-         
          if($check != true)
          {
             Storage::disk('public')->makeDirectory("posts\\". $folder_name);
          }
 
-        
-                foreach($temp_files as $file){
-                    //путь по которому будет перемещен файл
-                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
-                    $move = File::move($file->getPathname(), $new_path);
-                
+            foreach($temp_files as $file){
+                //путь по которому будет перемещен файл
+                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
+                $move = File::move($file->getPathname(), $new_path);
+            
 
-                    //если переместить файл не удалось, то редиректим с ошибкой
-                    if($move != true) 
-                    {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
-                    else
-                    {   
-                    //сохраняем пост перед сохранением медиа (чтобы был $post->id)
-                    $post->save();
-                    $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
-                    $media = new App\Media; //создаем запись о медиа и сохраняем
-                    $media->post_id = $post->id;
-                    $media->media_url = "posts/". $folder_name."/".$file->getFilename();
-                    $media->media_type = $mime;
-                    $media->save(); 
-                    }
-                }         
+                //если переместить файл не удалось, то редиректим с ошибкой
+                if($move != true) 
+                {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                else
+                {   
+                //сохраняем пост перед сохранением медиа (чтобы был $post->id)
+                $post->save();
+                $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
+                $media = new App\Media; //создаем запись о медиа и сохраняем
+                $media->post_id = $post->id;
+                $media->media_url = "posts/". $folder_name."/".$file->getFilename();
+                $media->media_type = $mime;
+                $media->save(); 
+                }
+            }         
             
          }
         
@@ -229,10 +226,11 @@ class PostsController extends Controller
 
     //удаление файла из поста
     public function delete_media(Request $request){
+       
         //если intval равен 0 значит вместо id было передано имя файла
         //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
         //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
-        if(intval($request->media_id) == 0)
+        if(intval($request->id) == 0)
         {   $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
             $check = unlink(storage_path("app\\public\\temp\\".$filename));
             if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
@@ -245,7 +243,18 @@ class PostsController extends Controller
             $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
             if($check_delete == true) 
             {
+                $post = App\Post::find($media->post_id);
+                $folder_name = date("d-m-Y",strtotime($post->date))."-".$post->post_title;
+                $files = File::files(storage_path("app\\public\\posts\\".$folder_name));
+                if(count($files)== 0)
+                {   
+                    File::deleteDirectory(storage_path("app\\public\\posts\\").$folder_name);
+                }
+                
                 $media->delete();
+
+       
+
                 return response()->json(['result'=>'success']); 
             }
             else { return response()->json(['result'=>'failure']);}
