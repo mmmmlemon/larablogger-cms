@@ -20,6 +20,16 @@ const player = new Plyr('#player');
 
 var num_of_files = 0;
 
+
+//ajax-функция для очистки папки temp
+var clear_temp = function() {
+  $.ajax('/clear_temp',
+      {
+        success: function (data, status, xhr){
+        console.log("%cTemp directory has been p u r g e d", "color: red;");
+      }});
+}
+
   //закрыть модальное окно с превью
   $("#modal-close").click(function() {
     $("#preview-modal").removeClass("is-active");
@@ -47,6 +57,7 @@ var num_of_files = 0;
 
   //удалить файл
   $("#submit_modal").click(function(){
+    clear_temp();
     //прячем строку таблицы и отправялем ajax
     $(tr).attr("style","display: none;");
     send_delete_media_request($(this).data("id"));
@@ -109,6 +120,7 @@ var dropzone = $("#dropzone_form").dropzone({
   parallelUploads: 20,
   init: function(){
 
+    clear_temp();
     var dz = this;
 
     this.on('sending', function(file, xhr, data){
@@ -135,10 +147,10 @@ var dropzone = $("#dropzone_form").dropzone({
     if(num_of_files === 1)
     {
       files_appended = true;
-      tbody.append("<tr id='appended_files'><td colspan='3'><b>Appended files</b></td>");
+      tbody.append("<tr class='fade-in' id='appended_files'><td colspan='3'><b>Appended files</b></td>");
     }
     
-    tbody.append(`<tr><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
+    tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
     <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
     <span class="icon">
       <i class="fas fa-trash"></i>
