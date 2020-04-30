@@ -18,7 +18,7 @@ var tr;
 
 const player = new Plyr('#player');
 
- 
+var num_of_files = 0;
 
   //закрыть модальное окно с превью
   $("#modal-close").click(function() {
@@ -67,7 +67,10 @@ const player = new Plyr('#player');
       url: '/delete_media',
       data: {id: media_id},
       success: function(response){
-        console.log(response)
+        console.log(response);
+        num_of_files--;
+        if(num_of_files === 0)
+        {$("#appended_files").remove();}
         console.log("%cThe file has been succesfully p u r g e d from existance.", "color: red;");
       }
     });
@@ -90,9 +93,6 @@ $("#add_files").click(function(){
   $("#file_form").removeClass("invisible").addClass("fade-in");
 });
 
-
-var files_appended = false;
-
 Dropzone.autoDiscover = false;
 
 //dropzone
@@ -108,13 +108,16 @@ var dropzone = $("#dropzone_form").dropzone({
   maxFilesize: 4000, //максимальный размер файла: 4 гб
   parallelUploads: 20,
   init: function(){
+
+    var dz = this;
+
     this.on('sending', function(file, xhr, data){
       console.log(`%cSending file ${file.name}`, 'color:grey;');
       data.append("filename", file.name);
     });
 
-    this.on("success", function(file, responseText) {
-      console.log(responseText);
+    this.on("success", function(file) {
+      console.log(dz.removeFile(file));
   });
   },
   chunksUploaded: function(xhr, done){
@@ -122,17 +125,19 @@ var dropzone = $("#dropzone_form").dropzone({
     console.log("The file has been uploaded.");
   },
   //после успешной загрузки файла выводим его в списке файлов
-  success: function(file, xhr){
+  success: function(file){
     //получаем ответ с сервера
     var response = JSON.parse(file.xhr.response);
-    
+
+    num_of_files++;
+
     var tbody = $("#tbody");
-    if(files_appended === false)
+    if(num_of_files === 1)
     {
       files_appended = true;
-      tbody.append("<tr><td colspan='3'><b>Appended files</b></td>");
+      tbody.append("<tr id='appended_files'><td colspan='3'><b>Appended files</b></td>");
     }
-
+    
     tbody.append(`<tr><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
     <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
     <span class="icon">

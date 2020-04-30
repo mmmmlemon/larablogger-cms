@@ -188,7 +188,7 @@ class PostsController extends Controller
         //если intval равен 0 значит вместо id было передано имя файла
         //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
         //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
-        if(intval($request->id) == 0)
+        if(intval($request->media_id) == 0)
         {   $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
             $check = unlink(storage_path("app\\public\\temp\\".$filename));
             if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
