@@ -183,21 +183,30 @@ class PostsController extends Controller
         return redirect(url('/control/posts'));
     }
 
-    //загрузить файлы в temp
-    public function upload_to_temp(Request $request){
-        dd($request->file);
-    }
-
     //удаление файла из поста
     public function delete_media(Request $request){
-        $media = App\Media::find($request->id);
-        $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
-        if($check_delete == true) 
-        {
-            $media->delete();
-            return response()->json(['result'=>'success']); 
+        //если intval равен 0 значит вместо id было передано имя файла
+        //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
+        //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
+        if(intval($request->id) == 0)
+        {   $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
+            $check = unlink(storage_path("app\\public\\temp\\".$filename));
+            if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
         }
-        else { return response()->json(['result'=>'failure']);}
+        //если же был передан id, значит этот файл уже был добавлен ранее и он прописан в БД
+        //мы удаляем как сам файл, так и саму запись о нём в базе данных по id
+        else
+        {
+            $media = App\Media::find($request->id);
+            $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
+            if($check_delete == true) 
+            {
+                $media->delete();
+                return response()->json(['result'=>'success']); 
+            }
+            else { return response()->json(['result'=>'failure']);}
+        }
+
     }
 
 
@@ -297,8 +306,6 @@ class PostsController extends Controller
        fputs($file,file_get_contents($request->file));
        fclose($file);
        
-
-
        return response()->json([
         'file_url' => asset("storage/temp/".$filename),
         'filename' =>  $filename,

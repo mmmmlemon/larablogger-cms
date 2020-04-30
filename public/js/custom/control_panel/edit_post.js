@@ -29,9 +29,13 @@ const player = new Plyr('#player');
   });
 
   //по нажатию на кнопку удаления показать окно подтвреждения удаления
-  $(".delete_media").click(function(){
+  $(document).on("click",".delete_media",function(){
     $(".modalDelete").addClass("is-active fade-in");
-    $("#submit_modal").data("id", $(this).data("id"));
+   if($(this).data("id") === undefined)
+   {$("#submit_modal").data("id", $(this).data("filename"));}
+   else
+   { $("#submit_modal").data("id", $(this).data("id"));}
+   
     //записываем строку в которой находится файл, чтобы спрятать её после удаления
     tr = $(this).parent().parents()[0];
   });
@@ -62,7 +66,8 @@ const player = new Plyr('#player');
       type:'POST',
       url: '/delete_media',
       data: {id: media_id},
-      success: function(){
+      success: function(response){
+        console.log(response)
         console.log("%cThe file has been succesfully p u r g e d from existance.", "color: red;");
       }
     });
@@ -128,7 +133,12 @@ var dropzone = $("#dropzone_form").dropzone({
       tbody.append("<tr><td colspan='3'><b>Appended files</b></td>");
     }
 
-    tbody.append(`<tr><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td></tr>`);
+    tbody.append(`<tr><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
+    <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
+    <span class="icon">
+      <i class="fas fa-trash"></i>
+    </span>
+  </a></td></tr>`);
 
 
 }});
