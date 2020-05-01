@@ -76,44 +76,41 @@
                   </div>
             </form>
 
-            @if(count($media)==0)
-            <div class="field" id="file_browser">
+          
+            <div class="field">
               <div class="white-bg">
-                <div class="subtitle">No files attached</div>
+                <div class="subtitle   @if(count($media)>0) invisible @endif" id="no_files">No files attached</div>
+                <div class="field  @if(count($media)==0) invisible @endif" id="file_browser">
+                    <div class="subtitle">Attached media</div>
+                    <table class="table is-fullwidth is-hoverable is-narrow" >
+                      <thead>
+                        <th>Filename</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                      </thead>
+                    <tbody id="tbody">
+                      @if(count($media)>0)
+                        @foreach($media as $m)
+                        <tr>
+                        <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
+                        <td>{{$m->media_type}}</td>
+                        <td>
+                        <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">
+                            <span class="icon">
+                              <i class="fas fa-trash"></i>
+                            </span>
+                          </a>
+                        </td>
+                        </tr>
+                      
+                        @endforeach
+                      @endif
+                    </tbody>
+                </table>
+    
+                </div>
               </div>
             </div>
-            @else
-            <div class="field" id="file_browser">
-              <div class="white-bg">
-                <div class="subtitle">Attached media</div>
-                <table class="table is-fullwidth is-hoverable is-narrow">
-                  <thead>
-                    <th>Filename</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                  </thead>
-                <tbody id="tbody">
-                @foreach($media as $m)
-                <tr>
-                <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
-                <td>{{$m->media_type}}</td>
-                <td>
-                <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">
-                    <span class="icon">
-                      <i class="fas fa-trash"></i>
-                    </span>
-                  </a>
-                </td>
-                </tr>
-              
-                @endforeach
-              </tbody>
-            </table>
-
-              </div>
-            </div>
-            @endif
-
             <form action="/upload_files" method="POST" class="dropzone" id="dropzone_form">
               @csrf
               <div class="fallback">

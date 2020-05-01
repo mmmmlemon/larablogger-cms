@@ -18,8 +18,7 @@ var tr;
 
 const player = new Plyr('#player');
 
-var num_of_files = 0;
-
+var num_of_files = $("#tbody").children().length;
 
 //ajax-функция для очистки папки temp
 var clear_temp = function() {
@@ -57,7 +56,6 @@ var clear_temp = function() {
 
   //удалить файл
   $("#submit_modal").click(function(){
-    clear_temp();
     //прячем строку таблицы и отправялем ajax
     $(tr).attr("style","display: none;");
     send_delete_media_request($(this).data("id"));
@@ -81,7 +79,12 @@ var clear_temp = function() {
         console.log(response);
         num_of_files--;
         if(num_of_files === 0)
-        {$("#appended_files").remove();}
+        {
+          console.log("num of files is ZERO")
+          $("#appended_files").remove();
+          $("#file_browser").addClass("invisible").removeClass("fade-in");
+          $("#no_files").removeClass("invisible").addClass("fade-in");
+        }
         console.log("%cThe file has been succesfully p u r g e d from existance.", "color: red;");
       }
     });
@@ -120,9 +123,8 @@ var dropzone = $("#dropzone_form").dropzone({
   parallelUploads: 20,
   init: function(){
 
-    clear_temp();
+   // clear_temp();
     var dz = this;
-
     this.on('sending', function(file, xhr, data){
       console.log(`%cSending file ${file.name}`, 'color:grey;');
       data.append("filename", file.name);
@@ -140,6 +142,12 @@ var dropzone = $("#dropzone_form").dropzone({
   success: function(file){
     //получаем ответ с сервера
     var response = JSON.parse(file.xhr.response);
+
+    if(num_of_files === 0)
+    {
+      $("#no_files").addClass("invisible");
+      $("#file_browser").removeClass("invisible").addClass("fade-in");
+    }
 
     num_of_files++;
 
