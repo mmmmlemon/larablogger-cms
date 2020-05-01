@@ -48,6 +48,9 @@
   <!-- FontAwesome -->
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
+  <!--Shared Scripts-->
+  <script src="{{ asset('js/custom/shared/shared.js') }}"></script>
+
 </head>
 <body>
     <section class="hero header">

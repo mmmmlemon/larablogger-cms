@@ -118,8 +118,7 @@
                 <input name="file" type="file" multiple />
               </div>
             </form>
-
-
+            
             <button id="submit_post" type="submit" class="button is-link">
               <span class="icon">
                   <i class="fas fa-save"></i>

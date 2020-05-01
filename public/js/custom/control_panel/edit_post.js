@@ -1,5 +1,9 @@
 //скрипты для страницы редактирования поста
 
+//очищаем папку temp
+clear_temp();
+
+//richText для редактирования текста поста
 $('.textarea').richText({
     imageUpload:false,
     videoEmbed:false,
@@ -7,167 +11,85 @@ $('.textarea').richText({
     fileUpload: false,
   });
 
+  //tagEditor
   $('#tags').tagEditor();
 
+  //счетчик символов
   $(document).ready(function(){
     $('#title').charCounter();
   });
 
-  
+//переменная для хранения строки, которая будет удаленя после удаления файла
 var tr;
 
+//Plyr, видеоплеер
 const player = new Plyr('#player');
 
+//получаем кол-во файлов в посте
+//если файлов 0, то таблица с файлами не будет показываться
 var num_of_files = $("#tbody").children().length;
 
-//ajax-функция для очистки папки temp
-var clear_temp = function() {
-  $.ajax('/clear_temp',
+//по нажатию на кнопку удаления показать модальное окно подтвреждения удаления
+$(document).on("click",".delete_media",function(){
+  //показываем модальное окно
+  $(".modalDelete").addClass("is-active fade-in");
+  //если параметр data-id не определен, то значит в модальное окно будет передаваться имя файла
+  //и удаление произойдет по имени файла
+  if($(this).data("id") === undefined)
+  {$("#submit_modal").data("id", $(this).data("filename"));}
+  else //если data-id определен, значит передаваться будет id, и удаление произойдет по id
+  //т.е при помощи записи о файле в БД
+  { $("#submit_modal").data("id", $(this).data("id"));}
+
+  //записываем строку таблицы в которой находится файл, чтобы удалить её после удаления
+  tr = $(this).parent().parents()[0];
+});
+
+//закрыть модальное окно подтвреждения удаления
+$("#close_delete_modal").click(function() {
+  $(".modalDelete").removeClass("is-active fade-in");
+});
+
+//удалить файл
+$("#submit_modal").click(function(){
+  //прячем строку таблицы и отправялем ajax
+  //послать запрос на удаление файла
+  send_delete_media_request($(this).data("id"));
+
+});
+
+//отправка запроса на удаление файла через ajax
+function send_delete_media_request(media_id)
+{
+  //установка заголовка с csrf-токеном
+  $.ajaxSetup({
+      headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: '/delete_media',
+    data: {id: media_id},
+    success: function(response){
+      //если запрос выполнился успешно, то уменьшем счетчик файлов на один
+      num_of_files--;
+      $(tr).attr("style","display: none;"); //и удаляем строку таблицы с файлом
+      //убираем модальное окно
+      $(".modalDelete").removeClass("is-active fade-in");
+      if(num_of_files === 0)
       {
-        success: function (data, status, xhr){
-        console.log("%cTemp directory has been p u r g e d", "color: red;");
-      }});
+        $("#appended_files").remove();
+        $("#file_browser").addClass("invisible").removeClass("fade-in");
+        $("#no_files").removeClass("invisible").addClass("fade-in");
+      }
+      console.log("%cThe file has been succesfully deleted.", "color: red;");
+    }
+  });
 }
 
-  //закрыть модальное окно с превью
-  $("#modal-close").click(function() {
-    $("#preview-modal").removeClass("is-active");
-    player.stop();
-    $("#content-in-modal").attr("style", "display: none");
-    $("#player").attr("style", "display: none;");
-  });
-
-  //по нажатию на кнопку удаления показать окно подтвреждения удаления
-  $(document).on("click",".delete_media",function(){
-    $(".modalDelete").addClass("is-active fade-in");
-   if($(this).data("id") === undefined)
-   {$("#submit_modal").data("id", $(this).data("filename"));}
-   else
-   { $("#submit_modal").data("id", $(this).data("id"));}
-   
-    //записываем строку в которой находится файл, чтобы спрятать её после удаления
-    tr = $(this).parent().parents()[0];
-  });
-
-  //закрыть модальное окно подтвреждения удаления
-  $("#close_delete_modal").click(function() {
-    $(".modalDelete").removeClass("is-active fade-in");
-  });
-
-  //удалить файл
-  $("#submit_modal").click(function(){
-    //прячем строку таблицы и отправялем ajax
-    $(tr).attr("style","display: none;");
-    send_delete_media_request($(this).data("id"));
-    //убираем модальное окно
-   $(".modalDelete").removeClass("is-active fade-in");
-  })
-
-  //отправка запроса на удаление файла через ajax
-  function send_delete_media_request(media_id)
-  {
-    $.ajaxSetup({
-        headers: {
-       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }});
-
-    $.ajax({
-      type:'POST',
-      url: '/delete_media',
-      data: {id: media_id},
-      success: function(response){
-        console.log(response);
-        num_of_files--;
-        if(num_of_files === 0)
-        {
-          console.log("num of files is ZERO")
-          $("#appended_files").remove();
-          $("#file_browser").addClass("invisible").removeClass("fade-in");
-          $("#no_files").removeClass("invisible").addClass("fade-in");
-        }
-        console.log("%cThe file has been succesfully p u r g e d from existance.", "color: red;");
-      }
-    });
-  }
-
-
-//табы
-
-$("#browse_files").click(function(){
-  $(this).addClass("is-active");
-  $("#add_files").removeClass("is-active");
-  $("#file_form").addClass("invisible");
-  $("#file_browser").removeClass("invisible").addClass("fade-in");
-});
-
-$("#add_files").click(function(){
-  $(this).addClass("is-active");
-  $("#browse_files").removeClass("is-active");
-  $("#file_browser").addClass("invisible");
-  $("#file_form").removeClass("invisible").addClass("fade-in");
-});
-
-Dropzone.autoDiscover = false;
-
-//dropzone
-var dropzone = $("#dropzone_form").dropzone({
-  //autoProcessQueue: false, //автозагрузка файлов: 
-  chunking: true, //разбиение на чанки
-  chunkSize: 20000000, //макс размер чанка: 20 мб
-  retryChunks: false, 
-  addRemoveLinks: true, //кнопка удаления файлов
-  paramName: 'file',
-  forceChunking: true,
-  maxFiles: 20,
-  maxFilesize: 4000, //максимальный размер файла: 4 гб
-  parallelUploads: 20,
-  init: function(){
-
-   // clear_temp();
-    var dz = this;
-    this.on('sending', function(file, xhr, data){
-      console.log(`%cSending file ${file.name}`, 'color:grey;');
-      data.append("filename", file.name);
-    });
-
-    this.on("success", function(file) {
-      console.log(dz.removeFile(file));
-  });
-  },
-  chunksUploaded: function(xhr, done){
-    done();
-    console.log("The file has been uploaded.");
-  },
-  //после успешной загрузки файла выводим его в списке файлов
-  success: function(file){
-    //получаем ответ с сервера
-    var response = JSON.parse(file.xhr.response);
-
-    if(num_of_files === 0)
-    {
-      $("#no_files").addClass("invisible");
-      $("#file_browser").removeClass("invisible").addClass("fade-in");
-    }
-
-    num_of_files++;
-
-    var tbody = $("#tbody");
-    if(num_of_files === 1)
-    {
-      files_appended = true;
-      tbody.append("<tr class='fade-in' id='appended_files'><td colspan='3'><b>Appended files</b></td>");
-    }
-    
-    tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
-    <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
-    <span class="icon">
-      <i class="fas fa-trash"></i>
-    </span>
-  </a></td></tr>`);
-
-
-}});
-
+//показать превью файла
 $(document).on('click', ".preview", function(){
   $("#preview-modal").addClass("is-active fade-in"); 
   //если картинка, то показываем тег img
@@ -183,6 +105,81 @@ $(document).on('click', ".preview", function(){
   }
 });
 
-$("#submit_post").click(function(){
-$("#post_form").submit();
+//закрыть модальное окно с превью
+$("#modal-close").click(function() {
+  $("#preview-modal").removeClass("is-active");
+  player.stop(); //стопорим плеер, чтобы видео не играло в фоне :)
+  $("#content-in-modal").attr("style", "display: none");
+  $("#player").attr("style", "display: none;");
 });
+
+//отправить пост
+$("#submit_post").click(function(){
+  $("#post_form").submit();
+});
+  
+//выключаем autoDiscover у дропзоны
+Dropzone.autoDiscover = false;
+
+//dropzone
+var dropzone = $("#dropzone_form").dropzone({
+  //autoProcessQueue: false, //автозагрузка файлов: 
+  chunking: true, //разбиение на чанки
+  chunkSize: 20000000, //макс размер чанка: 20 мб
+  retryChunks: false, 
+  addRemoveLinks: true, //кнопка удаления файлов
+  paramName: 'file',
+  forceChunking: true,
+  maxFiles: 20,
+  maxFilesize: 4000, //максимальный размер файла: 4 гб
+  parallelUploads: 20,
+  init: function(){
+    var dz = this;
+    //при отправке файла показать сообщение в консоли и добавить отправляемым файлам имя файла
+    this.on('sending', function(file, xhr, data){
+      console.log(`%cSending file ${file.name}`, 'color:grey;');
+      data.append("filename", file.name);
+    });
+
+  },
+  chunksUploaded: function(xhr, done){
+    done();
+    console.log("The file has been uploaded.");
+  },
+  //после успешной загрузки файла выводим его в списке файлов
+  success: function(file){
+    dz.removeFile(file); //убираем файл из дропзоны
+
+    //получаем ответ с сервера
+    var response = JSON.parse(file.xhr.response);
+
+    //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
+    if(num_of_files === 0)
+    {
+      $("#no_files").addClass("invisible");
+      $("#file_browser").removeClass("invisible").addClass("fade-in");
+    }
+
+    //делаем +1 к кол-ву файлов
+    num_of_files++;
+
+    var tbody = $("#tbody");
+    if(num_of_files === 1) //если кол-во файлов 1, то добавляем заголовок "Appended files"
+    {
+      files_appended = true;
+      tbody.append("<tr class='fade-in' id='appended_files'><td colspan='3'><b>Appended files</b></td>");
+    }
+    
+    //выводим файл в таблице
+    tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
+    <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
+    <span class="icon">
+      <i class="fas fa-trash"></i>
+    </span>
+  </a></td></tr>`);
+
+
+}});
+
+
+
