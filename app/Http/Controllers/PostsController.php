@@ -229,8 +229,12 @@ class PostsController extends Controller
         //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
         if(intval($request->id) == 0)
         {   $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
-            $check = unlink(storage_path("app\\public\\temp\\".$filename));
-            if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
+          
+            if(is_file(storage_path("app\\public\\temp\\".$filename)))
+            {
+                $check = unlink(storage_path("app\\public\\temp\\".$filename));
+                if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
+            }
         }
         //если же был передан id, значит этот файл уже был добавлен ранее и он прописан в БД
         //мы удаляем как сам файл, так и саму запись о нём в базе данных по id

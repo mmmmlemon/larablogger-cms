@@ -171,6 +171,18 @@ var dropzone = $("#dropzone_form").dropzone({
         <i class="fas fa-trash"></i>
       </span>
     </a></td></tr>`);
+    });
+
+    this.on('canceled', function(file){
+      console.log(`%c${file.name} - upload has been canceled.`,'color: red;');
+      // console.log(file);
+      // var filename = file.name;
+      // var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
+      // var name = filename.replace(/\.[^/.]+$/, "");
+      // var uuid = file.upload.uuid.substr(0,7);
+      // var full_filename = name+"-"+uuid+"."+ext;
+      // console.log(full_filename);
+      // send_delete_media_request(full_filename);
     })
 
   },
