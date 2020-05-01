@@ -22,6 +22,8 @@ $('.textarea').richText({
 //переменная для хранения строки, которая будет удаленя после удаления файла
 var tr;
 
+var uploaded_files = [];
+
 //Plyr, видеоплеер
 const player = new Plyr('#player');
 
@@ -55,7 +57,6 @@ $("#submit_modal").click(function(){
   //прячем строку таблицы и отправялем ajax
   //послать запрос на удаление файла
   send_delete_media_request($(this).data("id"));
-
 });
 
 //отправка запроса на удаление файла через ajax
@@ -96,7 +97,6 @@ $(document).on('click', ".preview", function(){
   if($(this).data("type")==="image")
   { $("#content-in-modal").attr("style", "display: block");
     $("#content-in-modal").attr("src", $(this).data("url"));
-    console.log( $(this).data("url"))
   }
   //если видео, то показываем плеер
   if($(this).data("type")==="video")
@@ -115,7 +115,8 @@ $("#modal-close").click(function() {
 
 //отправить пост
 $("#submit_post").click(function(){
-  $("#post_form").submit();
+  //$("#post_form").submit();
+  console.log(JSON.stringify(uploaded_files))
 });
   
 //выключаем autoDiscover у дропзоны
@@ -146,6 +147,7 @@ var dropzone = $("#dropzone_form").dropzone({
 
       //получаем ответ с сервера
       var response = JSON.parse(file.xhr.response);
+      uploaded_files.push(response.filename);
   
       //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
       if(num_of_files === 0)
@@ -186,9 +188,9 @@ var dropzone = $("#dropzone_form").dropzone({
     })
 
   },
-  chunksUploaded: function(xhr, done){
+  chunksUploaded: function(xhr, done, file){
     done();
-    console.log("The file has been uploaded.");
+    console.log(`The file ${xhr.name} has been uploaded.`);
   }
 });
 
