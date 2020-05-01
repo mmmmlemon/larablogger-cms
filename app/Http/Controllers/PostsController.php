@@ -199,9 +199,9 @@ class PostsController extends Controller
             foreach($temp_files as $file){
                 //путь по которому будет перемещен файл
                 $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
+              
                 $move = File::move($file->getPathname(), $new_path);
             
-
                 //если переместить файл не удалось, то редиректим с ошибкой
                 if($move != true) 
                 {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
@@ -216,10 +216,8 @@ class PostsController extends Controller
                 $media->media_type = $mime;
                 $media->save(); 
                 }
-            }         
-            
+            }             
          }
-        
         
         return redirect(url('/control/posts'));
     }
@@ -252,8 +250,6 @@ class PostsController extends Controller
                 
                 $media->delete();
 
-       
-
                 return response()->json(['result'=>'success']); 
             }
             else { return response()->json(['result'=>'failure']);}
@@ -267,7 +263,6 @@ class PostsController extends Controller
         $categories = App\Category::where('category_name','!=','blank')->get();
         return view('control_panel/posts/create_post', compact('categories','current_date'));
     }
-
 
     //создание (сохранение) поста
     public function create_post(Request $request)
@@ -349,7 +344,12 @@ class PostsController extends Controller
     {  
        //получаем имя файла
        $filename = $request->filename;
-    
+       $uuid8 = substr($request->dzuuid, 0, 7);
+       $p = pathinfo($filename);
+       $ext = $p['extension'];
+       $name = $p['filename'];
+       $filename = $name."-".$uuid8.".".$ext;
+       
        //создаем файл в нужной папке, и открываем его в режиме append
        $file = fopen(storage_path('app\\public\\temp\\')."$filename","a");
 

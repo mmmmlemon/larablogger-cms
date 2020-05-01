@@ -141,45 +141,44 @@ var dropzone = $("#dropzone_form").dropzone({
       data.append("filename", file.name);
     });
 
+    this.on('success', function(file){
+      dz.removeFile(file); //убираем файл из дропзоны
+
+      //получаем ответ с сервера
+      var response = JSON.parse(file.xhr.response);
+  
+      //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
+      if(num_of_files === 0)
+      {
+        $("#no_files").addClass("invisible");
+        $("#file_browser").removeClass("invisible").addClass("fade-in");
+      }
+  
+      //делаем +1 к кол-ву файлов
+      num_of_files++;
+  
+      var tbody = $("#tbody");
+      if(num_of_files === 1) //если кол-во файлов 1, то добавляем заголовок "Appended files"
+      {
+        files_appended = true;
+        tbody.append("<tr class='fade-in' id='appended_files'><td colspan='3'><b>Appended files</b></td>");
+      }
+      
+      //выводим файл в таблице
+      tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
+      <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
+      <span class="icon">
+        <i class="fas fa-trash"></i>
+      </span>
+    </a></td></tr>`);
+    })
+
   },
   chunksUploaded: function(xhr, done){
     done();
     console.log("The file has been uploaded.");
-  },
-  //после успешной загрузки файла выводим его в списке файлов
-  success: function(file){
-    dz.removeFile(file); //убираем файл из дропзоны
-
-    //получаем ответ с сервера
-    var response = JSON.parse(file.xhr.response);
-
-    //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
-    if(num_of_files === 0)
-    {
-      $("#no_files").addClass("invisible");
-      $("#file_browser").removeClass("invisible").addClass("fade-in");
-    }
-
-    //делаем +1 к кол-ву файлов
-    num_of_files++;
-
-    var tbody = $("#tbody");
-    if(num_of_files === 1) //если кол-во файлов 1, то добавляем заголовок "Appended files"
-    {
-      files_appended = true;
-      tbody.append("<tr class='fade-in' id='appended_files'><td colspan='3'><b>Appended files</b></td>");
-    }
-    
-    //выводим файл в таблице
-    tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
-    <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
-    <span class="icon">
-      <i class="fas fa-trash"></i>
-    </span>
-  </a></td></tr>`);
-
-
-}});
+  }
+});
 
 
 
