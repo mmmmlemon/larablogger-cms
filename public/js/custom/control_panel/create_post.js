@@ -48,7 +48,9 @@ var dropzone = $("#file_form").dropzone({
     var dropzone = this;
     //при отправке файла, так же будет отправляться имя файла
     this.on('sending', function(file, xhr, data){
+      file.name = file.name + " pee and also poo";
       console.log(`%cSending file ${file.name}`, 'color:grey;');
+ 
       data.append("filename", file.name);
     });
       
@@ -65,7 +67,6 @@ var dropzone = $("#file_form").dropzone({
       {
         if(canceled === false) //если загрузка не была отменена, то отправляем форму
         {
-          console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
           //$("#post_form").submit();
         }
         else //если была отменена, то убираем cообщения и ничего не делаем
@@ -75,13 +76,20 @@ var dropzone = $("#file_form").dropzone({
         }
       }
     });
+
+    this.on("removedfile", function(file){
+      //console.log()
+      var index_of_el = uploaded_files.findIndex(x => x.uuid === file.upload.uuid);
+      uploaded_files.splice(index_of_el, 1);
+      console.log(uploaded_files);
+    });
       
   },
   //когда загрузится файл (или его чанки)
   //обновляем месседжи и выводим в консоль
-  chunksUploaded: function(file, done, xhr){
+  chunksUploaded: function(file, done){
     var response = JSON.parse(file.xhr.response);
-    uploaded_files.push(response.filename);
+    uploaded_files.push({filename:response.filename, uuid: file.upload.uuid});
     done();
     console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
   }
@@ -91,8 +99,6 @@ var dropzone = $("#file_form").dropzone({
  
 //отправить пост
 $("#submit_post").click(function(){
-
-  console.log("m e m e");
 
   //установка заголовка с csrf-токеном
   $.ajaxSetup({

@@ -170,7 +170,7 @@ var dropzone = $("#dropzone_form").dropzone({
 
       //получаем ответ с сервера
       var response = JSON.parse(file.xhr.response);
-      uploaded_files.push(response.filename);
+      uploaded_files.push({filename:response.filename, uuid: file.upload.uuid});
   
       //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
       if(num_of_files === 0)
@@ -200,7 +200,7 @@ var dropzone = $("#dropzone_form").dropzone({
 
     this.on('canceled', function(file){
       console.log(`%c${file.name} - upload has been canceled.`,'color: red;');
-    })
+    });
 
   },
   //когда файл или все чанки файла загрузятся, пишем в консоль

@@ -303,7 +303,7 @@ class PostsController extends Controller
 
         //получаем список файлов в папке temp
         $temp_files = json_decode($request->file_list);
-        //dd($temp_files);
+        
         if(count($temp_files) == 0)
         {   
             //если в папке временных файлов нет ни одного файла, т.е
@@ -321,8 +321,8 @@ class PostsController extends Controller
             {
                 foreach($temp_files as $file){
                     //путь по которому будет перемещен файл
-                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
-                    $move = File::move(storage_path("app\\public\\temp\\").$file, $new_path);
+                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->filename;
+                    $move = File::move(storage_path("app\\public\\temp\\").$file->filename, $new_path);
                 
 
                     //если переместить файл не удалось, то редиректим с ошибкой
@@ -335,7 +335,7 @@ class PostsController extends Controller
                     $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
                     $media = new App\Media; //создаем запись о медиа и сохраняем
                     $media->post_id = $post->id;
-                    $media->media_url = "posts/". $folder_name."/".$file;
+                    $media->media_url = "posts/". $folder_name."/".$file->filename;
                     $media->media_type = $mime;
                     $media->save(); 
                     }
