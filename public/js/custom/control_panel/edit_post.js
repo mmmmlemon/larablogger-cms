@@ -22,6 +22,7 @@ $('.textarea').richText({
 //переменная для хранения строки, которая будет удаленя после удаления файла
 var tr;
 
+//список загруженных файлов в папку temp
 var uploaded_files = [];
 
 //Plyr, видеоплеер
@@ -115,8 +116,6 @@ $("#modal-close").click(function() {
 
 //отправить пост
 $("#submit_post").click(function(){
-  //$("#post_form").submit();
-
   //установка заголовка с csrf-токеном
   $.ajaxSetup({
     headers: {
@@ -201,17 +200,10 @@ var dropzone = $("#dropzone_form").dropzone({
 
     this.on('canceled', function(file){
       console.log(`%c${file.name} - upload has been canceled.`,'color: red;');
-      // console.log(file);
-      // var filename = file.name;
-      // var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
-      // var name = filename.replace(/\.[^/.]+$/, "");
-      // var uuid = file.upload.uuid.substr(0,7);
-      // var full_filename = name+"-"+uuid+"."+ext;
-      // console.log(full_filename);
-      // send_delete_media_request(full_filename);
     })
 
   },
+  //когда файл или все чанки файла загрузятся, пишем в консоль
   chunksUploaded: function(xhr, done, file){
     done();
     console.log(`The file ${xhr.name} has been uploaded.`);
