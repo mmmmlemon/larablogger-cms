@@ -277,15 +277,15 @@ class PostsController extends Controller
         $request->validate([
             'post_title' => 'string|max:35',
             'post_content' => 'string',
-            'publish' => 'string',
-            'publish_date' => 'date|after:yesterday'
+            'post_visibility' => 'string',
+            'post_date' => 'date|after:yesterday'
         ]);
 
         //создаем новый пост и набиваем его данными
         $post = new App\Post;
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
-        $post->category_id = $request->category;
+        $post->category_id = $request->post_category;
         if($request->tags == "")
         {$post->tags =  NULL;}
         else
@@ -293,16 +293,17 @@ class PostsController extends Controller
 
         //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
         //если нет, то ту дату которая указана в поле с датой
-        if($request->publish == 'on'){
+        if($request->post_visibility == 'on'){
             $post->visibility = 1;
-            $post->date = Carbon::now()->format('Y-m-d');
+            $post->date = $request->post_date;
         } else {
-            $post->visibility = 1;
-            $post->date = $request->publish_date;
+            $post->visibility = 0;
+            $post->date = $request->post_date;
         }
 
         //получаем список файлов в папке temp
-        $temp_files = File::files(storage_path("app\\public\\temp"));
+        $temp_files = json_decode($request->file_list);
+        //dd($temp_files);
         if(count($temp_files) == 0)
         {   
             //если в папке временных файлов нет ни одного файла, т.е
@@ -320,8 +321,8 @@ class PostsController extends Controller
             {
                 foreach($temp_files as $file){
                     //путь по которому будет перемещен файл
-                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
-                    $move = File::move($file->getPathname(), $new_path);
+                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
+                    $move = File::move(storage_path("app\\public\\temp\\").$file, $new_path);
                 
 
                     //если переместить файл не удалось, то редиректим с ошибкой
@@ -334,7 +335,7 @@ class PostsController extends Controller
                     $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
                     $media = new App\Media; //создаем запись о медиа и сохраняем
                     $media->post_id = $post->id;
-                    $media->media_url = "posts/". $folder_name."/".$file->getFilename();
+                    $media->media_url = "posts/". $folder_name."/".$file;
                     $media->media_type = $mime;
                     $media->save(); 
                     }
@@ -342,7 +343,7 @@ class PostsController extends Controller
             }
         }
     
-        return redirect(url('/control/posts'));
+        return response()->json(['msg'=>'The post "'.$request->post_title.'" has been created.']);
     }
 
     

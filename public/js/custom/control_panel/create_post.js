@@ -12,10 +12,12 @@ $("#publish_checkbox").click(function(){
 });
 
 //выключаем autodiscover у Dropzone
+Dropzone.autoDiscover = false;
 
-var count = 0;
-var length = 0;
 var canceled = false;
+
+//список загруженных файлов
+var uploaded_files = [];
 
 //ajax-функция для очистки папки temp
 var clear_temp = function() {
@@ -28,7 +30,7 @@ var clear_temp = function() {
 
 //инициализируем dropzone с опциями
 var dropzone = $("#file_form").dropzone({
-  autoProcessQueue: false, //автозагрузка файлов: 
+  autoProcessQueue: true, //автозагрузка файлов - вкл 
   chunking: true, //разбиение на чанки
   chunkSize: 20000000, //макс размер чанка: 20 мб
   retryChunks: false, 
@@ -41,32 +43,13 @@ var dropzone = $("#file_form").dropzone({
 
   //вешаем ивенты на дропзону при инициализации
   init: function(){
+    clear_temp();
+
     var dropzone = this;
     //при отправке файла, так же будет отправляться имя файла
     this.on('sending', function(file, xhr, data){
       console.log(`%cSending file ${file.name}`, 'color:grey;');
       data.append("filename", file.name);
-      length = dropzone.files.length;
-      $("#n_of_n").text(`Uploaded ${count} of ${length}`)
-    });
-
-    //при нажатии на кнопку отправки, запустится загрузка файлов
-    $("#submit").click(function(){
-      clear_temp();
-      if(dropzone.files.length === 0)
-      {
-        //если файлы не были добавлены в дропзону, то отправляем пост
-      $("#post_form").submit();
-      }
-      else
-      {
-      //если были добавлены файлы, то начинаем загрузку и показываем сообщения
-      dropzone.processQueue();
-      $("#cancel").removeClass("invisible");
-      $("#n_of_n").removeClass("invisible").addClass("fade-in");
-      $("#loader").removeClass("invisible");
-      $("#upload_msg").removeClass("invisible").addClass("blinking-anim");
-      }
     });
       
     //при нажатии кнопки отмены, убираем все загрузки и очищаем папку temp
@@ -83,16 +66,12 @@ var dropzone = $("#file_form").dropzone({
         if(canceled === false) //если загрузка не была отменена, то отправляем форму
         {
           console.info("%cAll files are uploaded! Submitting post.", 'color: green;');
-          $("#post_form").submit();
+          //$("#post_form").submit();
         }
-        else //если была отменена, то убираем вообщения и ничего не делаем
+        else //если была отменена, то убираем cообщения и ничего не делаем
         {
           console.info("Uploads were canceled by user.");
           canceled = false;
-          $("#cancel").addClass("invisible");
-          $("#n_of_n").addClass("invisible");
-          $("#loader").addClass("invisible");
-          $("#upload_msg").addClass("invisible");
         }
       }
     });
@@ -100,14 +79,47 @@ var dropzone = $("#file_form").dropzone({
   },
   //когда загрузится файл (или его чанки)
   //обновляем месседжи и выводим в консоль
-  chunksUploaded: function(file, done){
-    count++;
-    console.log(done)
-    $("#n_of_n").text(`Uploaded ${count} of ${length}`)
+  chunksUploaded: function(file, done, xhr){
+    var response = JSON.parse(file.xhr.response);
+    uploaded_files.push(response.filename);
     done();
     console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
   }
 });
+
+
+ 
+//отправить пост
+$("#submit_post").click(function(){
+
+  console.log("m e m e");
+
+  //установка заголовка с csrf-токеном
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  // //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: `/control/create_new_post`,
+    data: {
+      file_list: JSON.stringify(uploaded_files),
+      post_title: $("#post_title").val(),
+      post_content: $(".textarea").val(),
+      post_visibility: $("#publish_checkbox").val(),
+      post_date: $("#publish_date").val(),
+      post_category: $("#post_category").val(),
+      tags: $("#tags").val()
+    },
+    //при успешном завершении запроса редиректим к постам
+    success: function(response){
+      window.location.replace("/control/posts");
+    }
+  });
+});
+  
 
 //richText
 //редактор текста
@@ -123,4 +135,4 @@ $('#tags').tagEditor();
 
 //character counter
 //счетчик символов
-$('#title').charCounter();
+$('#post_title').charCounter();

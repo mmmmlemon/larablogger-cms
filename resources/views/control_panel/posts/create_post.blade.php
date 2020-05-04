@@ -23,14 +23,14 @@
             <h1 class="title has-text-centered">Add Post</h1>
             <div class="is-divider"></div>
 
-            <form id="post_form" action="control_panel/create_new_post" enctype="multipart/form-data" method="POST">
+            <form id="post_form" action="control/create_new_post" enctype="multipart/form-data" method="POST">
               @csrf
               <!--категория-->
               <div class="field">
                 <label class="label">Category</label>
                 <div class="control">
                   <div class="select">
-                    <select name="category">
+                    <select name="category" id="post_category">
                       @foreach($categories as $categ)
                     <option value="{{$categ->id}}">{{$categ->category_name}}</option>
                       @endforeach
@@ -43,7 +43,7 @@
                     <div class="control">
                       <!--название поста-->
                       <p class="help">Title</p>
-                      <input maxlength="35" id="title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
+                      <input maxlength="35" id="post_title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
                       placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else @endif">
                     </div>
                     @error('post_title')
@@ -53,7 +53,7 @@
 
                   <!--textarea, содержимое поста-->
                   <p class="help">Content</p>
-                    <textarea class="textarea" id="textarea" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
+                    <textarea class="textarea" id="post_content" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
                     @error('post_content')
                       <p class="help is-danger"><b> {{ $message }}</b></p>
                     @enderror
@@ -94,32 +94,14 @@
                 <input name="file" type="file" multiple />
               </div>
             </form>
-            <!--спиннер и сообщения о загрузке-->
-            <div class="subtitle has-text-centered">
-              <h1 class="invisible" id="n_of_n"># of #</h1>
-              <span id ="loader" class="invisible icon has-text-info">
-                <i class="fas fa-spinner fa-pulse"></i>
-              </span>
-              <h1 class="invisible" id="upload_msg">Uploading files, please don't leave this page</h1>
-            </div>
             <!--кнопка отправки формы-->
-            <a id="submit" class="button is-info">
+            <a id="submit_post" class="button is-info">
               <span class="icon">
                 <i class="fas fa-save"></i>
               </span>
               <span>Save Post</span>
             </a>
-
-            <!--кнопка отмены-->
-            <a id="cancel" class="invisible button is-danger" data-tooltip="Cancel upload">
-              <span class="icon">
-                <i class="fas fa-times"></i>
-              </span>
-              <span>Cancel</span>
-            </a>
-            </div>
-  
-        
+     
 </div>
 @endsection
 

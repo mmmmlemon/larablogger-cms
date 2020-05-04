@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     //ПОСТЫ
     Route::get('/control/create_post', 'PostsController@show_create_post'); //показать страницу создания поста
-    Route::post('/control/control_panel/create_new_post', 'PostsController@create_post'); //сохранить пост
+    Route::post('/control/create_new_post', 'PostsController@create_post'); //сохранить пост
     Route::get('/control/posts', 'PostsController@show_list_of_posts'); //вывести посты в меню постов
     Route::get('/control/posts/date', 'PostsController@show_list_of_posts_by_date'); //вывести посты в меню постов по дате
     //vv пофиксить это vv//
