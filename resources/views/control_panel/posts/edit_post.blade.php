@@ -82,11 +82,10 @@
                   </div>
                     <!--теги-->
                     <div class="field">
+                      <label class="label">Tags</label>
                       <div class="control">
-                          <p class="help">Tags</p>
-                      <input class="input" type="text" id="tags" name="tags" value="{{$post->tags}}" placeholder="video,post,meme,text,whatever">
+                      <input class="input" type="text" data-type="tags" id="tags" placeholder="Choose Tags" value="{{$post->tags}}">
                       </div>
-                      
                     </div>  
             </form>
 
@@ -185,6 +184,7 @@
 
 
 @push('scripts')
+<script src="{{ asset('js/tags-input.js') }}"></script>
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>

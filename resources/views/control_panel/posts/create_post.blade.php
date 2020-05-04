@@ -79,12 +79,11 @@
                   </div>
                   <!--теги-->
                   <div class="field">
+                    <label class="label">Tags</label>
                     <div class="control">
-                        <p class="help">Tags</p>
-                      <input class="input" type="text" id="tags" name="tags" placeholder="video,post,meme,text,whatever">
+                      <input class="input" type="text" data-type="tags" id="tags" placeholder="Choose Tags" value="">
                     </div>
-                    
-                  </div>     
+                  </div>  
             </form>
     
             <!--форма для загрузки файлов-->
@@ -106,6 +105,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/tags-input.js') }}"></script>
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/jquery.caret.min.js') }}"></script>
 <script src="{{ asset('js/jquery.tag-editor.min.js') }}"></script>
@@ -113,4 +113,5 @@
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="{{ asset('js/dropzone.js') }}"></script>
 <script src="{{ asset('js/custom/control_panel/create_post.js') }}"></script>
+
 @endpush

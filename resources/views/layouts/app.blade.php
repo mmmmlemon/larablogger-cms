@@ -36,6 +36,10 @@
   <link href="{{ asset('css/plyr.css') }}" rel="stylesheet">
   <link href="{{ asset('css/basic.min.css') }}" rel="stylesheet">
   <link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/tags-input.css') }}" rel="stylesheet">
+
+
+
 
   <!-- Bulma Extensions -->
   <link href="{{ asset('css/bulma-tooltip.min.css') }}" rel="stylesheet">
@@ -43,10 +47,12 @@
   <link href="{{asset('css/bulma-checkradio.min.css')}}" rel="stylesheet">
   <link href="{{asset('css/bulma-radio-checkbox.min.css')}}" rel="stylesheet">
 
+
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <!-- FontAwesome -->
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
 
   <!--Shared Scripts-->
   <script src="{{ asset('js/custom/shared/shared.js') }}"></script>

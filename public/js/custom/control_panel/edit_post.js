@@ -12,7 +12,9 @@ $('.textarea').richText({
   });
 
   //tagEditor
-  $('#tags').tagEditor();
+  BulmaTagsInput.attach('input[data-type="tags"], input[type="tags"], select[data-type="tags"], select[type="tags"]', {
+    tagClass: 'is-rounded is-info'
+  });
 
   //счетчик символов
   $(document).ready(function(){

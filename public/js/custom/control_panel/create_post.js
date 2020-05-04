@@ -135,8 +135,9 @@ fileUpload:false
 
 //tagEditor
 //редактор тегов
-$('#tags').tagEditor();
-
+BulmaTagsInput.attach('input[data-type="tags"], input[type="tags"], select[data-type="tags"], select[type="tags"]', {
+  tagClass: 'is-rounded is-info'
+});
 //character counter
 //счетчик символов
 $('#post_title').charCounter();
