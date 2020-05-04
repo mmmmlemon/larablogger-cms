@@ -165,23 +165,25 @@ class PostsController extends Controller
         $request->validate([
             'post_title' => 'string|max:35',
             'post_content' => 'string|max:10000',
-            'publish' => 'string'
+            'post_visibility' => 'string'
         ]);
 
         $post = App\Post::find($id);
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
-        $post->tags = $request->tags;
-        $post->category_id = $request->category;
+        //$post->tags = $request->tags;
+        $post->category_id = $request->post_category;
+        
 
-        if($request->publish == 'on'){
+        if($request->post_visibility == 'on'){
             $post->visibility = 1;
         } else {
             $post->visibility = 0;
         }
 
         //получаем список файлов в папке temp
-        $temp_files = File::files(storage_path("app\\public\\temp"));
+        $temp_files = json_decode($request->file_list);
+      // dd($temp_files);
         if(count($temp_files) == 0) //если там нет файлов, то сохраняем пост
         {$post->save();}
         else //если есть, то переносим файлы из temp в папку с медиафайлами поста
@@ -197,10 +199,11 @@ class PostsController extends Controller
          }
 
             foreach($temp_files as $file){
+                
                 //путь по которому будет перемещен файл
-                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->getFilename();
+                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
               
-                $move = File::move($file->getPathname(), $new_path);
+                $move = File::move(storage_path("app\\public\\temp\\".$file), $new_path);
             
                 //если переместить файл не удалось, то редиректим с ошибкой
                 if($move != true) 
@@ -212,14 +215,14 @@ class PostsController extends Controller
                 $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
                 $media = new App\Media; //создаем запись о медиа и сохраняем
                 $media->post_id = $post->id;
-                $media->media_url = "posts/". $folder_name."/".$file->getFilename();
+                $media->media_url = "posts/". $folder_name."/".$file;
                 $media->media_type = $mime;
                 $media->save(); 
                 }
             }             
          }
         
-        return redirect(url('/control/posts'));
+        return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
     }
 
     //удаление файла из поста

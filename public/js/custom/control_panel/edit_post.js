@@ -16,7 +16,7 @@ $('.textarea').richText({
 
   //счетчик символов
   $(document).ready(function(){
-    $('#title').charCounter();
+    $('#post_title').charCounter();
   });
 
 //переменная для хранения строки, которая будет удаленя после удаления файла
@@ -116,7 +116,31 @@ $("#modal-close").click(function() {
 //отправить пост
 $("#submit_post").click(function(){
   //$("#post_form").submit();
-  console.log(JSON.stringify(uploaded_files))
+
+  //установка заголовка с csrf-токеном
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: `/post/${$("#post_id").val()}/edit`,
+    data: {
+      post_id: $("#post_id").val(),
+      file_list: JSON.stringify(uploaded_files),
+      post_title: $("#post_title").val(),
+      post_content: $(".textarea").val(),
+      post_visibility: $("#publish_checkbox").val(),
+      post_date: $("#publish_date").val(),
+      post_category: $("#post_category").val()
+    },
+    //при успешном завершении запроса редиректим к постам
+    success: function(response){
+      window.location.replace("/control/posts");
+    }
+  });
 });
   
 //выключаем autoDiscover у дропзоны

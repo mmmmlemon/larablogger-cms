@@ -29,7 +29,7 @@
                 <label class="label">Category</label>
                 <div class="control">
                   <div class="select">
-                    <select name="category">
+                    <select name="category" id="post_category">
                       @foreach($categories as $categ)
                     <option value="{{$categ->id}}" @if($categ->id == $post->category_id) selected @endif>{{$categ->category_name}}</option>
                       @endforeach
@@ -37,12 +37,13 @@
                   </div>
                 </div>
 
+              <input type="text" id="post_id" value="{{$post->id}}" class="invisible">
 
                 <div class="field">
                     <div class="control">
                         <p class="help">Title</p>
                         <input maxlength="35" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
-                      placeholder="Post title" id="title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
+                      placeholder="Post title" id="post_title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
                     </div>
                     @error('post_title')
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
@@ -51,7 +52,7 @@
 
               
                         <p class="help">Content</p>
-                          <textarea class="textarea" name="post_content"  placeholder="Write your post here">{{$post->post_content}}</textarea>
+                          <textarea class="textarea" name="post_content" id="post_content" placeholder="Write your post here">{{$post->post_content}}</textarea>
                           @error('post_content')
                           <p class="help is-danger"><b> {{ $message }}</b></p>  
                          @enderror
@@ -68,7 +69,7 @@
                     <p class="help">Publish date</p>
                     <p class="control has-icons-left">
                        
-                      <input class="input" data-tooltip="You can't change the date of publishing" type="date" name="publish_date" min="{{date('Y-m-d', strtotime($post->date))}}" id="publish_date" placeholder="Date" value={{$post->date}} disabled>
+                      <input class="input" data-tooltip="You can't change the date of publishing" type="date" id="publish_date" name="publish_date" min="{{date('Y-m-d', strtotime($post->date))}}" id="publish_date" placeholder="Date" value={{$post->date}} disabled>
                       <span class="icon is-small is-left">
                         <i class="fas fa-calendar"></i>
                       </span>
