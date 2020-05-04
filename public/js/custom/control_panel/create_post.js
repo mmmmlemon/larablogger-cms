@@ -95,8 +95,6 @@ var dropzone = $("#file_form").dropzone({
   }
 });
 
-
- 
 //отправить пост
 $("#submit_post").click(function(){
 

@@ -173,7 +173,10 @@ class PostsController extends Controller
         $post->post_content = $request->post_content;
         //$post->tags = $request->tags;
         $post->category_id = $request->post_category;
-        
+        if($request->tags == "")
+        {$post->tags =  NULL;}
+        else
+        {$post->tags = $request->tags;}
 
         if($request->post_visibility == 'on'){
             $post->visibility = 1;
@@ -324,7 +327,6 @@ class PostsController extends Controller
                     $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->filename;
                     $move = File::move(storage_path("app\\public\\temp\\").$file->filename, $new_path);
                 
-
                     //если переместить файл не удалось, то редиректим с ошибкой
                     if($move != true) 
                     {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}

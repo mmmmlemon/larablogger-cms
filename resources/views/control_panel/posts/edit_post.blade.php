@@ -80,6 +80,14 @@
                       </span>
                     </p>
                   </div>
+                    <!--теги-->
+                    <div class="field">
+                      <div class="control">
+                          <p class="help">Tags</p>
+                      <input class="input" type="text" id="tags" name="tags" value="{{$post->tags}}" placeholder="video,post,meme,text,whatever">
+                      </div>
+                      
+                    </div>  
             </form>
 
             <!--просмотр файлов-->

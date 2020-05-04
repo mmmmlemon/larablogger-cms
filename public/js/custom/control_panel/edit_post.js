@@ -133,7 +133,8 @@ $("#submit_post").click(function(){
       post_content: $(".textarea").val(),
       post_visibility: $("#publish_checkbox").val(),
       post_date: $("#publish_date").val(),
-      post_category: $("#post_category").val()
+      post_category: $("#post_category").val(),
+      tags: $("#tags").val()
     },
     //при успешном завершении запроса редиректим к постам
     success: function(response){
@@ -170,7 +171,7 @@ var dropzone = $("#dropzone_form").dropzone({
 
       //получаем ответ с сервера
       var response = JSON.parse(file.xhr.response);
-      uploaded_files.push({filename:response.filename, uuid: file.upload.uuid});
+      uploaded_files.push(response.filename);
   
       //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
       if(num_of_files === 0)
