@@ -53,7 +53,7 @@
 
             <div class="media-content">
               <div class="has-text-centered">
-                <video controls="controls" id="player">
+                <video controls="controls" class="player">
                   <source src="{{asset("storage/".$m->media_url)}}">
                 </video>
               </div>

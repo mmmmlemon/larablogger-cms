@@ -103,7 +103,19 @@ $(document).on('click', ".preview", function(){
   if($(this).data("type")==="video")
   { $("#player").attr("style", "display: block;");
     $("#content-video").attr("src", $(this).data("url"));
-  }
+    player.source = {
+      type: 'video',
+      title: 'Preview',
+      sources: [
+        {
+          src: $(this).data("url"),
+          type: 'video/mp4',
+          size: 720,
+        },
+      ],
+    }; 
+
+}
 });
 
 //закрыть модальное окно с превью
