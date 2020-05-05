@@ -37,12 +37,11 @@
                     </select>
                   </div>
                 </div>
-
-
+                <br>
                 <div class="field">
                     <div class="control">
                       <!--название поста-->
-                      <p class="help">Title</p>
+                      <label class="label">Title</label>
                       <input maxlength="35" id="post_title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
                       placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else @endif">
                     </div>
@@ -52,7 +51,7 @@
                   </div>
 
                   <!--textarea, содержимое поста-->
-                  <p class="help">Content</p>
+                  <label class="label">Main text/content</label>
                     <textarea class="textarea" id="post_content" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
                     @error('post_content')
                       <p class="help is-danger"><b> {{ $message }}</b></p>
@@ -60,14 +59,16 @@
 
                   <!--чекбокс, опубликовать сейчас-->
                   <div class="field">
+                    <br>
                     <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" checked="checked">
-                    <label for="publish_checkbox">Publish now</label>
-                    <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be published immediately, otherwise you have to pick at the picked date">  <i class="fas fa-question-circle"></i> </span>
+                   
+                    <label class="label">Visibility</label>
+                    <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everyone on the web-site, if not, it will be hidden.">  <i class="fas fa-question-circle"></i> </span>
                   
                   </div>
                   <!--дата публикации-->
                   <div class="field">
-                    <p class="help">Publish date</p>
+                    <label class="label">Publish date</label>
                     <p class="control has-icons-left">
                        
                       <input class="input" type="date" name="publish_date" min="{{date('Y-m-d', strtotime($current_date))}}" id="publish_date" placeholder="Date" value={{$current_date}} disabled>
@@ -93,8 +94,9 @@
                 <input name="file" type="file" multiple />
               </div>
             </form>
+            <div>&nbsp;</div>
             <!--кнопка отправки формы-->
-            <a id="submit_post" class="button is-info">
+            <a id="submit_post" class="button is-link">
               <span class="icon">
                 <i class="fas fa-save"></i>
               </span>

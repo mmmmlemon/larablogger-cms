@@ -41,10 +41,10 @@
 
               <!--скрытое после с id поста-->
               <input type="text" id="post_id" value="{{$post->id}}" class="invisible">
-
+                <br>
                 <div class="field">
                     <div class="control">
-                        <p class="help">Title</p>
+                      <label class="label">Title</label>
                         <!--заголовок поста-->
                         <input maxlength="35" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
                       placeholder="Post title" id="post_title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
@@ -55,7 +55,7 @@
                   </div>
 
               
-                        <p class="help">Content</p>
+                        <label class="label">Main text/content</label>
                         <!--текст и основное содержание поста-->
                           <textarea class="textarea" name="post_content" id="post_content" placeholder="Write your post here">{{$post->post_content}}</textarea>
                           @error('post_content')
@@ -66,12 +66,12 @@
                   <div class="field">
                     <!--видимость чекбокс-->
                     <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" @if($post->visibility == 1) checked @endif>
-                    <label for="publish_checkbox">Visibility</label>
+                    <label class="label">Visibility</label>
                     <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everone">  <i class="fas fa-question-circle"></i> </span>
                   </div>
 
                   <div class="field">
-                    <p class="help">Publish date</p>
+                    <label class="label">Publish date</label>
                     <p class="control has-icons-left">
                        <!--дата публикации-->
                       <input class="input" data-tooltip="You can't change the date of publishing" type="date" id="publish_date" name="publish_date" min="{{date('Y-m-d', strtotime($post->date))}}" id="publish_date" placeholder="Date" value={{$post->date}} disabled>
@@ -92,7 +92,7 @@
             <!--просмотр файлов-->
             <div class="field">
               <div class="white-bg">
-                <div class="subtitle   @if(count($media)>0) invisible @endif" id="no_files">No files attached</div>
+                <div style="margin:0;" class="subtitle @if(count($media)>0) invisible @endif" id="no_files">No files attached</div>
                 <div class="field  @if(count($media)==0) invisible @endif" id="file_browser">
                     <div class="subtitle">Attached media</div>
                     <!--таблица с файлами-->
@@ -134,10 +134,11 @@
                 <input name="file" type="file" multiple />
               </div>
             </form>
+            <br>
             <!--кнопка отправки поста-->
             <button id="submit_post" type="submit" class="button is-link">
               <span class="icon">
-                  <i class="fas fa-save"></i>
+                  <i class="fas fa-save" id="submit_icon"></i>
               </span>
               <span>
                 Save post

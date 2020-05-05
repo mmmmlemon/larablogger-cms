@@ -11,7 +11,7 @@
         @endif
       @endif
       @if($post->category != "")
-        <li><a href="/category/){{$post->category}}">{{$post->category}}</a></li>
+        <li><a href="/category/{{$post->category}}">{{$post->category}}</a></li>
       @endif
       <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
     </ul>
@@ -203,10 +203,11 @@
         @error('comment_content')
         <p class="help is-danger"><b> {{ $message }}</b></p>  
       @enderror
-   
+      <br>
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
+        
             <button type="submit" class="button is-link">
               <span class="icon">
                 <i class="fas fa-comment"></i>

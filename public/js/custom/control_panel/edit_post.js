@@ -13,7 +13,7 @@ $('.textarea').richText({
 
   //tagEditor
   BulmaTagsInput.attach('input[data-type="tags"], input[type="tags"], select[data-type="tags"], select[type="tags"]', {
-    tagClass: 'is-rounded is-info'
+    tagClass: 'is-rounded is-grey'
   });
 
   //счетчик символов
@@ -127,36 +127,7 @@ $("#modal-close").click(function() {
   $("#content-in-modal").attr("style", "display: none");
   $("#player").attr("style", "display: none;");
 });
-
-//отправить пост
-$("#submit_post").click(function(){
-  //установка заголовка с csrf-токеном
-  $.ajaxSetup({
-    headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }});
-
-  //отправка запроса
-  $.ajax({
-    type:'POST',
-    url: `/post/${$("#post_id").val()}/edit`,
-    data: {
-      post_id: $("#post_id").val(),
-      file_list: JSON.stringify(uploaded_files),
-      post_title: $("#post_title").val(),
-      post_content: $(".textarea").val(),
-      post_visibility: $("#publish_checkbox").val(),
-      post_date: $("#publish_date").val(),
-      post_category: $("#post_category").val(),
-      tags: $("#tags").val()
-    },
-    //при успешном завершении запроса редиректим к постам
-    success: function(response){
-      window.location.replace("/control/posts");
-    }
-  });
-});
-  
+ 
 //выключаем autoDiscover у дропзоны
 Dropzone.autoDiscover = false;
 
@@ -223,6 +194,36 @@ var dropzone = $("#dropzone_form").dropzone({
     done();
     console.log(`The file ${xhr.name} has been uploaded.`);
   }
+});
+
+//отправить пост
+$("#submit_post").click(function(){
+  $(this).attr("disabled","disabled");
+  //установка заголовка с csrf-токеном
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: `/post/${$("#post_id").val()}/edit`,
+    data: {
+      post_id: $("#post_id").val(),
+      file_list: JSON.stringify(uploaded_files),
+      post_title: $("#post_title").val(),
+      post_content: $(".textarea").val(),
+      post_visibility: $("#publish_checkbox").val(),
+      post_date: $("#publish_date").val(),
+      post_category: $("#post_category").val(),
+      tags: $("#tags").val()
+    },
+    //при успешном завершении запроса редиректим к постам
+    success: function(response){
+      window.location.replace("/control/posts");
+    }
+  });
 });
 
 

@@ -97,7 +97,8 @@ var dropzone = $("#file_form").dropzone({
 
 //отправить пост
 $("#submit_post").click(function(){
-
+  $(this).attr("disabled","disabled");
+  
   //установка заголовка с csrf-токеном
   $.ajaxSetup({
     headers: {
@@ -136,7 +137,7 @@ fileUpload:false
 //tagEditor
 //редактор тегов
 BulmaTagsInput.attach('input[data-type="tags"], input[type="tags"], select[data-type="tags"], select[type="tags"]', {
-  tagClass: 'is-rounded is-info'
+  tagClass: 'is-rounded is-grey'
 });
 //character counter
 //счетчик символов

@@ -85,8 +85,6 @@
                         {{-- <form action="/control/delete_post/{{$post->id}}" method="post" style="display:inline;">
                             @method('DELETE')
                             @csrf
-
-                            
                             <button class="button is-danger showModalDelete" data-tooltip="Delete this post"><i class="fas fa-trash"></i></button>
                          </form> --}}
                          <button class="button is-danger showModalDelete" 
@@ -96,13 +94,20 @@
                     </td>
                     </tr>
                     
-                
                 @endforeach
                 </tbody>  
             </table>
             @else
-            <h1>No posts yet</h1>
-            <a href="/control/create_post" class="button is-link">Create post</a>
+            <div class="column has-text-centered">
+                <h1 class="title">No posts yet</h1>
+                <a href="/control/create_post" class="button is-link">
+                    <span class="icon is-small">
+                      <i class="fas fa-pen"></i>
+                    </span>
+                    <span>Create post</span>
+                </a>
+            </div>
+     
             @endif
             </div>
         </div>
