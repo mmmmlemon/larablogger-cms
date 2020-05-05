@@ -2,16 +2,26 @@
 @section('content')
 
 <div class="container">
-    <div class="container">
-        <div class="">
-          @foreach($posts as $post)
-            @yield('post', View::make('post_template', compact('post')))
-          @endforeach
-        </div>
-      </div>
-      <div>
-        {{ $posts->links('pagination.default') }}
-    </div>
+  <div class="white-bg has-text-centered">
+  <h1 class="title">{{$categ->category_name}}</h1>
+  </div>
+
+  @if(count($posts) > 0)
+  <div class="">
+      @foreach($posts as $post)
+        @yield('post', View::make('post_template', compact('post')))
+      @endforeach
+  </div>
+  <div>
+    {{ $posts->links('pagination.default') }}
+  </div>
+  @else
+  <div class="white-bg has-text-centered">
+    <h1 class="title">Nothing to see here yet</h1>
+    <i class="fas fa-hand-peace"></i>
+    <h1 class="subtitle">Come again later</h1>
+  </div>
+  @endif
 </div>
 
 @endsection

@@ -402,7 +402,7 @@ class PostsController extends Controller
             $post->media_type = $media[0]->media_type;
         }
 
-        return view('home', compact('posts'));
+        return view('home', compact('posts', 'tag'));
     }
 
     //изменить видимость поста

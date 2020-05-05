@@ -2,6 +2,12 @@
     <a href="/post/{{$post->id}}">
       <h1 class="title">{{$post->post_title}}</h1>
     </a> 
+    <br>
+    @if($post->tags != null)
+    @foreach($post->tags as $tag)
+<span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
+    @endforeach
+  @endif
   <div class="is-divider"></div>
 
  
@@ -31,28 +37,25 @@
 
   </article>
 
-
+<br>
   <div class="media-content">
     <div class="content">
      
        {!!$post->post_content!!}
-     
     </div>
+
     <div>
-      @if($post->tags != null)
-        @foreach($post->tags as $tag)
-    <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
-        @endforeach
-      @endif
+
+
       <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
           @if($post->category != "")
             <li><a href="/category/{{$post->category}}">{{$post->category}}</a></li>
-          @endif
-     
+          @endif  
         <li><a href="/post/{{$post->id}}#comments">{{$post->comment_count}}</a></li>
         </ul>
       </nav>
+
     </div>
    
     <nav class="level is-mobile">
@@ -89,6 +92,7 @@
         
       </div>
     </nav>
+
   </div>
 
   </div>
