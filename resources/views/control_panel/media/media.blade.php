@@ -31,7 +31,7 @@
                 <thead>
                     <tr>
                         <th>Filename</th>
-                        <th>Filetype</th>
+                          <th>Filetype</th>
                         <th>Post</th>
                         <th>Actions</th>
                     </tr>
@@ -39,13 +39,13 @@
                 @foreach($media as $m)
                 <tr>
                     <td>
-                       <b><a href="">Name</a></b>
+                    <b><a href="/control/media/{{$m->id}}">{{$m->filename}}</a></b>
                     </td>
                     <td>
                         {{$m->media_type}}
                     </td>
                     <td>
-                        {{$m->post_id}}
+                    <a target="_blank" href="/post/{{$m->post_id}}">{{$m->post_title}}</a>
                     </td>
                     <td>
                         buttons
