@@ -40,15 +40,12 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/posts', 'PostsController@show_list_of_posts'); //вывести посты в меню постов
     Route::get('/control/posts/date', 'PostsController@show_list_of_posts_by_date'); //вывести посты в меню постов по дате
     //vv пофиксить это vv//
-    Route::get('/control/post_status/{id}/{status}', 'PostsController@change_post_visibility'); //сделать пост (не)видимым
     Route::post('/control/post_status/{id}/{status}', 'PostsController@change_post_visibility');
     //^^ пофиксить это ^^//
     Route::delete('/control/delete_post', 'PostsController@delete_post'); //удалить пост
     Route::get('/post/{id}/edit', 'PostsController@show_edit_post'); //показать страницу редактирования поста
     Route::post('/post/{id}/edit', 'PostsController@edit_post'); //сохранить изменения в посте
-    Route::post('/post/hide_comment','PostsController@hide_comment'); //спрятать комментарий
-    Route::post('/post/show_comment','PostsController@show_comment'); //сделать комментарий видимым
-    Route::delete('/post/delete_comment','PostsController@delete_comment'); //удалить комментарий
+    Route::post('/post/change_comment_status','PostsController@change_comment_status'); //спрятать\показать\удалить комментарий
     Route::post('/post/upload_files','PostsController@upload_files'); //загрузить файлы, прикрепленные к посту
     Route::get('/clear_temp', 'PostsController@clear_temp'); //очистить папку temp с временными файлами
     Route::post('/delete_media', 'PostsController@delete_media'); //удалить прикрепленный файл из поста

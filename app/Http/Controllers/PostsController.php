@@ -476,28 +476,25 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
-
-    //объединить вот это все ниже в одну ф-цию !!!!!!!!!!!!!!!!!!!
-    //спрятать комментарий
-    public function hide_comment(Request $request){
+    //спрятать/показать/удалить комментарий
+    public function change_comment_status(Request $request){
         $comment = App\Comment::find($request->comment_id);
-        $comment->visibility = 0;
-        $comment->save();
-        return redirect(url()->previous());
-    }
-
-    //сделать коммент видимым
-    public function show_comment(Request $request){
-        $comment = App\Comment::find($request->comment_id);
-        $comment->visibility = 1;
-        $comment->save();
-        return redirect(url()->previous());
-    }
-
-    //удалить коммент
-    public function delete_comment(Request $request){
-        $comment = App\Comment::find($request->comment_id);
-        $comment->delete();
+        if($request->action == "hide")
+        {
+            $comment->visibility = 0;
+            $comment->save();
+        }
+        else if($request->action == "show")
+        {
+            $comment->visibility = 1;
+            $comment->save();
+        }
+        else if($request->action == "delete")
+        {
+            $comment = App\Comment::find($request->comment_id);
+            $comment->delete();
+        }
+        
         return redirect(url()->previous());
     }
 

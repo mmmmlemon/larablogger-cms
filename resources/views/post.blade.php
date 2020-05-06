@@ -135,31 +135,41 @@
             <div class="is-4">
                 <strong>{{$comment->username}}</strong>
                   @if($is_admin == true)
-                  @if($comment->visibility == 1)
-                  <form action="/post/hide_comment/" method="POST" style="display:inline">
+                  <form action="/post/change_comment_status/" method="POST" style="display:inline">
                     @csrf
                     <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
-                    <button type="submit" class="action-button" data-tooltip="Hide this comment">
-                      <span class="icon has-text-danger">
-                          <i class="fas fa-ban"></i>
+                    @php
+                      $val = "";
+                      $txt = "";
+                      $icon = "";
+                      $color ="";
+
+                      if($comment->visibility == 1)
+                      {
+                        $val = "hide";
+                        $txt = "Hide";
+                        $icon = "fas fa-ban";
+                        $color = "has-text-danger";
+                      }
+                      else{
+                        $val = "show";
+                        $txt = "Show";
+                        $icon = "fas fa-check";
+                        $color = "has-text-success";
+                      }
+                    @endphp
+                    <input type="text" class="invisible "name="action" value="{{$val}}">
+                    <button type="submit" class="action-button" data-tooltip="{{$txt}} this comment">
+                      <span class="icon {{$color}}">
+                          <i class="{{$icon}}"></i>
                       </span>
                   </button>
                   </form>
-                @else
-                <form action="/post/show_comment/" method="POST" style="display:inline">
+
+                <form action="/post/change_comment_status/" method="POST" style="display:inline">
                   @csrf
                   <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
-                    <button type="submit" class="action-button" data-tooltip="Show this comment">
-                      <span class="icon has-text-primary">
-                          <i class="fas fa-check"></i>
-                      </span>
-                  </button>
-                </form>
-                @endif
-                <form action="/post/delete_comment/" method="POST" style="display:inline">
-                  @csrf
-                  @method('DELETE')
-                  <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
+                  <input type="text" class="invisible "name="action" value="delete">
                     <button type="submit" class="action-button" data-tooltip="Delete this comment">
                       <span class="icon has-text-dark">
                           <i class="fas fa-trash"></i>

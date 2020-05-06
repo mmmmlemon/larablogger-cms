@@ -65,28 +65,25 @@
                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                     <td>
                         @if($post->visibility == 1)
-                          <a href="/control/post_status/{{$post->id}}/0" class="button  is-warning">
-                                <span class="icon is-small" data-tooltip="Hide this post">
-                                    <i class="fas fa-eye-slash"></i>
-                                </span>
-                            </a>
+
+                        <form action="/control/post_status/{{$post->id}}/0" method="post" style="display:inline;">
+                            @csrf
+                            <button class="button is-warning" data-tooltip="Hide this post"><i class="fas fa-eye-slash"></i></button>
+                         </form>
+
                         @else
-                        <a href="/control/post_status/{{$post->id}}/1" class="button is-primary">
-                            <span class="icon is-small" data-tooltip="Show this post"> 
-                                <i class="fas fa-eye"></i>
-                            </span>
-                        </a>
+                        <form action="/control/post_status/{{$post->id}}/1" method="post" style="display:inline;">
+                            @csrf
+                            <button class="button is-primary" data-tooltip="Show this post"><i class="fas fa-eye"></i></button>
+                         </form>
+
                         @endif
                         <a href="/post/{{$post->id}}/edit" class="button is-info">
                             <span class="icon is-small" data-tooltip="Edit this post">
                                 <i class="fas fa-edit"></i>
                             </span>
                         </a>
-                        {{-- <form action="/control/delete_post/{{$post->id}}" method="post" style="display:inline;">
-                            @method('DELETE')
-                            @csrf
-                            <button class="button is-danger showModalDelete" data-tooltip="Delete this post"><i class="fas fa-trash"></i></button>
-                         </form> --}}
+    
                          <button class="button is-danger showModalDelete" 
                         data-tooltip="Delete this post" data-title="{{$post->post_title}}" data-id="{{$post->id}}">
                             <i class="fas fa-trash"></i>
