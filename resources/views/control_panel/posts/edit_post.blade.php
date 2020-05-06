@@ -66,7 +66,7 @@
                   <div class="field">
                     <!--видимость чекбокс-->
                     <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" @if($post->visibility == 1) checked @endif>
-                    <label class="label">Visibility</label>
+                    <label class="label" for="publish_checkbox">Visibility</label>
                     <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everone">  <i class="fas fa-question-circle"></i> </span>
                   </div>
 

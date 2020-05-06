@@ -2,14 +2,6 @@
 //скрипты для страницы create_post
 
 //обработка нажатия кнопки Publish
-$("#publish_checkbox").click(function(){
-  if($("#publish_checkbox").is(":checked"))
-  {
-      $("#publish_date").prop("disabled", true)
-  } else {
-      $("#publish_date").prop("disabled", false)
-  }
-});
 
 //выключаем autodiscover у Dropzone
 Dropzone.autoDiscover = false;
@@ -104,7 +96,6 @@ $("#submit_post").click(function(){
     headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
   }});
-
   // //отправка запроса
   $.ajax({
     type:'POST',
@@ -113,7 +104,7 @@ $("#submit_post").click(function(){
       file_list: JSON.stringify(uploaded_files),
       post_title: $("#post_title").val(),
       post_content: $(".textarea").val(),
-      post_visibility: $("#publish_checkbox").val(),
+      post_visibility:$("#publish_checkbox").is(":checked"),
       post_date: $("#publish_date").val(),
       post_category: $("#post_category").val(),
       tags: $("#tags").val()

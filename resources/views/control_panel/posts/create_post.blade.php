@@ -60,9 +60,10 @@
                   <!--чекбокс, опубликовать сейчас-->
                   <div class="field">
                     <br>
-                    <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" checked="checked">
-                   
-                    <label class="label">Visibility</label>
+                    <input class="is-checkradio is-link" id="publish_checkbox" type="checkbox" name="publish" checked="checked">
+                    <label class="label" for="publish_checkbox">Visibility</label>
+
+        
                     <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everyone on the web-site, if not, it will be hidden.">  <i class="fas fa-question-circle"></i> </span>
                   
                   </div>
@@ -71,7 +72,7 @@
                     <label class="label">Publish date</label>
                     <p class="control has-icons-left">
                        
-                      <input class="input" type="date" name="publish_date" min="{{date('Y-m-d', strtotime($current_date))}}" id="publish_date" placeholder="Date" value={{$current_date}} disabled>
+                      <input class="input" type="date" name="publish_date" min="{{date('Y-m-d', strtotime($current_date))}}" id="publish_date" placeholder="Date" value={{$current_date}}>
                       <span class="icon is-small is-left">
                         <i class="fas fa-calendar"></i>
                       </span>

@@ -178,7 +178,7 @@ class PostsController extends Controller
         else
         {$post->tags = $request->tags;}
 
-        if($request->post_visibility == 'on'){
+        if($request->post_visibility == "true"){ //true - строка, потому что ajax передает строку
             $post->visibility = 1;
         } else {
             $post->visibility = 0;
@@ -293,10 +293,10 @@ class PostsController extends Controller
         {$post->tags =  NULL;}
         else
         {$post->tags = $request->tags;}
-
         //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
         //если нет, то ту дату которая указана в поле с датой
-        if($request->post_visibility == 'on'){
+        
+        if($request->post_visibility == "true"){//true - строка, потому что ajax передает строку
             $post->visibility = 1;
             $post->date = $request->post_date;
         } else {
