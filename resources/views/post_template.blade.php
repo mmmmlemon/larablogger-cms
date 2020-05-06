@@ -41,7 +41,7 @@
 
   <div class="media-content">
     <div class="content">
-       {!!Str::limit($post->post_content,1200,'...');!!}
+       {!!Str::limit(strip_tags($post->post_content),1200,'...');!!}
        @if(Str::length($post->post_content)>1200)
           <a href="/post/{{$post->id}}">Read more</a>
        @endif
