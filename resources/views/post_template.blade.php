@@ -20,6 +20,7 @@
       <img class="imagee" src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
       @if(count($post->media) > 1)
       <p><a href="/post/{{$post->id}}">(and {{count($post->media)-1}} more images)</a></p>
+      <br>
       @endif
       
     </figure>
@@ -31,17 +32,19 @@
         <source src="{{asset("storage/".$post->media[0]->media_url)}}">
       </video>
     </div>
-  
+    <br>
     @endif
     </div>
 
   </article>
 
-<br>
+
   <div class="media-content">
     <div class="content">
-     
-       {!!$post->post_content!!}
+       {!!Str::limit($post->post_content,1200,'...');!!}
+       @if(Str::length($post->post_content)>1200)
+          <a href="/post/{{$post->id}}">Read more</a>
+       @endif
     </div>
 
     <div>

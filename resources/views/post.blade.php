@@ -70,7 +70,7 @@
 
         @endforeach
           @endif
-
+          <br>
         <article class="media">
 
             <div class="media-content">
