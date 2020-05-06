@@ -23,6 +23,13 @@
                 <span>Posts</span>
             </a>
 
+            <a href="control/media" class="button is-link is-medium" data-tooltip="Add/edit categories">
+                <span class="icon">
+                    <i class="fas fa-video"></i>
+                </span>
+                <span>Media browser</span>
+            </a>
+
             <a href="control/categories" class="button is-link is-medium" data-tooltip="Add/edit categories">
                 <span class="icon">
             <i class="fas fa-list"></i>

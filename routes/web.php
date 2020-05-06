@@ -51,6 +51,9 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/delete_media', 'PostsController@delete_media'); //удалить прикрепленный файл из поста
     Route::post('/upload_files', 'PostsController@upload_files');
 
+    //МЕДИА
+    Route::get('/control/media','MediaController@index'); //главная страница с медиа файлами
+
     //КАТЕГОРИИ
     Route::get('/control/categories', 'CategoryController@index'); //вывод списка категорий в панели управления
     Route::get('/control/categories/add', 'CategoryController@show_create_category'); //показать страницу создания категорий
@@ -58,6 +61,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/categories/edit/{id}','CategoryController@show_edit_category'); //редактировать категорию
     Route::post('/control/categories/edit/{id}','CategoryController@edit_category'); //сохранить изменения в категории
     Route::delete('/control/categories/delete','CategoryController@delete_category'); //удалить категорию
+
 });
 
 Auth::routes();
