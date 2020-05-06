@@ -69,19 +69,12 @@ class ControlPanelController extends Controller
        for($i = 0; $i < 4; $i++){
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
-            
-           //что за нах тут творится, надо исправить
-           if($data == null){
-            // $new_data = new App\SocialMedia;
-            // $new_data->platform_name =  $request->get('platform_'.$i);
-            // $new_data->url =  $request->get('url_'.$i);
-            // $new_data->save();
+           //если такая запись о соц. сети существует то обновляем её
+           if($data != null){
+                $data->platform_name = $request->get('platform_'.$i);
+                $data->url = $request->get('url_'.$i);
+                $data->save();
            }
-           else{
-            $data->platform_name = $request->get('platform_'.$i);
-            $data->url = $request->get('url_'.$i);
-            $data->save();
-           }   
        }
 
        return redirect()->back();
