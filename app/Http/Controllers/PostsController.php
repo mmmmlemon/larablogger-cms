@@ -392,15 +392,16 @@ class PostsController extends Controller
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
+
+            $media = App\Media::where('post_id','=',$post->id)->get();
+            if(count($media) != 0)
+            {
+                $post->media = $media;
+                $post->media_type = $media[0]->media_type;
+            }
         }
 
-        $media = App\Media::where('post_id','=',$post->id)->get();
-   
-        if(count($media) != 0)
-        {
-            $post->media = $media;
-            $post->media_type = $media[0]->media_type;
-        }
+        
 
         return view('home', compact('posts', 'tag'));
     }
