@@ -220,6 +220,9 @@ class PostsController extends Controller
                 $media->post_id = $post->id;
                 $media->media_url = "posts/". $folder_name."/".$file;
                 $media->media_type = $mime;
+                $media->display_name = $file;
+                $media->actual_name = $file;
+                $media->visibility = 1;
                 $media->save(); 
                 }
             }             
@@ -339,6 +342,9 @@ class PostsController extends Controller
                     $media->post_id = $post->id;
                     $media->media_url = "posts/". $folder_name."/".$file->filename;
                     $media->media_type = $mime;
+                    $media->display_name = $file->filename;
+                    $media->actual_name = $file->filename;
+                    $media->visibility = 1;
                     $media->save(); 
                     }
                 }         
