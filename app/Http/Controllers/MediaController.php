@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
@@ -30,6 +31,8 @@ class MediaController extends Controller
     public function view_media($id){
        
         $media = App\Media::find($id);
+        $media->date = date('d.m.Y',strtotime($media->created_at));
+        $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb";
 
         return view('/control_panel/media/view_media', compact('media'));
     }

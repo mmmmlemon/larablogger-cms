@@ -6,7 +6,7 @@
             <ul>
               <li><a href="/control">Control panel</a></li>
               <li><a href="/control/media" aria-current="page">Media browser</a></li>
-            <li class="is-active"><a href="/control">{{$media->media_url}}</a></li>
+            <li class="is-active"><a href="/control">{{$media->display_name}}</a></li>
             </ul>
           </nav>
         <div class="column">
@@ -23,8 +23,8 @@
         <div class="columns">
             <!--информация о файле-->
             <div class="column is-5 white-bg" style="margin-right:5px;">
-            <h1 class="title">Display Name</h1>
-            <h1 class="subtitle">Actual name.mp4 / mime / Date of upload / size</h1>
+            <h1 class="title">{{$media->display_name}}</h1>
+            <h1 class="subtitle">{{$media->actual_name}} / {{$media->media_type}} / {{$media->date}} / {{$media->size}}</h1>
             <form action="" method="POST">
                 @csrf
                 <div class="field">
@@ -82,7 +82,7 @@
                   </div>
                   <div id="preview" class="invisible">
                     <video style="" controls="controls" id="player">
-                        <source src="http://127.0.0.1:8000/storage/posts/05-05-2020-Video Post/Moonwalk-67e0205.mp4" id="content-video">
+                    <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" id="content-video">
                     </video>
                   </div>
         
