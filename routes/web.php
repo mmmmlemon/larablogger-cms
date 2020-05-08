@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
     //МЕДИА
     Route::get('/control/media','MediaController@index'); //главная страница с медиа файлами
+    Route::get('/control/media/{id}','MediaController@view_media'); //показать информацию о медиа\редактор медиа
 
     //КАТЕГОРИИ
     Route::get('/control/categories', 'CategoryController@index'); //вывод списка категорий в панели управления

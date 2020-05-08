@@ -24,6 +24,13 @@ class MediaController extends Controller
         }
         
         return view('/control_panel/media/media', compact('media'));
+    }
 
+    //показать страницу с информацией о медиа файле \ редактор
+    public function view_media($id){
+       
+        $media = App\Media::find($id);
+
+        return view('/control_panel/media/view_media', compact('media'));
     }
 }

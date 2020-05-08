@@ -48,7 +48,18 @@
                     <a target="_blank" href="/post/{{$m->post_id}}">{{$m->post_title}}</a>
                     </td>
                     <td>
-                        buttons
+                        <form action="/" method="post" style="display:inline;">
+                            @csrf
+                            <button class="button is-success" data-tooltip="Preview"><i class="fas fa-play"></i></button>
+                         </form>
+                        <form action="/" method="post" style="display:inline;">
+                            @csrf
+                            <button class="button is-info" data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                         </form>
+                        <form action="/" method="post" style="display:inline;">
+                            @csrf
+                            <button class="button is-danger" data-tooltip="Delete this file"><i class="fas fa-trash"></i></button>
+                         </form>
                     </td>
                 </tr>
                 @endforeach
