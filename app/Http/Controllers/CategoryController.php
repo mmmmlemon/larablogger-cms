@@ -34,7 +34,7 @@ class CategoryController extends Controller
               $post->comment_count .= " comment"; 
           }
           //получаем список файлов у поста
-          $media = App\Media::where('post_id','=',$post->id)->get();
+          $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
 
           //если файлы есть, то
             if(count($media) != 0)

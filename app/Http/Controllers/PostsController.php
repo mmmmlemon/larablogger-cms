@@ -36,7 +36,7 @@ class PostsController extends Controller
             } else {
                 $post->comment_count .= " comment"; 
             }
-            $media = App\Media::where('post_id','=',$post->id)->get();
+            $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
    
             if(count($media) != 0)
             {
@@ -66,7 +66,7 @@ class PostsController extends Controller
     public function show_post($id)
     {
         $post = App\Post::find($id);
-        $media = App\Media::where('post_id',$id)->get();
+        $media = App\Media::where('post_id',$id)->where('visibility','=',1)->get();
         //если такой пост существует, то выводим его
         if($post != null)
         {   
@@ -399,7 +399,7 @@ class PostsController extends Controller
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
 
-            $media = App\Media::where('post_id','=',$post->id)->get();
+            $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
             if(count($media) != 0)
             {
                 $post->media = $media;

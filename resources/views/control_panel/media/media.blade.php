@@ -39,7 +39,7 @@
                 @foreach($media as $m)
                 <tr>
                     <td>
-                    <b><a href="/control/media/{{$m->id}}">{{$m->filename}}</a></b>
+                    <b><a href="/control/media/{{$m->id}}">{{$m->display_name}}</a></b>
                     </td>
                     <td>
                         {{$m->media_type}}
