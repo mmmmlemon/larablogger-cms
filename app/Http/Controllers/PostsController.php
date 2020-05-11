@@ -407,8 +407,6 @@ class PostsController extends Controller
             }
         }
 
-        
-
         return view('home', compact('posts', 'tag'));
     }
 

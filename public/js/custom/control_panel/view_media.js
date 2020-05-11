@@ -7,6 +7,15 @@
     }
   }
 
+  const fileInputt = document.querySelector('#thumbnail_uploader input[type=file]');
+  fileInputt.onchange = () => {
+    if (fileInputt.files.length > 0) {
+      const fileName = document.querySelector('#thumbnail_uploader .file-name');
+      fileName.textContent = fileInputt.files[0].name;
+    }
+  }
+
+
 
   //Plyr, видеоплеер
 const player = new Plyr('#player');
