@@ -25,26 +25,27 @@
             <div class="column is-5 white-bg" style="margin-right:5px;">
             <h1 class="title">{{$media->display_name}}</h1>
             <h1 class="subtitle">{{$media->actual_name}} / {{$media->media_type}} / {{$media->date}} / {{$media->size}}</h1>
-            <form action="" method="POST">
+            <form action="/control/media/edit_media/{{$media->id}}" method="POST">
                 @csrf
                 <div class="field">
                     <label class="label">Post</label>
                     <div class="control">
-                    <a href="">Postname</a>
+                    <a target="_blank" href="/post/{{$media->post_id}}">{{$media->post_title}}</a>
                     </div>
                 </div>  
                 <div class="field">
                     <label class="label">Display name</label>
                     <div class="control">
-                        <input class="input" type="text" data-type="tags" placeholder="Display name for the file" value="">
+                    <input name="display_name" class="input" type="text" data-type="tags" placeholder="Display name for the file" value="{{$media->display_name}}">
                     </div>
                 </div>  
                 <div class="field">
                     <!--видимость чекбокс-->
-                    <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox">
+                    <input class="is-checkradio is-link" name="visibility" id="publish_checkbox" type="checkbox" @if($media->visibility == 1) checked @endif>
                     <label class="label" for="publish_checkbox">Visibility</label>
                     <span class="has-tooltip-multiline" data-tooltip="If unchecked, the file will be hidden from public view.">  <i class="fas fa-question-circle"></i> </span>
                 </div>
+                @if($media->media_type == 'video')
                 <label class="label">Subtitles</label>
                 <div id="file-js-example" class="file has-name">
                     <label class="file-label">
@@ -65,10 +66,21 @@
                 <div class="white-bg">
                     No subtitles attached to this video
                 </div>
+                @endif
+                <!--кнопка сохранения-->
+                <button id="submit_post" type="submit" class="button is-link">
+                  <span class="icon">
+                      <i class="fas fa-save"></i>
+                  </span>
+                  <span>
+                    Save
+                  </span>
+                </button>
             </form>
             </div>
             <!--превьюшбки-->
             <div class="column is-7 white-bg">
+              @if($media->media_type == "video")
                 <div class="tabs">
                     <ul>
                       <li class="is-active" id="tab_thumbnail"><a>Thumbnail</a></li>
@@ -85,6 +97,11 @@
                     <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" id="content-video">
                     </video>
                   </div>
+                @endif
+
+              @if($media->media_type == "image")
+                <img src="{{asset("/storage/")."/".$media->media_url}}" alt="">
+              @endif
         
             </div>
       
