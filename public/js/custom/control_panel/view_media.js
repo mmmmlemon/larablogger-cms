@@ -18,7 +18,9 @@
 
 
   //Plyr, видеоплеер
-const player = new Plyr('#player');
+const player = new Plyr('#player', {
+  
+});
 
 $("#tab_preview").on('click', function(){
     $(this).addClass("is-active");

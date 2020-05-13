@@ -131,8 +131,10 @@
                     </figure>
                   </div>
                   <div id="preview" class="invisible">
-                    <video style="" controls="controls" id="player">
-                    <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" id="content-video">
+                  <video style="" controls="controls" id="player" preload="none" poster = "{{asset('/storage/')."/".$media->thumbnail_url}}">
+                    <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" 
+                     
+                      id="content-video">
                     </video>
                   </div>
                 @endif

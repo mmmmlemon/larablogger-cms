@@ -17,7 +17,9 @@ $('.textarea').richText({
     $('#username').charCounter();
   });
 
-    const player = new Plyr.setup('.player');
+    const player = new Plyr.setup('.player', {
+   
+    });
 
       //вызвать модальное окно Contacts
       $(".imagee").click(function() {

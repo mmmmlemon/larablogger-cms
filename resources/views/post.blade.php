@@ -59,7 +59,7 @@
 
             <div class="media-content">
               <div class="has-text-centered">
-                <video controls="controls" class="player">
+              <video controls="controls" class="player" preload="none" poster="{{asset('/storage/')."/".$m->thumbnail_url}}">
                   <source src="{{asset("storage/".$m->media_url)}}">
                 </video>
               </div>
