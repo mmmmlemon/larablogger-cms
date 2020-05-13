@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App;
 use Illuminate\Support\Facades\Storage;
+use File;
 
 class MediaController extends Controller
 {
@@ -45,12 +46,32 @@ class MediaController extends Controller
         //получаем запись о файле из БД
         $media = App\Media::find($id);
         $media->display_name = $request->display_name;
-        
+
         if($request->visibility == "on")
         {$media->visibility = 1;}
         else
         {$media->visibility = 0;}
 
+        //если была добавлена картинка thumbnail
+        if($request->thumbnail != null)
+        {
+            //получаем путь до папки с превьюхой
+            $pos = strrpos($media->media_url, "/");
+            $path = substr($media->media_url, 0, $pos) . "/thumbnail";
+
+            //проверяем существует ли уже такая папка
+            $check = File::exists(storage_path("app\\public\\".$path));
+            if ($check == false) {
+                $folder_created = Storage::disk('public')->makeDirectory($path);
+                if($folder_created){
+                    Storage::disk('public')->put("/storage", $request->thumbnail);
+                }
+            }
+               $filename = "thumbnail_".$media->id.".".$request->file('thumbnail')->getClientOriginalExtension();
+               $request->file('thumbnail')->storeAs("/public/".$path, $filename);
+               $media->thumbnail_url = $path."/".$filename;
+        }
+    
         $media->save();
 
         return redirect()->back();

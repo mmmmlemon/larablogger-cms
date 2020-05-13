@@ -25,7 +25,7 @@
             <div class="column is-5 white-bg" style="margin-right:5px;">
             <h1 class="title">{{$media->display_name}}</h1>
             <h1 class="subtitle">{{$media->actual_name}} / {{$media->media_type}} / {{$media->date}} / {{$media->size}}</h1>
-            <form action="/control/media/edit_media/{{$media->id}}" method="POST">
+            <form action="/control/media/edit_media/{{$media->id}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="field">
                     <label class="label">Post</label>
@@ -70,7 +70,7 @@
                 <label class="label">Thumbnail image</label>
                 <div id="thumbnail_uploader" class="file has-name">
                   <label class="file-label">
-                    <input class="file-input" type="file" name="resume">
+                    <input class="file-input" type="file" name="thumbnail">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
