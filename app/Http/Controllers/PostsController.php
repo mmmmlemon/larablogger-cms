@@ -370,7 +370,7 @@ class PostsController extends Controller
        $file = fopen(storage_path('app\\public\\temp\\')."$filename","a");
 
        //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
-       fputs($file,file_get_contents($request->file));
+       fputs($file,file_get_f($request->file));
        fclose($file);
        
        return response()->json([

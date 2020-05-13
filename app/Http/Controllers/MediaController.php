@@ -76,4 +76,15 @@ class MediaController extends Controller
 
         return redirect()->back();
     }
+
+    //удалить thumbnail
+    public function remove_thumbnail($id){
+        $media = App\Media::find($id);
+
+        unlink(storage_path('app\\public\\'.$media->thumbnail_url));
+        $media->thumbnail_url = null;
+        $media->save();
+
+        return redirect()->back();
+    }
 }

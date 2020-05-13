@@ -67,7 +67,7 @@
                     No subtitles attached to this video
                 </div>
 
-                <label class="label">Thumbnail image</label>
+                <label class="label">Thumbnail image @if($media->thumbnail_url) (Replace) @endif</label>
                 <div id="thumbnail_uploader" class="file has-name">
                   <label class="file-label">
                     <input class="file-input" type="file" name="thumbnail">
@@ -109,7 +109,25 @@
                   </div>
                   <div id="thumbnail">
                     <figure class="image">
-                        <img src="https://i.ytimg.com/vi/UPf-svHam0I/maxresdefault.jpg">
+                      @if($media->thumbnail_url)
+                        <img src="{{asset("/storage/")."/".$media->thumbnail_url}}">
+                          <form action="/control/media/remove_thumbnail/{{$media->id}}" method="POST">
+                              @csrf
+                              <br>
+                              <div class="has-text-centered">
+                                <button class="button is-danger">
+                                  <span class="icon">
+                                    <i class="fas fa-trash"></i>
+                                  </span>
+                                  <span>Remove thumbnail</span>
+                                </button>
+                              </div>
+                             
+                          </form>
+                      @else
+                        <h1 class="subtitle has-text-centered">No thumbnail</h1>
+                      @endif
+
                     </figure>
                   </div>
                   <div id="preview" class="invisible">
