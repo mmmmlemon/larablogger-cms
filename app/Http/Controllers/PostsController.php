@@ -358,8 +358,10 @@ class PostsController extends Controller
     //загрузка файлов перед сохранением поста
     public function upload_files(Request $request)
     {  
+       
        //получаем имя файла
        $filename = $request->filename;
+
        $uuid8 = substr($request->dzuuid, 0, 7);
        $p = pathinfo($filename);
        $ext = $p['extension'];
@@ -369,10 +371,10 @@ class PostsController extends Controller
        //создаем файл в нужной папке, и открываем его в режиме append
        $file = fopen(storage_path('app\\public\\temp\\')."$filename","a");
 
+
        //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
-       fputs($file,file_get_f($request->file));
+       fputs($file,file_get_contents($request->file));
        fclose($file);
-       
        return response()->json([
         'file_url' => asset("storage/temp/".$filename),
         'filename' =>  $filename,
