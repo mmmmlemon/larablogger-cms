@@ -19,7 +19,6 @@
 
   //Plyr, видеоплеер
 const player = new Plyr('#player', {
-  
 });
 
 $("#tab_preview").on('click', function(){
@@ -27,6 +26,7 @@ $("#tab_preview").on('click', function(){
     $("#tab_thumbnail").removeClass("is-active");
     $("#preview").removeClass("invisible").addClass("fade-in");
     $("#thumbnail").addClass("invisible");
+    player.pause();
 });
 
 $("#tab_thumbnail").on('click', function(){
@@ -34,4 +34,5 @@ $("#tab_thumbnail").on('click', function(){
     $("#tab_preview").removeClass("is-active");
     $("#thumbnail").removeClass("invisible").addClass("fade-in");
     $("#preview").addClass("invisible");
+    player.pause();
 });
