@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="container">
-  {{-- @if($tag != null)
+  @if($tag_name != null)
   <div class="white-bg has-text-centered">
-  <h1 class="title">Posts by tag '{{$tag}}'</h1>
+  <h1 class="title">Posts by tag '{{$tag_name}}'</h1>
   </div>
-  @endif --}}
+  @endif
   @if(count($posts) > 0)
   <div class="">
       @foreach($posts as $post)

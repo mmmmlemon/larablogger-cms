@@ -44,8 +44,9 @@ class PostsController extends Controller
                 $post->media_type = $media[0]->media_type;
             }
         }
-
-        return view('home', compact('posts'));
+        //установливаем имя тега - null, чтобы не было ошибки
+        $tag_name = null;
+        return view('home', compact('posts', 'tag_name'));
     }
 
     //вывод постов в меню постов
@@ -409,7 +410,9 @@ class PostsController extends Controller
             }
         }
 
-        return view('home', compact('posts', 'tag'));
+        $tag_name = $tag;
+
+        return view('home', compact('posts','tag_name'));
     }
 
     //изменить видимость поста
