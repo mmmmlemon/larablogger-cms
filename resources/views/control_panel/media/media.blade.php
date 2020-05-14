@@ -68,6 +68,9 @@
             @endif
         </div>
     </div>
+    <div>
+        {{ $media->links('pagination.default') }}
+    </div>
 </div>
 @endsection
 

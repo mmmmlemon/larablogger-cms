@@ -15,7 +15,7 @@ class MediaController extends Controller
     public function index(){
         
         //получаем все медиафайлы
-        $media = App\Media::orderBy('post_id','desc')->get();
+        $media = App\Media::orderBy('post_id','desc')->paginate(15);
 
         //добавляем к ним дополнительную информацию
         foreach($media as $m)
