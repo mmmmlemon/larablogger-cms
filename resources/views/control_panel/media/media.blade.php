@@ -5,6 +5,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
               <li><a href="/control">Control panel</a></li>
+              <li><a href="/control/posts">Posts</a></li>
               <li class="is-active"><a href="#" aria-current="page">Media browser</a></li>
             </ul>
           </nav>

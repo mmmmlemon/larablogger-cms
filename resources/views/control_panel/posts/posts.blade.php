@@ -26,6 +26,12 @@
             Add post
             </span>
         </a>
+        <a href="/control/media" class="button is-link" data-tooltip="Add/edit categories">
+            <span class="icon">
+                <i class="fas fa-video"></i>
+            </span>
+            <span>Media browser</span>
+        </a>
     </div>
     <div class="is-divider"></div>
     <div class="columns">
