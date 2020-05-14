@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App;
 use Illuminate\Support\Facades\Storage;
 use File;
+use Image;
 
 class MediaController extends Controller
 {
@@ -68,7 +69,9 @@ class MediaController extends Controller
                 }
             }
                $filename = "thumbnail_".$media->id.".".$request->file('thumbnail')->getClientOriginalExtension();
-               $request->file('thumbnail')->storeAs("/public/".$path, $filename);
+               $img = Image::make($request->thumbnail);
+               $img->fit(640,360);
+               $img->save(storage_path('\\app\\public\\').$path."/".$filename);
                $media->thumbnail_url = $path."/".$filename;
         }
     
