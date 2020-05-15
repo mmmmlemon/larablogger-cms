@@ -107,6 +107,7 @@
                 <div class="tabs">
                     <ul>
                       <li class="is-active" id="tab_thumbnail"><a>Thumbnail</a></li>
+                      <li id="tab_subtitles"><a>Subtitles</a></li>
                       <li id="tab_preview"><a>Preview</a></li>
                     </ul>
                   </div>
@@ -133,6 +134,15 @@
 
                     </figure>
                   </div>
+
+                  <div id="subtitle_table" class="invisible">
+                      <table class="table is-fullwidth is-hover">
+                        <thead>
+                          <tr><th>Subtitle</th><th>Visibility</th><th></th></tr>
+                        </thead>
+                      </table>
+                  </div>
+
                   <div id="preview" class="invisible">
                   <video style="" controls="controls" id="player" preload="none" poster = "{{asset('/storage/')."/".$media->thumbnail_url}}">
                     <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" 

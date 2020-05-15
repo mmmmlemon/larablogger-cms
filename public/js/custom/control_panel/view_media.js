@@ -20,21 +20,39 @@
   //Plyr, видеоплеер
 const player = new Plyr('#player', {});
 
-$("#tab_preview").on('click', function(){
-    $(this).addClass("is-active");
-    $("#tab_thumbnail").removeClass("is-active");
-    $("#preview").removeClass("invisible").addClass("fade-in");
-    $("#thumbnail").addClass("invisible");
+//текущий активный таб
+var previous_tab = $("#tab_thumbnail");
+var previous_display = $("#thumbnail");
+
+function switch_tab(current_tab, current_display)
+{
+  if(current_tab != previous_tab)
+  {
+    $(current_tab).addClass("is-active");
+    $(current_display).removeClass("invisible").addClass("fade-in");
+    previous_tab.removeClass("is-active");
+    previous_display.addClass("invisible");
     player.pause();
-});
+  
+    previous_tab = $(current_tab);
+    previous_display = $(current_display);
+  }
+
+}
 
 $("#tab_thumbnail").on('click', function(){
-    $(this).addClass("is-active");
-    $("#tab_preview").removeClass("is-active");
-    $("#thumbnail").removeClass("invisible").addClass("fade-in");
-    $("#preview").addClass("invisible");
-    player.pause();
+  switch_tab("#tab_thumbnail", "#thumbnail");
 });
+
+$("#tab_subtitles").on('click', function(){
+  switch_tab("#tab_subtitles", "#subtitle_table");
+});
+
+$("#tab_preview").on('click', function(){
+  switch_tab("#tab_preview", "#preview");
+});
+
+
 
 //если пользователь добавить файлы субтитров
 $("#subtitle_input").on('change', function(el){
