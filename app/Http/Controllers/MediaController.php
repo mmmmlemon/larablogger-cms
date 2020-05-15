@@ -38,7 +38,9 @@ class MediaController extends Controller
         $media->date = date('d.m.Y',strtotime($media->created_at));
         $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb";
 
-        return view('/control_panel/media/view_media', compact('media'));
+        $subs = App\Subtitles::where('media_id','=',$media->id)->get();
+
+        return view('/control_panel/media/view_media', compact('media','subs'));
     }
 
     //сохранить изменения в медиа

@@ -136,11 +136,34 @@
                   </div>
 
                   <div id="subtitle_table" class="invisible">
+                      @if(count($subs)>0)
                       <table class="table is-fullwidth is-hover">
                         <thead>
                           <tr><th>Subtitle</th><th>Visibility</th><th></th></tr>
                         </thead>
+                        <tbody>
+                          @foreach($subs as $sub)
+                            <tr>
+                              <td>
+                                {{$sub->display_name}}
+                              </td>
+                            <td>
+                              @if($sub->visibility == 1)
+                                <button class="button is-warning is-small disable_subs" data-tooltip="Disable these subtitles"><i class="fas fa-eye-slash"></i></button>
+                              @else
+                                <button class="button is-primary is-small disable_subs" data-tooltip="Enable these subtitles"><i class="fas fa-eye"></i></button>
+                              @endif
+                            </td>
+                            <td>
+                              <button class="button is-danger is-small delete_subs" data-tooltip="Delete subtitle file"><i class="fas fa-trash"></i></button>
+                            </td>
+                            </tr>
+                          @endforeach
+                        </tbody>
                       </table>
+                      @else
+                      <h1 class="subtitle has-text-centered">No subtitles attached to this video</h1>
+                      @endif
                   </div>
 
                   <div id="preview" class="invisible">
