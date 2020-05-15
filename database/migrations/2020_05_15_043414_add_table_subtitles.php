@@ -17,6 +17,7 @@ class AddTableSubtitles extends Migration
             $table->id();
             $table->string('display_name', 20);
             $table->string('actual_name',50);
+            $table->string('sub_url');
             $table->unsignedBigInteger('media_id');
             $table->integer('visibility');
             $table->timestamps();

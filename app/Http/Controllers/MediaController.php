@@ -92,14 +92,14 @@ class MediaController extends Controller
                 $check = Storage::disk('public')->put($path."/".$subtitle->getClientOriginalName(), file_get_contents($subtitle));
                 if($check)
                 {
-                    // $media_sub = new App\Media;
-                    // $media_sub->post_id = 
-                    // $media_sub->media_url = $path."/".$subtitle->getClientOriginalName();
-                    // $media_sub->media_type = "subtitle";
-                    // $media_sub->display_name = $subtitle->getClientOriginalName();
-                    // $media_sub->actual_name = $subtitle->getClientOriginalName();
-                    // $media_sub->visibility = 1;     
-                    // $media_sub->save();
+                    $sub = new App\Subtitles;
+                    $sub->media_id = $media->id;
+                    $media_sub->media_url = $path."/".$subtitle->getClientOriginalName();
+                    $media_sub->media_type = "subtitle";
+                    $media_sub->display_name = $subtitle->getClientOriginalName();
+                    $media_sub->actual_name = $subtitle->getClientOriginalName();
+                    $media_sub->visibility = 1;     
+                    $media_sub->save();
                 }
             }
         }
