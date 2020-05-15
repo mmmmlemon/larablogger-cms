@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/media/{id}','MediaController@view_media'); //показать информацию о медиа\редактор медиа
     Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //сохранить изменения в файле
     Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //удалить thumbnail
+    Route::post('/control/media/change_subs_status','MediaController@change_subs_status'); //спрятать\показать субтитры
 
     //КАТЕГОРИИ
     Route::get('/control/categories', 'CategoryController@index'); //вывод списка категорий в панели управления

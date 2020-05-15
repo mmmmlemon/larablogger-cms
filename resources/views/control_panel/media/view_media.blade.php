@@ -143,15 +143,15 @@
                         </thead>
                         <tbody>
                           @foreach($subs as $sub)
-                            <tr>
+                        <tr id="sub{{$sub->id}}">
                               <td>
                                 {{$sub->display_name}}
                               </td>
                             <td>
                               @if($sub->visibility == 1)
-                                <button class="button is-warning is-small disable_subs" data-tooltip="Disable these subtitles"><i class="fas fa-eye-slash"></i></button>
+                            <button class="button is-warning is-small hide_subs" data-sub="{{$sub->id}}" data-tooltip="Disable these subtitles"><i class="fas fa-eye-slash"></i></button>
                               @else
-                                <button class="button is-primary is-small disable_subs" data-tooltip="Enable these subtitles"><i class="fas fa-eye"></i></button>
+                                <button class="button is-primary is-small show_subs" data-sub="{{$sub->id}}" data-tooltip="Enable these subtitles"><i class="fas fa-eye"></i></button>
                               @endif
                             </td>
                             <td>

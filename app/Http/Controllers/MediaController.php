@@ -120,4 +120,12 @@ class MediaController extends Controller
 
         return redirect()->back();
     }
+
+    //показать\спрятать субтитры
+    public function change_subs_status(Request $request){
+        $sub = App\Subtitles::find($request->sub_id);
+        $sub->visibility = $request->visibility;
+        $sub->save();
+        return response()->json(['msg'=>'success']);
+    }
 }

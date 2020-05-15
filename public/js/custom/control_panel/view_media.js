@@ -20,10 +20,11 @@
   //Plyr, видеоплеер
 const player = new Plyr('#player', {});
 
-//текущий активный таб
+//предыдущий активный таб
 var previous_tab = $("#tab_thumbnail");
 var previous_display = $("#thumbnail");
 
+//ф-ция переключения табов
 function switch_tab(current_tab, current_display)
 {
   if(current_tab != previous_tab)
@@ -53,7 +54,6 @@ $("#tab_preview").on('click', function(){
 });
 
 
-
 //если пользователь добавить файлы субтитров
 $("#subtitle_input").on('change', function(el){
   //получаем список файлов из input'а
@@ -62,4 +62,51 @@ $("#subtitle_input").on('change', function(el){
   for(var i = 0; i < files.length; i++){
       $("#subtitle_list").append(`<h1>${files[i].name}</h1>`);
   }
+});
+
+
+$(document).on('click','.hide_subs', function(){
+  var sub = $(this).data("sub");
+  var button = $(this);
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: '/control/media/change_subs_status',
+    data: {sub_id: sub, visibility: 0},
+    success: function(response){
+      //если запрос выполнился успешно
+      console.log("The subtitle file has been hidden.");
+      button.removeClass("is-warning").addClass("is-primary").removeClass("hide_subs").addClass("show_subs");
+      button.attr("data-tooltip","Enable these subtitles");
+      button.html(`<i class="fas fa-eye"></i>`);
+    }
+  });
+});
+
+$(document).on('click', '.show_subs', function(){
+  var sub = $(this).data("sub");
+  var button = $(this);
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: '/control/media/change_subs_status',
+    data: {sub_id: sub, visibility: 1},
+    success: function(response){
+      //если запрос выполнился успешно
+      console.log("The subtitle file has been shown.");
+      button.removeClass("is-primary").addClass("is-warning").removeClass("show_subs").addClass("hide_subs");
+      button.attr("data-tooltip","Disable these subtitles");
+      button.html(`<i class="fas fa-eye-slash"></i>`);
+    }
+  });
 });
