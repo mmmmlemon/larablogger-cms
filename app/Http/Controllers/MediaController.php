@@ -53,13 +53,14 @@ class MediaController extends Controller
         else
         {$media->visibility = 0;}
 
+        //получаем путь до папки с превьюхой
+        $pos = strrpos($media->media_url, "/");
+    
+
         //если была добавлена картинка thumbnail
         if($request->thumbnail != null)
         {
-            //получаем путь до папки с превьюхой
-            $pos = strrpos($media->media_url, "/");
             $path = substr($media->media_url, 0, $pos) . "/thumbnail";
-
             //проверяем существует ли уже такая папка
             $check = File::exists(storage_path("app\\public\\".$path));
             if ($check == false) {
@@ -73,6 +74,23 @@ class MediaController extends Controller
                $img->fit(640,360);
                $img->save(storage_path('\\app\\public\\').$path."/".$filename);
                $media->thumbnail_url = $path."/".$filename;
+        }
+
+        //если добавлен файл субтитров
+        if($request->subtitles != null)
+        {
+            $path = substr($media->media_url, 0, $pos) . "/subtitles";
+
+            $check = File::exists(storage_path("app\\public\\".$path));
+            if ($check == false) {
+                $folder_created = Storage::disk('public')->makeDirectory($path);
+            }
+            $files = $request->file('subtitles');
+
+            foreach($request->file('subtitles') as $subtitle)
+            {
+                Storage::disk('public')->put($path."/".$subtitle->getClientOriginalName(), file_get_contents($subtitle));
+            }
         }
     
         $media->save();

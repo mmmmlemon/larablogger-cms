@@ -18,8 +18,7 @@
 
 
   //Plyr, видеоплеер
-const player = new Plyr('#player', {
-});
+const player = new Plyr('#player', {});
 
 $("#tab_preview").on('click', function(){
     $(this).addClass("is-active");
@@ -35,4 +34,14 @@ $("#tab_thumbnail").on('click', function(){
     $("#thumbnail").removeClass("invisible").addClass("fade-in");
     $("#preview").addClass("invisible");
     player.pause();
+});
+
+//если пользователь добавить файлы субтитров
+$("#subtitle_input").on('change', function(el){
+  //получаем список файлов из input'а
+  var files = el.target.files;
+  $("#subtitle_list").html("<b>Attached subtitle files</b>");
+  for(var i = 0; i < files.length; i++){
+      $("#subtitle_list").append(`<h1>${files[i].name}</h1>`);
+  }
 });
