@@ -94,12 +94,11 @@ class MediaController extends Controller
                 {
                     $sub = new App\Subtitles;
                     $sub->media_id = $media->id;
-                    $media_sub->media_url = $path."/".$subtitle->getClientOriginalName();
-                    $media_sub->media_type = "subtitle";
-                    $media_sub->display_name = $subtitle->getClientOriginalName();
-                    $media_sub->actual_name = $subtitle->getClientOriginalName();
-                    $media_sub->visibility = 1;     
-                    $media_sub->save();
+                    $sub->sub_url = $path."/".$subtitle->getClientOriginalName();
+                    $sub->display_name = $subtitle->getClientOriginalName();
+                    $sub->actual_name = $subtitle->getClientOriginalName();
+                    $sub->visibility = 1;     
+                    $sub->save();
                 }
             }
         }
