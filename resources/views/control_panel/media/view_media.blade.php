@@ -139,11 +139,11 @@
 
                   <div id="subtitle_table" class="invisible">
                       @if(count($subs)>0)
-                      <table class="table is-fullwidth is-hover">
+                      <table id="subs_table" class="table is-fullwidth is-hover">
                         <thead>
                           <tr><th>Subtitle</th><th>Visibility</th><th></th></tr>
                         </thead>
-                        <tbody>
+                        <tbody id="subs_list">
                           @foreach($subs as $sub)
                         <tr id="sub{{$sub->id}}">
                               <td>

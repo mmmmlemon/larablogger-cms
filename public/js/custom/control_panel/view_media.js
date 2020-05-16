@@ -127,6 +127,11 @@ $(document).on('click', '.delete_subs', function(){
       //если запрос выполнился успешно
       console.log("The subtitle file has been deleted.");
       $(`#sub${sub}`).remove();
+      var count = $(`#subs_list`).children().length;
+      if(count === 0)
+      {
+        $("#subs_table").html("").append("<tr><td colspan='3'>No subtitles attached</td></tr>")
+      }
     }
   });
 });
