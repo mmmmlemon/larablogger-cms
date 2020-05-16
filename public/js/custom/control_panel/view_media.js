@@ -110,3 +110,23 @@ $(document).on('click', '.show_subs', function(){
     }
   });
 });
+
+$(document).on('click', '.delete_subs', function(){
+  var sub = $(this).data("sub");
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: '/control/media/delete_subs',
+    data: {sub_id: sub},
+    success: function(response){
+      //если запрос выполнился успешно
+      console.log("The subtitle file has been deleted.");
+      $(`#sub${sub}`).remove();
+    }
+  });
+});

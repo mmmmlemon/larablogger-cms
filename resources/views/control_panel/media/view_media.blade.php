@@ -1,3 +1,5 @@
+
+
 @extends('layouts.app')
 @section('content')
 <div class="container">
@@ -155,7 +157,7 @@
                               @endif
                             </td>
                             <td>
-                              <button class="button is-danger is-small delete_subs" data-tooltip="Delete subtitle file"><i class="fas fa-trash"></i></button>
+                              <button class="button is-danger is-small delete_subs" data-sub="{{$sub->id}}" data-tooltip="Delete subtitle file"><i class="fas fa-trash"></i></button>
                             </td>
                             </tr>
                           @endforeach

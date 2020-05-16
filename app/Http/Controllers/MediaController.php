@@ -128,4 +128,11 @@ class MediaController extends Controller
         $sub->save();
         return response()->json(['msg'=>'success']);
     }
+
+    public function delete_subs(Request $request){
+        $sub = App\Subtitles::find($request->sub_id);
+        unlink(storage_path('app\\public\\'.$sub->sub_url));
+        $sub->delete();
+        return response()->json(['msg'=>'success']);
+    }
 }
