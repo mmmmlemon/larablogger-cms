@@ -136,7 +136,51 @@ $(document).on('click', '.delete_subs', function(){
   });
 });
 
+
+
 //РЕДАКТИРОВАНИЕ ИМЕНИ ФАЙЛА СУБТИТРОВ
-$(document).on('click','.subtitle-display-name', function(el){
-  var elem = el.target;
+var elem_children; //надпись и input которые нужно показывать\прятать
+var edit = false; //открыто ли редактирование в данный момент
+var curr_elem, prev_elem;
+var id;
+
+//при нажатии на ячейкку таблицы с именем файла
+$(document).on('click','.edit_subs', function(el){
+  //если редактирование уже открыто
+  if(edit == true)
+  {//то закрываем открытое, и открываем новое
+    elem_children.eq(0).removeClass('invisible').addClass('fade-in'); //убираем надпись 
+    elem_children.eq(1).addClass('invisible').addClass("ignore"); //и показываем поле input с кнопкой
+  }
+   id = $(this).data("sub");
+   var elem = $(`#sub_file_${id}`); //получаем элемент в котором должна появиться форма редактирования (td)
+   elem_children = $(elem).children(); //получаем "детей" этого элемента
+   elem_children.eq(0).addClass('invisible'); //убираем надпись 
+   elem_children.eq(1).removeClass('invisible').removeClass("ignore").addClass('fade-in'); //и показываем поле input с кнопкой
+   edit = true;
+  });
+
+//ОТПРАВКА AJAX НА РЕДАКТИРОВАНИЕ ИМЕНИ ФАЙЛА СУБТИТРОВ
+$(document).on('click', '.edit_display_name', function(el){
+  //получаем значение input'а
+  var value = $(el.target).parent().children().first().val();
+  $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }});
+
+  //отправка запроса
+  $.ajax({
+    type:'POST',
+    url: '/control/media/change_subs_display_name',
+    data: {display_name: value, sub_id: id},
+    success: function(response){
+      //если запрос выполнился успешно
+      console.log("Display name has been changed for the subtitle file.");
+      elem_children.eq(0).removeClass('invisible').addClass('fade-in').html(value); //возвращаем надпись 
+      elem_children.eq(1).addClass('invisible').addClass("ignore"); //и прячем поле input с кнопкой
+      edit = false; //режим редактирования выключен
+      $(`#sub_file_${id}`).find("input").val(value);
+  }});
+
 });

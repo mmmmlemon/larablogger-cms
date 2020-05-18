@@ -135,4 +135,13 @@ class MediaController extends Controller
         $sub->delete();
         return response()->json(['msg'=>'success']);
     }
+
+    public function change_subs_display_name(Request $request)
+    {
+       $sub = App\Subtitles::find($request->sub_id);
+       $sub->display_name = $request->display_name;
+       $sub->save();
+
+       return response()->json(['msg'=>'success']);
+    }
 }

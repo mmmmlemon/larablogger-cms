@@ -96,3 +96,7 @@ body, html {
 .subtitle-display-name:hover{
    color: rgb(50,115,220);
 }
+
+.ignore{
+    pointer-events: none;
+}

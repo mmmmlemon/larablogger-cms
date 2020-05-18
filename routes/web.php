@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //удалить thumbnail
     Route::post('/control/media/change_subs_status','MediaController@change_subs_status'); //спрятать\показать субтитры
     Route::post('/control/media/delete_subs','MediaController@delete_subs'); //удалить субтитры
+    Route::post('/control/media/change_subs_display_name', 'MediaController@change_subs_display_name'); //сменить имя файла субтитров
 
     //КАТЕГОРИИ
     Route::get('/control/categories', 'CategoryController@index'); //вывод списка категорий в панели управления
