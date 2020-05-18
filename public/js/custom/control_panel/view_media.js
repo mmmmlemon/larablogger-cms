@@ -18,7 +18,10 @@
 
 
   //Plyr, видеоплеер
-const player = new Plyr('#player', {});
+const player = new Plyr('#player', {
+  captions: {
+    active: true
+  }});
 
 //предыдущий активный таб
 var previous_tab = $("#tab_thumbnail");

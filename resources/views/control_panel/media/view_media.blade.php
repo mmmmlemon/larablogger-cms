@@ -52,7 +52,7 @@
                 <label class="label">Subtitles</label>
                 <div id="file-js-example" class="file has-name">
                     <label class="file-label">
-                      <input class="file-input" id="subtitle_input" accept=".srt, .txt" type="file" name="subtitles[]" multiple>
+                      <input class="file-input" id="subtitle_input" accept=".srt, .txt, .vtt" type="file" name="subtitles[]" multiple>
                       <span class="file-cta">
                         <span class="file-icon">
                           <i class="fas fa-upload"></i>
@@ -180,9 +180,12 @@
                   <div id="preview" class="invisible">
                   <video style="" controls="controls" id="player" preload="none" poster = "{{asset('/storage/')."/".$media->thumbnail_url}}">
                     <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" 
-                     
                       id="content-video">
                     </video>
+                    @foreach($subs as $sub)
+
+                      <track kind="subtitles" label="{{$sub->display_name}}" src="{{asset('/storage/')."/".$sub->sub_url}}" srclang="en" default />
+                    @endforeach
                   </div>
                 @endif
 
