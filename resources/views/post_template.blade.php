@@ -1,7 +1,13 @@
 <div class="column is-12 white-bg">
-    <a href="/post/{{$post->id}}">
+  <div>
+    <a href="/post/{{$post->id}}" style="display:inline-block;">
       <h1 class="title">{{$post->post_title}}</h1>
     </a> 
+    @if($post->pinned == 1)
+    <i class="fas fa-thumbtack" style="display:inline-block; padding-left: 3px;"></i>
+    @endif
+  </div>
+
     <br>
     @if($post->tags != null)
     @foreach($post->tags as $tag)

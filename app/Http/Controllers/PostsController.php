@@ -17,7 +17,7 @@ class PostsController extends Controller
     //вывод постов на главной странице 
     public function index(){
 
-        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
             //получаем теги поста
@@ -506,6 +506,21 @@ class PostsController extends Controller
         }
         
         return redirect(url()->previous());
+    }
+
+    //закрепить\открепить пост
+    public function pin_post(Request $request){
+        $post = App\Post::find($request->id);
+        if($post->pinned == 0)
+        {
+            $post->pinned = 1;
+        }
+        else{
+            $post->pinned = 0;
+        }
+
+        $post->save();
+        return redirect()->back();
     }
 
 } 

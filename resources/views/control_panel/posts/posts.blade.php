@@ -70,6 +70,24 @@
                 <td>{{App\Category::find($post->category_id)->category_name}}</td>
                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                     <td>
+
+                        
+                        @if($post->pinned == 0)
+
+                        <form action="/control/pin_post/" method="post" style="display:inline;">
+                            @csrf
+                        <input type="text" name="id" value="{{$post->id}}" class="invisible">
+                            <button class="button is-success" data-tooltip="Pin this post"><i class="fas fa-thumbtack"></i></button>
+                         </form>
+                        @else
+                        <form action="/control/pin_post/" method="post" style="display:inline;">
+                            @csrf
+                            <input type="text" name="id" value="{{$post->id}}" class="invisible">
+                            <button class="button is-warning" data-tooltip="Unpin this post"><i class="fas fa-thumbtack"></i></button>
+                         </form>
+                        @endif
+
+
                         @if($post->visibility == 1)
 
                         <form action="/control/post_status/{{$post->id}}/0" method="post" style="display:inline;">

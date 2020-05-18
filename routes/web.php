@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/clear_temp', 'PostsController@clear_temp'); //очистить папку temp с временными файлами
     Route::post('/delete_media', 'PostsController@delete_media'); //удалить прикрепленный файл из поста
     Route::post('/upload_files', 'PostsController@upload_files');
+    Route::post('/control/pin_post','PostsController@pin_post'); //закрепить\открепить пост
 
     //МЕДИА
     Route::get('/control/media','MediaController@index'); //главная страница с медиа файлами
