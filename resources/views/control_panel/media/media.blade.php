@@ -55,10 +55,11 @@
                          </form>
                         <form action="/" method="post" style="display:inline;">
                             @csrf
-                            <button class="button is-info" data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                            <a href="/control/media/{{$m->id}}" class="button is-info" data-tooltip="Edit"><i class="fas fa-edit"></i></a>
                          </form>
-                        <form action="/" method="post" style="display:inline;">
+                        <form action="/control/media/delete_media/" method="post" style="display:inline;">
                             @csrf
+                        <input type="text" name="id" value="{{$m->id}}" class="invisible">
                             <button class="button is-danger" data-tooltip="Delete this file"><i class="fas fa-trash"></i></button>
                          </form>
                     </td>

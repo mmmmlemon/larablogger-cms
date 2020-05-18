@@ -144,4 +144,15 @@ class MediaController extends Controller
 
        return response()->json(['msg'=>'success']);
     }
+
+    public function delete_media(Request $request){
+       $subs = App\Subtitles::where('media_id','=',$request->id)->get();
+       foreach($subs as $s)
+       {
+           $s->delete();
+       }
+       $media = App\Media::find($request->id);
+       $media->delete();
+       return redirect()->back();
+    }
 }
