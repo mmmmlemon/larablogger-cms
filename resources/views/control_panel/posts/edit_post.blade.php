@@ -99,6 +99,7 @@
                     <table class="table is-fullwidth is-hoverable is-narrow" >
                       <thead>
                         <th>Filename</th>
+                        <th></th>
                         <th>Type</th>
                         <th>Actions</th>
                       </thead>
@@ -107,7 +108,8 @@
                       @if(count($media) > 0)
                         @foreach($media as $m)
                         <tr>
-                        <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->filename}}</a></td>
+                        <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->display_name}}</a></td>
+                        <td><a target="_blank" href="/control/media/{{$m->id}}">Edit</a></td>
                         <td>{{$m->media_type}}</td>
                         <td>
                         <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">

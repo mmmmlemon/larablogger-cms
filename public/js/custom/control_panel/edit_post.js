@@ -176,7 +176,7 @@ var dropzone = $("#dropzone_form").dropzone({
       }
       
       //выводим файл в таблице
-      tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td>
+      tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td><td></td>
       <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
       <span class="icon">
         <i class="fas fa-trash"></i>
