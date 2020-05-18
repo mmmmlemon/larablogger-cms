@@ -88,3 +88,11 @@ body, html {
 .inline{
     display: inline;
 }
+
+.subtitle-display-name{
+    cursor: pointer;
+}
+
+.subtitle-display-name:hover{
+   color: rgb(50,115,220);
+}

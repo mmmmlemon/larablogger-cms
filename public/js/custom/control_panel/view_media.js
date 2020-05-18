@@ -135,3 +135,8 @@ $(document).on('click', '.delete_subs', function(){
     }
   });
 });
+
+//РЕДАКТИРОВАНИЕ ИМЕНИ ФАЙЛА СУБТИТРОВ
+$(document).on('click','.subtitle-display-name', function(el){
+  var elem = el.target;
+});

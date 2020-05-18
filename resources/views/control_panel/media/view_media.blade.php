@@ -146,9 +146,18 @@
                         <tbody id="subs_list">
                           @foreach($subs as $sub)
                         <tr id="sub{{$sub->id}}">
-                              <td>
-                                {{$sub->display_name}}
+                              <td class="subtitle-display-name" data-tooltip="Edit display name">
+                                <p>{{$sub->display_name}}</p>
+                                <div class="field is-grouped control">
+                                  <input class="input is-info" type="text" placeholder="Subtitle display name" value="{{$sub->display_name}}">
+                                  <button class="button is-info">
+                                    <span class="icon is-small">
+                                      <i class="fas fa-check"></i>
+                                    </span>
+                                  </button>
+                                </div>
                               </td>
+                        
                             <td>
                               @if($sub->visibility == 1)
                             <button class="button is-warning is-small hide_subs" data-sub="{{$sub->id}}" data-tooltip="Disable these subtitles"><i class="fas fa-eye-slash"></i></button>
