@@ -146,11 +146,11 @@
                         <tbody id="subs_list">
                           @foreach($subs as $sub)
                         <tr id="sub{{$sub->id}}">
-                            <td id="sub_file_{{$sub->id}}" data-tooltip="Edit display name">
+                            <td id="sub_file_{{$sub->id}}">
                                 <p class="ignore display_text">{{$sub->display_name}}</p>
                                 <div class="invisible ignore">      
                                   <div class="field is-grouped">
-                                    <input class="input is-info" type="text" placeholder="Subtitle display name" value="{{$sub->display_name}}">
+                                    <input class="input is-info edit_display_input" type="text" placeholder="Subtitle display name" value="{{$sub->display_name}}">
                                     <button class="button is-info edit_display_name">
                                       ✓
                                     </button>

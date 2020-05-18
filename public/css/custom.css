@@ -100,3 +100,13 @@ body, html {
 .ignore{
     pointer-events: none;
 }
+
+.edit_display_name{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.edit_display_input{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
