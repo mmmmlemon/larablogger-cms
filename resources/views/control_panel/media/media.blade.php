@@ -49,10 +49,9 @@
                     <a target="_blank" href="/post/{{$m->post_id}}">{{$m->post_title}}</a>
                     </td>
                     <td>
-                        <form action="/" method="post" style="display:inline;">
-                            @csrf
-                            <button class="button is-success" data-tooltip="Preview"><i class="fas fa-play"></i></button>
-                         </form>
+       
+                        <button class="button is-success preview" data-tooltip="Preview"
+                     data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}"><i class="fas fa-play"></i></button>
                         <form action="/" method="post" style="display:inline;">
                             @csrf
                             <a href="/control/media/{{$m->id}}" class="button is-info" data-tooltip="Edit"><i class="fas fa-edit"></i></a>
@@ -75,6 +74,26 @@
 </div>
 @endsection
 
+@section('modals')
+<!--модальное окно превью файла-->
+<div class="modal" id="preview-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content column is-two-thirds-desktop is-12-mobile">
+      <p class="image has-text-centered">
+        <img style="display:none;" id="content-in-modal" width="90%" src="" alt="">
+        <div id="player_div" style="display: none;">
+            <video controls="controls" id="player">
+                <source src="" id="content-video">
+              </video>
+        </div>
+       
+      </p>
+    </div>
+    <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
+  </div>
+  @endsection
+
 @push('scripts')
+<script src="{{ asset('js/plyr.js') }}"></script>
 <script src="{{ asset('js/custom/control_panel/media.js') }}"></script>
 @endpush

@@ -155,9 +155,12 @@
   <div class="modal-content column is-two-thirds-desktop is-12-mobile">
     <p class="image has-text-centered">
       <img style="display:none;" id="content-in-modal" width="90%" src="" alt="">
-      <video style="display: none;" controls="controls" id="player">
-        <source src="" id="content-video">
-      </video>
+      <div id="player_div">
+        <video style="display: none;" controls="controls" id="player">
+          <source src="" id="content-video">
+        </video>
+      </div>
+      
     </p>
   </div>
   <button class="modal-close is-large" id="modal-close" aria-label="close"></button>

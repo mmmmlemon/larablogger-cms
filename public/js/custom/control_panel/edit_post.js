@@ -103,7 +103,7 @@ $(document).on('click', ".preview", function(){
   }
   //если видео, то показываем плеер
   if($(this).data("type")==="video")
-  { $("#player").attr("style", "display: block;");
+  { $("#player_div").attr("style", "display: block;");
     $("#content-video").attr("src", $(this).data("url"));
     player.source = {
       type: 'video',
@@ -125,7 +125,7 @@ $("#modal-close").click(function() {
   $("#preview-modal").removeClass("is-active");
   player.stop(); //стопорим плеер, чтобы видео не играло в фоне :)
   $("#content-in-modal").attr("style", "display: none");
-  $("#player").attr("style", "display: none;");
+  $("#player_div").attr("style", "display: none;");
 });
  
 //выключаем autoDiscover у дропзоны
