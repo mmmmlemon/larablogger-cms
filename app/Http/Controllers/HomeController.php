@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use Auth;
 
 class HomeController extends Controller
 
@@ -15,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
     }
 
     /**
@@ -32,6 +33,12 @@ class HomeController extends Controller
 
     public function about(){
         $content = App\Settings::get()[0]->about_content;
-        return view('about',compact('content'));
+        $is_admin = false;
+        if(Auth::check())
+        {
+            if(Auth::user()->user_type == 0)
+            {$is_admin = true;}
+        }
+        return view('about',compact('content','is_admin'));
     }
 }

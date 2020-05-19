@@ -128,6 +128,22 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#profile");
         
     }
+
+    public function edit_about(){
+
+        $content = App\Settings::get()[0]->about_content;
+
+        return view('/control_panel/edit_about', compact('content'));
+    }
+
+    public function save_about(Request $request){
+        $settings = App\Settings::get()[0];
+        $settings->about_content = $request->about_content;
+
+        $settings->save();
+
+        return redirect()->to('/control#design');
+    }
 }
  
 

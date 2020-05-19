@@ -24,7 +24,12 @@ Route::get('/about', 'HomeController@about'); //страница About
 
 //рауты доступные только админу
 Route::group(['middleware' => ['auth', 'admin']], function(){
+
     Route::get('/control', 'ControlPanelController@index')->name('control'); //показать панель управления
+    
+    Route::get('/control/edit_about','ControlPanelController@edit_about'); //страница редактирования About
+    Route::post('/control/save_about','ControlPanelController@save_about'); //сохранение настроек About
+
 
     //НАСТРОЙКИ
     Route::post('/control/update_settings', 'ControlPanelController@update_settings'); //обновить общие настройки сайта
