@@ -8,6 +8,7 @@ use Auth;
 use Validator;
 use Carbon\Carbon;
 use Image;
+use File;
 
 class ControlPanelController extends Controller
 {
@@ -147,6 +148,13 @@ class ControlPanelController extends Controller
     }
 
     public function update_design(Request $request){
+
+        $files = File::files(storage_path("app\\public\\images\\bg"));
+        foreach($files as $file)
+        {
+            unlink($file->getPathname());
+        }
+
         $settings = App\Settings::get()[0];
         //сохранение bg image
         //если была добавлена картинка thumbnail
@@ -155,7 +163,7 @@ class ControlPanelController extends Controller
                 $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
                 $img = Image::make($request->background_image);
                 $img->fit(1920,1080);
-                
+
                 if($request->blur_img == "on")
                 {$img->blur(85);}
 
