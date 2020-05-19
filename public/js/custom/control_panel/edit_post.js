@@ -193,6 +193,8 @@ var dropzone = $("#dropzone_form").dropzone({
   chunksUploaded: function(xhr, done, file){
     done();
     console.log(`The file ${xhr.name} has been uploaded.`);
+    
+    $("#footer").attr("style",`top: ${$(document).height()}px;`)
   }
 });
 

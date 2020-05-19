@@ -27,6 +27,8 @@ $("input").change(function(){
     //подсвечиваем вкладку
     $(".current-tab").removeClass("current-tab is-active");
     $("#"+tab_name).addClass("is-active current-tab");
+
+    $("#footer").attr("style",`top: ${$(document).height()}px;`)
   }
 
   if(window.location.hash){
