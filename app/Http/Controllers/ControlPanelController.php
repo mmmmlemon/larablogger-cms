@@ -155,9 +155,16 @@ class ControlPanelController extends Controller
                 $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
                 $img = Image::make($request->background_image);
                 $img->fit(1920,1080);
-                $img->blur(85);
-                $img->brightness(-25);
-                $img->contrast(-20);
+                
+                if($request->blur_img == "on")
+                {$img->blur(85);}
+
+                if($request->dark_img == "on")
+                {
+                    $img->brightness(-25);
+                    $img->contrast(-20);
+                }
+               
                 $img->save(storage_path('\\app\\public\\')."/images/bg/"."/".$filename);
                 $settings->bg_image = "/images/bg/"."/".$filename;
         }

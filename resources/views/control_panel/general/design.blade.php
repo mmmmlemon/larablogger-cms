@@ -31,6 +31,18 @@
                           </span>
                         </label>
                     </div>
+                    <div>&nbsp;</div>
+                    <div>
+                        <input class="is-checkradio is-link" name="blur_img" id="blur_img" type="checkbox" checked>
+                        <label class="label" for="blur_img">Blur image</label>
+                    </div>
+                    
+                    <div>
+                        <input class="is-checkradio is-link" name="dark_img" id="dark_img" type="checkbox" checked>
+                        <label class="label" for="dark_img">Darken image</label>
+                    </div>
+              
+
                     </div>
                     
                     </div>
