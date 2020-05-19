@@ -20,9 +20,7 @@ Route::get('/category/{category_name}', 'CategoryController@show_posts_by_catego
 Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag'); //вывод постов по тегу
 Route::get('/post/{id}', 'PostsController@show_post'); //показать пост
 Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //отправить комментарий
-Route::get('/about', function () { //показать страницу About
-    return view('about');
-});
+Route::get('/about', 'HomeController@about'); //страница About
 
 //рауты доступные только админу
 Route::group(['middleware' => ['auth', 'admin']], function(){
