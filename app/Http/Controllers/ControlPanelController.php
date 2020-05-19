@@ -7,6 +7,7 @@ use App;
 use Auth;
 use Validator;
 use Carbon\Carbon;
+use Image;
 
 class ControlPanelController extends Controller
 {
@@ -143,6 +144,27 @@ class ControlPanelController extends Controller
         $settings->save();
 
         return redirect()->to('/control#design');
+    }
+
+    public function update_design(Request $request){
+        $settings = App\Settings::get()[0];
+        //сохранение bg image
+        //если была добавлена картинка thumbnail
+        if($request->background_image != null)
+        {
+                $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
+                $img = Image::make($request->background_image);
+                $img->fit(1920,1080);
+                $img->blur(85);
+                $img->brightness(-25);
+                $img->contrast(-20);
+                $img->save(storage_path('\\app\\public\\')."/images/bg/"."/".$filename);
+                $settings->bg_image = "/images/bg/"."/".$filename;
+        }
+
+        $settings->save();
+        return redirect()->back();
+
     }
 }
  

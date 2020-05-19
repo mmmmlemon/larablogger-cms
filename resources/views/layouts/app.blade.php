@@ -5,10 +5,11 @@
     $settings = App\Settings::all()->first();
     $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
     $categories = App\Category::where('category_name','!=','blank')->get();
+    $settings = App\Settings::get()[0];
  @endphp
 
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('images/bg/bg.jpg') }})">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('/storage/'.$settings->bg_image) }})">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

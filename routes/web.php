@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_social', 'ControlPanelController@update_social'); //обновить соц. сети
     Route::post('/control/change_user_type', 'ControlPanelController@change_user_type'); //сменить тип пользователя
     Route::post('/control/update_profile', 'ControlPanelController@update_profile'); //обновить настройки профиля
+    Route::post('/control/update_design', 'ControlPanelController@update_design'); //обновить настройки дизайна
 
     //ПОСТЫ
     Route::get('/control/create_post', 'PostsController@show_create_post'); //показать страницу создания поста
