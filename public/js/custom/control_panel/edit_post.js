@@ -88,6 +88,12 @@ function send_delete_media_request(media_id)
         $("#file_browser").addClass("invisible").removeClass("fade-in");
         $("#no_files").removeClass("invisible").addClass("fade-in");
       }
+      var index_of_el = uploaded_files.findIndex(el => el.includes(media_id));
+      if(index_of_el != -1)
+      {
+        uploaded_files.splice(index_of_el,1);
+        console.log("uploaded files",uploaded_files)
+      }
       console.log("%cThe file has been succesfully deleted.", "color: red;");
     }
   });
