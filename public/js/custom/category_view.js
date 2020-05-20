@@ -10,3 +10,14 @@ $("#link-in-modal").attr("href", $(this).attr("src"));
 $("#modal-close").click(function() {
 $("#img-modal").removeClass("is-active");
 });
+
+$('.share-button').on('click', function(){
+    var id = "#"+$(this).attr('for');
+    if($(id).hasClass('invisible'))
+    {
+        $(id).removeClass("invisible").addClass("fade-in");
+    }
+    else{
+        $(id).addClass("invisible");
+    }
+});

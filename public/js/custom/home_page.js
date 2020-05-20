@@ -7,5 +7,4 @@ $('.share-button').on('click', function(){
     else{
         $(id).addClass("invisible");
     }
-    
-})
+});

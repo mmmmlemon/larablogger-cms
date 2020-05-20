@@ -29,7 +29,7 @@
 @section('modals')
 <div class="modal" id="img-modal">
   <div class="modal-background"></div>
-  <div class="modal-content column" style="width: 50%;">
+  <div class="modal-content column is-two-thirds-desktop is-12-mobile">
     <p class="image has-text-centered">
       <img id="img-in-modal" width="90%" src="" alt="">
       <a id="link-in-modal" target="_blank" href="">Download</a>

@@ -4,7 +4,7 @@
       <h1 class="title">{{$post->post_title}}</h1>
     </a> 
     @if($post->pinned == 1)
-    <i class="fas fa-thumbtack" style="display:inline-block; padding-left: 3px;"></i>
+    <i class="fas fa-thumbtack pin" style="display:inline-block;"></i>
     @endif
   </div>
 

@@ -43,5 +43,5 @@
 
 <script src="{{ asset('js/plyr.js') }}"></script>
 <script src="{{ asset('js/custom/category_view.js') }}"></script>
-
+<script src="{{ asset('js/custom/shared/shared.js') }}"></script>
 @endpush
