@@ -75,7 +75,7 @@
    
     @yield('users', View::make('control_panel/general/users', compact('users')))
 
-    @yield('design', View::make('control_panel/general/design'))
+    @yield('design', View::make('control_panel/general/design', compact('settings')))
 
     @yield('profile', View::make('control_panel/general/profile', compact('current_user')))
 

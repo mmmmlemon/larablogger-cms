@@ -52,7 +52,7 @@
                            
                         </div>
                         <div class="field-body">
-                            <input class="is-checkradio is-link" name="show_about" id="show_about" type="checkbox" checked>
+                            <input class="is-checkradio is-link" name="show_about" id="show_about" type="checkbox" @if($settings->show_about == 1) checked @endif>
                             <label class="label" for="show_about">Show 'About' page</label>
                             <a href="/control/edit_about" class="button is-link">
                                 <span class="icon is-small">
@@ -70,7 +70,7 @@
                             <label class="label">Footer contents</label>   
                         </div>
                         <div class="field-body">
-                            <textarea class="textarea" name="footer_content" id="footer_content"></textarea>
+                        <textarea class="textarea" name="footer_content" id="footer_content">{{$settings->footer_text}}</textarea>
                         </div>
                     </div>
 

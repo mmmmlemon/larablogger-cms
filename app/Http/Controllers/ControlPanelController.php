@@ -149,38 +149,46 @@ class ControlPanelController extends Controller
 
     public function update_design(Request $request){
 
-        $files = File::files(storage_path("app\\public\\images\\bg"));
-        foreach($files as $file)
-        {
-            unlink($file->getPathname());
-        }
-
         $settings = App\Settings::get()[0];
         //сохранение bg image
         //если была добавлена картинка thumbnail
         if($request->background_image != null)
         {
-                $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
-                $img = Image::make($request->background_image);
-                $img->fit(1920,1080);
 
-                if($request->blur_img == "on")
-                {$img->blur(85);}
+            $files = File::files(storage_path("app\\public\\images\\bg"));
+            foreach($files as $file)
+            {
+                unlink($file->getPathname());
+            }
 
-                if($request->dark_img == "on")
-                {
-                    $img->brightness(-25);
-                    $img->contrast(-20);
-                }
-               
-                $img->save(storage_path('\\app\\public\\')."/images/bg/"."/".$filename);
-                $settings->bg_image = "/images/bg/"."/".$filename;
+            $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
+            $img = Image::make($request->background_image);
+            $img->fit(1920,1080);
+
+            if($request->blur_img == "on")
+            {$img->blur(85);}
+
+            if($request->dark_img == "on")
+            {
+                $img->brightness(-25);
+                $img->contrast(-20);
+            }
+            
+            $img->save(storage_path('\\app\\public\\')."/images/bg/"."/".$filename);
+            $settings->bg_image = "/images/bg/"."/".$filename;
         }
 
+        if($request->show_about == "on")
+        { $settings->show_about = 1; }
+        else { $settings->show_about = 0; }
+
+        $settings->footer_text = $request->footer_content;
+
         $settings->save();
-        return redirect()->back();
+        return redirect()->to("/control#design");
 
     }
+
 }
  
 

@@ -98,9 +98,11 @@
                     </a>
                 @endforeach
 
+                @if($settings->show_about == 1)
                 <a class="navbar-item" href="/about">
                     About
                 </a>
+                @endif
 
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
@@ -208,7 +210,7 @@
     <footer class="footer" id="footer">
         <div class="content has-text-centered">
           <p>
-           {{$settings->footer_text}}
+           {!!$settings->footer_text!!}
           </p>
         </div>
       </footer> 
