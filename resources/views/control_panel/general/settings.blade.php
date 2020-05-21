@@ -87,27 +87,6 @@
                 </div>
             </div>
 
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Footer text</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <p class="control is-expanded">
-                            <input class="input @error('footer_text') is-danger @enderror" name="footer_text" 
-                            type="text" placeholder="Text for footer" maxlength="500"
-                            value="@if($errors->any()){{old('footer_text')}}@else{{$settings->footer_text}}@endif">
-                        </p>
-                        @error('footer_text')
-                        <p class="help is-danger"><b> {{ $message }}</b></p>  
-                        @enderror
-                    </div>
-                </div>
-
-                
-            </div>
-
-
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <!-- Left empty for spacing -->
