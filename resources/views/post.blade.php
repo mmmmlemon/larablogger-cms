@@ -243,8 +243,11 @@
   <div class="modal-background"></div>
   <div class="modal-content column is-two-thirds-desktop is-12-mobile">
     <p class="image has-text-centered">
-      <img id="img-in-modal" width="90%" src="" alt="">
-      <a id="link-in-modal" target="_blank" href="">Download</a>
+      <div class="has-text-centered">
+        <img id="img-in-modal" width="90%" src="" alt="">
+        <br>
+        <a id="link-in-modal" target="_blank" href="">Download</a>
+      </div>
     </p>
   </div>
   <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
@@ -258,5 +261,4 @@
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="{{ asset('js/plyr.js') }}"></script>
 <script src="{{ asset('js/custom/post.js') }}"></script>
-<script src="{{ asset('js/custom/home_page.js') }}"></script>
 @endpush
