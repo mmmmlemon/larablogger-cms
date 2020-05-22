@@ -115,6 +115,10 @@ body, html {
 .pin{
     margin-left: 10px;
     margin-bottom: 3px;
-
-
 }
+
+.centered_image{
+    display: block;
+    margin: 0 auto;
+}
+

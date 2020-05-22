@@ -122,7 +122,6 @@ $(document).on('click', ".preview", function(){
         },
       ],
     }; 
-
 }
 });
 
