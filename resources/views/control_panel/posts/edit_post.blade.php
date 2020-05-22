@@ -156,13 +156,14 @@
   <div class="modal-background"></div>
   <div class="modal-content column is-two-thirds-desktop is-12-mobile">
     <p class="image has-text-centered">
-      <img style="display:none;" id="content-in-modal" width="90%" src="" alt="">
-      <div id="player_div">
-        <video style="display: none;" controls="controls" id="player">
-          <source src="" id="content-video">
-        </video>
-      </div>
-      
+        <div class="has-text-centered">
+          <img id="content-in-modal" width="90%" class="centered_image" src="" alt="" style="padding:0px;">
+          <div id="player_div" style="display: none;">
+              <video controls="controls" id="player">
+                  <source src="" id="content-video">
+              </video>
+          </div>
+        </div>
     </p>
   </div>
   <button class="modal-close is-large" id="modal-close" aria-label="close"></button>

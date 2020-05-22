@@ -88,8 +88,6 @@
                 </video>
             </div>
           </div>
-        
-       
       </p>
     </div>
     <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
