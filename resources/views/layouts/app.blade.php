@@ -63,7 +63,7 @@
     <section class="hero header">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <h1 class="title web-site-title">
+                <h1 class="title web-site-title" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
                   {{$settings->site_title}}
                 </h1>
                 <h2 class="subtitle web-site-subtitle">
