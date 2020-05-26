@@ -1,3 +1,11 @@
+<div class="black_screen invisible">
+        <div class="white-bg loader_pill has-text-centered">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            <div>Just a moment... do not close this page</div>
+            <div class="subtitle" width="style=top:50%;">Applying new design</div>  
+        </div>
+</div>
+
 <div id="design_content" class="invisible">
 
     <div class="has-text-centered">
@@ -81,7 +89,7 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <button type="submit" class="button is-link">
+                                    <button type="submit" id="submit_design" class="button is-link">
                                         <span class="icon">
                                             <i class="fas fa-save"></i>
                                         </span>
@@ -102,21 +110,5 @@
 
 @push('scripts')
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
-<script>
-    const fileInput = document.querySelector('#bg-img input[type=file]');
-    fileInput.onchange = () => {
-        if (fileInput.files.length > 0) 
-            {
-                const fileName = document.querySelector('#bg-img .file-name');
-                fileName.textContent = fileInput.files[0].name;
-            }
-        }
 
-    $('#footer_content').richText({
-    imageUpload:false,
-    videoEmbed:false,
-    fileUpload:false
-    });
-    
-</script>
 @endpush

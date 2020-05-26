@@ -87,5 +87,6 @@
 <script src="{{ asset('js/custom/control_panel/control_panel.js') }}"></script>
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="{{ asset('js/custom/control_panel/settings.js') }}"></script>
+<script src="{{ asset('js/custom/control_panel/design.js') }}"></script>
 @endpush
 
