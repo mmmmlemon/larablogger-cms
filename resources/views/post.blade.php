@@ -64,6 +64,7 @@
                 </video>
               </div>
             </div>
+            <br>
   
           </article>
           @endif
