@@ -1,3 +1,5 @@
+$("#footer").attr("style",`top: ${$(document).height()}px;`)
+
 $('.textarea').richText({
     imageUpload:false,
     videoEmbed:false,
