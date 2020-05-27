@@ -6,14 +6,6 @@ fileInput.onchange = () => {
     }
 }
 
-const fileInputt = document.querySelector('#font_input input[type=file]');
-fileInputt.onchange = () => {
-    if (fileInputt.files.length > 0) {
-        const fileName = document.querySelector('#font_input .file-name');
-        fileName.textContent = fileInputt.files[0].name;
-    }
-}
-
 $('#footer_content').richText({
     imageUpload: false,
     videoEmbed: false,

@@ -182,3 +182,8 @@ body, html {
     vertical-align: middle;
     top: 30%;
 }
+
+.blur_image, .darken_image{
+    margin-top: 7px;
+    margin-left: 7px;
+}
