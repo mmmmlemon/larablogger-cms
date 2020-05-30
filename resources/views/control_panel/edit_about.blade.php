@@ -30,7 +30,7 @@
                 <textarea class="textarea" id="post_content" maxlength="700" name="about_content" placeholder="Write your post here">
                     {{$content}}
                 </textarea>
-                @error('post_content')
+                @error('about_content')
                     <p class="help is-danger"><b> {{ $message }}</b></p>
                 @enderror
                 <br>

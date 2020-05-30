@@ -25,11 +25,9 @@ Route::get('/about', 'HomeController@about'); //страница About
 //рауты доступные только админу
 Route::group(['middleware' => ['auth', 'admin']], function(){
 
-    Route::get('/control', 'ControlPanelController@index')->name('control'); //показать панель управления
-    
-    Route::get('/control/edit_about','ControlPanelController@edit_about'); //страница редактирования About
+    Route::get('/control', 'ControlPanelController@show_control_panel')->name('control'); //показать панель управления   
+    Route::get('/control/edit_about','ControlPanelController@show_edit_about'); //страница редактирования About
     Route::post('/control/save_about','ControlPanelController@save_about'); //сохранение настроек About
-
 
     //НАСТРОЙКИ
     Route::post('/control/update_settings', 'ControlPanelController@update_settings'); //обновить общие настройки сайта
@@ -53,7 +51,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/post/upload_files','PostsController@upload_files'); //загрузить файлы, прикрепленные к посту
     Route::get('/clear_temp', 'PostsController@clear_temp'); //очистить папку temp с временными файлами
     Route::post('/delete_media', 'PostsController@delete_media'); //удалить прикрепленный файл из поста
-    Route::post('/upload_files', 'PostsController@upload_files');
+    Route::post('/upload_files', 'PostsController@upload_files'); //загрузка файлов
     Route::post('/control/pin_post','PostsController@pin_post'); //закрепить\открепить пост
 
     //МЕДИА
@@ -67,7 +65,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/media/delete_media','MediaController@delete_media'); //удалить медиа
 
     //КАТЕГОРИИ
-    Route::get('/control/categories', 'CategoryController@index'); //вывод списка категорий в панели управления
+    Route::get('/control/categories', 'CategoryController@category_list'); //вывод списка категорий в панели управления
     Route::get('/control/categories/add', 'CategoryController@show_create_category'); //показать страницу создания категорий
     Route::post('/control/categories/add', 'CategoryController@create_category'); //создать категорию
     Route::get('/control/categories/edit/{id}','CategoryController@show_edit_category'); //редактировать категорию

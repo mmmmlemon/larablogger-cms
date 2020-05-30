@@ -2,6 +2,9 @@
 @extends('layouts.app') 
 
 @section('content')
+@php
+$blank = ""; //пустой символ для аттрибута value в input
+@endphp
 <div class="container white-bg">
     {{-- навигация --}}
     <nav class="breadcrumb" aria-label="breadcrumbs">
@@ -107,5 +110,7 @@
 <script src="{{ asset('js/custom/control_panel/settings.js') }}"></script>
 {{-- скрипты для таба Design --}}
 <script src="{{ asset('js/custom/control_panel/design.js') }}"></script>
+{{-- скрипты для таба Profile --}}
+<script src="{{ asset('js/custom/control_panel/profile.js') }}"></script>
 @endpush
 

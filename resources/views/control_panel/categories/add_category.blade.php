@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+ $blank = ""; //пустой символ для атрибута value, в input   
+@endphp
 <div class="container white-bg">
     <!--НАВИГАЦИЯ-->
     <nav class="breadcrumb" aria-label="breadcrumbs">
@@ -35,8 +38,8 @@
                     <label class="label">Category name</label>
                     <div class="control">
                       <input class="input @error('category_name') is-danger @enderror"
-                       name="category_name" type="text" maxlength="20" placeholder="Category name" id="title"
-                       value="@if($errors->any()){{old('category_name')}}@else @endif">
+                        name="category_name" type="text" maxlength="20" placeholder="Category name" id="title"
+                        value="@if($errors->any()){{old('category_name')}}@else{{$blank}}@endif">
                     </div>
                     @error('category_name')
                     <p class="help is-danger"><b> {{ $message }}</b></p>  

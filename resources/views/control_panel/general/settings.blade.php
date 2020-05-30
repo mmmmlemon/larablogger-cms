@@ -80,7 +80,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded">
-                                <input class="input @error('contact_text') is-danger @enderror" name="contact_text" 
+                                <input class="input @error('contact_text') is-danger @enderror" id="contact_disclaimer" name="contact_text" 
                                     type="text" placeholder="Disclaimer for your contact form" maxlength="200"
                                     value="@if($errors->any()){{old('contact_text')}}@else{{$settings->contact_text}}@endif">
                             </p>

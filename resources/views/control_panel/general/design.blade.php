@@ -45,9 +45,8 @@
                           </span>
                         </label>
                     </div>
-
-                    <div>&nbsp;</div>
-                    
+                     <div>&nbsp;</div>
+                  
                     {{-- размыть изображение --}}
                     <div class="blur_image">
                         <input class="is-checkradio is-link" name="blur_img" id="blur_img" type="checkbox" checked>
@@ -59,8 +58,19 @@
                         <label class="label" for="dark_img">Darken image</label>
                     </div>
                 </div>  
+             
             </div>
-
+            @error('background_image')
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
+                <div class="field-body">
+                    <p class="help is-danger"><b> {{ $message }}</b></p>  
+                </div>
+            </div>
+            @enderror
+   
             <div class="is-divider"></div>
 
             <div class="field is-horizontal">
@@ -90,6 +100,16 @@
                 <textarea class="textarea" name="footer_content" id="footer_content">{{$settings->footer_text}}</textarea>
                 </div>
             </div>
+            @error('footer_content')
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
+                <div class="field-body">
+                    <p class="help is-danger"><b> {{ $message }}</b></p>  
+                </div>
+            </div>
+            @enderror
 
             {{-- кнопка сохранить --}}
             <div class="field is-horizontal">
