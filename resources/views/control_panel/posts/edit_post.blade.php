@@ -87,7 +87,7 @@
       <div class="field">
         <label class="label">Tags</label>
         <div class="control">
-          <input class="input" type="text" data-type="tags" id="tags" placeholder="Choose Tags" value="{{$post->tags}}">
+          <input class="input" type="text" data-type="tags" id="tags" name="tags" placeholder="Choose Tags" value="{{$post->tags}}">
         </div>
       </div>  
       </form>

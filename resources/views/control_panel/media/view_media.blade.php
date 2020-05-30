@@ -47,8 +47,11 @@
             <div class="field">
                 <label class="label">Display name</label>
                 <div class="control">
-                  <input name="display_name" class="input" type="text" data-type="tags" placeholder="Display name for the file" value="{{$media->display_name}}">
+                  <input name="display_name" max="60" class="input" type="text" data-type="tags" placeholder="Display name for the file" value="{{$media->display_name}}">
                 </div>
+                @error('display_name')
+                  <p class="help is-danger"><b> {{ $message }}</b></p>  
+                @enderror
             </div>
 
             <!--видимость чекбокс-->
@@ -65,7 +68,7 @@
               <label class="label">Subtitles</label>
               <div id="file-js-example" class="file has-name">
                   <label class="file-label">
-                    <input class="file-input" id="subtitle_input" accept=".srt, .txt, .vtt" type="file" name="subtitles[]" multiple>
+                    <input class="file-input" id="subtitle_input" accept=".srt" type="file" name="subtitles[]" multiple>
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
@@ -79,17 +82,20 @@
                     </span>
                   </label>
               </div>
+              @error('subtitles')
+                <p class="help is-danger"><b> {{ $message }}</b></p>  
+              @enderror
               <div class="white-bg">
                   <div id="subtitle_list">
                     No subtitles were attached yet
                   </div>
               </div>
-
+            
               {{-- если файл -видео, то показываем input для картинки-заставки  --}}
               <label class="label">Thumbnail image @if($media->thumbnail_url) (Replace) @endif</label>
               <div id="thumbnail_uploader" class="file has-name">
                 <label class="file-label">
-                  <input class="file-input" type="file" name="thumbnail">
+                  <input class="file-input" type="file"  accept=".jpeg,.jpg,.png" name="thumbnail">
                   <span class="file-cta">
                     <span class="file-icon">
                       <i class="fas fa-upload"></i>
@@ -102,10 +108,15 @@
                     No file uploaded
                   </span>
                 </label>
+            
               </div>
+              @error('thumbnail')
+                <p class="help is-danger"><b> {{ $message }}</b></p>  
+              @enderror
               <br>
+         
             @endif
-
+         
             <!--кнопка сохранения-->
             <button id="submit_post" type="submit" class="button is-link">
               <span class="icon">

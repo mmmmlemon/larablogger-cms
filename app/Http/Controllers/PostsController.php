@@ -12,143 +12,30 @@ use Storage;
 use File;
 
 class PostsController extends Controller
-{
+{   
 
-    //вывод постов на главной странице 
-    public function index(){
-
-        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
-
-        foreach($posts as $post){
-            //получаем теги поста
-            $tags= explode(",", $post->tags);
-            if(count($tags) == 1 && $tags[0]=="")
-            {$post->tags = null;}
-            else
-            {$post->tags = $tags;}
-            $post->category = App\Category::find($post->category_id)->category_name;
-            if($post->category == "blank")
-            {$post->category = "";}
-            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
-            if($post->comment_count > 1 || $post->comment_count == 0)
-            {
-                $post->comment_count .= " comments"; 
-            } else {
-                $post->comment_count .= " comment"; 
-            }
-            $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
-   
-            if(count($media) != 0)
-            {
-                $post->media = $media;
-                $post->media_type = $media[0]->media_type;
-            }
-        }
-        //установливаем имя тега - null, чтобы не было ошибки
-        $tag_name = null;
-        return view('home', compact('posts', 'tag_name'));
-    }
-
+    //КОНТРЛЬНАЯ ПАНЕЛЬ
     //вывод постов в меню постов
-    public function show_list_of_posts(){
+    public function show_list_of_posts()
+    {
         $posts = App\Post::orderBy('date','desc')->orderBy('id','desc')->paginate(10);
         $page='normal';
         return view('control_panel/posts/posts', compact('posts','page'));
     }
 
     //вывод постов в меню постов по дате
-    public function show_list_of_posts_by_date(){
+    public function show_list_of_posts_by_date()
+    {
         $posts = App\Post::orderBy('date','asc')->paginate(10);
         $page = 'date_desc';
         return view('control_panel/posts/posts', compact('posts', 'page'));
     }
 
-    //показать пост
-    public function show_post($id)
+    //показать страницу редактирования поста
+    public function show_edit_post($id)
     {
         $post = App\Post::find($id);
-        $media = App\Media::where('post_id',$id)->where('visibility','=',1)->get();
-        //если такой пост существует, то выводим его
-        if($post != null)
-        {   
-            //если юзер залогинен
-            if(Auth::check())
-            {   
-                $username = Auth::user()->name; //получаем его юзернейм
-                //если юзер - админ
-                if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
-                {$is_admin = true;} //то указываем что он админ
-                else  //или не админ
-                {$is_admin == false;}
-            }
-            else //если не залогинен, то юзернейм пустой, а не админ
-            {
-                $username="";
-                $is_admin = false;
-            }
-
-            //получаем комменты к посту
-            if($is_admin == true) //если админ, то получаем все комменты, если нет то только видимые
-            {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
-            else
-            {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
-           
-            //считаем количество комментов
-            $post->comment_count = count($comments);
-
-            //если комментов больше одного, или их ноль
-            if($post->comment_count > 1 || $post->comment_count == 0)
-            {$post->comment_count .= " comments";}  //тогда приписка будет comments
-            else
-            {$post->comment_count .= " comment";} //или comment
-
-            //получаем теги поста
-            $tags= explode(",", $post->tags);
-            if(count($tags) == 1 && $tags[0]=="")
-            {$post->tags = null;}
-            else
-            {$post->tags = $tags;}
-
-            //получаем категорию поста
-            $post->category = App\Category::find($post->category_id)->category_name;
-            //если категория "blank", то не будем выводить её название
-            if($post->category == "blank")
-            {$post->category = "";}
-           
-            //проверяем статус поста, если visibility == 1, то пост виден всем без исключения
-            if($post->visibility == 1)
-            {   
-                 return view('post', compact('post','username','comments','media','is_admin'));
-            }
-            else //если visibility == 0, то пост виден только админу
-            {   //проверяем залогинен ли юзер
-                if(Auth::check()){
-                    //если он админ
-                    if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
-                    {   
-                        return view('post', compact('post','username','media','comments'));
-                    } 
-                    else //если залогинен, но не админ, то 404
-                    {
-                        return abort(404);
-                    }
-                }
-                else //если не залогинен вообще, то 404
-                {
-                    return abort(404);
-                }
-            } 
-        }
-        else //если поста не существует, то 404
-        {
-            return abort(404);
-        }
-    }
-
-    //показать страницу редактирования поста
-    public function show_edit_post($id){
-
-        $post = App\Post::find($id);
+        //список категорий без "пустой" категории
         $categories = App\Category::where('category_name','!=','blank')->get();
         $media = App\Media::where('post_id','=',$id)->get();
         foreach($media as $m){
@@ -160,53 +47,57 @@ class PostsController extends Controller
         return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
     }
 
-    //редактировать пост, сохранение измененений
-    public function edit_post(Request $request, $id){
     
+    //редактировать пост, сохранение измененений
+    public function edit_post(Request $request, $id)
+    {
         $request->validate([
             'post_title' => 'string|max:35',
             'post_content' => 'string|max:10000',
-            'post_visibility' => 'string'
+            'post_visibility' => 'string',
+            'tags' => 'string'
         ]);
-
+            
         $post = App\Post::find($id);
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
-        //$post->tags = $request->tags;
         $post->category_id = $request->post_category;
         if($request->tags == "")
         {$post->tags =  NULL;}
         else
         {$post->tags = $request->tags;}
 
-        if($request->post_visibility == "true"){ //true - строка, потому что ajax передает строку
+        if($request->post_visibility == "true")
+        { //true - строка, потому что ajax передает строку
             $post->visibility = 1;
-        } else {
+        } 
+        else 
+        {
             $post->visibility = 0;
         }
 
         //получаем список файлов в папке temp
         $temp_files = json_decode($request->file_list);
-      // dd($temp_files);
+  
         if(count($temp_files) == 0) //если там нет файлов, то сохраняем пост
         {$post->save();}
         else //если есть, то переносим файлы из temp в папку с медиафайлами поста
         {
-         
-         $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
+            $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
             //проверяем была ли создана папка для файлов текущего поста
-         $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
-         
-         if($check != true)
-         {
-            Storage::disk('public')->makeDirectory("posts\\". $folder_name);
-         }
+            $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
+            
+            if($check != true)
+            {
+                Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+            }
 
-            foreach($temp_files as $file){
+            foreach($temp_files as $file)
+            {
                 
                 //путь по которому будет перемещен файл
                 $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
-              
+                
                 $move = File::move(storage_path("app\\public\\temp\\".$file), $new_path);
             
                 //если переместить файл не удалось, то редиректим с ошибкой
@@ -227,7 +118,7 @@ class PostsController extends Controller
                 $media->save(); 
                 }
             }             
-         }
+        }
         
         return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
     }
@@ -392,6 +283,148 @@ class PostsController extends Controller
             unlink($file->getPathname());
         }
     }
+
+    
+    //ВЫВОД
+    //вывод постов на главной странице сайта
+    public function index()
+    {
+        //получаем список всех видимых постов и сортируем его по дате по убыванию
+        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+
+        foreach($posts as $post)
+        {
+            //получаем теги поста и прикрепляем к посту
+            $tags= explode(",", $post->tags);
+            //если в теге записан один пустой символ то делаем теги = null
+            if(count($tags) == 1 && $tags[0]=="")
+            {$post->tags = null;}
+            else
+            {$post->tags = $tags;}
+
+            //прикрепляем название категории к посту
+            $post->category = App\Category::find($post->category_id)->category_name;
+
+            if($post->category == "blank") //если это пустая категория, то категория не будет выводиться
+            {$post->category = "";}
+
+            //считаем количество комментариев у поста
+            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
+
+            //если комментариев больше одного то выводим commentS, а не comment
+            if($post->comment_count > 1 || $post->comment_count == 0)
+            {
+                $post->comment_count .= " comments"; 
+            } 
+            else 
+            {
+                $post->comment_count .= " comment"; 
+            }
+
+            //получаем список медиа файлов у поста
+            $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
+            
+            //если файлы есть
+            if(count($media) != 0)
+            {
+                $post->media = $media; //
+                $post->media_type = $media[0]->media_type;
+            }
+        }
+
+        //для вывода постов по тегам
+        //установливаем имя тега - null, чтобы когда выводятся все посты на главной
+        //не было ошибки
+        $tag_name = null;
+        return view('home', compact('posts', 'tag_name'));
+    }
+
+    //показать пост
+    public function show_post($id)
+    {
+        //получить пост по id
+        $post = App\Post::find($id);
+        //получаем медиа
+        $media = App\Media::where('post_id',$id)->where('visibility','=',1)->get();
+
+        //если такой пост существует, то выводим его
+        if($post != null)
+        {   
+            //если юзер залогинен
+            if(Auth::check())
+            {   
+                $username = Auth::user()->name; //получаем его юзернейм
+                //если юзер - админ
+                if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
+                {$is_admin = true;} //то указываем что он админ
+                else  //или не админ
+                {$is_admin == false;}
+            }
+            else //если не залогинен, то юзернейм пустой, а не админ
+            {
+                $username="";
+                $is_admin = false;
+            }
+
+            //получаем комменты к посту
+            if($is_admin == true) //если админ, то получаем все комменты, если нет то только видимые
+            {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
+            else
+            {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
+           
+            //считаем количество комментов
+            $post->comment_count = count($comments);
+
+            //если комментов больше одного, или их ноль
+            if($post->comment_count > 1 || $post->comment_count == 0)
+            {$post->comment_count .= " comments";}  //тогда приписка будет comments
+            else
+            {$post->comment_count .= " comment";} //или comment
+
+            //получаем теги поста
+            $tags= explode(",", $post->tags);
+            if(count($tags) == 1 && $tags[0]=="")
+            {$post->tags = null;}
+            else
+            {$post->tags = $tags;}
+
+            //получаем категорию поста
+            $post->category = App\Category::find($post->category_id)->category_name;
+            //если категория "blank", то не будем выводить её название
+            if($post->category == "blank")
+            {$post->category = "";}
+           
+            //проверяем статус поста, если visibility == 1, то пост виден всем без исключения
+            if($post->visibility == 1)
+            {   
+                 return view('post', compact('post','username','comments','media','is_admin'));
+            }
+            else //если visibility == 0, то пост виден только админу
+            {   //проверяем залогинен ли юзер
+                if(Auth::check()){
+                    //если он админ
+                    if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
+                    {   
+                        return view('post', compact('post','username','media','comments'));
+                    } 
+                    else //если залогинен, но не админ, то 404
+                    {
+                        return abort(404);
+                    }
+                }
+                else //если не залогинен вообще, то 404
+                {
+                    return abort(404);
+                }
+            } 
+        }
+        else //если поста не существует, то 404
+        {
+            return abort(404);
+        }
+    }
+
+
 
     //показать все посты по тегу N
     public function show_posts_by_tag ($tag){

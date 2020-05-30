@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/pin_post','PostsController@pin_post'); //закрепить\открепить пост
 
     //МЕДИА
-    Route::get('/control/media','MediaController@index'); //главная страница с медиа файлами
+    Route::get('/control/media','MediaController@media_list'); //главная страница с медиа файлами
     Route::get('/control/media/{id}','MediaController@view_media'); //показать информацию о медиа\редактор медиа
     Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //сохранить изменения в файле
     Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //удалить thumbnail
