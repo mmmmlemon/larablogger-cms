@@ -13,8 +13,7 @@ use File;
 
 class PostsController extends Controller
 {   
-
-    //КОНТРЛЬНАЯ ПАНЕЛЬ
+    //КОНТРОЛЬНАЯ ПАНЕЛЬ
     //вывод постов в меню постов
     public function show_list_of_posts()
     {
@@ -31,139 +30,9 @@ class PostsController extends Controller
         return view('control_panel/posts/posts', compact('posts', 'page'));
     }
 
-    //показать страницу редактирования поста
-    public function show_edit_post($id)
-    {
-        $post = App\Post::find($id);
-        //список категорий без "пустой" категории
-        $categories = App\Category::where('category_name','!=','blank')->get();
-        $media = App\Media::where('post_id','=',$id)->get();
-        foreach($media as $m){
-            $url = $m->media_url;
-            $substr = strrchr($url, "/");
-            $filename = substr($substr,1, strlen($substr));
-            $m->filename = $filename;
-        }
-        return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
-    }
-
-    
-    //редактировать пост, сохранение измененений
-    public function edit_post(Request $request, $id)
-    {
-        $request->validate([
-            'post_title' => 'string|max:35',
-            'post_content' => 'string|max:10000',
-            'post_visibility' => 'string',
-            'tags' => 'string'
-        ]);
-            
-        $post = App\Post::find($id);
-        $post->post_title = $request->post_title;
-        $post->post_content = $request->post_content;
-        $post->category_id = $request->post_category;
-        if($request->tags == "")
-        {$post->tags =  NULL;}
-        else
-        {$post->tags = $request->tags;}
-
-        if($request->post_visibility == "true")
-        { //true - строка, потому что ajax передает строку
-            $post->visibility = 1;
-        } 
-        else 
-        {
-            $post->visibility = 0;
-        }
-
-        //получаем список файлов в папке temp
-        $temp_files = json_decode($request->file_list);
-  
-        if(count($temp_files) == 0) //если там нет файлов, то сохраняем пост
-        {$post->save();}
-        else //если есть, то переносим файлы из temp в папку с медиафайлами поста
-        {
-            $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
-            //проверяем была ли создана папка для файлов текущего поста
-            $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
-            
-            if($check != true)
-            {
-                Storage::disk('public')->makeDirectory("posts\\". $folder_name);
-            }
-
-            foreach($temp_files as $file)
-            {
-                
-                //путь по которому будет перемещен файл
-                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
-                
-                $move = File::move(storage_path("app\\public\\temp\\".$file), $new_path);
-            
-                //если переместить файл не удалось, то редиректим с ошибкой
-                if($move != true) 
-                {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
-                else
-                {   
-                //сохраняем пост перед сохранением медиа (чтобы был $post->id)
-                $post->save();
-                $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
-                $media = new App\Media; //создаем запись о медиа и сохраняем
-                $media->post_id = $post->id;
-                $media->media_url = "posts/". $folder_name."/".$file;
-                $media->media_type = $mime;
-                $media->display_name = $file;
-                $media->actual_name = $file;
-                $media->visibility = 1;
-                $media->save(); 
-                }
-            }             
-        }
-        
-        return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
-    }
-
-    //удаление файла из поста
-    public function delete_media(Request $request){
-        //если intval равен 0 значит вместо id было передано имя файла
-        //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
-        //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
-        if(intval($request->id) == 0)
-        {   $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
-          
-            if(is_file(storage_path("app\\public\\temp\\".$filename)))
-            {
-                $check = unlink(storage_path("app\\public\\temp\\".$filename));
-                if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
-            }
-        }
-        //если же был передан id, значит этот файл уже был добавлен ранее и он прописан в БД
-        //мы удаляем как сам файл, так и саму запись о нём в базе данных по id
-        else
-        {
-            $media = App\Media::find($request->id);
-            $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
-            if($check_delete == true) 
-            {
-                $post = App\Post::find($media->post_id);
-                $folder_name = date("d-m-Y",strtotime($post->date))."-".$post->post_title;
-                $files = File::files(storage_path("app\\public\\posts\\".$folder_name));
-                if(count($files)== 0)
-                {   
-                    File::deleteDirectory(storage_path("app\\public\\posts\\").$folder_name);
-                }
-                
-                $media->delete();
-
-                return response()->json(['result'=>'success']); 
-            }
-            else { return response()->json(['result'=>'failure']);}
-        }
-
-    }
-
     //показать страницу создания поста
-    public function show_create_post(){
+    public function show_create_post()
+    {
         $current_date = Carbon::now();
         $categories = App\Category::where('category_name','!=','blank')->get();
         return view('control_panel/posts/create_post', compact('categories','current_date'));
@@ -246,11 +115,113 @@ class PostsController extends Controller
         return response()->json(['msg'=>'The post "'.$request->post_title.'" has been created.']);
     }
 
-    
+
+    //показать страницу редактирования поста
+    public function show_edit_post($id)
+    {
+        $post = App\Post::find($id);
+
+        //список категорий без "пустой" категории
+        $categories = App\Category::where('category_name','!=','blank')->get();
+        $media = App\Media::where('post_id','=',$id)->get();
+
+        foreach($media as $m)
+        {
+            $url = $m->media_url;
+            $substr = strrchr($url, "/");
+            $filename = substr($substr,1, strlen($substr));
+            $m->filename = $filename;
+        }
+
+        return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
+    }
+  
+    //редактировать пост, сохранение измененений
+    public function edit_post(Request $request, $id)
+    {
+        $request->validate([
+            'post_title' => 'string|max:35',
+            'post_content' => 'string|max:10000',
+            'post_visibility' => 'string',
+            'tags' => 'string'
+        ]);
+            
+        $post = App\Post::find($id);
+        $post->post_title = $request->post_title;
+        $post->post_content = $request->post_content;
+        $post->category_id = $request->post_category;
+
+        if($request->tags == "")
+        {$post->tags =  NULL;}
+        else
+        {$post->tags = $request->tags;}
+
+        if($request->post_visibility == "true")
+        { //true - строка, потому что ajax передает строку
+            $post->visibility = 1;
+        } 
+        else 
+        {
+            $post->visibility = 0;
+        }
+
+        //получаем список файлов в папке temp
+        $temp_files = json_decode($request->file_list);
+  
+        if(count($temp_files) == 0) //если там нет файлов, то никакие файлы не были добавлены, сохраняем пост
+        {$post->save();}
+        else //если есть, то переносим файлы из temp в папку с медиафайлами поста и после этого сохраняем пост
+        {
+            $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
+            //проверяем была ли создана папка для файлов текущего поста
+            $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
+            
+            if($check != true)
+            {
+                Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+            }
+
+            foreach($temp_files as $file)
+            {
+                //путь по которому будет перемещен файл
+                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
+                
+                $move = File::move(storage_path("app\\public\\temp\\".$file), $new_path);
+            
+                //если переместить файл не удалось, то редиректим с ошибкой
+                if($move != true) 
+                {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                else
+                {   
+                    //сохраняем пост перед сохранением медиа (чтобы был $post->id)
+                    $post->save();
+                    $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
+                    $media = new App\Media; //создаем запись о медиа и сохраняем
+                    $media->post_id = $post->id;
+                    $media->media_url = "posts/". $folder_name."/".$file;
+                    $media->media_type = $mime;
+                    $media->display_name = $file;
+                    $media->actual_name = $file;
+                    $media->visibility = 1;
+                    $media->save(); 
+                }
+            }             
+        }
+        
+        return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
+    }
+
     //загрузка файлов перед сохранением поста
     public function upload_files(Request $request)
     {  
-       
+       $validator = Validator::make($request->all(),[
+           'file' => 'mimes:mp4,png,jpeg,jpg'
+       ]);
+
+       if($validator->fails()){
+            return response()->json(['result'=>'Validation failed! ('.$request->filename.')']); 
+       }
+
        //получаем имя файла
        $filename = $request->filename;
 
@@ -263,7 +234,6 @@ class PostsController extends Controller
        //создаем файл в нужной папке, и открываем его в режиме append
        $file = fopen(storage_path('app\\public\\temp\\')."$filename","a");
 
-
        //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
        fputs($file,file_get_contents($request->file));
        fclose($file);
@@ -271,7 +241,7 @@ class PostsController extends Controller
         'file_url' => asset("storage/temp/".$filename),
         'filename' =>  $filename,
         'mime' => substr(File::mimeType(storage_path('app\\public\\temp\\')."$filename"),0,5)
-    ]);
+        ]);
     }	    
 
     //очистить папку temp
@@ -284,7 +254,48 @@ class PostsController extends Controller
         }
     }
 
-    
+    //удаление файла из поста
+    public function delete_media(Request $request)
+    {
+        //если intval равен 0 значит вместо id было передано имя файла
+        //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
+        //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
+        if(intval($request->id) == 0)
+        {   
+            $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
+            
+            if(is_file(storage_path("app\\public\\temp\\".$filename)))
+            {
+                $check = unlink(storage_path("app\\public\\temp\\".$filename));
+                if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
+            }
+        }
+
+        //если же был передан id, значит этот файл уже был добавлен ранее и он прописан в БД
+        //мы удаляем как сам файл, так и саму запись о нём в базе данных по id
+        else
+        {
+            $media = App\Media::find($request->id);
+            $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
+            if($check_delete == true) 
+            {
+                $post = App\Post::find($media->post_id);
+                $folder_name = date("d-m-Y",strtotime($post->date))."-".$post->post_title;
+                $files = File::files(storage_path("app\\public\\posts\\".$folder_name));
+                if(count($files)== 0)
+                {   
+                    File::deleteDirectory(storage_path("app\\public\\posts\\").$folder_name);
+                }
+                
+                $media->delete();
+
+                return response()->json(['result'=>'success']); 
+            }
+            else { return response()->json(['result'=>'failure']);}
+        }
+
+    }
+
     //ВЫВОД
     //вывод постов на главной странице сайта
     public function index()
@@ -424,11 +435,9 @@ class PostsController extends Controller
         }
     }
 
-
-
     //показать все посты по тегу N
-    public function show_posts_by_tag ($tag){
-
+    public function show_posts_by_tag ($tag)
+    {
         $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
 
         foreach($posts as $post){
@@ -481,20 +490,17 @@ class PostsController extends Controller
         }
         //и медиа файлы тоже
         $media = App\Media::where('post_id', $request->modal_form_input)->get();
-        foreach($media as $m){
+        foreach($media as $m)
+        {
             $pos = strripos($m->media_url,"/");
             $path = substr($m->media_url, 0, $pos);
-            //dd(storage_path('app\\public\\'.$path));
-
-           File::deleteDirectory(storage_path('app\\public\\'.$path));
-            // unlink(storage_path('app\\public\\'.$m->media_url));
+            File::deleteDirectory(storage_path('app\\public\\'.$path));
             $m->delete();
         }
 
         $post = App\Post::find($request->modal_form_input);
         $post->delete();
         return redirect(url()->previous());
-
     }
 
     //отправить комментарий
@@ -506,9 +512,11 @@ class PostsController extends Controller
         ]);
 
         //если валидатор фейлит, то редиректим назад с якорем
-        if($validator->fails()){
+        if($validator->fails())
+        {
             return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput();
         }
+
         $comment = new App\Comment;
 
         $comment->username = $request->username;
@@ -520,8 +528,10 @@ class PostsController extends Controller
     }
 
     //спрятать/показать/удалить комментарий
-    public function change_comment_status(Request $request){
+    public function change_comment_status(Request $request)
+    {
         $comment = App\Comment::find($request->comment_id);
+
         if($request->action == "hide")
         {
             $comment->visibility = 0;
@@ -537,13 +547,18 @@ class PostsController extends Controller
             $comment = App\Comment::find($request->comment_id);
             $comment->delete();
         }
+        else{
+            return redirect(url()->previous());
+        }
         
         return redirect(url()->previous());
     }
 
     //закрепить\открепить пост
-    public function pin_post(Request $request){
+    public function pin_post(Request $request)
+    {
         $post = App\Post::find($request->id);
+
         if($post->pinned == 0)
         {
             $post->pinned = 1;
@@ -553,6 +568,7 @@ class PostsController extends Controller
         }
 
         $post->save();
+
         return redirect()->back();
     }
 
