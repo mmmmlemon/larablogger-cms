@@ -1,3 +1,5 @@
+//скрипты для страницы category_view
+
 const players = Plyr.setup('.video-player');
 
 //вызвать модальное окно с картинкой

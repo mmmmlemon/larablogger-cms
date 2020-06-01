@@ -1,3 +1,5 @@
+//скрипты для страницы view_media
+
 const fileInput = document.querySelector('#file-js-example input[type=file]');
 fileInput.onchange = () => {
     if (fileInput.files.length > 0) {

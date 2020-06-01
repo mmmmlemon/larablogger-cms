@@ -117,7 +117,6 @@ $("#submit_post").click(function () {
     });
 });
 
-
 //richText
 //редактор текста
 $('.textarea').richText({

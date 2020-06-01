@@ -1,4 +1,4 @@
-//посты
+//скрипты для страницы posts
 $("#submit_modal").on('click', function () {
     $("#modal_form").submit();
 });
@@ -9,6 +9,7 @@ $(".showModalDelete").click(function () {
     $("#modal_post_title").text($(this).data("title"));
     $("#modal_form_input").val($(this).data("id"));
 });
+
 
 $(".delete").click(function () {
     $(".modalDelete").removeClass("is-active");

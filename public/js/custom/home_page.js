@@ -1,3 +1,5 @@
+//скрипты для главной страницы сайта
+
 $('.share-button').on('click', function () {
     var id = "#" + $(this).attr('for');
     if ($(id).hasClass('invisible')) {

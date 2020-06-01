@@ -1,4 +1,5 @@
 //скрипты связанные со странцией Control Panel
+
 //убирает красную подсветку у инпутов после ошибки
 $("input").change(function () {
     $(this).removeClass("is-danger")
@@ -31,9 +32,9 @@ function change_tab(div_name, tab_name) {
     $("#footer").attr("style", `top: ${$(document).height()}px;`)
 }
 
+//если в url страницы есть якорь, то переключаем на соответствующий таб
 if (window.location.hash) {
     var hash = window.location.hash.substring(1);
-
     if (hash == 'settings') {
         $("#settings_tab").click();
     } else if (hash == 'design') {
@@ -44,6 +45,5 @@ if (window.location.hash) {
         $("#profile_tab").click();
     } else if (hash == 'posts') {
         $("#posts_tab").click();
-    } else { //do nothing}
-    }
+    } else { /*do nothing*/}
 }

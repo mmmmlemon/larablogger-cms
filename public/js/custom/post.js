@@ -1,3 +1,5 @@
+//скрипты для страницы post
+
 $("#footer").attr("style", `top: ${$(document).height()}px;`);
 
 $('.textarea').richText({

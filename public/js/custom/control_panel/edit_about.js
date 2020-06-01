@@ -1,4 +1,5 @@
 //richText
+
 //редактор текста
 $('.textarea').richText({
     imageUpload: false,
