@@ -6,3 +6,15 @@ $(document).ready(function () {
     $("#contact_disclaimer").charCounter();
 });
 
+$("#save_general").on('click', function(e){
+    e.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#general_form").submit();
+});
+
+$("#save_social").on("click", function(e){
+    e.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#form_social").submit();
+})
+

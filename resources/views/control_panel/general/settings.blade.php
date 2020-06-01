@@ -13,7 +13,7 @@
             <br>
 
             {{-- форма для общих настроек сайта--}}
-            <form action="control/update_settings" method="POST">
+            <form action="control/update_settings" method="POST" id="general_form">
                 @csrf
                 {{-- заголовок сайта --}}
                 <div class="field is-horizontal">
@@ -98,7 +98,7 @@
                     <div class="field-body">
                         <div class="field">
                             <div class="control">
-                                <button type="submit" class="button is-link">
+                                <button type="submit" class="button is-link" id="save_general">
                                     <span class="icon">
                                         <i class="fas fa-save"></i>
                                     </span>
@@ -228,7 +228,7 @@
                     <div class="field-body">
                         <div class="field">
                             <div class="control">
-                                <button type="submit" class="button is-link">
+                                <button type="submit" class="button is-link" id="save_social">
                                     <span class="icon">
                                         <i class="fas fa-save"></i>
                                     </span>

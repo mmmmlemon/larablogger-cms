@@ -178,7 +178,7 @@
 </div>
 
 <div class="container white-bg" id="comment_form">
-    <form action="/submit_comment/{{$post->id}}" method="POST">
+    <form action="/submit_comment/{{$post->id}}" id="comm_form" method="POST">
         @csrf
         <article>
             <div class="media-content">
@@ -198,7 +198,7 @@
                 <nav class="level">
                     <div class="level-left">
                         <div class="level-item">
-                            <button type="submit" class="button is-link">
+                            <button type="submit" id="submit_comment" class="button is-link">
                                 <span class="icon">
                                     <i class="fas fa-comment"></i>
                                 </span>

@@ -16,4 +16,7 @@ $('#footer_content').richText({
 
 $("#submit_design").on('click', function (event) {
     $(".black_screen").removeClass("invisible").addClass("fade-in");
+    event.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#design_form").submit();
 });

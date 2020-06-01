@@ -17,7 +17,7 @@
             <h3 class="subtitle">{{$current_user->name}}</h3>
 
             {{-- форма --}}
-            <form action="control/update_profile" method="POST">
+            <form action="control/update_profile" method="POST" id="profile_form">
                 @csrf
                 {{-- input - имя пользователя --}}
                 <div class="field is-horizontal">
@@ -71,7 +71,7 @@
                     <div class="field-body">
                         <div class="field">
                             <div class="control">
-                                <button type="submit" class="button is-link">
+                                <button type="submit" class="button is-link" id="save_profile">
                                     <span class="icon">
                                         <i class="fas fa-save"></i>
                                     </span>

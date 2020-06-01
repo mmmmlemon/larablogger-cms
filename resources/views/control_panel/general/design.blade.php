@@ -21,7 +21,7 @@
     
     <div>
         {{-- ФОРМА --}}
-        <form action="/control/update_design" method="POST" enctype="multipart/form-data">
+        <form action="/control/update_design" method="POST" enctype="multipart/form-data" id="design_form">
             @csrf
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
