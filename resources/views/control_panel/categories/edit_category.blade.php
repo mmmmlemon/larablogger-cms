@@ -29,7 +29,7 @@
     <div class="columns">
         <div class="column">
         {{-- ФОРМА --}}
-        <form action="/control/categories/edit/{{$categ->id}}" method="POST">
+        <form action="/control/categories/edit/{{$categ->id}}" method="POST" id="category_form">
                 @csrf
 
                 {{-- наименование категории --}}
@@ -47,7 +47,7 @@
 
                   {{-- кнопка отправки --}}
                   <div class="control">
-                    <button class="button is-link">
+                    <button class="button is-link" id="save_category">
                       <span class="icon is-small">
                         <i class="fas fa-save"></i>
                       </span>

@@ -19,3 +19,8 @@
         var height = $(document).height();
         $("#footer").css("top", height);
     })
+
+    $("#contact_submit").on("click", function(e){
+        e.preventDefault();
+        $(this).attr("disabled","disabled");
+    })

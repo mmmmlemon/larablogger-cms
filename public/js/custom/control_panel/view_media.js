@@ -1,18 +1,24 @@
 //скрипты для страницы view_media
 
-const fileInput = document.querySelector('#file-js-example input[type=file]');
-fileInput.onchange = () => {
+if($("#file-js-example").length != 0)
+{
+    const fileInput = document.querySelector('#file-js-example input[type=file]');
+    fileInput.onchange = () => {
     if (fileInput.files.length > 0) {
         const fileName = document.querySelector('#file-js-example .file-name');
         fileName.textContent = fileInput.files[0].name;
     }
+    }
 }
 
-const fileInputt = document.querySelector('#thumbnail_uploader input[type=file]');
-fileInputt.onchange = () => {
-    if (fileInputt.files.length > 0) {
-        const fileName = document.querySelector('#thumbnail_uploader .file-name');
-        fileName.textContent = fileInputt.files[0].name;
+if($("#thumbnail_uploader").length != 0)
+{
+    const fileInputt = document.querySelector('#thumbnail_uploader input[type=file]');
+    fileInputt.onchange = () => {
+        if (fileInputt.files.length > 0) {
+            const fileName = document.querySelector('#thumbnail_uploader .file-name');
+            fileName.textContent = fileInputt.files[0].name;
+        }
     }
 }
 
@@ -198,4 +204,16 @@ $(document).on('click', '.edit_display_name', function (el) {
         }
     });
 
+});
+
+$("#remove_thumbnail").on('click', function(e){
+    e.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#remove_thumbnail_form").submit();
+});
+
+$("#submit_form").on('click',function(e){
+    e.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#form").submit();
 });

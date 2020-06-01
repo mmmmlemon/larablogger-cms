@@ -33,7 +33,7 @@
         <h1 class="subtitle">{{$media->actual_name}} / {{$media->media_type}} / {{$media->date}} / {{$media->size}}</h1>
 
         {{-- форма --}}
-        <form action="/control/media/edit_media/{{$media->id}}" method="POST" enctype="multipart/form-data">
+        <form action="/control/media/edit_media/{{$media->id}}" method="POST" enctype="multipart/form-data" id="form">
             @csrf
             {{-- пост к которому прикреплен файл --}}
             <div class="field">
@@ -118,7 +118,7 @@
             @endif
          
             <!--кнопка сохранения-->
-            <button id="submit_post" type="submit" class="button is-link">
+            <button id="submit_form" type="submit" class="button is-link">
               <span class="icon">
                   <i class="fas fa-save"></i>
               </span>
@@ -143,11 +143,11 @@
                   @if($media->thumbnail_url)
                     <img src="{{asset("/storage/")."/".$media->thumbnail_url}}">
                       {{-- кнопка - удалить картинку заставку --}}
-                      <form action="/control/media/remove_thumbnail/{{$media->id}}" method="POST">
+                      <form action="/control/media/remove_thumbnail/{{$media->id}}" method="POST" id="remove_thumbnail_form">
                           @csrf
                           <br>
                           <div class="has-text-centered">
-                            <button class="button is-danger">
+                            <button class="button is-danger" id="remove_thumbnail">
                               <span class="icon">
                                 <i class="fas fa-trash"></i>
                               </span>

@@ -30,7 +30,7 @@
     <div class="columns">
         <div class="column">
             <!--ФОРМА-->
-            <form action="/control/categories/add" method="POST">
+            <form action="/control/categories/add" method="POST" id="category_form">
                 @csrf
 
                 <!--НАЗВАНИЕ КАТЕГОРИИ-->
@@ -48,7 +48,7 @@
                 
                 <!--КНОПКА ОТПРАВКИ-->
                 <div class="control">
-                    <button class="button is-link">
+                    <button class="button is-link" id="save_category">
                         <span class="icon is-small">
                             <i class="fas fa-arrow-right"></i>
                           </span>

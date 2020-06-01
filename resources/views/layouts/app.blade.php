@@ -172,7 +172,7 @@
                         </div>
                         <div class="field is-grouped">
                             <div class="control">
-                                <button class="button is-link">
+                                <button class="button is-link" id="contact_submit">
                                     <span class="icon">
                                     <i class="fa fa-envelope"></i>
                                     </span>
