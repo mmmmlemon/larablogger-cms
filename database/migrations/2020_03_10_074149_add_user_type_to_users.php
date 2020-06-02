@@ -13,6 +13,7 @@ class AddUserTypeToUsers extends Migration
      */
     public function up()
     {
+        //тип пользователя в таблице users
         Schema::table('users', function (Blueprint $table) {
             $table->string('user_type')->default(1);
         });

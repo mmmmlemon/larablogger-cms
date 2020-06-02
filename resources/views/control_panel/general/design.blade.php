@@ -31,7 +31,7 @@
                     {{-- input для фоновой картинки --}}
                     <div id="bg-img" class="file has-name">
                         <label class="file-label">
-                          <input class="file-input" type="file" id="background_image" name="background_image" accept="image/jpeg, image/png">
+                          <input class="file-input" type="file" id="background_image" name="background_image" accept=".jpeg,.png,.jpg">
                           <span class="file-cta">
                             <span class="file-icon">
                               <i class="fas fa-upload"></i>

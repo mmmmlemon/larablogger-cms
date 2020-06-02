@@ -13,6 +13,7 @@ class AddIsActiveToSocialMedia extends Migration
      */
     public function up()
     {
+        //соц. сети
         Schema::table('social_media', function (Blueprint $table) {
             $table->boolean('is_active')->default(true);
         });

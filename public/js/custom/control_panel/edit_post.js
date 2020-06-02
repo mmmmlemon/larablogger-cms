@@ -160,6 +160,7 @@ var dropzone = $("#dropzone_form").dropzone({
     maxFiles: 20,
     maxFilesize: 4000, //максимальный размер файла: 4 гб
     parallelUploads: 20,
+    acceptedFiles: '.jpg,.jpeg,.png,.mp4',
     init: function () {
         var dz = this;
         //при отправке файла показать сообщение в консоли и добавить отправляемым файлам имя файла

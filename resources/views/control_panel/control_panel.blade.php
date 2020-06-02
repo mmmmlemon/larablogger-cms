@@ -56,20 +56,24 @@ $blank = ""; //пустой символ для аттрибута value в inpu
     <div class="tabs is-boxed is-centered is-medium">
         <ul>
             {{-- Settings --}}
+            @if(Auth::user()->user_type == 0)
             <li class="is-active current-tab" id="settings_tab" onclick="change_tab('settings_content','settings_tab');">
                 <a href="#settings">
                     <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
                     <span>Settings</span>
                 </a>
             </li>
+            @endif
             
             {{-- Design --}}
+            @if(Auth::user()->user_type == 0)
             <li id="design_tab" onclick="change_tab('design_content','design_tab');">
                 <a href="#design">
                     <span class="icon is-small"><i class="fas fa-paint-brush" aria-hidden="true"></i></span>
                     <span>Design</span>
                 </a>
             </li>
+            @endif
 
             {{-- Users --}}
             <li id="users_tab" onclick="change_tab('users_content','users_tab');">
@@ -91,11 +95,14 @@ $blank = ""; //пустой символ для аттрибута value в inpu
 
     {{-- контент табов --}}
     {{-- Settings --}}
-    @yield('settings', View::make('control_panel/general/settings', compact('settings', 'social_media')))
+    @if(Auth::user()->user_type == 0)
+        @yield('settings', View::make('control_panel/general/settings', compact('settings', 'social_media')))
+        {{-- Design --}}
+        @yield('design', View::make('control_panel/general/design', compact('settings')))
+    @endif
     {{-- Users --}}
     @yield('users', View::make('control_panel/general/users', compact('users')))
-    {{-- Design --}}
-    @yield('design', View::make('control_panel/general/design', compact('settings')))
+
     {{-- Profile --}}
     @yield('profile', View::make('control_panel/general/profile', compact('current_user')))
 </div>

@@ -135,7 +135,7 @@
         @csrf
         <div class="fallback">
         <input type="text" name="post_id" value="{{$post->id}}">
-          <input name="file" type="file" multiple />
+          <input name="file" type="file" accept=".jpeg,.jpg,.png,.mp4" multiple />
         </div>
       </form>
       <br>

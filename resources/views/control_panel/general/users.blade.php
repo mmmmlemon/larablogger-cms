@@ -1,6 +1,6 @@
 
 <!-- ПОЛЬЗОВАТЕЛИ -->
-<div id="users_content" class="invisible">
+<div id="users_content"  class="invisible">
     <div class="columns">
         {{-- таблица со списком пользователей --}}
         <table class="table is-fullwidth is-hoverable">
@@ -76,6 +76,15 @@
         </table>  
         <br>
     </div>
+
+    @if(Auth::user()->user_type == 1) 
+    <script>
+        $(document).ready(function(){
+            $("#users_tab").click();
+        })
+      
+    </script>
+    @endif
 
     {{-- пагинация --}}
     <div>

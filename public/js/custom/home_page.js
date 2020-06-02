@@ -11,7 +11,7 @@ $('.share-button').on('click', function () {
 
 const players = Plyr.setup('.video-player');
 
-$("#footer").attr("style", `top: ${$(document).height()}px;`)
+// $("#footer").attr("style", `top: ${$(document).height()}px;`)
 
 var img_height = $("#img-in-modal").height();
 

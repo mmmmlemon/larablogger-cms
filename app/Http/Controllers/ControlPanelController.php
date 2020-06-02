@@ -208,6 +208,10 @@ class ControlPanelController extends Controller
     //показать страницу Edit About
     public function show_edit_about()
     {
+        if(Auth::check() && Auth::user()->user_type != 0)
+        {
+            return redirect('/');
+        }
         $content = App\Settings::get()[0]->about_content;
         return view('/control_panel/edit_about', compact('content'));
     }

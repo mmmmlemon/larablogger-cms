@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
 
-    $("#footer").attr("style", `top: ${$(document).height()}px;`);
+    // $("#footer").attr("style", `top: ${$(document).height()}px;`);
 
     $('.textarea').richText({
         imageUpload: false,

@@ -1,15 +1,12 @@
 /*здесь хранятся кастомные стили не связанные с bulma*/
 /*стили элементов созданных вручную (например, шапка сайта и т.д)*/
 
-
-
 body, html {
     height: 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
     min-height: 100%;
 }
-
 
 .invisible {
     display: none;
@@ -36,18 +33,18 @@ body, html {
 
 .footer {
     /* background-color: rgba(189, 153, 112, 0.397);
-    position: absolute;
-    height: 10%;
-    width: 100%;
-    bottom: 0; */
-    background-color: rgba(243, 241, 241, 0.226);
-    color: black;
+    position: absolute
+    /* bottom: 0;  
     position: absolute;
     right: 0;
     left: 0;
     padding: 1rem;
     margin-top: 10px;
-    text-align: center;
+    text-align: center; */
+    background-color: rgba(243, 241, 241, 0.226);
+    color: black;
+    height: 10%;
+    width: 100%; 
 }
 
 .white-bg{

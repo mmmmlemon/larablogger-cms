@@ -13,13 +13,15 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
+        //настройки сайта
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string("site_title");
-            $table->string("site_subtitle");
+            $table->string("site_title"); //заголовок сайта
+            $table->string("site_subtitle"); //подзаголовок сайта
             $table->timestamps();
         });
 
+        //опции по умолчанию
         DB::table('settings')->insert(
             array(
                 'site_title' => 'Web-site Title',

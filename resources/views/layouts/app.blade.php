@@ -102,7 +102,9 @@
                                     {{$item->platform_name}}
                                 </a>
                             @endforeach
+                            @if(count($social_media)>0)
                             <hr class="navbar-divider">
+                            @endif
                             <a class="navbar-item" id="showModalContact">
                                 Contact
                             </a>

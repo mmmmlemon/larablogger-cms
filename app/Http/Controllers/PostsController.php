@@ -214,14 +214,6 @@ class PostsController extends Controller
     //загрузка файлов перед сохранением поста
     public function upload_files(Request $request)
     {  
-       $validator = Validator::make($request->all(),[
-           'file' => 'mimes:mp4,png,jpeg,jpg'
-       ]);
-
-       if($validator->fails()){
-            return response()->json(['result'=>'Validation failed! ('.$request->filename.')']); 
-       }
-
        //получаем имя файла
        $filename = $request->filename;
 
@@ -356,7 +348,7 @@ class PostsController extends Controller
         //получить пост по id
         $post = App\Post::find($id);
         //получаем медиа
-        $media = App\Media::where('post_id',$id)->where('visibility','=',1)->get();
+        $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
 
         //если такой пост существует, то выводим его
         if($post != null)
