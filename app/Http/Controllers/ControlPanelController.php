@@ -212,6 +212,7 @@ class ControlPanelController extends Controller
         {
             return redirect('/');
         }
+
         $content = App\Settings::get()[0]->about_content;
         return view('/control_panel/edit_about', compact('content'));
     }

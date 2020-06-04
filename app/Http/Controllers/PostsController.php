@@ -350,6 +350,8 @@ class PostsController extends Controller
         //получаем медиа
         $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
 
+        $is_admin = false;
+
         //если такой пост существует, то выводим его
         if($post != null)
         {   
