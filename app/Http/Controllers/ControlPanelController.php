@@ -180,15 +180,18 @@ class ControlPanelController extends Controller
                 $img->contrast(-20);
             }
 
+            //dd(storage_path("images\\bg"));
+
             //удаляем старый фон
-            $files = File::files(storage_path("app\\public\\images\\bg"));
+            $files = File::files(storage_path("app/public/images/bg"));
+
             foreach($files as $file)
             {
                 unlink($file->getPathname());
             }
 
             //сохраняем получившееся изображение в папке для фоновых изображений
-            $img->save(storage_path('\\app\\public\\')."/images/bg/"."/".$filename);
+            $img->save(storage_path('/app/public/images/bg/').$filename);
             $settings->bg_image = "/images/bg/"."/".$filename; //записываем путь до картинки в настройки
         }
 
@@ -212,7 +215,6 @@ class ControlPanelController extends Controller
         {
             return redirect('/');
         }
-
         $content = App\Settings::get()[0]->about_content;
         return view('/control_panel/edit_about', compact('content'));
     }

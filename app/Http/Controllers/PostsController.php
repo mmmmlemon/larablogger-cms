@@ -82,14 +82,14 @@ class PostsController extends Controller
             //создаем папку для медиа файлов ассоциируемых с постом
             //posts/[date + post_title]
             $folder_name = date('d-m-Y')."-".$request->post_title;
-            $folder_created= Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+            $folder_created= Storage::disk('public')->makeDirectory("posts/". $folder_name);
             //если папка создалась, то перемещаем файлы из temp
             if($folder_created == true)
             {
                 foreach($temp_files as $file){
                     //путь по которому будет перемещен файл
-                    $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file->filename;
-                    $move = File::move(storage_path("app\\public\\temp\\").$file->filename, $new_path);
+                    $new_path = storage_path("app/public/posts/").$folder_name."/".$file->filename;
+                    $move = File::move(storage_path("app/public/temp/").$file->filename, $new_path);
                 
                     //если переместить файл не удалось, то редиректим с ошибкой
                     if($move != true) 
@@ -224,7 +224,7 @@ class PostsController extends Controller
        $filename = $name."-".$uuid8.".".$ext;
        
        //создаем файл в нужной папке, и открываем его в режиме append
-       $file = fopen(storage_path('app\\public\\temp\\')."$filename","a");
+       $file = fopen(storage_path('app/public/temp/')."$filename","a");
 
        //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
        fputs($file,file_get_contents($request->file));
@@ -232,14 +232,14 @@ class PostsController extends Controller
        return response()->json([
         'file_url' => asset("storage/temp/".$filename),
         'filename' =>  $filename,
-        'mime' => substr(File::mimeType(storage_path('app\\public\\temp\\')."$filename"),0,5)
+        'mime' => substr(File::mimeType(storage_path('app/public/temp/')."$filename"),0,5)
         ]);
     }	    
 
     //очистить папку temp
     public function clear_temp()
     {
-        $temp_files = File::files(storage_path("app\\public\\temp"));
+        $temp_files = File::files(storage_path("app/public/temp"));
         foreach($temp_files as $file)
         {
             unlink($file->getPathname());
@@ -349,8 +349,6 @@ class PostsController extends Controller
         $post = App\Post::find($id);
         //получаем медиа
         $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
-
-        $is_admin = false;
 
         //если такой пост существует, то выводим его
         if($post != null)
