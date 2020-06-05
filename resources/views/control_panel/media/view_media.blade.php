@@ -1,6 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
+
 <div class="container">
   <div class="white-bg">
     {{-- навигация --}}
@@ -68,7 +68,7 @@
               <label class="label">Subtitles</label>
               <div id="file-js-example" class="file has-name">
                   <label class="file-label">
-                    <input class="file-input" id="subtitle_input" accept=".srt" type="file" name="subtitles[]" multiple>
+                    <input class="file-input" id="subtitle_input" accept=".vtt,.srt" type="file" name="subtitles[]" multiple>
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
@@ -219,11 +219,11 @@
               {{-- превью - видеоплеер --}}
               <div id="preview" class="invisible">
                 <video style="" controls="controls" id="player" preload="none" poster = "{{asset('/storage/')."/".$media->thumbnail_url}}">
-                  <source src="http://127.0.0.1:8000/storage/{{$media->media_url}}" id="content-video">
+                  <source src="{{url('/')}}/storage/{{$media->media_url}}" id="content-video">
+                    @foreach($subs_for_video as $sub)
+                    <track kind="subtitles" label="{{$sub->display_name}}" src="{{asset('/storage/')."/".$sub->sub_url}}" default />
+                  @endforeach
                 </video>
-                @foreach($subs as $sub)
-                  <track kind="subtitles" label="{{$sub->display_name}}" src="{{asset('/storage/')."/".$sub->sub_url}}" srclang="en" default />
-                @endforeach
               </div>
             @endif
             {{-- если файл - картинка, то просто показываем картинку --}}

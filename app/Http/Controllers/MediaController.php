@@ -12,7 +12,8 @@ class MediaController extends Controller
 {
 
     //страница со списком всех медиа файлов
-    public function media_list(){
+    public function media_list()
+    {
         
         //получаем все медиафайлы
         $media = App\Media::orderBy('post_id','desc')->paginate(15);
@@ -30,7 +31,8 @@ class MediaController extends Controller
     }
 
     //показать страницу с информацией о медиа файле \ редактор
-    public function view_media($id){
+    public function view_media($id)
+    {
        
         $media = App\Media::find($id);
         $post_title = App\Post::find($media->post_id)->post_title;
@@ -39,12 +41,14 @@ class MediaController extends Controller
         $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb";
 
         $subs = App\Subtitles::where('media_id','=',$media->id)->get();
+        $subs_for_video = App\Subtitles::where('media_id','=',$media->id)->where('visibility','=',1)->get();
 
-        return view('/control_panel/media/view_media', compact('media','subs'));
+        return view('/control_panel/media/view_media', compact('media','subs','subs_for_video'));
     }
 
     //сохранить изменения в медиа
-    public function edit_media(Request $request, $id){
+    public function edit_media(Request $request, $id)
+    {
         
         //получаем запись о файле из БД
         $media = App\Media::find($id);
@@ -64,7 +68,7 @@ class MediaController extends Controller
         {
             $path = substr($media->media_url, 0, $pos) . "/thumbnail";
             //проверяем существует ли уже такая папка
-            $check = File::exists(storage_path("app\\public\\".$path));
+            $check = File::exists(storage_path("app/public/".$path));
             if ($check == false) {
                 $folder_created = Storage::disk('public')->makeDirectory($path);
                 if($folder_created){
@@ -74,7 +78,7 @@ class MediaController extends Controller
                $filename = "thumbnail_".$media->id.".".$request->file('thumbnail')->getClientOriginalExtension();
                $img = Image::make($request->thumbnail);
                $img->fit(640,360);
-               $img->save(storage_path('\\app\\public\\').$path."/".$filename);
+               $img->save(storage_path('app/public/').$path."/".$filename);
                $media->thumbnail_url = $path."/".$filename;
         }
 
@@ -83,7 +87,7 @@ class MediaController extends Controller
         {
             $path = substr($media->media_url, 0, $pos) . "/subtitles";
 
-            $check = File::exists(storage_path("app\\public\\".$path));
+            $check = File::exists(storage_path("app/public/".$path));
             if ($check == false) {
                 $folder_created = Storage::disk('public')->makeDirectory($path);
             }
@@ -115,7 +119,7 @@ class MediaController extends Controller
     {
         $media = App\Media::find($id);
 
-        unlink(storage_path('app\\public\\'.$media->thumbnail_url));
+        unlink(storage_path('app/public/'.$media->thumbnail_url));
         $media->thumbnail_url = null;
         $media->save();
 
@@ -123,7 +127,7 @@ class MediaController extends Controller
     }
 
     //показать\спрятать субтитры
-    public function display_name_status(Request $request)
+    public function change_subs_status(Request $request)
     {
         $sub = App\Subtitles::find($request->sub_id);
         $sub->visibility = $request->visibility;
@@ -144,8 +148,16 @@ class MediaController extends Controller
     public function delete_subs(Request $request)
     {
         $sub = App\Subtitles::find($request->sub_id)    ;
-        unlink(storage_path('app\\public\\'.$sub->sub_url));
+        unlink(storage_path('app/public/'.$sub->sub_url));
         $sub->delete();
         return response()->json(['msg'=>'success']);
+    }
+
+    public function delete_media(Request $request)
+    {
+        $media = App\Media::find($request->id);
+        unlink(storage_path('app/public/'.$media->media_url));
+        $media->delete();
+        return redirect()->back();
     }
 }

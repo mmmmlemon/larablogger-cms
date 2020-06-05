@@ -81,7 +81,7 @@
                                         {{-- закрепление поста --}}
                                         @if($post->pinned == 0)
                                             {{-- закрепить пост --}}
-                                            <form action="/control/pin_post/" method="post" style="display:inline;">
+                                            <form action="/control/pin_post" method="post" style="display:inline;">
                                                 @csrf
                                                 <input type="text" name="id" value="{{$post->id}}" class="invisible">
                                                 <button class="button is-success" data-tooltip="Pin this post"><i class="fas fa-thumbtack"></i></button>

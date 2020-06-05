@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$blank="";
+@endphp
 <div class="container white-bg">
 
   {{-- навигация --}}
@@ -46,7 +49,7 @@
       <div class="control">
         <label class="label">Title</label>
         <input maxlength="35" id="post_title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
-          placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else @endif">
+      placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else{{$blank}}@endif">
       </div>
         @error('post_title')
           <p class="help is-danger"><b> {{ $message }}</b></p>  

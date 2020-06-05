@@ -69,13 +69,9 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     {{-- кнопка удаление файла --}}
-                                    <form action="/control/media/delete_media/" method="post" style="display:inline;">
-                                        @csrf
-                                        <input type="text" name="id" value="{{$m->id}}" class="invisible">
-                                        <button class="button is-danger" data-tooltip="Delete this file">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                <a class="deleteFile button is-danger" data-id="{{$m->id}}" data-tooltip="Delete this file">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -111,6 +107,30 @@
     <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
 </div>
 
+{{-- подтверждение удаления файла --}}
+<div class="modal modalDelete">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">You sure?</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <p>Are you sure you want to delete this file?</p>
+        <b id="modal_post_title"></b>
+        <p>The file will be removed both from post and physically.</p>
+        <p class="has-text-danger">This action cannot be undone.</p>
+      </section>
+      <footer class="modal-card-foot">
+            <form id="modal_form" action="/control/media/delete_media" method="post" style="display:inline;">
+                @csrf
+                <input type="text" name="id" value="pee" id="modal_input" class="invisible">
+            </form>
+            <button class="button is-danger" id="submit_modal">Delete</button>
+            <button class="button cancel">Cancel</button>
+      </footer>
+    </div>
+</div>
 @endsection
 
 @push('scripts')

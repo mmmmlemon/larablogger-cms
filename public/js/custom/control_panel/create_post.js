@@ -92,12 +92,16 @@ var dropzone = $("#file_form").dropzone({
 $("#submit_post").click(function () {
     $(this).attr("disabled", "disabled");
 
-    //установка заголовка с csrf-токеном
+    if($("#post_title").val() === "")
+    {$("#post_title").focus();} 
+    
+    // установка заголовка с csrf-токеном
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
     // //отправка запроса
     $.ajax({
         type: 'POST',

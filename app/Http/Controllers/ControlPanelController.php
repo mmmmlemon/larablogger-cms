@@ -35,7 +35,7 @@ class ControlPanelController extends Controller
     public function update_settings(Request $request)
     {
         $request->validate([
-            'site_title'=>'required|max:25',
+            'site_title'=>'required|max:55',
             'site_subtitle'=>'required|max:55',
             'contact_email'=>'required|email',
             'contact_text'=>'string|max:200'
@@ -179,8 +179,6 @@ class ControlPanelController extends Controller
                 $img->brightness(-25);
                 $img->contrast(-20);
             }
-
-            //dd(storage_path("images\\bg"));
 
             //удаляем старый фон
             $files = File::files(storage_path("app/public/images/bg"));

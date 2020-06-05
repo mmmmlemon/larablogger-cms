@@ -50,3 +50,25 @@ $("#modal-close").click(function () {
     $("#player_div").attr("style", "display: none;");
     $("#content-in-modal").width("").height("");
 });
+
+//скрипты для страницы posts
+$("#submit_modal").on('click', function (e) {
+    e.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#modal_form").submit();
+});
+
+//вызвать модальное окно удаления файла
+$(".deleteFile").click(function () {
+    $(".modalDelete").addClass("is-active fade-in");
+    $("#modal_input").attr("value",$(this).data("id"));
+});
+
+$(".delete").click(function () {
+    $(".modalDelete").removeClass("is-active");
+});
+
+$(".cancel").click(function () {
+    $(".modalDelete").removeClass("is-active");
+});
+

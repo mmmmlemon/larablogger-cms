@@ -43,9 +43,10 @@ class PostsController extends Controller
     {
         $request->validate([
             'post_title' => 'string|max:35',
-            'post_content' => 'string',
+            'post_content' => 'string|nullable',
             'post_visibility' => 'string',
-            'post_date' => 'date|after:yesterday'
+            'post_date' => 'date|after:yesterday',
+             'tags' => 'string|nullable'
         ]);
 
         //создаем новый пост и набиваем его данными
@@ -143,7 +144,7 @@ class PostsController extends Controller
             'post_title' => 'string|max:35',
             'post_content' => 'string|max:10000',
             'post_visibility' => 'string',
-            'tags' => 'string'
+            'tags' => 'string|nullable'
         ]);
             
         $post = App\Post::find($id);
@@ -174,19 +175,19 @@ class PostsController extends Controller
         {
             $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
             //проверяем была ли создана папка для файлов текущего поста
-            $check = File::exists(storage_path("app\\public\\posts\\".$folder_name));
+            $check = File::exists(storage_path("app/public/posts/".$folder_name));
             
             if($check != true)
             {
-                Storage::disk('public')->makeDirectory("posts\\". $folder_name);
+                Storage::disk('public')->makeDirectory("posts/". $folder_name);
             }
 
             foreach($temp_files as $file)
             {
                 //путь по которому будет перемещен файл
-                $new_path = storage_path("app\\public\\posts\\").$folder_name."\\".$file;
+                $new_path = storage_path("app/public/posts/").$folder_name."/".$file;
                 
-                $move = File::move(storage_path("app\\public\\temp\\".$file), $new_path);
+                $move = File::move(storage_path("app/public/temp/".$file), $new_path);
             
                 //если переместить файл не удалось, то редиректим с ошибкой
                 if($move != true) 
@@ -252,13 +253,14 @@ class PostsController extends Controller
         //если intval равен 0 значит вместо id было передано имя файла
         //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
         //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
+        dd(intval($request->id));
         if(intval($request->id) == 0)
         {   
             $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
             
-            if(is_file(storage_path("app\\public\\temp\\".$filename)))
+            if(is_file(storage_path("app/public/temp/".$filename)))
             {
-                $check = unlink(storage_path("app\\public\\temp\\".$filename));
+                $check = unlink(storage_path("app/public/temp/".$filename));
                 if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
             }
         }
@@ -268,15 +270,15 @@ class PostsController extends Controller
         else
         {
             $media = App\Media::find($request->id);
-            $check_delete = unlink(storage_path("app\\public\\").$media->media_url);
+            $check_delete = unlink(storage_path("app/public/").$media->media_url);
             if($check_delete == true) 
             {
                 $post = App\Post::find($media->post_id);
                 $folder_name = date("d-m-Y",strtotime($post->date))."-".$post->post_title;
-                $files = File::files(storage_path("app\\public\\posts\\".$folder_name));
+                $files = File::files(storage_path("app/public/posts/".$folder_name));
                 if(count($files)== 0)
                 {   
-                    File::deleteDirectory(storage_path("app\\public\\posts\\").$folder_name);
+                    File::deleteDirectory(storage_path("app/public/posts/").$folder_name);
                 }
                 
                 $media->delete();
@@ -486,7 +488,7 @@ class PostsController extends Controller
         {
             $pos = strripos($m->media_url,"/");
             $path = substr($m->media_url, 0, $pos);
-            File::deleteDirectory(storage_path('app\\public\\'.$path));
+            File::deleteDirectory(storage_path('app/public/'.$path));
             $m->delete();
         }
 

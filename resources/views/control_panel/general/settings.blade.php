@@ -24,7 +24,7 @@
                         <div class="field">
                             <p class="control is-expanded">
                                 <input class="input" id="site_title" @error('site_title') is-danger @enderror name="site_title" type="text" 
-                                    required placeholder="Web-site name" maxlength="25" 
+                                    required placeholder="Web-site name" maxlength="55" 
                                     value="@if($errors->any()){{old('site_title')}}@else{{$settings->site_title}}@endif">
                             </p>
                             @error('site_title')
@@ -121,7 +121,7 @@
             <h3 class="subtitle">Social media (Links)</h3>
 
             {{-- форма для соц. сетей --}}
-            <form id="form_social" action="control/update_social/" method="POST">
+            <form id="form_social" action="control/update_social" method="POST">
                 @csrf 
                 
                 {{-- поле №1 --}}
