@@ -111,6 +111,12 @@ class CategoryController extends Controller
           //если файлы есть, то
           if(count($media) != 0)
           {   
+                foreach($media as $m)
+                {
+                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+                    $m->subs = $subs;
+                }
+                
               //прикрепляем медиа к посту
               $post->media = $media;
               //прикрепить тип медиа к медиа файлу

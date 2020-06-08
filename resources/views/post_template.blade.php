@@ -32,6 +32,11 @@
                 <div class="has-text-centered">
                     <video class="video-player" preload="none" controls="controls" poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}">
                         <source src="{{asset("storage/".$post->media[0]->media_url)}}">
+                            @if($post->media[0] != null && $post->media[0]->subs != null)
+                                @foreach($post->media[0]->subs as $s)
+                                    <track kind="subtitles" label="{{$s->display_name}}" src="{{asset('/storage/')."/".$s->sub_url}}"/>
+                                @endforeach
+                            @endif 
                     </video>
                 </div>
                 <br>

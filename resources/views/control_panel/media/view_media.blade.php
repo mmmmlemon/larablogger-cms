@@ -215,14 +215,14 @@
                     <h1 class="subtitle has-text-centered">No subtitles attached to this video</h1>
                   @endif
               </div>
-
+        
               {{-- превью - видеоплеер --}}
               <div id="preview" class="invisible">
                 <video style="" controls="controls" id="player" preload="none" poster = "{{asset('/storage/')."/".$media->thumbnail_url}}">
                   <source src="{{url('/')}}/storage/{{$media->media_url}}" id="content-video">
                     @foreach($subs_for_video as $sub)
-                    <track kind="subtitles" label="{{$sub->display_name}}" src="{{asset('/storage/')."/".$sub->sub_url}}" default />
-                  @endforeach
+                      <track kind="subtitles" label="{{$sub->display_name}}" src="{{asset('/storage/')."/".$sub->sub_url}}" default />
+                    @endforeach
                 </video>
               </div>
             @endif

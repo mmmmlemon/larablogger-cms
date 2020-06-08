@@ -253,8 +253,7 @@ class PostsController extends Controller
         //если intval равен 0 значит вместо id было передано имя файла
         //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
         //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
-        dd(intval($request->id));
-        if(intval($request->id) == 0)
+        if(ctype_digit($request->id) == false)
         {   
             $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
             
@@ -270,6 +269,7 @@ class PostsController extends Controller
         else
         {
             $media = App\Media::find($request->id);
+            
             $check_delete = unlink(storage_path("app/public/").$media->media_url);
             if($check_delete == true) 
             {
@@ -307,6 +307,8 @@ class PostsController extends Controller
             else
             {$post->tags = $tags;}
 
+
+
             //прикрепляем название категории к посту
             $post->category = App\Category::find($post->category_id)->category_name;
 
@@ -332,15 +334,23 @@ class PostsController extends Controller
             //если файлы есть
             if(count($media) != 0)
             {
-                $post->media = $media; //
+                foreach($media as $m)
+                {
+                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+                    $m->subs = $subs;
+                }
+
+                $post->media = $media;
                 $post->media_type = $media[0]->media_type;
             }
+
         }
 
         //для вывода постов по тегам
         //установливаем имя тега - null, чтобы когда выводятся все посты на главной
         //не было ошибки
         $tag_name = null;
+        //dd($posts);
         return view('home', compact('posts', 'tag_name'));
     }
 
@@ -351,6 +361,12 @@ class PostsController extends Controller
         $post = App\Post::find($id);
         //получаем медиа
         $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
+
+        foreach($media as $m)
+        {
+            $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+            $m->subs = $subs;
+        }
 
         //если такой пост существует, то выводим его
         if($post != null)
@@ -410,6 +426,7 @@ class PostsController extends Controller
                     //если он админ
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
+                        
                         return view('post', compact('post','username','media','comments'));
                     } 
                     else //если залогинен, но не админ, то 404
