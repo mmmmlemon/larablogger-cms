@@ -379,7 +379,7 @@ class PostsController extends Controller
                 if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
                 {$is_admin = true;} //то указываем что он админ
                 else  //или не админ
-                {$is_admin == false;}
+                {$is_admin = false;}
             }
             else //если не залогинен, то юзернейм пустой, а не админ
             {
@@ -426,7 +426,6 @@ class PostsController extends Controller
                     //если он админ
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
-                        
                         return view('post', compact('post','username','media','comments'));
                     } 
                     else //если залогинен, но не админ, то 404
@@ -458,6 +457,12 @@ class PostsController extends Controller
             $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
             if(count($media) != 0)
             {
+                foreach($media as $m)
+                {
+                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+                    $m->subs = $subs;
+                }
+
                 $post->media = $media;
                 $post->media_type = $media[0]->media_type;
             }
@@ -522,6 +527,7 @@ class PostsController extends Controller
             'comment_content' => 'required|max:1000'
         ]);
 
+      
         //если валидатор фейлит, то редиректим назад с якорем
         if($validator->fails())
         {
@@ -534,6 +540,15 @@ class PostsController extends Controller
         $comment->comment_content = $request->comment_content;
         $comment->post_id = $id;
         $comment->date = Carbon::now();
+        if(Auth::check())
+        {
+            $comment->is_logged_on = 1;            
+        }
+        else
+        {
+            $comment->is_logged_on = 0;
+        }
+
         $comment->save();
         return redirect(url()->previous());
     }

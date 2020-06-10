@@ -66,6 +66,11 @@ class MediaController extends Controller
         //если была добавлена картинка thumbnail
         if($request->thumbnail != null)
         {
+            if($media->thumbnail_url != null)
+            {
+                unlink(storage_path('app/public/'.$media->thumbnail_url));
+                $media->thumbnail_url = null;
+            }
             $path = substr($media->media_url, 0, $pos) . "/thumbnail";
             //проверяем существует ли уже такая папка
             $check = File::exists(storage_path("app/public/".$path));
@@ -75,7 +80,7 @@ class MediaController extends Controller
                     Storage::disk('public')->put("/storage", $request->thumbnail);
                 }
             }
-               $filename = "thumbnail_".$media->id.".".$request->file('thumbnail')->getClientOriginalExtension();
+               $filename = "thumbnail_".rand(0,99).".".$request->file('thumbnail')->getClientOriginalExtension();
                $img = Image::make($request->thumbnail);
                $img->fit(640,360);
                $img->save(storage_path('app/public/').$path."/".$filename);

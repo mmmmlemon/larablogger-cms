@@ -52,7 +52,7 @@
                         <article class="has-text-center">
                             <div class="media-content">
                                 <div class="has-text-centered">
-                                    <video controls="controls" class="player" preload="none" poster="{{asset('/storage/')."/".$m->thumbnail_url}}">
+                                    <video controls="controls" class="player" @if($m->thumbnail_url != null)preload="none" poster="{{asset('/storage/')."/".$m->thumbnail_url}}"@endif>
                                         <source src="{{asset("storage/".$m->media_url)}}">
                                             @if($m != null && $m->subs != null)
                                             @foreach($m->subs as $s)
@@ -125,8 +125,17 @@
                     <div class="content">
                         <div class="is-4">
                             <strong>{{$comment->username}}</strong>
+                            @if($comment->is_logged_on == 1)
+                            <span data-tooltip="This is a registered user">
+                                <i class="fas fa-check"></i>
+                            </span>
+                                
+                            @else
+
+                            @endif
+
                             @if($is_admin == true)
-                                <form action="/post/change_comment_status/" method="POST" style="display:inline">
+                                <form action="/post/change_comment_status" method="POST" style="display:inline">
                                     @csrf
                                     <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
                                     @php
@@ -157,7 +166,7 @@
                                     </button>
                                 </form>
 
-                                <form action="/post/change_comment_status/" method="POST" style="display:inline">
+                                <form action="/post/change_comment_status" method="POST" style="display:inline">
                                     @csrf
                                     <input type="text" class="invisible"  name="comment_id" value="{{$comment->id}}">
                                     <input type="text" class="invisible "name="action" value="delete">

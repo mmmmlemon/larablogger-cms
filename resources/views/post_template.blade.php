@@ -30,7 +30,7 @@
 
             @if($post->media_type == "video")
                 <div class="has-text-centered">
-                    <video class="video-player" preload="none" controls="controls" poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}">
+                    <video class="video-player" controls="controls" @if($post->media[0]->thumbnail_url != null)preload="none"  poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}@endif">
                         <source src="{{asset("storage/".$post->media[0]->media_url)}}">
                             @if($post->media[0] != null && $post->media[0]->subs != null)
                                 @foreach($post->media[0]->subs as $s)

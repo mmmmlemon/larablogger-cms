@@ -88,7 +88,7 @@
                                             </form>
                                         @else
                                             {{-- открепить пост --}}
-                                            <form action="/control/pin_post/" method="post" style="display:inline;">
+                                            <form action="/control/pin_post" method="post" style="display:inline;">
                                                 @csrf
                                                 <input type="text" name="id" value="{{$post->id}}" class="invisible">
                                                 <button class="button is-warning" data-tooltip="Unpin this post"><i class="fas fa-thumbtack"></i></button>
