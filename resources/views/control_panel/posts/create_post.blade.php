@@ -48,7 +48,7 @@ $blank="";
     <div class="field">
       <div class="control">
         <label class="label">Title</label>
-        <input maxlength="35" id="post_title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
+        <input maxlength="70" id="post_title" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
       placeholder="Post title" value="@if($errors->any()){{old('post_title')}}@else{{$blank}}@endif">
       </div>
         @error('post_title')

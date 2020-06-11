@@ -66,9 +66,10 @@
                         </article>
                     @endif
                 @endforeach
+                <br>
             @endif
 
-            <br>
+            
 
             <article class="media">
                 <div class="media-content">
@@ -133,7 +134,7 @@
                             @else
 
                             @endif
-
+                            
                             @if($is_admin == true)
                                 <form action="/post/change_comment_status" method="POST" style="display:inline">
                                     @csrf
@@ -198,13 +199,13 @@
             <div class="media-content">
                 <div class="field">
                     <p class="control">
-                        <input class="input" name="username" placeholder="username" maxlength="25" id="username" value="{{$username}}"/>
+                        <input class="input" name="username" placeholder="Username" maxlength="25" id="username" value="{{$username}}" required/>
                     </p>
                     @error('username')
                         <p class="help is-danger"><b> {{ $message }}</b></p>  
                     @enderror
                 </div>
-                <textarea class="textarea" name="comment_content" placeholder="Add a comment..."></textarea>
+                <textarea class="textarea" name="comment_content" placeholder="Add a comment..." required></textarea>
                 @error('comment_content')
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
                 @enderror

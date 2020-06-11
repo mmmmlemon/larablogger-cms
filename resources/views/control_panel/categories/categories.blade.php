@@ -49,6 +49,21 @@
                             <a href="/category/{{$categ->category_name}}"><b>{{$categ->category_name}}</b></a>
                             </td>
                             <td>
+
+                               {{-- кнопка редактирования категории --}}
+                                <form action="/control/categories/raise" method="post" style="display:inline;">
+                                    @csrf
+                                    <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                    <button @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
+                                </form>
+
+                                   {{-- кнопка редактирования категории --}}
+                                <form action="/control/categories/lower" method="post" style="display:inline;">
+                                    @csrf
+                                    <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                    <button @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
+                                </form>
+
                                 {{-- кнопка редактирования категории --}}
                                 <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
                                     <span class="icon is-small" data-tooltip="Edit this category">
@@ -86,7 +101,7 @@
         <p class="has-text-danger">This action cannot be undone.</p>
       </section>
       <footer class="modal-card-foot">
-          <form id="modal_form" action="/control/categories/delete/" method="post" style="display:inline;">
+          <form id="modal_form" action="/control/categories/delete" method="post" style="display:inline;">
                 @method('DELETE')
                 @csrf
                 <input type="text" class="invisible" id="modal_form_input" name="modal_form_input">

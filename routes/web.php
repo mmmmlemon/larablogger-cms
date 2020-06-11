@@ -71,6 +71,8 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/categories/edit/{id}','CategoryController@show_edit_category'); //редактировать категорию
     Route::post('/control/categories/edit/{id}','CategoryController@edit_category'); //сохранить изменения в категории
     Route::delete('/control/categories/delete','CategoryController@delete_category'); //удалить категорию
+    Route::post('/control/categories/raise','CategoryController@raise_category'); //поднять категорию в списке
+    Route::post('/control/categories/lower','CategoryController@lower_category'); //поднять категорию в списке
 
 });
 

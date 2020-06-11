@@ -46,7 +46,7 @@
         <div class="control">
           <label class="label">Title</label>
           <!--заголовок поста-->
-          <input maxlength="35" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
+          <input maxlength="70" class="input @error('post_title') is-danger @enderror" type="text" name="post_title" 
             placeholder="Post title" id="post_title" value="@if($errors->any()){{old('post_title')}}@else{{$post->post_title}}@endif">
         </div>
           @error('post_title')

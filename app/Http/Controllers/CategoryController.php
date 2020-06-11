@@ -12,8 +12,9 @@ class CategoryController extends Controller
     //вывод списка категорий в панели управления
     public function category_list ()
     {
-        $categs = App\Category::where('category_name','!=','blank')->get();
-        return view('control_panel/categories/categories', compact('categs'));    
+        $categs = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
+        $max = App\Category::max('visual_order');
+        return view('control_panel/categories/categories', compact('categs','max'));    
     }
 
     //показать страницу создания категории
@@ -26,7 +27,7 @@ class CategoryController extends Controller
     public function create_category(Request $request)
     {
         $request->validate([
-            'category_name' => 'string|max:20',
+            'category_name' => 'string|max:50',
         ]);
 
         $categ = new App\Category;
@@ -46,7 +47,7 @@ class CategoryController extends Controller
     public function edit_category(Request $request, $id)
     {
         $request->validate([
-            'category_name' => 'string|max:20',
+            'category_name' => 'string|max:50',
         ]);
 
         $categ = App\Category::find($id);
@@ -84,7 +85,7 @@ class CategoryController extends Controller
     {
         //получаем категорию по названию категории
         $categ = App\Category::where('category_name','=',$category_name)->first();
-        
+
         //получаем посты в этой категории
         $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
 
@@ -97,6 +98,9 @@ class CategoryController extends Controller
           {$post->tags = null;}
           else 
           {$post->tags = $tags;}
+
+          //прикрепляем название категории к посту
+          $post->category = App\Category::find($post->category_id)->category_name;
 
           //считаем кол-во комментов под постом
           $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
@@ -125,6 +129,55 @@ class CategoryController extends Controller
         }
         
         return view('category_view', compact('categ', 'posts'));
+    }
+
+    function raise_category(Request $request)
+    {
+        $categ = App\Category::find($request->id);
+
+        if($categ->visual_order - 1 == 0)
+        {
+            return redirect()->back();
+        }
+        else
+        {
+            $categ_upper = App\Category::where('visual_order','=', $categ->visual_order - 1)->get()[0];
+        
+            $categ->visual_order = $categ->visual_order - 1;
+      
+            $categ_upper->visual_order = $categ_upper->visual_order + 1;
+
+            $categ->save();
+            $categ_upper->save();
+
+            return redirect()->back();    
+        }
+
+    }
+
+    function lower_category(Request $request)
+    {
+        $categ = App\Category::find($request->id);
+
+        $max = App\Category::max('visual_order');
+
+        if($categ->visual_order + 1 > $max)
+        {
+            return redirect()->back();
+        }
+        else
+        {
+            $categ_upper = App\Category::where('visual_order','=', $categ->visual_order + 1)->get()[0];
+        
+            $categ->visual_order = $categ->visual_order + 1;
+      
+            $categ_upper->visual_order = $categ_upper->visual_order - 1;
+
+            $categ->save();
+            $categ_upper->save();
+
+            return redirect()->back();    
+        }
     }
 
 }

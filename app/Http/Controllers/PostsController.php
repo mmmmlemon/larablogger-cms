@@ -42,7 +42,7 @@ class PostsController extends Controller
     public function create_post(Request $request)
     {
         $request->validate([
-            'post_title' => 'string|max:35',
+            'post_title' => 'string|max:70',
             'post_content' => 'string|nullable',
             'post_visibility' => 'string',
             'post_date' => 'date|after:yesterday',
@@ -141,7 +141,7 @@ class PostsController extends Controller
     public function edit_post(Request $request, $id)
     {
         $request->validate([
-            'post_title' => 'string|max:35',
+            'post_title' => 'string|max:70',
             'post_content' => 'string|max:10000',
             'post_visibility' => 'string',
             'tags' => 'string|nullable'
@@ -307,8 +307,6 @@ class PostsController extends Controller
             else
             {$post->tags = $tags;}
 
-
-
             //прикрепляем название категории к посту
             $post->category = App\Category::find($post->category_id)->category_name;
 
@@ -350,7 +348,7 @@ class PostsController extends Controller
         //установливаем имя тега - null, чтобы когда выводятся все посты на главной
         //не было ошибки
         $tag_name = null;
-        //dd($posts);
+
         return view('home', compact('posts', 'tag_name'));
     }
 
@@ -453,6 +451,23 @@ class PostsController extends Controller
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
+
+            //прикрепляем название категории к посту
+            $post->category = App\Category::find($post->category_id)->category_name;
+
+            //считаем количество комментариев у поста
+            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
+
+            //если комментариев больше одного то выводим commentS, а не comment
+            if($post->comment_count > 1 || $post->comment_count == 0)
+            {
+                $post->comment_count .= " comments"; 
+            } 
+            else 
+            {
+                $post->comment_count .= " comment"; 
+            }
+
 
             $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
             if(count($media) != 0)

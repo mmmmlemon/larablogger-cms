@@ -133,7 +133,7 @@
                         <div class="field">
                             <input class="input invisible" type="text" name="id_0" value="{{$social_media[0]->id}}">
                             <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
-                                name="platform_0" maxlength="320" value="{{$social_media[0]->platform_name}}">
+                                name="platform_0" maxlength="20" value="{{$social_media[0]->platform_name}}">
                             @error('platform_0')
                                 <p class="help is-danger"><b> {{ $message }}</b></p>  
                             @enderror
@@ -157,7 +157,7 @@
                         <div class="field">
                             <input class="input invisible" type="text" name="id_1" value="{{$social_media[1]->id}}">
                             <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
-                                name="platform_1" maxlength="320" value="{{$social_media[1]->platform_name}}">
+                                name="platform_1" maxlength="20" value="{{$social_media[1]->platform_name}}">
                             @error('platform_1')
                                 <p class="help is-danger"><b> {{ $message }}</b></p>  
                             @enderror
@@ -205,7 +205,7 @@
                         <div class="field">
                             <input class="input invisible" type="text" name="id_3" value="{{$social_media[3]->id}}">
                             <input class="input" type="text" placeholder="Web-site (or social media platform) name" 
-                                name="platform_3" maxlength="320" value="{{$social_media[3]->platform_name}}">
+                                name="platform_3" maxlength="20" value="{{$social_media[3]->platform_name}}">
                             @error('platform_3')
                                 <p class="help is-danger"><b> {{ $message }}</b></p>  
                             @enderror

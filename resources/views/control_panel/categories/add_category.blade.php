@@ -38,7 +38,7 @@
                     <label class="label">Category name</label>
                     <div class="control">
                       <input class="input @error('category_name') is-danger @enderror"
-                        name="category_name" type="text" maxlength="20" placeholder="Category name" id="title"
+                        name="category_name" type="text" maxlength="50" placeholder="Category name" id="title"
                         value="@if($errors->any()){{old('category_name')}}@else{{$blank}}@endif">
                     </div>
                     @error('category_name')
