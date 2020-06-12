@@ -52,7 +52,7 @@
         <section class="hero header">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title web-site-title" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                    <h1 class="title web-site-title">
                         {{$settings->site_title}}
                     </h1>
                     <h2 class="subtitle web-site-subtitle">
@@ -139,7 +139,7 @@
         </nav>
 
         {{-- контейнер для выводящегося контента сайта --}}
-        <main class="py-4">
+        <main id="main_content" class="py-4">
             @yield('content')
         </main>
         </div>

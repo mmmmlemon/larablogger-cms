@@ -1,7 +1,7 @@
 <div class="column is-12 white-bg">
     <div>
         <a href="/post/{{$post->id}}" style="display:inline-block;">
-            <h1 class="title">{{$post->post_title}}</h1>
+            <h1 class="title post_title">{{$post->post_title}}</h1>
         </a> 
         @if($post->pinned == 1)
             <i class="fas fa-thumbtack pin" style="display:inline-block;"></i>

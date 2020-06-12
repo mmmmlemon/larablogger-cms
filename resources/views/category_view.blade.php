@@ -4,7 +4,7 @@
     <div class="container">
         <div class="white-bg has-text-centered">
             {{-- наименование категории --}}
-            <h1 class="title">{{$categ->category_name}}</h1>
+            <h1 class="title post_title">{{$categ->category_name}}</h1>
         </div>
         {{-- если есть посты то выводим их --}}
         @if(count($posts) > 0)

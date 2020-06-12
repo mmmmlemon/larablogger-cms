@@ -4,7 +4,7 @@
     <div class="container">
         @if($tag_name != null)
             <div class="white-bg has-text-centered">
-                <h1 class="title">Posts by tag '{{$tag_name}}'</h1>
+                <h1 class="title post_title">Posts by tag '{{$tag_name}}'</h1>
             </div>
         @endif
         {{-- если есть посты, то показываем их --}}
