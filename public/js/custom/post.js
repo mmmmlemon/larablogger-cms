@@ -19,11 +19,6 @@ $(document).ready(function(){
         code: false
     });
     
-    $("#submit_comment").on('click', function(e){
-        e.preventDefault();
-        $(this).attr("disabled","disabled"); 
-        $("#comm_form").submit();
-    });
     
     $(document).ready(function () {
         $('#username').charCounter();

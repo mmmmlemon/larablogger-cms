@@ -62,10 +62,30 @@
                         <div class="field">
                             <p class="control is-expanded">
                                 <input class="input @error('contact_email') is-danger @enderror" name="contact_email" 
-                                type="text" required placeholder="example@yourmail.com" maxlength="30"
+                                type="text" required placeholder="to@example.com" maxlength="30"
                                 value="@if($errors->any()){{old('contact_email')}}@else{{$settings->contact_email}}@endif">
                             </p>
                             @error('contact_email')
+                                <p class="help is-danger"><b> {{ $message }}</b></p>  
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                
+                {{-- E-Mail с которого будут идти письма--}}
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Sender E-Mail</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <input class="input @error('from_email') is-danger @enderror" name="from_email" 
+                                type="text" required placeholder="from@example.com" maxlength="30"
+                                value="@if($errors->any()){{old('from_email')}}@else{{$settings->from_email}}@endif">
+                            </p>
+                            @error('from_email')
                                 <p class="help is-danger"><b> {{ $message }}</b></p>  
                             @enderror
                         </div>

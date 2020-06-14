@@ -29,7 +29,7 @@ function change_tab(div_name, tab_name) {
     $(".current-tab").removeClass("current-tab is-active");
     $("#" + tab_name).addClass("is-active current-tab");
 
-    $("#footer").attr("style", `top: ${$(document).height()}px;`)
+    // $("#footer").attr("style", `top: ${$(document).height()}px;`)
 }
 
 //если в url страницы есть якорь, то переключаем на соответствующий таб

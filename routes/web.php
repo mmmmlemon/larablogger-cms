@@ -21,6 +21,7 @@ Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag'); //вывод 
 Route::get('/post/{id}', 'PostsController@show_post'); //показать пост
 Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //отправить комментарий
 Route::get('/about', 'HomeController@about'); //страница About
+Route::post('/send_feedback','FeedbackController@mail'); //форма обратной связи
 
 //рауты доступные только админу
 Route::group(['middleware' => ['auth', 'admin']], function(){
@@ -73,6 +74,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::delete('/control/categories/delete','CategoryController@delete_category'); //удалить категорию
     Route::post('/control/categories/raise','CategoryController@raise_category'); //поднять категорию в списке
     Route::post('/control/categories/lower','CategoryController@lower_category'); //поднять категорию в списке
+
 
 });
 

@@ -8,3 +8,8 @@ var clear_temp = function () {
         }
     });
 }
+
+
+// $(document).ready(function(){
+//     $("#main_content").removeClass("invisible").addClass("fast-fade-in");
+// })

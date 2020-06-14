@@ -26,6 +26,8 @@
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
         <!--Shared Scripts-->
         <script src="{{ asset('js/custom/shared/shared.js') }}"></script>
+        {{--  jQuery - RichText --}}
+        <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -153,39 +155,79 @@
                         <p>Contact</p>
                     </div>
                     <div class="message-body"> 
-                        @if($settings->contact_text)
-                            <p>{{$settings->contact_text}}</p>
-                        @endif
-                        @if($settings->contact_email !=null)
-                            <p>E-mail: {{$settings->contact_email}}</p>
-                        @endif
-                        @if($settings->contact_text || $settings->contact_email)
-                            <div class="is-divider"></div>
-                        @endif
-                        <div class="field">
-                            <div class="control">
-                            <input type="email" class="input" placeholder="Your email (optional)">
+                        <div id="contact_content">
+                            @if($settings->contact_email !=null)
+                            @if($settings->contact_text)
+                                <p>{{$settings->contact_text}}</p>
+                            @endif
+                                <p>Contact E-mail: {{$settings->contact_email}}</p>
+                            @if($settings->contact_text || $settings->contact_email)
+                                <div class="is-divider"></div>
+                            @endif
+                            <div class="field">
+                                <div class="control">
+                                    <input type="email" class="input" id="contact_email" placeholder="Your email (optional)">
+                                    <p class="help">Type your E-mail adress here, in case you want to get a reply (optional)</p>
+                                </div>
                             </div>
+                            <div class="field">
+                                <div class="control">
+                                    <input type="message_title" class="input" id="contact_title" placeholder="Subject of your message (optional)">
+                                    <p class="help">Subject of your message (optional)</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                <textarea class="textarea" id="contact_feedback" placeholder="Your message"></textarea>
+                                <p class="help">Your message (you can copy and paste images in the form, if you want)</p>
+                                </div>
+                            </div>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <button class="button is-link" id="contact_submit">
+                                        <span class="icon">
+                                        <i class="fa fa-envelope"></i>
+                                        </span>
+                                        <span>Send</span>
+                                    </button>
+                                </div>
+                            </div> 
+                        @else
+                            <div class="has-text-centered">
+                                <h1 class="subtitle has-text-centered">Contact form is not available now</h1>
+                                <span ><i class="fas fa-envelope"></i></span>
+                                <p>Come again later</p>
+                                
+                            </div>
+                        @endif 
+                   
                         </div>
-                        <div class="field">
-                            <div class="control">
-                            <textarea class="textarea" placeholder="Your message"></textarea>
+
+                        <article id="contact_overlay" class="invisible">
+                            <div class="has-text-centered">
+                                {{-- спиннер --}}
+                                <div id="contact_ring">
+                                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                </div>
+                               
+                                <div id="contact_envelope" class="invisible">
+                                    <span class="icon is-large has-text-link">
+                                        <i class="fas fa-3x fa-envelope"></i>
+                                      </span>
+                                </div>
+                                <div id="contact_sending">Sending your message...</div>
+                                <div id="contact_sent" class="invisible">Your message has been sent!</div>
+                              
+                                <br>
+                                <button id="contact_okay" class="button is-link" disabled>Okay!</button>
                             </div>
-                        </div>
-                        <div class="field is-grouped">
-                            <div class="control">
-                                <button class="button is-link" id="contact_submit">
-                                    <span class="icon">
-                                    <i class="fa fa-envelope"></i>
-                                    </span>
-                                    <span>Submit</span>
-                                </button>
-                            </div>
-                        </div>   
+                        </article> 
+                       
                     </div>
                 </article>
+             
             </div>
-            <button class="modal-close is-large" aria-label="close"></button>
+            <button class="modal-close is-large" id="contact_close" aria-label="close"></button>
         </div>
 
         {{-- секция для модальных окон --}}

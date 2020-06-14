@@ -36,3 +36,4 @@ $("#modal-close").click(function () {
     $("#img-modal").removeClass("is-active");
     $("#img-in-modal").width("").height("");
 });
+
