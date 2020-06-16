@@ -22,7 +22,7 @@
 
     //richText
     //редактор текста для формы связи
-    $('#contact_feedback').richText({
+    $('.contact_feedback').richText({
         imageUpload: false,
         videoEmbed: false,
         fileUpload: false,

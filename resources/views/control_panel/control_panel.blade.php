@@ -16,41 +16,43 @@ $blank = ""; //пустой символ для аттрибута value в inpu
     </nav>
 
     {{-- кнопки --}}
-    <div class="columns">
-        <div class="column is-12">
-            {{-- кнопка Add post --}}
-            <a href="control/create_post" class="button is-link is-medium" data-tooltip="Create new post">
-                <span class="icon">
-                    <i class="fas fa-pen"></i>
-                </span>
-                <span>Add post</span>
-            </a>
+    @if(Auth::check() && Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
+        <div class="columns">
+            <div class="column is-12">
+                {{-- кнопка Add post --}}
+                <a href="control/create_post" class="button is-link is-medium" data-tooltip="Create new post">
+                    <span class="icon">
+                        <i class="fas fa-pen"></i>
+                    </span>
+                    <span>Add post</span>
+                </a>
 
-            {{-- кнопка Posts --}}
-            <a href="control/posts" class="button is-link is-medium" data-tooltip="View/edit posts">
-                <span class="icon">
-                    <i class="fas fa-file"></i>
-                </span>
-                <span>Posts</span>
-            </a>
+                {{-- кнопка Posts --}}
+                <a href="control/posts" class="button is-link is-medium" data-tooltip="View/edit posts">
+                    <span class="icon">
+                        <i class="fas fa-file"></i>
+                    </span>
+                    <span>Posts</span>
+                </a>
 
-            {{-- кнопка Media browser --}}
-            <a href="control/media" class="button is-link is-medium" data-tooltip="Add/edit categories">
-                <span class="icon">
-                    <i class="fas fa-video"></i>
-                </span>
-                <span>Media browser</span>
-            </a>
+                {{-- кнопка Media browser --}}
+                <a href="control/media" class="button is-link is-medium" data-tooltip="Add/edit categories">
+                    <span class="icon">
+                        <i class="fas fa-video"></i>
+                    </span>
+                    <span>Media browser</span>
+                </a>
 
-            {{-- кнопка Categories --}}
-            <a href="control/categories" class="button is-link is-medium" data-tooltip="Add/edit categories">
-                <span class="icon">
-                    <i class="fas fa-list"></i>
-                </span>
-                <span>Categories</span>
-            </a>
+                {{-- кнопка Categories --}}
+                <a href="control/categories" class="button is-link is-medium" data-tooltip="Add/edit categories">
+                    <span class="icon">
+                        <i class="fas fa-list"></i>
+                    </span>
+                    <span>Categories</span>
+                </a>
+            </div>
         </div>
-    </div>
+    @endif
 
     {{-- табы с настройками --}}
     <div class="tabs is-boxed is-centered is-medium">
@@ -74,7 +76,7 @@ $blank = ""; //пустой символ для аттрибута value в inpu
                 </a>
             </li>
             @endif
-
+            @if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
             {{-- Users --}}
             <li id="users_tab" onclick="change_tab('users_content','users_tab');">
               <a href="#users">
@@ -82,6 +84,7 @@ $blank = ""; //пустой символ для аттрибута value в inpu
                   <span>Users</span>
               </a>
             </li>
+            @endif
 
             {{-- My Profile --}}
             <li id="profile_tab" onclick="change_tab('profile_content','profile_tab');">

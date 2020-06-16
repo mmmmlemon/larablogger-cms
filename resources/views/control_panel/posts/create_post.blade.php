@@ -58,7 +58,7 @@ $blank="";
 
     <!--textarea, содержимое поста-->
     <label class="label">Main text/content</label>
-    <textarea class="textarea" id="post_content" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
+    <textarea class="textarea post_content" id="post_content" maxlength="700" name="post_content" placeholder="Write your post here"></textarea>
     @error('post_content')
       <p class="help is-danger"><b> {{ $message }}</b></p>
     @enderror

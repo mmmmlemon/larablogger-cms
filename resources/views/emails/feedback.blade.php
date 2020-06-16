@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/animations.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/basic.min.css') }}" rel="stylesheet">
     <title> @if($title != "")- {{$title}} @else Feedback message @endif</title>
 </head>
 <body>
@@ -18,7 +16,6 @@
         <div>{!!$feedback!!}</div>
         <hr>
         <h6>{{$date}}</h6>
-        
     </div>
 </body>
 </html>

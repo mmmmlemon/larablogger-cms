@@ -29,7 +29,7 @@
 
     <div class="columns">
         <div class="column">
-            <h1 class="title">{{$post->post_title}}</h1>
+            <h1 class="title post_title">{{$post->post_title}}</h1>
             @if($post->tags != null)
                 @foreach($post->tags as $tag)
                     <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>

@@ -85,3 +85,12 @@
         </div>
     </div>
 </div>
+
+
+@if(Auth::user()->user_type == 2) 
+<script>
+    $(document).ready(function(){
+        $("#profile_tab").click();
+    })
+</script>
+@endif

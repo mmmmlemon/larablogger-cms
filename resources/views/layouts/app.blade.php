@@ -120,11 +120,11 @@
                         <a class="navbar-item has-tooltip-bottom" data-tooltip="It's you! :)">
                             {{Auth::user()->name}}
                         </a>
-                        @if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
+                       
                         <a class="navbar-item" href="/control">
                             Control panel
                         </a>
-                        @endif
+                  
                         <a class="navbar-item">
                             <span class="icon has-text-info has-tooltip-left" data-tooltip="Logout"
                             onclick="event.preventDefault();
@@ -178,8 +178,8 @@
                             </div>
                             <div class="field">
                                 <div class="control">
-                                <textarea class="textarea" id="contact_feedback" placeholder="Your message"></textarea>
-                                <p class="help">Your message (you can copy and paste images in the form, if you want)</p>
+                                <textarea class="textarea contact_feedback" id="contact_feedback" placeholder="Your message"></textarea>
+                                <p class="help">Your message</p>
                                 </div>
                             </div>
                             <div class="field is-grouped">

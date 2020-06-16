@@ -14,6 +14,8 @@ use Carbon\Carbon;
 |
 */
 
+Auth::routes(['verify' => true]);
+
 //рауты доступные всем пользователям сайта
 Route::get('/', 'PostsController@index'); //главная страница
 Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category'); //вывод постов по категории
@@ -23,10 +25,16 @@ Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //отп�
 Route::get('/about', 'HomeController@about'); //страница About
 Route::post('/send_feedback','FeedbackController@mail'); //форма обратной связи
 
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/control', 'ControlPanelController@show_control_panel'); //показать панель управления   
+    Route::post('/control/update_profile', 'ControlPanelController@update_profile'); //обновить настройки профиля
+});
+
 //рауты доступные только админу
 Route::group(['middleware' => ['auth', 'admin']], function(){
 
-    Route::get('/control', 'ControlPanelController@show_control_panel')->name('control'); //показать панель управления   
+   
     Route::get('/control/edit_about','ControlPanelController@show_edit_about'); //страница редактирования About
     Route::post('/control/save_about','ControlPanelController@save_about'); //сохранение настроек About
 
@@ -34,7 +42,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_settings', 'ControlPanelController@update_settings'); //обновить общие настройки сайта
     Route::post('/control/update_social', 'ControlPanelController@update_social'); //обновить соц. сети
     Route::post('/control/change_user_type', 'ControlPanelController@change_user_type'); //сменить тип пользователя
-    Route::post('/control/update_profile', 'ControlPanelController@update_profile'); //обновить настройки профиля
+
     Route::post('/control/update_design', 'ControlPanelController@update_design'); //обновить настройки дизайна
 
     //ПОСТЫ
