@@ -83,12 +83,12 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
 });
 
-$hide_reg = App\Settings::all()->first()->hide_reg;
+//$hide_reg = App\Settings::all()->first()->hide_reg;
 // if($hide_reg == 1)
 // {$hide_reg = true;}
 // else {$hide_reg = false;}
 
 Auth::routes([
-    'register' => $hide_reg,
+    'register' => false,
 ]
 );

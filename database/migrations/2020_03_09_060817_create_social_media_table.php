@@ -16,8 +16,8 @@ class CreateSocialMediaTable extends Migration
         //соц. сети
         Schema::create('social_media', function (Blueprint $table) {
             $table->id();
-            $table->string('platform_name');
-            $table->string('url');
+            $table->string('platform_name')->nullable();
+            $table->string('url')->nullable();
             $table->timestamps();
         });
 
