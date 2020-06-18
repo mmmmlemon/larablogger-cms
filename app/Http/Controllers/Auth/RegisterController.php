@@ -64,11 +64,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $user_type = 2;
+
+        //если ни одного пользователя не было зарегестрировано, то первый юзер будет админом
+        $users = User::all();
+
+        if(count($users) == 0)
+        {
+            $user_type = 0;
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'user_type' => 2
+            'user_type' =>  $user_type
         ]);
     }
 }
