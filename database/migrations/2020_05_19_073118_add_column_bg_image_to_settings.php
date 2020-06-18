@@ -14,7 +14,7 @@ class AddColumnBgImageToSettings extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->string('bg_image', 300)->default('/images/bg/bg.jpg');
+            $table->string('bg_image', 300)->default('/images/bg/bg_01.jpg');
         });
     }
 
