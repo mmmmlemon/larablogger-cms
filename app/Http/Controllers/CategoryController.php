@@ -32,6 +32,8 @@ class CategoryController extends Controller
 
         $categ = new App\Category;
         $categ->category_name = $request->category_name;
+        $max = App\Category::max('visual_order');
+        $categ->visual_order = $max + 1;
         $categ->save();
         return redirect(url('/control/categories'));
     }

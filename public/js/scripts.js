@@ -4,8 +4,27 @@
         var nav = $("#nav-menu");
         var className = $(nav).attr("class");
         $(nav).toggleClass("is-active");
+        $("#navigation").toggleClass("slideDown");
     });
 
+    if($(window).width() <= 1080)
+    {
+        $("#home_button").removeClass("invisible").addClass("fade-in");
+    }
+
+    $(window).resize(function(){
+        if($(window).width() <= 1080)
+        {
+            $("#home_button").removeClass("invisible").addClass("fade-in");
+        }
+        else
+        {
+            $("#home_button").addClass("invisible");
+        }
+    
+    })
+
+   
     //вызвать модальное окно Contacts
     $("#showModalContact").click(function() {
         $("#contact-modal").addClass("is-active fade-in");  

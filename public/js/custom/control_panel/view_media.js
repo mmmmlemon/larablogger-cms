@@ -50,14 +50,17 @@ function switch_tab(current_tab, current_display) {
 
 $("#tab_thumbnail").on('click', function () {
     switch_tab("#tab_thumbnail", "#thumbnail");
+    $("#footer").attr("style", `top: ${$(document).height()}px;`)
 });
 
 $("#tab_subtitles").on('click', function () {
     switch_tab("#tab_subtitles", "#subtitle_table");
+    $("#footer").attr("style", `top: ${$(document).height()}px;`)
 });
 
 $("#tab_preview").on('click', function () {
     switch_tab("#tab_preview", "#preview");
+    $("#footer").attr("style", `top: ${$(document).height()}px;`)
 });
 
 

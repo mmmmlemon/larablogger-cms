@@ -34,7 +34,7 @@ class PostsController extends Controller
     public function show_create_post()
     {
         $current_date = Carbon::now();
-        $categories = App\Category::where('category_name','!=','blank')->get();
+        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
         return view('control_panel/posts/create_post', compact('categories','current_date'));
     }
 
@@ -123,7 +123,7 @@ class PostsController extends Controller
         $post = App\Post::find($id);
 
         //список категорий без "пустой" категории
-        $categories = App\Category::where('category_name','!=','blank')->get();
+        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
         $media = App\Media::where('post_id','=',$id)->get();
 
         foreach($media as $m)
@@ -334,7 +334,7 @@ class PostsController extends Controller
             {
                 foreach($media as $m)
                 {
-                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->orderBy('display_name','asc')->get();
                     $m->subs = $subs;
                 }
 
@@ -362,7 +362,7 @@ class PostsController extends Controller
 
         foreach($media as $m)
         {
-            $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+            $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->orderBy('display_name','asc')->get();
             $m->subs = $subs;
         }
 
@@ -521,8 +521,21 @@ class PostsController extends Controller
         }
         //и медиа файлы тоже
         $media = App\Media::where('post_id', $request->modal_form_input)->get();
+
+      
+
         foreach($media as $m)
         {
+            if($m->media_type == "video")
+            {
+                $subs = App\Subtitles::where('media_id',$m->id)->get();
+
+                foreach($subs as $s)
+                {
+                    $s->delete();
+                }
+            }
+            
             $pos = strripos($m->media_url,"/");
             $path = substr($m->media_url, 0, $pos);
             File::deleteDirectory(storage_path('app/public/'.$path));

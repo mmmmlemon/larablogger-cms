@@ -22,7 +22,7 @@
                                     <i class="fas fa-at"></i>
                                   </span>
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="help is-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -38,7 +38,7 @@
                                     <i class="fas fa-key"></i>
                                 </span>
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="help is-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror

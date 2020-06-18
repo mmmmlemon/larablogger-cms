@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ $settings->site_title }}</title>
+        <title>{{$settings->site_title}}</title>
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/scripts.js') }}" defer></script>
@@ -65,9 +65,15 @@
         </section>
 
         {{-- навигация --}}
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+        <nav class="navbar" id="navigation" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item">
+
+                </a>
+                <a href="/" id="home_button" class="home_button invisible">
+                    <span class="icon is-medium">
+                        <i class="fas fa-home fa-2x"></i>
+                    </span>
                 </a>
                 <a role="button" id="nav-toggle" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,8 +12,6 @@ use Carbon\Carbon;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Auth::routes(['verify' => true]);
 
 //рауты доступные всем пользователям сайта
 Route::get('/', 'PostsController@index'); //главная страница
@@ -86,6 +83,12 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
 });
 
-Auth::routes();
+$hide_reg = App\Settings::all()->first()->hide_reg;
+// if($hide_reg == 1)
+// {$hide_reg = true;}
+// else {$hide_reg = false;}
 
-
+Auth::routes([
+    'register' => $hide_reg,
+]
+);

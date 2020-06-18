@@ -31,6 +31,15 @@
     -ms-animation: bounceIn ease 0.3s;
   }
 
+  .slideDown{
+    animation: slideDown ease 0.3s;
+    -webkit-animation: slideDown ease 0.3s;
+    -moz-animation: slideDown ease 0.3s;
+    -o-animation: slideDown ease 0.3s;
+    -ms-animation: slideDown ease 0.3s;
+  }
+
+
   @keyframes bounceIn{
     0%{
       opacity: 0;
@@ -96,6 +105,67 @@
       opacity:1;
     }
   }
+
+
+  @keyframes slideDown{
+    0% {
+      opacity:0;
+      top:-20px;
+    }
+    100% {
+      opacity:1;
+      top:0px;
+    }
+  }
+
+  
+  @-moz-keyframes slideDown{
+    0% {
+      opacity:0;
+      top:-20px;
+    }
+    100% {
+      opacity:1;
+      top:0px;
+    }
+  }
+
+  
+  @-webkit-keyframes slideDown{
+    0% {
+      opacity:0;
+      top:-20px;
+    }
+    100% {
+      opacity:1;
+      top:0px;
+    }
+  }
+
+  
+  @-o-keyframes slideDown{
+    0% {
+      opacity:0;
+      top:-20px;
+    }
+    100% {
+      opacity:1;
+      top:0px;
+    }
+  }
+
+    
+  @-ms-keyframes slideDown{
+    0% {
+      opacity:0;
+      top:-20px;
+    }
+    100% {
+      opacity:1;
+      top:0px;
+    }
+  }
+
 
   /*АНИМАЦИЯ СПИННЕРА*/
 .lds-ring {

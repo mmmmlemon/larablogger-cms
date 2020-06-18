@@ -63,6 +63,44 @@
                     </div>
                 </div>
 
+                  {{-- input - Password --}}
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Password</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input @error('password') is-danger @enderror" name="password" type="password" placeholder="Password" 
+                                value="@if($errors->any()){{old('password')}}@endif">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                            </p>
+                            @error('password')
+                                <p class="help is-danger"><b>{{ $message }}</b></p>  
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                  {{-- input - Confirm Password --}}
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Confirm password</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" name="password_confirmation" type="password" placeholder="Confirm password">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- кнопка - сохранить --}}
                 <div class="field is-horizontal">
                     <div class="field-label">

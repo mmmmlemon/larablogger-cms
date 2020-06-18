@@ -1,7 +1,7 @@
 //richText
 
 //редактор текста
-$('.textarea').richText({
+$('#post_content').richText({
     imageUpload: false,
     videoEmbed: false,
     fileUpload: false

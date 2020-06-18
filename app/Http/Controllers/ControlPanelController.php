@@ -9,6 +9,7 @@ use Validator;
 use Carbon\Carbon;
 use Image;
 use File;
+use Hash;
 
 class ControlPanelController extends Controller
 {
@@ -49,6 +50,14 @@ class ControlPanelController extends Controller
         $settings->contact_email = $request->get('contact_email');
         $settings->from_email = $request->get('from_email');
         $settings->contact_text = $request->get('contact_text');
+        if($request->register_check == 'on')
+        {
+            $settings->hide_reg = 0;
+        }
+        else
+        {
+            $settings->hide_reg = 1;
+        }
         $settings->save();
 
         return redirect()->to('/control#settings');
@@ -124,7 +133,9 @@ class ControlPanelController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:25',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'password' => 'min:8|confirmed',
+            'password_confirmation' => 'min:8'
         ]);
 
         //если валидатор фейлит, то редиректим назад с якорем
@@ -132,10 +143,15 @@ class ControlPanelController extends Controller
             return redirect(url()->previous() . "#profile")->withErrors($validator)->withInput();
         }
 
-        $user = App\User::find(Auth::user()->id)->first();
+        $user = App\User::find(Auth::user()->id);
         
         $user->name = $request->username;
         $user->email = $request->email;
+
+        if($request->password != null)
+        {
+           $user->password = Hash::make($request->password);
+        }
 
         $user->save();
 
@@ -223,7 +239,7 @@ class ControlPanelController extends Controller
     public function save_about(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'about_content' => 'string|max:2000'
+            'about_content' => 'string|max:5000'
         ]);
 
         if($validator->fails()){

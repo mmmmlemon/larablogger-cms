@@ -40,8 +40,8 @@ class MediaController extends Controller
         $media->date = date('d.m.Y',strtotime($media->created_at));
         $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb";
 
-        $subs = App\Subtitles::where('media_id','=',$media->id)->get();
-        $subs_for_video = App\Subtitles::where('media_id','=',$media->id)->where('visibility','=',1)->get();
+        $subs = App\Subtitles::where('media_id','=',$media->id)->orderBy("display_name","asc")->get();
+        $subs_for_video = App\Subtitles::where('media_id','=',$media->id)->where('visibility','=',1)->orderBy("display_name","asc")->get();
 
         return view('/control_panel/media/view_media', compact('media','subs','subs_for_video'));
     }
@@ -162,6 +162,18 @@ class MediaController extends Controller
     {
         $media = App\Media::find($request->id);
         unlink(storage_path('app/public/'.$media->media_url));
+
+        if($media->media_type == "video")
+        {
+            $subs = App\Subtitles::where('media_id', $media->id)->get();
+
+            foreach($subs as $s)
+            {
+                $s->delete();
+            }
+        
+        }
+
         $media->delete();
         return redirect()->back();
     }
