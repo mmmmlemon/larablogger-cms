@@ -1,4 +1,4 @@
 !images
-posts
-temp
+!temp
+!posts
 .gitignore
