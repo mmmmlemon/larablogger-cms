@@ -24,7 +24,7 @@ class CreateSettingsTable extends Migration
         //опции по умолчанию
         DB::table('settings')->insert(
             array(
-                'site_title' => 'Web-site Title',
+                'site_title' => 'Web-Site Title',
                 'site_subtitle' => 'some random text',
                 'created_at' => Carbon\Carbon::now(),
                 'updated_at' => Carbon\Carbon::now()
