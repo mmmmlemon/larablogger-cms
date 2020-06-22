@@ -82,7 +82,8 @@ class PostsController extends Controller
         {
             //создаем папку для медиа файлов ассоциируемых с постом
             //posts/[date + post_title]
-            $folder_name = date('d-m-Y')."-".$request->post_title;
+            $folder_name_old = date('d-m-Y')."-".$request->post_title;
+            $folder_name = preg_replace("/[^a-zA-Z0-9\s]/", "", $folder_name_old);
             $folder_created= Storage::disk('public')->makeDirectory("posts/". $folder_name);
             //если папка создалась, то перемещаем файлы из temp
             if($folder_created == true)
@@ -142,7 +143,7 @@ class PostsController extends Controller
     {
         $request->validate([
             'post_title' => 'string|max:70',
-            'post_content' => 'string|max:10000',
+            'post_content' => 'string|max:100000',
             'post_visibility' => 'string',
             'tags' => 'string|nullable'
         ]);
@@ -295,7 +296,7 @@ class PostsController extends Controller
     public function index()
     {
         //получаем список всех видимых постов и сортируем его по дате по убыванию
-        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
 
         foreach($posts as $post)
         {
@@ -446,7 +447,7 @@ class PostsController extends Controller
     //показать все посты по тегу N
     public function show_posts_by_tag ($tag)
     {
-        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(15);
+        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
 
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);

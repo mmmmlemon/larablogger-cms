@@ -50,14 +50,14 @@ class ControlPanelController extends Controller
         $settings->contact_email = $request->get('contact_email');
         $settings->from_email = $request->get('from_email');
         $settings->contact_text = $request->get('contact_text');
-        if($request->register_check == 'on')
-        {
-            $settings->hide_reg = 0;
-        }
-        else
-        {
-            $settings->hide_reg = 1;
-        }
+        // if($request->register_check == 'on')
+        // {
+        //     $settings->hide_reg = 0;
+        // }
+        // else
+        // {
+        //     $settings->hide_reg = 1;
+        // }
         $settings->save();
 
         return redirect()->to('/control#settings');

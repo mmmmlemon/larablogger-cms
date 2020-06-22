@@ -143,9 +143,10 @@
     </div>
 
     {{-- пагинация --}}
-    <div>
-        {{ $posts->links('pagination.default') }}
-    </div>
+  
+</div>
+<div class="container">
+    {{ $posts->links('pagination.default') }}
 </div>
 @endsection
 

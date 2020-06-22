@@ -111,22 +111,19 @@
                     </div>
                 </div>
 
-                
                 {{-- текст для формы связи --}}
-                <div class="field is-horizontal">
+                {{-- <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label"></label>
                     </div>
-                    <div class="field-body">
-                       {{-- размыть изображение --}}
-                        <div class="register_check">
+                    <div class="field-body"> --}}
+                       {{-- спрятать страницу регистрации --}}
+                        {{-- <div class="register_check">
                             <input class="is-checkradio is-link" name="register_check" id="register_check" type="checkbox" @if($settings->hide_reg == 0) checked @endif>
                             <label class="label" for="register_check">Hide register page</label>
                         </div>
                     </div>
-                </div>
-
-              
+                </div> --}}
 
                 <div class="field is-horizontal">
                     <div class="field-label">

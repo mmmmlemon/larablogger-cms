@@ -89,7 +89,7 @@ class CategoryController extends Controller
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
         //получаем посты в этой категории
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate(7);
 
         foreach($posts as $post)
         {
