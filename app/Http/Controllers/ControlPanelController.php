@@ -11,6 +11,7 @@ use Image;
 use File;
 use Hash;
 
+//functions for the Admin control panel
 class ControlPanelController extends Controller
 {
     public function __construct()
@@ -18,21 +19,21 @@ class ControlPanelController extends Controller
         $this->middleware('auth');
     }
 
-    //вывод страницы панели управления
+    //show Control panel
     public function show_control_panel()
     {   
-        //получаем данные необходимые на этой странице
-        $settings = App\Settings::all()->first(); //общие настройки сайта
-        $social_media = App\SocialMedia::all(); //соц. сети
-        $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users'); //список пользователей
-        $current_user = Auth::user(); //текущий пользователь
+        //get all the settings
+        $settings = App\Settings::all()->first(); //general settings
+        $social_media = App\SocialMedia::all(); //social media
+        $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users'); //users list
+        $current_user = Auth::user(); //current user
 
         return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
     }
 
 
-    //ОБЩИЕ НАСТРОЙКИ
-    //обновление общих настроек сайта
+    //GENERAL SETTINGS
+    //update general web-site settings
     public function update_settings(Request $request)
     {
         $request->validate([
@@ -50,20 +51,13 @@ class ControlPanelController extends Controller
         $settings->contact_email = $request->get('contact_email');
         $settings->from_email = $request->get('from_email');
         $settings->contact_text = $request->get('contact_text');
-        // if($request->register_check == 'on')
-        // {
-        //     $settings->hide_reg = 0;
-        // }
-        // else
-        // {
-        //     $settings->hide_reg = 1;
-        // }
+
         $settings->save();
 
         return redirect()->to('/control#settings');
     }
 
-    //обновление соц.сетей
+    //update list of social media
     public function update_social(Request $request)
     {
         $request->validate([
@@ -77,13 +71,13 @@ class ControlPanelController extends Controller
             'url_3'=>'url|nullable',
         ]);
        
-       //четыре раза прогоняем цикл for (потому что четыре поля для соц сетей) 
-       //и перезаписываем информацию о соц. сетях
+       //pass through for loop four times (because there 4 fields for social media) 
+       //and rewrite the info about social media
        for($i = 0; $i < 4; $i++)
        {
            $id = $request->get('id_'. $i);
            $data = App\SocialMedia::where('id','=', $id)->first();
-           //если такая запись о соц. сети существует то обновляем её
+           //if such data exists, fill it with the new info
            if($data != null)
            {
               $data->platform_name = $request->get('platform_'.$i);
@@ -95,8 +89,8 @@ class ControlPanelController extends Controller
        return redirect()->to('/control#settings');
     }
 
-    //ПОЛЬЗОВАТЕЛИ
-    //изменить тип пользователя
+    //USERS
+    //change user type
     public function change_user_type(Request $request)
     {    
         $request->validate([
@@ -106,19 +100,19 @@ class ControlPanelController extends Controller
             
         $user = App\User::find($request->user_id);
 
-        //если пользователь существует и он админ, то делаем его просто юзером
+        //if user exists and he is an Admin, make him a common user
         if($user != null && $request->user_type == 'admin')
         {
             $user->user_type = 2;
             $user->save();
         }
-        //если существует и просто юзер, то делаем его админом
+        //if user exists and he's a common user, make him an Admin
         else if ($user != null && $request->user_type == 'user')
         {
             $user->user_type = 1;
             $user->save();
         }
-        //если ни то, ни то, то ничего не делаем
+        //do nothing if both conditions were not met
         else
         {
             //do nothing
@@ -127,8 +121,100 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#users");
     }
 
-    //ПРОФИЛЬ
-    //обновить настройки профиля
+    //DESIGN
+    //save design changes
+    public function update_design(Request $request)
+    {
+        //get site settings
+        $settings = App\Settings::get()[0];
+
+        $validator = Validator::make($request->all(), [
+            'background_image' => 'mimes:jpeg,jpg,png|max:3000',
+            'footer_content' => 'string|max:500'
+        ]);
+
+        if($validator->fails()){
+            return redirect(url()->previous()."#design")->withErrors($validator)->withInput();
+        }
+
+        //save background image
+        //if the form has an image
+        if($request->background_image != null)
+        {
+            if($validator->fails()){
+                return redirect(url()->previous()."#design")->withErrors($validator)->withInput();
+            }
+            
+            //generate random file name with a number (0 to 99) and the original extension
+            $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
+            $img = Image::make($request->background_image); //create image
+            $img->fit(1920,1080); //fit image into 1920x1080 resolution
+
+            //if 'Blue Image' or/and 'Darken Image' were check
+            //blur or/and darken the image
+            if($request->blur_img == "on")
+            {$img->blur(85);}
+            if($request->dark_img == "on")
+            {
+                $img->brightness(-25);
+                $img->contrast(-20);
+            }
+
+            //delete the old background image
+            $files = File::files(storage_path("app/public/images/bg"));
+
+            foreach($files as $file)
+            {
+                unlink($file->getPathname());
+            }
+
+            //save the new image
+            $img->save(storage_path('/app/public/images/bg/').$filename);
+            $settings->bg_image = "/images/bg/"."/".$filename; //write path to image into the site settings
+        }
+
+        //if Show About page is (un)checked, then (un)check it
+        if($request->show_about == "on")
+        { $settings->show_about = 1; }
+        else { $settings->show_about = 0; }
+
+        $settings->save();
+
+        return redirect()->to("/control#design");
+    }
+
+    //show page Edit About
+    public function show_edit_about()
+    {
+        if(Auth::check() && Auth::user()->user_type != 0)
+        {
+            return redirect('/');
+        }
+        $content = App\Settings::get()[0]->about_content;
+        return view('/control_panel/edit_about', compact('content'));
+    }
+
+    //save changes in About page
+    public function save_about(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'about_content' => 'string|max:5000'
+        ]);
+
+        if($validator->fails()){
+            return redirect("/control/edit_about")->withErrors($validator)->withInput();
+        }
+
+        $settings = App\Settings::get()[0];
+        $settings->about_content = $request->about_content;
+
+        $settings->save();
+
+        return redirect()->to('/control#design');
+    }
+
+    //PROFILE
+    //update user profile
     public function update_profile(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -138,7 +224,6 @@ class ControlPanelController extends Controller
             'password_confirmation' => 'min:8'
         ]);
 
-        //если валидатор фейлит, то редиректим назад с якорем
         if($validator->fails()){
             return redirect(url()->previous() . "#profile")->withErrors($validator)->withInput();
         }
@@ -159,100 +244,7 @@ class ControlPanelController extends Controller
         
     }
 
-    //ДИЗАЙН
-    //сохранить изменения в дизайне
-    public function update_design(Request $request)
-    {
-        //получаем настройки сайта
-        $settings = App\Settings::get()[0];
-
-        $validator = Validator::make($request->all(), [
-            'background_image' => 'mimes:jpeg,jpg,png|max:3000',
-            'footer_content' => 'string|max:500'
-        ]);
-
-        if($validator->fails()){
-            return redirect(url()->previous()."#design")->withErrors($validator)->withInput();
-        }
-
-        //сохранение bg image, фонового изображения
-        //если в форму была добавлена картинка
-        if($request->background_image != null)
-        {
-            if($validator->fails()){
-                return redirect(url()->previous()."#design")->withErrors($validator)->withInput();
-            }
     
-            //генерируем новое имя файла из рандомной цифры от 0 до 99 + оригинальное расширение файла
-            $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
-            $img = Image::make($request->background_image); //создаем изображение
-            $img->fit(1920,1080); //меняем разрешение на 1920х1080
-
-            //если в форме были отмечены Blur Image и(ли) Darken Image
-            //то размываем и(ли) затемняем изображение
-            if($request->blur_img == "on")
-            {$img->blur(85);}
-            if($request->dark_img == "on")
-            {
-                $img->brightness(-25);
-                $img->contrast(-20);
-            }
-
-            //удаляем старый фон
-            $files = File::files(storage_path("app/public/images/bg"));
-
-            foreach($files as $file)
-            {
-                unlink($file->getPathname());
-            }
-
-            //сохраняем получившееся изображение в папке для фоновых изображений
-            $img->save(storage_path('/app/public/images/bg/').$filename);
-            $settings->bg_image = "/images/bg/"."/".$filename; //записываем путь до картинки в настройки
-        }
-
-        //если отмечен пункт Show About page, то меняем этот пункт в настройках (или нет)
-        if($request->show_about == "on")
-        { $settings->show_about = 1; }
-        else { $settings->show_about = 0; }
-
-        //текст для футера
-        $settings->footer_text = $request->footer_content;
-
-        $settings->save();
-
-        return redirect()->to("/control#design");
-    }
-
-    //показать страницу Edit About
-    public function show_edit_about()
-    {
-        if(Auth::check() && Auth::user()->user_type != 0)
-        {
-            return redirect('/');
-        }
-        $content = App\Settings::get()[0]->about_content;
-        return view('/control_panel/edit_about', compact('content'));
-    }
-
-    //сохранить изменения на странице edit_about
-    public function save_about(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
-            'about_content' => 'string|max:5000'
-        ]);
-
-        if($validator->fails()){
-            return redirect("/control/edit_about")->withErrors($validator)->withInput();
-        }
-
-        $settings = App\Settings::get()[0];
-        $settings->about_content = $request->about_content;
-
-        $settings->save();
-
-        return redirect()->to('/control#design');
-    }
 
 }
  
