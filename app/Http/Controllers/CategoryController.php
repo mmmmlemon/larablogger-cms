@@ -188,7 +188,7 @@ class CategoryController extends Controller
         
             $categ->visual_order = $categ->visual_order + 1;
       
-            $categ_lower->visual_order = $categ_upper->visual_order - 1;
+            $categ_lower->visual_order = $categ_lower->visual_order - 1;
 
             $categ->save();
             $categ_lower->save();
