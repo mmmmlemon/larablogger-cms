@@ -243,9 +243,7 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#profile");
         
     }
-
     
-
 }
  
 
