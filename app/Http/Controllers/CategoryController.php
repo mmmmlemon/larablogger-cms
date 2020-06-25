@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App;
 use Carbon\Carbon;
 
+//functions related to Categories
+
 class CategoryController extends Controller
 {
-    //КОНТРОЛЬНАЯ ПАНЕЛЬ
-    //вывод списка категорий в панели управления
+    //CONTROL PANEL
+    //show Category list in control panel
     public function category_list ()
     {
         $categs = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
@@ -17,13 +19,13 @@ class CategoryController extends Controller
         return view('control_panel/categories/categories', compact('categs','max'));    
     }
 
-    //показать страницу создания категории
+    //show page 'Create category'
     public function show_create_category()
     {
         return view('control_panel/categories/add_category');
     }
 
-    //создать категорию
+    //create and save a Category
     public function create_category(Request $request)
     {
         $request->validate([
@@ -38,14 +40,14 @@ class CategoryController extends Controller
         return redirect(url('/control/categories'));
     }
 
-    //показать страницу редактирования категории
+    //show page 'Edit category'
     public function show_edit_category($id)
     {
         $categ = App\Category::find($id);
         return view('control_panel/categories/edit_category', compact('categ'));
     }
     
-    //сохранить изменения в категории
+    //save changes in a Category
     public function edit_category(Request $request, $id)
     {
         $request->validate([
@@ -58,74 +60,78 @@ class CategoryController extends Controller
         return redirect(url('/control/categories'));
     }
 
-    //удалить категорию
+    //delete a Category from the database
     public function delete_category(Request $request)
     {   
-        //получаем id пустой категории (чтобы прописать этот id у постов, т.к категория удаляется)
+        //gets id of the 'blank' Category (to write this id in those posts that were added to the Category that is getting deleted)
         $blank_id = App\Category::where('category_name','=', 'blank')->first()->id;
 
-        //получаем посты удаляемой категории
+        //get posts of a Category that is getting deleted
         $posts = App\Post::where('category_id','=', $request->modal_form_input)->get();
         
-        //и прописываем у них пустую категорию
+        //write the id of a 'blank' category to those posts
         foreach($posts as $post){
             $p = App\Post::find($post->id);
             $p->category_id = $blank_id;
             $p->save();
         }
 
-        //удаляем категорию
+        //deleting the Category from the database
         $categ = App\Category::find($request->modal_form_input);
         $categ->delete();
 
         return redirect(url('/control/categories'));
     }
 
-    //ВЫВОД
-    //показать посты по категориям
+
+    //POSTS DISPLAY
+    //show Posts by a Category
     public function show_posts_by_category($category_name)
     {
-        //получаем категорию по названию категории
+        //get the Category by the name (from route url)
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
-        //получаем посты в этой категории
+        //get all the posts in this Category by its id
         $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate(7);
 
+        //for each Post in the list do this
         foreach($posts as $post)
         {
-          //получаем список тегов поста
+          //get tags from the current Post
           $tags = explode(",", $post->tags);
-          //если в поле тегов был записан один пустой символ, то делаем теги null
+          //if $tags variable contains one empty character (which means there are no tags for this Post)
           if(count($tags) == 1 && $tags[0] == "")
-          {$post->tags = null;}
+          {$post->tags = null;} //make it null
           else 
           {$post->tags = $tags;}
 
-          //прикрепляем название категории к посту
+          //attach the name of the Category to current Post 
           $post->category = App\Category::find($post->category_id)->category_name;
 
-          //считаем кол-во комментов под постом
+          //count comments in current Post
           $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
-          //если комментов больше одного, то под постом будет написано commentS, а не comment
+          //if there a more than one comment
           if($post->comment_count > 1 || $post->comment_count == 0)
-          {$post->comment_count .= " comments";} 
+          {$post->comment_count .= " comments";} //the label will be commentS
           else 
-          {$post->comment_count .= " comment";}
+          {$post->comment_count .= " comment";} //or commenT
 
-          //получаем список файлов у поста
+          //get the list of files for current Post
           $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
-          //если файлы есть, то
+
+          //if current Post has files
           if(count($media) != 0)
-          {   
+          {     
+                //add subtitles for each file
                 foreach($media as $m)
                 {
                     $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
                     $m->subs = $subs;
                 }
                 
-              //прикрепляем медиа к посту
+              //attach media files to current Post
               $post->media = $media;
-              //прикрепить тип медиа к медиа файлу
+              //attach media_type to current Post
               $post->media_type = $media[0]->media_type;
           }
         }
@@ -133,50 +139,59 @@ class CategoryController extends Controller
         return view('category_view', compact('categ', 'posts'));
     }
 
+    //raise a Category in the list of Categories
     function raise_category(Request $request)
     {
         $categ = App\Category::find($request->id);
 
+        //if the category above is 0 ('blank' category)
         if($categ->visual_order - 1 == 0)
         {
-            return redirect()->back();
+            return redirect()->back(); //do nothing and redirect back
         }
         else
         {
+            //get the 'upper' category
             $categ_upper = App\Category::where('visual_order','=', $categ->visual_order - 1)->get()[0];
-        
+            
+            //raise the current category
             $categ->visual_order = $categ->visual_order - 1;
-      
+            
+            //lower the 'upper' category
             $categ_upper->visual_order = $categ_upper->visual_order + 1;
 
+            //save changes
             $categ->save();
             $categ_upper->save();
-
             return redirect()->back();    
         }
 
     }
-
+    
+    //lower a Category in the list of Categories
     function lower_category(Request $request)
     {
         $categ = App\Category::find($request->id);
 
-        $max = App\Category::max('visual_order');
+        //get id of the lowest Category in the list
+        $lowest = App\Category::max('visual_order');
 
-        if($categ->visual_order + 1 > $max)
+        //if after lowering of the category the id is bigger than max
+        if($categ->visual_order + 1 > $lowest)
         {
-            return redirect()->back();
+            return redirect()->back(); //do nothing, redirect back
         }
         else
         {
-            $categ_upper = App\Category::where('visual_order','=', $categ->visual_order + 1)->get()[0];
+            //get 'lower'category
+            $categ_lower = App\Category::where('visual_order','=', $categ->visual_order + 1)->get()[0];
         
             $categ->visual_order = $categ->visual_order + 1;
       
-            $categ_upper->visual_order = $categ_upper->visual_order - 1;
+            $categ_lower->visual_order = $categ_upper->visual_order - 1;
 
             $categ->save();
-            $categ_upper->save();
+            $categ_lower->save();
 
             return redirect()->back();    
         }
