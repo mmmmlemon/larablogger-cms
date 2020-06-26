@@ -11,6 +11,8 @@ class ForeignPostIdInMedia extends Migration
      *
      * @return void
      */
+
+    //add foreign key on column 'post_id' in 'media'
     public function up()
     {
         Schema::table('media', function (Blueprint $table) {

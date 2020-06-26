@@ -11,6 +11,8 @@ class ForeignPostId extends Migration
      *
      * @return void
      */
+
+    //add foreign key on column 'post_id' in 'comments'
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {

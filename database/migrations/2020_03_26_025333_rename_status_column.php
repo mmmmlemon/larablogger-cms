@@ -11,6 +11,8 @@ class RenameStatusColumn extends Migration
      *
      * @return void
      */
+
+     //rename column 'status' to 'visibility' in table 'posts'
     public function up()
     {
         Schema::table('posts', function($table){

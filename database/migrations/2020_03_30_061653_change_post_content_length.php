@@ -11,6 +11,8 @@ class ChangePostContentLength extends Migration
      *
      * @return void
      */
+
+    //change the length of column 'post_content' in 'posts'
     public function up()
     {
         Schema::table('posts', function ($table) {

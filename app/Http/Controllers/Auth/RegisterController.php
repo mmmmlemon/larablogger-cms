@@ -66,7 +66,7 @@ class RegisterController extends Controller
     {
         $user_type = 2;
 
-        //если ни одного пользователя не было зарегестрировано, то первый юзер будет админом
+        //if user table in database is empty, the very first user will be Super Admin (user_type = 0)
         $users = User::all();
 
         if(count($users) == 0)

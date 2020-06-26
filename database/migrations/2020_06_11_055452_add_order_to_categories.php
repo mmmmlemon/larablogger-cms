@@ -11,6 +11,8 @@ class AddOrderToCategories extends Migration
      *
      * @return void
      */
+
+     //add column 'visual_order' to 'categories'
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {

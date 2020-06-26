@@ -11,6 +11,8 @@ class AddContactEmailToSettings extends Migration
      *
      * @return void
      */
+
+    //add column 'contact_email' to settings
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {

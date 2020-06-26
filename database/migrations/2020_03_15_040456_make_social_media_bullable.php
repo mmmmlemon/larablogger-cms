@@ -11,6 +11,8 @@ class MakeSocialMediaBullable extends Migration
      *
      * @return void
      */
+
+    //make columns in 'social_media' table nullable
     public function up()
     {
         Schema::table('social_media', function($table)

@@ -11,6 +11,8 @@ class MakeContactNullable extends Migration
      *
      * @return void
      */
+
+     //add columns to 'settings'
     public function up()
     {
         Schema::table('settings', function($table)

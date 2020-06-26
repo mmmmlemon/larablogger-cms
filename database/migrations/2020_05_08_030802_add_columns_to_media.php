@@ -11,6 +11,8 @@ class AddColumnsToMedia extends Migration
      *
      * @return void
      */
+
+    //add columns to table 'media'
     public function up()
     {
         Schema::table('media', function (Blueprint $table) {

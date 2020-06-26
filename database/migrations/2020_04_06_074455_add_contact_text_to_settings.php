@@ -11,13 +11,13 @@ class AddContactTextToSettings extends Migration
      *
      * @return void
      */
+
+    //add column 'contact_text' to 'settings'
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->string('contact_text', 200);
         });
-
-
     }
 
     /**

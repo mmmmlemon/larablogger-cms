@@ -11,13 +11,14 @@ class CreateSettingsTable extends Migration
      *
      * @return void
      */
+
+    //settings table
     public function up()
     {
-        //настройки сайта
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string("site_title"); //заголовок сайта
-            $table->string("site_subtitle"); //подзаголовок сайта
+            $table->string("site_title");
+            $table->string("site_subtitle");
             $table->timestamps();
         });
 
@@ -25,7 +26,7 @@ class CreateSettingsTable extends Migration
         DB::table('settings')->insert(
             array(
                 'site_title' => 'Web-Site Title',
-                'site_subtitle' => 'some random text',
+                'site_subtitle' => 'web-site subtitle',
                 'created_at' => Carbon\Carbon::now(),
                 'updated_at' => Carbon\Carbon::now()
             )

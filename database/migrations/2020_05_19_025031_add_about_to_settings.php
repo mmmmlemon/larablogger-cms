@@ -11,6 +11,8 @@ class AddAboutToSettings extends Migration
      *
      * @return void
      */
+
+     //add column 'about_content' to settings
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {

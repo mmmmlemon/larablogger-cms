@@ -11,6 +11,8 @@ class AddTagsToPosts extends Migration
      *
      * @return void
      */
+
+    //add column 'tags' to table 'posts'
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {

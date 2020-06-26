@@ -11,6 +11,8 @@ class AddCategoryIdToPosts extends Migration
      *
      * @return void
      */
+
+    //add column 'category_id' to 'posts'
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {

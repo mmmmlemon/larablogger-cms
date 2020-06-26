@@ -11,6 +11,8 @@ class AboutContentLength extends Migration
      *
      * @return void
      */
+
+     //change length of column 'about_content'
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {

@@ -11,6 +11,8 @@ class AddVisibilityToComments extends Migration
      *
      * @return void
      */
+
+    //add column 'visibility' to 'comments'
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {

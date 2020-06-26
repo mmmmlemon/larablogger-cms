@@ -11,11 +11,16 @@ class AddUserTypeToUsers extends Migration
      *
      * @return void
      */
+
+    //adds column 'user_type' to 'users' table
+    //User types
+    //0 - Super Admin
+    //1 - Admin
+    //2 - User
     public function up()
-    {
-        //тип пользователя в таблице users
+    {   
         Schema::table('users', function (Blueprint $table) {
-            $table->string('user_type')->default(1);
+            $table->string('user_type')->default(2); //default user type is 'User'
         });
     }
 

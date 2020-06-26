@@ -11,6 +11,8 @@ class CreateMediaTable extends Migration
      *
      * @return void
      */
+
+    //create table 'media'
     public function up()
     {
         Schema::create('media', function (Blueprint $table) {

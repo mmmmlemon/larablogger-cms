@@ -11,6 +11,8 @@ class MakeTagsNull extends Migration
      *
      * @return void
      */
+
+    //make column 'tags' nullable in 'posts'
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {

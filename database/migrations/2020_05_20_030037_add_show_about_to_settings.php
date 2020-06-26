@@ -11,6 +11,8 @@ class AddShowAboutToSettings extends Migration
      *
      * @return void
      */
+
+     //add column 'show_about' to 'settings'
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {

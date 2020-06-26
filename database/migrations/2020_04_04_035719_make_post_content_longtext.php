@@ -11,6 +11,8 @@ class MakePostContentLongtext extends Migration
      *
      * @return void
      */
+
+    //change datatype of column 'post_content' to longText in 'post'
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {

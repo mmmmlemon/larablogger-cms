@@ -11,6 +11,8 @@ class AddIsLoggedInToComments extends Migration
      *
      * @return void
      */
+
+     //add column 'is_logged_on' to 'comments'
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {

@@ -11,6 +11,8 @@ class AddColumnBgImageToSettings extends Migration
      *
      * @return void
      */
+
+     //add column 'bg_image' to 'settings'
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {

@@ -11,6 +11,8 @@ class ChangeCategoryIdInPosts extends Migration
      *
      * @return void
      */
+
+    //add foreign key on column 'category_id' in 'posts'
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {

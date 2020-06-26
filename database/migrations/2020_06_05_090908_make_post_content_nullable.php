@@ -11,6 +11,8 @@ class MakePostContentNullable extends Migration
      *
      * @return void
      */
+
+     //make column 'post_content' nullable
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {

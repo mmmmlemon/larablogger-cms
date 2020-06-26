@@ -11,6 +11,8 @@ class CreateTableCategories extends Migration
      *
      * @return void
      */
+
+     //create table 'categories'
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
@@ -19,6 +21,8 @@ class CreateTableCategories extends Migration
             $table->timestamps();
         });
 
+
+        //default categories
         DB::table('categories')->insert(
             array(
                 array(

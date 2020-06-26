@@ -11,6 +11,8 @@ class FixDisplayNameInSubtitles extends Migration
      *
      * @return void
      */
+
+     //change lengths of column 'display_name'
     public function up()
     {
         Schema::table('subtitles', function (Blueprint $table) {

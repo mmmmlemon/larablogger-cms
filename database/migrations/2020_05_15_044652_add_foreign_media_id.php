@@ -11,6 +11,8 @@ class AddForeignMediaId extends Migration
      *
      * @return void
      */
+
+     //add foreign key on column 'media_id' to 'subtitles'
     public function up()
     {
         Schema::table('subtitles', function (Blueprint $table) {

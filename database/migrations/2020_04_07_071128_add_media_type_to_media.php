@@ -11,6 +11,8 @@ class AddMediaTypeToMedia extends Migration
      *
      * @return void
      */
+
+    //add column 'media_type' to 'media'
     public function up()
     {
         Schema::table('media', function (Blueprint $table) {

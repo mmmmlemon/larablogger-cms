@@ -11,6 +11,8 @@ class AddTableSubtitles extends Migration
      *
      * @return void
      */
+
+     //create table 'subtitles'
     public function up()
     {
         Schema::create('subtitles', function (Blueprint $table) {

@@ -11,6 +11,8 @@ class AddDateToComments extends Migration
      *
      * @return void
      */
+
+    //add column 'date' to 'comments'
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {

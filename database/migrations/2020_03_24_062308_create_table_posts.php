@@ -11,6 +11,8 @@ class CreateTablePosts extends Migration
      *
      * @return void
      */
+
+    //create table 'posts'
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
@@ -19,7 +21,7 @@ class CreateTablePosts extends Migration
             $table->string('post_title');
             $table->string('post_content');
             $table->date('date');
-            $table->integer('status');
+            $table->integer('status')->default(1);
         });
     }
 
