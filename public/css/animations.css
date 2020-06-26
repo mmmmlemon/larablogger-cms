@@ -1,4 +1,3 @@
-/* анимации */
 .fade-in {
     animation: fadeIn ease 0.3s;
     -webkit-animation: fadeIn ease 0.3s;
@@ -166,8 +165,6 @@
     }
   }
 
-
-  /*АНИМАЦИЯ СПИННЕРА*/
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -204,8 +201,6 @@
     transform: rotate(360deg);
   }
 }
-
-
 
 .blinking-anim{
 animation:blink 1.5s infinite ease-in;

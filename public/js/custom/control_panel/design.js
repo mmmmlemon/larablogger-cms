@@ -1,4 +1,4 @@
-//скрипты для страницы Design
+//scripts for Design page
 
 const fileInput = document.querySelector('#bg-img input[type=file]');
 fileInput.onchange = () => {

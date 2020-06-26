@@ -1,4 +1,4 @@
-//скрипты для страницы profile
+//scripts for profile
 
 $(document).ready(function () {
     $('#username').charCounter();

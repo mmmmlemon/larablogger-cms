@@ -1,8 +1,6 @@
-//скрипты для страницы post
+//scripts for posts page
 
 $(document).ready(function(){
-
-    // $("#footer").attr("style", `top: ${$(document).height()}px;`);
 
     $('.textarea').richText({
         imageUpload: false,
@@ -35,7 +33,7 @@ $(document).ready(function(){
         }
     });
     
-    //вызвать модальное окно с картинкой
+    //show image preview modal
     $(".imagee").click(function () {
         $("#img-modal").addClass("is-active fade-in");
         $("#img-in-modal").attr("src", $(this).attr("src"));

@@ -1,24 +1,24 @@
-//скрипты для страницы categories
+//сscripts for categories page
 
-//показать модальное окно удаления категории
+//show delete category modal
 $(".showModalDelete").click(function () {
     $(".modalDelete").addClass("is-active fade-in");
     $("#modal_post_title").text($(this).data("title"));
     $("#modal_form_input").val($(this).data("id"));
 });
 
-//подтвердить удаление категории
+//confirm delete
 $("#submit_modal").on('click', function () {
     $(this).attr("disabled","disabled")
     $("#modal_form").submit();
 });
 
-//закрыть модальное окно
+//close the modal
 $(".delete").click(function () {
     $(".modalDelete").removeClass("is-active");
 });
 
-//отмена, закрыть модальное окно
+//cancel, close the modal
 $(".cancel").click(function () {
     $(".modalDelete").removeClass("is-active");
 });

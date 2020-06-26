@@ -1,9 +1,9 @@
-//скрипты для страницы edit_post
+//scripts for edit_post page
 
-//очищаем папку temp
+//clear temp folder
 clear_temp();
 
-//richText для редактирования текста поста
+//richText
 $('#post_content').richText({
     imageUpload: false,
     videoEmbed: false,
@@ -16,64 +16,62 @@ BulmaTagsInput.attach('input[data-type="tags"], input[type="tags"], select[data-
     tagClass: 'is-rounded is-grey'
 });
 
-//счетчик символов
+//character counter
 $(document).ready(function () {
     $('#post_title').charCounter();
 });
 
-//переменная для хранения строки, которая будет удаленя после удаления файла
+//the tr in list of files that will be removed, after the file is removed
 var tr;
 
-//список загруженных файлов в папку temp
+//list of uploaded files
 var uploaded_files = [];
 
-//Plyr, видеоплеер
+//Plyr, video player
 const player = new Plyr('#player');
 
-//получаем кол-во файлов в посте
-//если файлов 0, то таблица с файлами не будет показываться
+//get number of files in post
+//if there are 0 files, the file table won't be shown
 var num_of_files = $("#tbody").children().length;
 
-//по нажатию на кнопку удаления показать модальное окно подтвреждения удаления
+//show delete file modal
 $(document).on("click", ".delete_media", function () {
-    //показываем модальное окно
+    //view modal
     $(".modalDelete").addClass("is-active fade-in");
-    //если параметр data-id не определен, то значит в модальное окно будет передаваться имя файла
-    //и удаление произойдет по имени файла
+    //if parameter data-id is undefined, tho modal will recieve file name instead of file id from the database
+    //and the file will be deleted by the filename
     if ($(this).data("id") === undefined) {
         $("#submit_modal").data("id", $(this).data("filename"));
-    } else //если data-id определен, значит передаваться будет id, и удаление произойдет по id
-    //т.е при помощи записи о файле в БД
+    } else //if data id is defined, the modal will recieve and id, and the file will by deleted by the id from the database
     {
         $("#submit_modal").data("id", $(this).data("id"));
     }
 
-    //записываем строку таблицы в которой находится файл, чтобы удалить её после удаления
+    //write tr row from the table to delete it later
     tr = $(this).parent().parents()[0];
 });
 
-//закрыть модальное окно подтвреждения удаления
+//close delete modal
 $("#close_delete_modal").click(function () {
     $(".modalDelete").removeClass("is-active fade-in");
 });
 
-//удалить файл
+//confirm delete file
 $("#submit_modal").click(function () {
-    //прячем строку таблицы и отправялем ajax
-    //послать запрос на удаление файла
+    //remove tr row in the table and send ajax request
     send_delete_media_request($(this).data("id"));
 });
 
-//отправка запроса на удаление файла через ajax
+//delete file ajax request
 function send_delete_media_request(media_id) {
-    //установка заголовка с csrf-токеном
+    //csrf-token
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    //отправка запроса
+    //ajax-request
     $.ajax({
         type: 'POST',
         url: '/delete_media',
@@ -81,10 +79,9 @@ function send_delete_media_request(media_id) {
             id: media_id
         },
         success: function (response) {
-            //если запрос выполнился успешно, то уменьшем счетчик файлов на один
             num_of_files--;
-            $(tr).attr("style", "display: none;"); //и удаляем строку таблицы с файлом
-            //убираем модальное окно
+            $(tr).attr("style", "display: none;"); //remove tr row from the table
+            //hide modal
             $(".modalDelete").removeClass("is-active fade-in");
             if (num_of_files === 0) {
                 $("#appended_files").remove();
@@ -101,10 +98,10 @@ function send_delete_media_request(media_id) {
     });
 }
 
-//показать превью файла
+//show file preview
 $(document).on('click', ".preview", function () {
     $("#preview-modal").addClass("is-active fade-in");
-    //если картинка, то показываем тег img
+    //if image, show img tag
     if ($(this).data("type") === "image") {
         $("#content-in-modal").attr("style", "display: block");
         $("#content-in-modal").attr("src", $(this).data("url"));
@@ -121,7 +118,7 @@ $(document).on('click', ".preview", function () {
             }
         });
     }
-    //если видео, то показываем плеер
+    //if video, show Plyr player
     if ($(this).data("type") === "video") {
         $("#player_div").attr("style", "display: block;");
         $("#content-video").attr("src", $(this).data("url"));
@@ -137,62 +134,57 @@ $(document).on('click', ".preview", function () {
     }
 });
 
-//закрыть модальное окно с превью
+//close preview modal
 $("#modal-close").click(function () {
     $("#preview-modal").removeClass("is-active");
-    player.stop(); //стопорим плеер, чтобы видео не играло в фоне :)
+    player.stop();
     $("#content-in-modal").attr("style", "display: none");
     $("#player_div").attr("style", "display: none;");
 });
 
-//выключаем autoDiscover у дропзоны
+//turn off autoDiscover for dropzone
 Dropzone.autoDiscover = false;
 
 //dropzone
 var dropzone = $("#dropzone_form").dropzone({
-    //autoProcessQueue: false, //автозагрузка файлов: 
-    chunking: true, //разбиение на чанки
-    chunkSize: 20000000, //макс размер чанка: 20 мб
+    chunking: true, 
+    chunkSize: 20000000, //20 Mb
     retryChunks: false,
-    addRemoveLinks: true, //кнопка удаления файлов
+    addRemoveLinks: true, 
     paramName: 'file',
     forceChunking: true,
     maxFiles: 20,
-    maxFilesize: 4000, //максимальный размер файла: 4 гб
+    maxFilesize: 4000, //4 Gb
     parallelUploads: 20,
     acceptedFiles: '.jpg,.jpeg,.png,.mp4',
     init: function () {
         var dz = this;
-        //при отправке файла показать сообщение в консоли и добавить отправляемым файлам имя файла
-        this.on('sending', function (file, xhr, data) {
+            this.on('sending', function (file, xhr, data) {
             console.log(`%cSending file ${file.name}`, 'color:grey;');
             data.append("filename", file.name);
         });
 
         this.on('success', function (file) {
-            dz.removeFile(file); //убираем файл из дропзоны
+            dz.removeFile(file); 
 
-            //получаем ответ с сервера
             var response = JSON.parse(file.xhr.response);
             uploaded_files.push(response.filename);
 
-            //если кол-во файлов - ноль, то убираем плашку о том что файлов нет и показываем таблицу
             if (num_of_files === 0) {
                 $("#no_files").addClass("invisible");
                 $("#file_browser").removeClass("invisible").addClass("fade-in");
             }
 
-            //делаем +1 к кол-ву файлов
             num_of_files++;
 
             var tbody = $("#tbody");
-            if (num_of_files === 1) //если кол-во файлов 1, то добавляем заголовок "Appended files"
+            if (num_of_files === 1) 
             {
                 files_appended = true;
                 tbody.append("<tr class='fade-in' id='appended_files'><td colspan='3'><b>Appended files</b></td>");
             }
 
-            //выводим файл в таблице
+            //append file to the table
             tbody.append(`<tr class='fade-in'><td><a class='preview' data-type="${response.mime}" data-url="${response.file_url}">${response.filename}</a></td><td></td>
       <td>${response.mime}</td> <td><a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-filename="${response.filename}">
       <span class="icon">
@@ -206,7 +198,7 @@ var dropzone = $("#dropzone_form").dropzone({
         });
 
     },
-    //когда файл или все чанки файла загрузятся, пишем в консоль
+    //when the entire file is appended
     chunksUploaded: function (xhr, done, file) {
         done();
         console.log(`The file ${xhr.name} has been uploaded.`);
@@ -215,17 +207,17 @@ var dropzone = $("#dropzone_form").dropzone({
     }
 });
 
-//отправить пост
+//submit post
 $("#submit_post").click(function () {
     $(this).attr("disabled", "disabled");
-    //установка заголовка с csrf-токеном
+    //csrf-token
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    //отправка запроса
+    //ajax-request
     $.ajax({
         type: 'POST',
         url: `/post/${$("#post_id").val()}/edit`,
@@ -239,7 +231,6 @@ $("#submit_post").click(function () {
             post_category: $("#post_category").val(),
             tags: $("#tags").val()
         },
-        //при успешном завершении запроса редиректим к постам
         success: function (response) {
             window.location.replace("/control/posts");
         }

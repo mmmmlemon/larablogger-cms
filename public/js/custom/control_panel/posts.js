@@ -1,11 +1,11 @@
-//скрипты для страницы posts
+//scripts for posts page
 $("#submit_modal").on('click', function (e) {
     e.preventDefault();
     $(this).attr("disabled","disabled");
     $("#modal_form").submit();
 });
 
-//вызвать модальное окно Contacts
+//show Contacts modal
 $(".showModalDelete").click(function () {
     $(".modalDelete").addClass("is-active fade-in");
     $("#modal_post_title").text($(this).data("title"));

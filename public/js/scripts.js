@@ -1,5 +1,5 @@
     
-    //вызов меню в мобильной версии сайта
+    //navigation toggle on mobile
     $("#nav-toggle").click(function() {
         var nav = $("#nav-menu");
         var className = $(nav).attr("class");
@@ -24,8 +24,7 @@
     
     })
 
-   
-    //вызвать модальное окно Contacts
+    //show Feedback Form modal
     $("#showModalContact").click(function() {
         $("#contact-modal").addClass("is-active fade-in");  
       });
@@ -40,7 +39,7 @@
     })
 
     //richText
-    //редактор текста для формы связи
+    //text editor for Feedback Form
     $('.contact_feedback').richText({
         imageUpload: false,
         videoEmbed: false,
@@ -54,35 +53,35 @@
         heading: false
     });
 
-    //отправка сообщения в форме обратной связи
+    //send an e-mail through the Feedback Form
     $("#contact_submit").on("click", function(e){
 
         e.preventDefault();
 
-        //если текстовый редактор пустой
+        //if text editor is empty
         if($("#contact_feedback").val() === "<div><br></div>")
         {   
-            //то ничего не делаем, а фокусируемся на нем
+            //do nothing and focus on it
             $("#contact_feedback").focus();
         }
-        else //если там есть какой-то текст, то отправляем письмо
+        else //if it's not empty, send an e-mail
         {
-            //выключаем кнопку отправки, чтобы пользователь случайно не нажал два раза
+            //disable the "Send" button
             $(this).attr("disabled","disabled");
             
-            //прячем форму и показываем оверлей с анимацией загрузки
+            //hide form and show animation
             $("#contact_content").addClass("invisible");
             $("#contact_overlay").removeClass("invisible");
             $("#contact_close").addClass("invisible");
 
-            // установка заголовка с csrf-токеном
+            //csrf-token for ajax request
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
-            //отправка запроса
+            //ajax request
             $.ajax({
                 type: 'POST',
                 url: `/send_feedback`,
@@ -91,17 +90,17 @@
                     contact_title: $("#contact_title").val(),
                     contact_feedback: $("#contact_feedback").val(),
                 },
-                //при успешном завершении запроса
+                //if success
                 success: function (response) {
-                    //прячем спиннер с анимацией
+                    //hide animation
                     $("#contact_ring").addClass("invisible");
-                    //показываем анимацию почтового конверта
+                    //show envelope animation
                     $("#contact_envelope").removeClass("invisible").addClass("bounce-in");
-                    //прячем одно сообщение и показываем другое
+                    //hide one message and show another
                     $("#contact_sending").addClass("invisible");
                     $("#contact_sent").removeClass("invisible").addClass("fade-in");
 
-                    //делаем кнопку Окей рабочей
+                    //show OK button
                     $("#contact_okay").removeAttr("disabled");
                 }   
             });
@@ -109,9 +108,9 @@
  
     });
 
-    //по нажатию на кнопку Окей после отправки письма
+    //OK button clicked, after e-mail ajax request
     $("#contact_okay").on('click', function(){
-        //прячем и\или возвращаем все как было до отправки и закрываем модальное окно
+        //bring every element back to the initial state and hide modal
         $("#contact_close").removeClass("invisible");
         $(this).attr("disabled","disabled");
         $("#contact_sent").addClass("invisible");

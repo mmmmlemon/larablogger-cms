@@ -1,4 +1,4 @@
-//счетчик символов для jQuery
+//character counter for jQuery
 $.fn.charCounter = function () {
     var input = this;
 

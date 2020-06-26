@@ -1,12 +1,12 @@
-//скрипты для страницы с media
+//scripts for media browser page
 
-//Plyr, видеоплеер
+//Plyr, video player
 const player = new Plyr('#player');
 
-//показать превью файла
+//show preview modal
 $(document).on('click', ".preview", function () {
     $("#preview-modal").addClass("is-active fade-in");
-    //если картинка, то показываем тег img
+    //if image, show image tag
     if ($(this).data("type") === "image") {
         $("#content-in-modal").attr("style", "display: block");
         $("#content-in-modal").attr("src", $(this).data("url"));
@@ -25,7 +25,7 @@ $(document).on('click', ".preview", function () {
         });
 
     }
-    //если видео, то показываем плеер
+    //if video, show Plyr player
     if ($(this).data("type") === "video") {
         $("#player_div").attr("style", "display: block;");
         $("#content-video").attr("src", $(this).data("url"));
@@ -42,7 +42,7 @@ $(document).on('click', ".preview", function () {
     }
 });
 
-//закрыть модальное окно с превью
+//close the preview modal
 $("#modal-close").click(function () {
     $("#preview-modal").removeClass("is-active");
     player.stop(); //стопорим плеер, чтобы видео не играло в фоне :)
@@ -51,14 +51,14 @@ $("#modal-close").click(function () {
     $("#content-in-modal").width("").height("");
 });
 
-//скрипты для страницы posts
+//delete file
 $("#submit_modal").on('click', function (e) {
     e.preventDefault();
     $(this).attr("disabled","disabled");
     $("#modal_form").submit();
 });
 
-//вызвать модальное окно удаления файла
+//show delete file modal
 $(".deleteFile").click(function () {
     $(".modalDelete").addClass("is-active fade-in");
     $("#modal_input").attr("value",$(this).data("id"));

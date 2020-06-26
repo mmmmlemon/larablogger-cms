@@ -1,4 +1,4 @@
-//скрипты для страницы settings
+//scripts for settings
 
 $(document).ready(function () {
     $('#site_title').charCounter();

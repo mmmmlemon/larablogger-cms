@@ -1,6 +1,6 @@
-//функции которые могут использоваться во всем сайте
+//shared functions
 
-//ajax-функция для очистки папки temp
+//ajax-request for temp folder purge
 var clear_temp = function () {
     $.ajax('/clear_temp', {
         success: function (data, status, xhr) {
@@ -8,8 +8,3 @@ var clear_temp = function () {
         }
     });
 }
-
-
-// $(document).ready(function(){
-//     $("#main_content").removeClass("invisible").addClass("fast-fade-in");
-// })

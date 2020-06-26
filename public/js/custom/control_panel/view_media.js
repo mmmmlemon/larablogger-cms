@@ -1,4 +1,4 @@
-//скрипты для страницы view_media
+//scripts for view_media
 
 if($("#file-js-example").length != 0)
 {
@@ -22,18 +22,18 @@ if($("#thumbnail_uploader").length != 0)
     }
 }
 
-//Plyr, видеоплеер
+//Plyr, video player
 const player = new Plyr('#player', {
     captions: {
         active: true
     }
 });
 
-//предыдущий активный таб
+//previous active tab and display div
 var previous_tab = $("#tab_thumbnail");
 var previous_display = $("#thumbnail");
 
-//ф-ция переключения табов
+//tab switch function
 function switch_tab(current_tab, current_display) {
     if (current_tab != previous_tab) {
         $(current_tab).addClass("is-active");
@@ -64,9 +64,9 @@ $("#tab_preview").on('click', function () {
 });
 
 
-//если пользователь добавить файлы субтитров
+//if user adds subtitles
 $("#subtitle_input").on('change', function (el) {
-    //получаем список файлов из input'а
+    //form a list of subtitles under the input
     var files = el.target.files;
     $("#subtitle_list").html("<b>Attached subtitle files</b>");
     for (var i = 0; i < files.length; i++) {
@@ -84,7 +84,7 @@ $(document).on('click', '.hide_subs', function () {
         }
     });
 
-    //отправка запроса
+    //ajax-request
     $.ajax({
         type: 'POST',
         url: '/control/media/change_subs_status',
@@ -93,7 +93,6 @@ $(document).on('click', '.hide_subs', function () {
             visibility: 0
         },
         success: function (response) {
-            //если запрос выполнился успешно
             console.log("The subtitle file has been hidden.");
             button.removeClass("is-warning").addClass("is-primary").removeClass("hide_subs").addClass("show_subs");
             button.attr("data-tooltip", "Enable these subtitles");
@@ -111,7 +110,6 @@ $(document).on('click', '.show_subs', function () {
         }
     });
 
-    //отправка запроса
     $.ajax({
         type: 'POST',
         url: '/control/media/change_subs_status',
@@ -120,7 +118,6 @@ $(document).on('click', '.show_subs', function () {
             visibility: 1
         },
         success: function (response) {
-            //если запрос выполнился успешно
             console.log("The subtitle file has been shown.");
             button.removeClass("is-primary").addClass("is-warning").removeClass("show_subs").addClass("hide_subs");
             button.attr("data-tooltip", "Disable these subtitles");
@@ -136,8 +133,6 @@ $(document).on('click', '.delete_subs', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
-    //отправка запроса
     $.ajax({
         type: 'POST',
         url: '/control/media/delete_subs',
@@ -145,7 +140,6 @@ $(document).on('click', '.delete_subs', function () {
             sub_id: sub
         },
         success: function (response) {
-            //если запрос выполнился успешно
             console.log("The subtitle file has been deleted.");
             $(`#sub${sub}`).remove();
             var count = $(`#subs_list`).children().length;
@@ -158,30 +152,30 @@ $(document).on('click', '.delete_subs', function () {
 
 
 
-//РЕДАКТИРОВАНИЕ ИМЕНИ ФАЙЛА СУБТИТРОВ
-var elem_children; //надпись и input которые нужно показывать\прятать
-var edit = false; //открыто ли редактирование в данный момент
+//EDIT SUBTITLES
+var elem_children; //label and input which need to be shown
+var edit = false; //is editing mode active
 var curr_elem, prev_elem;
 var id;
 
-//при нажатии на ячейкку таблицы с именем файла
+//when you click on the table cell
 $(document).on('click', '.edit_subs', function (el) {
-    //если редактирование уже открыто
-    if (edit == true) { //то закрываем открытое, и открываем новое
-        elem_children.eq(0).removeClass('invisible').addClass('fade-in'); //убираем надпись 
-        elem_children.eq(1).addClass('invisible').addClass("ignore"); //и показываем поле input с кнопкой
+    //if editing was activated already on the other file
+    if (edit == true) { //close it and open the new
+        elem_children.eq(0).removeClass('invisible').addClass('fade-in'); //remove the label
+        elem_children.eq(1).addClass('invisible').addClass("ignore"); //and show input field
     }
     id = $(this).data("sub");
-    var elem = $(`#sub_file_${id}`); //получаем элемент в котором должна появиться форма редактирования (td)
-    elem_children = $(elem).children(); //получаем "детей" этого элемента
-    elem_children.eq(0).addClass('invisible'); //убираем надпись 
-    elem_children.eq(1).removeClass('invisible').removeClass("ignore").addClass('fade-in'); //и показываем поле input с кнопкой
+    var elem = $(`#sub_file_${id}`); 
+    elem_children = $(elem).children(); 
+    elem_children.eq(0).addClass('invisible');
+    elem_children.eq(1).removeClass('invisible').removeClass("ignore").addClass('fade-in'); 
     edit = true;
 });
 
-//ОТПРАВКА AJAX НА РЕДАКТИРОВАНИЕ ИМЕНИ ФАЙЛА СУБТИТРОВ
+//ajax-request, edit subtitle file display name
 $(document).on('click', '.edit_display_name', function (el) {
-    //получаем значение input'а
+
     var value = $(el.target).parent().children().first().val();
     $.ajaxSetup({
         headers: {
@@ -189,7 +183,6 @@ $(document).on('click', '.edit_display_name', function (el) {
         }
     });
 
-    //отправка запроса
     $.ajax({
         type: 'POST',
         url: '/control/media/change_subs_display_name',
@@ -198,11 +191,11 @@ $(document).on('click', '.edit_display_name', function (el) {
             sub_id: id
         },
         success: function (response) {
-            //если запрос выполнился успешно
+     
             console.log("Display name has been changed for the subtitle file.");
-            elem_children.eq(0).removeClass('invisible').addClass('fade-in').html(value); //возвращаем надпись 
-            elem_children.eq(1).addClass('invisible').addClass("ignore"); //и прячем поле input с кнопкой
-            edit = false; //режим редактирования выключен
+            elem_children.eq(0).removeClass('invisible').addClass('fade-in').html(value); 
+            elem_children.eq(1).addClass('invisible').addClass("ignore"); 
+            edit = false; 
             $(`#sub_file_${id}`).find("input").val(value);
         }
     });

@@ -1,6 +1,6 @@
-//скрипты для страницы create_category и edit_сategory
+//scripts for create_category and edit_сategory
 
-//счетчик символов
+//charCounter
 $(document).ready(function () {
     $('#title').charCounter();
 });

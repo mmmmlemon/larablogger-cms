@@ -1,38 +1,36 @@
-//скрипты связанные со странцией Control Panel
+//scripts for Control Panel
 
-//убирает красную подсветку у инпутов после ошибки
+//disables the red highlight on input change
 $("input").change(function () {
     $(this).removeClass("is-danger")
 });
 
-//отправка формы настроек соц. сетей
+//submit social media form
 function submit_social_media() {
-    //получаем кол-во полей в форме из элемента с id num_of_fields
+    //get num of field from #num_of_fields element
     var num_of_fields = $('#num_of_fields').html();
-    //получаем форму
+    //get the form
     var action = $("#form_social").attr("action");
-    //меняем атрибут action формы, добавляя параметр с кол-вом полей в конец
-    //и отправляем форму
+    //change action attribute from the form, add num of field param to it
+    //submit the form
     $("#form_social").attr("action", action + num_of_fields);
     $("#form_social").submit();
 }
 
-//смена вкладки с настройками по клику 
-//(id div-блока который нужено показать и id вкладки которую нужно подсветить)
+//switch settings tab
+//(id of a div element and id of a tab)
 function change_tab(div_name, tab_name) {
-    //убираем текущий div-блок, добавляя класс invisible
+    //remove current div, add invisible class
     $(".current-content").removeClass("current-content").addClass("invisible");
-    //показываем новый div-блок
+    //view new div
     $("#" + div_name).removeClass("invisible").addClass("current-content fade-in");
 
-    //подсвечиваем вкладку
+    //add class is-active to the current tab
     $(".current-tab").removeClass("current-tab is-active");
     $("#" + tab_name).addClass("is-active current-tab");
-
-    // $("#footer").attr("style", `top: ${$(document).height()}px;`)
 }
 
-//если в url страницы есть якорь, то переключаем на соответствующий таб
+//if url has an anchor, switch to the anchored tab
 if (window.location.hash) {
     var hash = window.location.hash.substring(1);
     if (hash == 'settings') {

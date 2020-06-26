@@ -1,4 +1,4 @@
-//скрипты для главной страницы сайта
+//scripts for the index page
 
 $('.share-button').on('click', function () {
     var id = "#" + $(this).attr('for');
@@ -11,11 +11,9 @@ $('.share-button').on('click', function () {
 
 const players = Plyr.setup('.video-player');
 
-// $("#footer").attr("style", `top: ${$(document).height()}px;`)
-
 var img_height = $("#img-in-modal").height();
 
-//вызвать модальное окно с картинкой
+//show image preview modal
 $(".imagee").click(function () {
     $("#img-modal").addClass("is-active fade-in");
     $("#img-in-modal").attr("src", $(this).attr("src"));

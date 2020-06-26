@@ -1,16 +1,14 @@
-//скрипты для страницы create_post
+//scripts for create_post
 
-//обработка нажатия кнопки Publish
-
-//выключаем autodiscover у Dropzone
+//turn off autodiscover for Dropzone
 Dropzone.autoDiscover = false;
 
 var canceled = false;
 
-//список загруженных файлов
+//list of uploaded files
 var uploaded_files = [];
 
-//ajax-функция для очистки папки temp
+//ajax-request, clear temp folder
 var clear_temp = function () {
     $.ajax('/clear_temp', {
         success: function (data, status, xhr) {
@@ -19,26 +17,26 @@ var clear_temp = function () {
     });
 }
 
-//инициализируем dropzone с опциями
+//initializing dropzone with options
 var dropzone = $("#file_form").dropzone({
-    autoProcessQueue: true, //автозагрузка файлов - вкл 
-    chunking: true, //разбиение на чанки
-    chunkSize: 20000000, //макс размер чанка: 20 мб
+    autoProcessQueue: true, 
+    chunking: true, 
+    chunkSize: 20000000, //20 Mb
     retryChunks: false,
-    addRemoveLinks: true, //кнопка удаления файлов
+    addRemoveLinks: true,
     paramName: 'file',
     forceChunking: true,
     maxFiles: 20,
-    maxFilesize: 4000, //максимальный размер файла: 4 гб
+    maxFilesize: 4000, // 4 Gb
     parallelUploads: 20,
     acceptedFiles: '.jpg,.jpeg,.png,.mp4',
 
-    //вешаем ивенты на дропзону при инициализации
+    //attach events to dropzone
     init: function () {
         clear_temp();
 
         var dropzone = this;
-        //при отправке файла, так же будет отправляться имя файла
+        //attach filename to request
         this.on('sending', function (file, xhr, data) {
             file.name = file.name + " pee and also poo";
             console.log(`%cSending file ${file.name}`, 'color:grey;');
@@ -46,20 +44,20 @@ var dropzone = $("#file_form").dropzone({
             data.append("filename", file.name);
         });
 
-        //при нажатии кнопки отмены, убираем все загрузки и очищаем папку temp
+        //on cancel, remove all files from dropzone and clear temp folder
         $("#cancel").click(function () {
             canceled = true;
             console.log(dropzone.removeAllFiles(true));
             clear_temp();
         });
 
-        //когда все файлы будут загружены, форма с постом будет отправлена
+        //when evert file is uploaded, the form will be sent
         this.on("complete", function (file) {
             if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-                if (canceled === false) //если загрузка не была отменена, то отправляем форму
+                if (canceled === false) //what the frick is going on down here???
                 {
                     //$("#post_form").submit();
-                } else //если была отменена, то убираем cообщения и ничего не делаем
+                } else 
                 {
                     console.info("Uploads were canceled by user.");
                     canceled = false;
@@ -68,15 +66,13 @@ var dropzone = $("#file_form").dropzone({
         });
 
         this.on("removedfile", function (file) {
-            //console.log()
             var index_of_el = uploaded_files.findIndex(x => x.uuid === file.upload.uuid);
             uploaded_files.splice(index_of_el, 1);
             console.log(uploaded_files);
         });
 
     },
-    //когда загрузится файл (или его чанки)
-    //обновляем месседжи и выводим в консоль
+    //when file or all chunks of file are uploaded
     chunksUploaded: function (file, done) {
         var response = JSON.parse(file.xhr.response);
         uploaded_files.push({
@@ -88,21 +84,21 @@ var dropzone = $("#file_form").dropzone({
     }
 });
 
-//отправить пост
+//submit post
 $("#submit_post").click(function () {
     $(this).attr("disabled", "disabled");
 
     if($("#post_title").val() === "")
     {$("#post_title").focus();} 
     
-    // установка заголовка с csrf-токеном
+    //csrf-token for ajax request
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    // //отправка запроса
+    //ajax-request
     $.ajax({
         type: 'POST',
         url: `/control/create_new_post`,
@@ -115,7 +111,7 @@ $("#submit_post").click(function () {
             post_category: $("#post_category").val(),
             tags: $("#tags").val()
         },
-        //при успешном завершении запроса редиректим к постам
+        //redirect to posts on success
         success: function (response) {
             window.location.replace("/control/posts");
         }
@@ -123,7 +119,7 @@ $("#submit_post").click(function () {
 });
 
 //richText
-//редактор текста
+//text editor
 $('#post_content').richText({
     imageUpload: false,
     videoEmbed: false,
@@ -131,10 +127,10 @@ $('#post_content').richText({
 });
 
 //tagEditor
-//редактор тегов
+//bulma tag editor
 BulmaTagsInput.attach('input[data-type="tags"], input[type="tags"], select[data-type="tags"], select[type="tags"]', {
     tagClass: 'is-rounded is-grey'
 });
+
 //character counter
-//счетчик символов
 $('#post_title').charCounter();

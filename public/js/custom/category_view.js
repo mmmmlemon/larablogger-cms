@@ -1,8 +1,8 @@
-//скрипты для страницы category_view
+//scripts for category_view page
 
 const players = Plyr.setup('.video-player');
 
-//вызвать модальное окно с картинкой
+//show image preview modal
 $(".imagee").click(function () {
     $("#img-modal").addClass("is-active fade-in");
     $("#img-in-modal").attr("src", $(this).attr("src"));
