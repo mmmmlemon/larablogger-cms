@@ -8,49 +8,48 @@ use Illuminate\Support\Facades\Storage;
 use File;
 use Image;
 
+//functions related to Media Browser and media files manipulations
 class MediaController extends Controller
 {
 
-    //страница со списком всех медиа файлов
+    //view Media Browser page
     public function media_list()
     {
-        
-        //получаем все медиафайлы
+        //get all the media from database
         $media = App\Media::orderBy('post_id','desc')->paginate(15);
 
-        //добавляем к ним дополнительную информацию
+        //add additional info to each media file
         foreach($media as $m)
         {   
-            $m->filename = basename($m->media_url);
-            //получаем наименование поста, к которому относится файл
+            $m->filename = basename($m->media_url); //filename
+          
             $post_title = App\Post::find($m->post_id)->post_title;
-            $m->post_title = $post_title;
+            $m->post_title = $post_title; //title of the Post that is related to the media file
         }
         
         return view('/control_panel/media/media', compact('media'));
     }
 
-    //показать страницу с информацией о медиа файле \ редактор
+    //view 'Edit media' page
     public function view_media($id)
     {
-       
-        $media = App\Media::find($id);
+        $media = App\Media::find($id); //media file
         $post_title = App\Post::find($media->post_id)->post_title;
-        $media->post_title = $post_title;
-        $media->date = date('d.m.Y',strtotime($media->created_at));
-        $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb";
+        $media->post_title = $post_title;  //Post title
+        $media->date = date('d.m.Y',strtotime($media->created_at)); //media - date of upload
+        $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb"; //media - size
 
-        $subs = App\Subtitles::where('media_id','=',$media->id)->orderBy("display_name","asc")->get();
-        $subs_for_video = App\Subtitles::where('media_id','=',$media->id)->where('visibility','=',1)->orderBy("display_name","asc")->get();
+        //subtitles
+        $subs = App\Subtitles::where('media_id','=',$media->id)->orderBy("display_name","asc")->get(); //get all of the subtitles
+        $subs_for_video = App\Subtitles::where('media_id','=',$media->id)->where('visibility','=',1)->orderBy("display_name","asc")->get(); //get all of the subtitles (for Preview video player)
 
         return view('/control_panel/media/view_media', compact('media','subs','subs_for_video'));
     }
 
-    //сохранить изменения в медиа
+    //save changes in Media file
     public function edit_media(Request $request, $id)
-    {
-        
-        //получаем запись о файле из БД
+    { 
+        //get media file from the database
         $media = App\Media::find($id);
         $media->display_name = $request->display_name;
 
@@ -59,48 +58,67 @@ class MediaController extends Controller
         else
         {$media->visibility = 0;}
 
-        //получаем путь до папки с превьюхой
+        //get the position of the last slash character in path to use it later
         $pos = strrpos($media->media_url, "/");
-    
 
-        //если была добавлена картинка thumbnail
+        //if a thumbnail was added
         if($request->thumbnail != null)
-        {
+        {   
+            //if media file already has a a thumbnail
             if($media->thumbnail_url != null)
-            {
-                unlink(storage_path('app/public/'.$media->thumbnail_url));
-                $media->thumbnail_url = null;
+            {   
+                unlink(storage_path('app/public/'.$media->thumbnail_url)); //physically remove the old thumbnail
+                $media->thumbnail_url = null; //remove the url from the database
             }
-            $path = substr($media->media_url, 0, $pos) . "/thumbnail";
-            //проверяем существует ли уже такая папка
+
+            $path = substr($media->media_url, 0, $pos) . "/thumbnail"; //new path to the new thumbnail
+
+            //check if such path already exists
             $check = File::exists(storage_path("app/public/".$path));
-            if ($check == false) {
-                $folder_created = Storage::disk('public')->makeDirectory($path);
+
+            //if it doesn't exist
+            if($check == false) 
+            {
+                $folder_created = Storage::disk('public')->makeDirectory($path); //create new folder
+
                 if($folder_created){
-                    Storage::disk('public')->put("/storage", $request->thumbnail);
+                    Storage::disk('public')->put("/storage", $request->thumbnail); //save the new thumbnail
                 }
             }
-               $filename = "thumbnail_".rand(0,99).".".$request->file('thumbnail')->getClientOriginalExtension();
-               $img = Image::make($request->thumbnail);
-               $img->fit(640,360);
-               $img->save(storage_path('app/public/').$path."/".$filename);
-               $media->thumbnail_url = $path."/".$filename;
+
+            //generate file name 
+            $filename = "thumbnail_".rand(0,99).".".$request->file('thumbnail')->getClientOriginalExtension();
+            //create image
+            $img = Image::make($request->thumbnail);
+            $img->fit(640,360); //fir image into 640x360
+            $img->save(storage_path('app/public/').$path."/".$filename); //save image
+            $media->thumbnail_url = $path."/".$filename; //write url into the database
         }
 
-        //если добавлен файл субтитров
+        //if a subtitle file was added
         if($request->subtitles != null)
         {
+            //path to subtitles folder
             $path = substr($media->media_url, 0, $pos) . "/subtitles";
 
+            //check if the folder already exists
             $check = File::exists(storage_path("app/public/".$path));
-            if ($check == false) {
-                $folder_created = Storage::disk('public')->makeDirectory($path);
+
+            //if it doesn't exist
+            if($check == false)
+            {
+                $folder_created = Storage::disk('public')->makeDirectory($path); //create new folder
             }
+
+            //get the subtitle file(s)
             $files = $request->file('subtitles');
 
             foreach($request->file('subtitles') as $subtitle)
-            {
+            {   
+                //save new subtitle file
                 $check = Storage::disk('public')->put($path."/".$subtitle->getClientOriginalName(), file_get_contents($subtitle));
+
+                //if saved, write it into the database
                 if($check)
                 {
                     $sub = new App\Subtitles;
@@ -119,7 +137,7 @@ class MediaController extends Controller
         return redirect()->back();
     }
 
-    //удалить thumbnail
+    //delete thumbnail from
     public function remove_thumbnail($id)
     {
         $media = App\Media::find($id);
@@ -131,7 +149,7 @@ class MediaController extends Controller
         return redirect()->back();
     }
 
-    //показать\спрятать субтитры
+    //make subtitles visible/hidden
     public function change_subs_status(Request $request)
     {
         $sub = App\Subtitles::find($request->sub_id);
@@ -140,7 +158,7 @@ class MediaController extends Controller
         return response()->json(['msg'=>'success']);
     }
 
-    //изменить отображаемое имя субтитров
+    //change display name for a subtitle file
     public function change_subs_display_name(Request $request)
     {
        $sub = App\Subtitles::find($request->sub_id);
@@ -150,6 +168,7 @@ class MediaController extends Controller
        return response()->json(['msg'=>'success']);
     }
 
+    //delete a subtitle file
     public function delete_subs(Request $request)
     {
         $sub = App\Subtitles::find($request->sub_id)    ;
@@ -158,6 +177,7 @@ class MediaController extends Controller
         return response()->json(['msg'=>'success']);
     }
 
+    //delete a media file
     public function delete_media(Request $request)
     {
         $media = App\Media::find($request->id);

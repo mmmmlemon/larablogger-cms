@@ -110,7 +110,7 @@ class CategoryController extends Controller
 
           //count comments in current Post
           $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
-          //if there a more than one comment
+          //if theres more than one comment
           if($post->comment_count > 1 || $post->comment_count == 0)
           {$post->comment_count .= " comments";} //the label will be commentS
           else 

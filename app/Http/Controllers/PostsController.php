@@ -11,10 +11,11 @@ use Validator;
 use Storage;
 use File;
 
+//functions related to Post contol
 class PostsController extends Controller
 {   
-    //КОНТРОЛЬНАЯ ПАНЕЛЬ
-    //вывод постов в меню постов
+    //CONTROL PANEL
+    //view all posts (date descending)
     public function show_list_of_posts()
     {
         $posts = App\Post::orderBy('date','desc')->orderBy('id','desc')->paginate(10);
@@ -22,7 +23,7 @@ class PostsController extends Controller
         return view('control_panel/posts/posts', compact('posts','page'));
     }
 
-    //вывод постов в меню постов по дате
+    //view all posts (date ascending)
     public function show_list_of_posts_by_date()
     {
         $posts = App\Post::orderBy('date','asc')->paginate(10);
@@ -30,7 +31,7 @@ class PostsController extends Controller
         return view('control_panel/posts/posts', compact('posts', 'page'));
     }
 
-    //показать страницу создания поста
+    //view Add Post page
     public function show_create_post()
     {
         $current_date = Carbon::now();
@@ -38,7 +39,7 @@ class PostsController extends Controller
         return view('control_panel/posts/create_post', compact('categories','current_date'));
     }
 
-    //создание (сохранение) поста
+    //create/save new post
     public function create_post(Request $request)
     {
         $request->validate([
@@ -49,7 +50,7 @@ class PostsController extends Controller
              'tags' => 'string|nullable'
         ]);
 
-        //создаем новый пост и набиваем его данными
+        //create a new post and fill it with data
         $post = new App\Post;
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
@@ -58,10 +59,10 @@ class PostsController extends Controller
         {$post->tags =  NULL;}
         else
         {$post->tags = $request->tags;}
-        //если чекбокс Publish отмечен, то устанавливаем дату публикации - сегодня
-        //если нет, то ту дату которая указана в поле с датой
+        //if "Publish" checkbox is checked, then the date of publishing will be set to current date
+        //in other case, the date of publishing will be date to the value of date field
         
-        if($request->post_visibility == "true"){//true - строка, потому что ajax передает строку
+        if($request->post_visibility == "true"){//true is a string, because ajax sends string variables
             $post->visibility = 1;
             $post->date = $request->post_date;
         } else {
@@ -69,46 +70,46 @@ class PostsController extends Controller
             $post->date = $request->post_date;
         }
 
-        //получаем список файлов в папке temp
+        //get list of files in temp folder
         $temp_files = json_decode($request->file_list);
         
         if(count($temp_files) == 0)
         {   
-            //если в папке временных файлов нет ни одного файла, т.е
-            //юзер не загружал файлы с постом, то просто сохраняем пост
+            //if temp folder is empty, which means the user did not upload anything
+            //then just save the post
             $post->save(); 
         }
-        else //иначе переносим файлы из temp в новую папку и сохраняем пост
+        else //else, replace all the files from the temp folder to the new folder, and then save the post
         {
-            //создаем папку для медиа файлов ассоциируемых с постом
+            //create new folder for media files associated with the post
             //posts/[date + post_title]
             $folder_name_old = date('d-m-Y')."-".$request->post_title;
             $folder_name = preg_replace("/[^a-zA-Z0-9\s]/", "", $folder_name_old);
             $folder_created= Storage::disk('public')->makeDirectory("posts/". $folder_name);
-            //если папка создалась, то перемещаем файлы из temp
+            //if folder crated, replace files from temp
             if($folder_created == true)
             {
                 foreach($temp_files as $file){
-                    //путь по которому будет перемещен файл
+                    //path for replacement
                     $new_path = storage_path("app/public/posts/").$folder_name."/".$file->filename;
                     $move = File::move(storage_path("app/public/temp/").$file->filename, $new_path);
                 
-                    //если переместить файл не удалось, то редиректим с ошибкой
+                    //if replacement failed, redirect with error
                     if($move != true) 
                     {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
                     else
                     {   
-                    //сохраняем пост перед сохранением медиа (чтобы был $post->id)
-                    $post->save();
-                    $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
-                    $media = new App\Media; //создаем запись о медиа и сохраняем
-                    $media->post_id = $post->id;
-                    $media->media_url = "posts/". $folder_name."/".$file->filename;
-                    $media->media_type = $mime;
-                    $media->display_name = $file->filename;
-                    $media->actual_name = $file->filename;
-                    $media->visibility = 1;
-                    $media->save(); 
+                        //save the post before saving the media (to extract $post->id)
+                        $post->save();
+                        $mime = substr(File::mimeType($new_path), 0, 5); //get mime-type of file
+                        $media = new App\Media; //write media file into the database
+                        $media->post_id = $post->id;
+                        $media->media_url = "posts/". $folder_name."/".$file->filename;
+                        $media->media_type = $mime;
+                        $media->display_name = $file->filename;
+                        $media->actual_name = $file->filename;
+                        $media->visibility = 1;
+                        $media->save(); 
                     }
                 }         
             }
@@ -118,12 +119,12 @@ class PostsController extends Controller
     }
 
 
-    //показать страницу редактирования поста
+    //view Edit Post page
     public function show_edit_post($id)
     {
         $post = App\Post::find($id);
 
-        //список категорий без "пустой" категории
+        //categories list (without the 'blank' category)
         $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
         $media = App\Media::where('post_id','=',$id)->get();
 
@@ -138,7 +139,7 @@ class PostsController extends Controller
         return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
     }
   
-    //редактировать пост, сохранение измененений
+    //save changes to the edited post
     public function edit_post(Request $request, $id)
     {
         $request->validate([
@@ -159,7 +160,7 @@ class PostsController extends Controller
         {$post->tags = $request->tags;}
 
         if($request->post_visibility == "true")
-        { //true - строка, потому что ajax передает строку
+        { //true is a string type, because ajax sends strings
             $post->visibility = 1;
         } 
         else 
@@ -167,15 +168,15 @@ class PostsController extends Controller
             $post->visibility = 0;
         }
 
-        //получаем список файлов в папке temp
+        //get list of files in the temp folder
         $temp_files = json_decode($request->file_list);
   
-        if(count($temp_files) == 0) //если там нет файлов, то никакие файлы не были добавлены, сохраняем пост
+        if(count($temp_files) == 0) //if temp is empty, this means no files were added, just save the post
         {$post->save();}
-        else //если есть, то переносим файлы из temp в папку с медиафайлами поста и после этого сохраняем пост
+        else //if temp is not empty, replace all the files from the temp folder and then save
         {
             $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
-            //проверяем была ли создана папка для файлов текущего поста
+            //check if folder has been created
             $check = File::exists(storage_path("app/public/posts/".$folder_name));
             
             if($check != true)
@@ -185,20 +186,20 @@ class PostsController extends Controller
 
             foreach($temp_files as $file)
             {
-                //путь по которому будет перемещен файл
+                //path for replacement
                 $new_path = storage_path("app/public/posts/").$folder_name."/".$file;
                 
                 $move = File::move(storage_path("app/public/temp/".$file), $new_path);
             
-                //если переместить файл не удалось, то редиректим с ошибкой
+                //if replacement failed, redirect back with error
                 if($move != true) 
                 {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
                 else
                 {   
-                    //сохраняем пост перед сохранением медиа (чтобы был $post->id)
+                    //save the post before saving the media (to extract $post->id)
                     $post->save();
-                    $mime = substr(File::mimeType($new_path), 0, 5); //получаем mime-тип файла
-                    $media = new App\Media; //создаем запись о медиа и сохраняем
+                    $mime = substr(File::mimeType($new_path), 0, 5); //get mime type of media
+                    $media = new App\Media; //write media into the database
                     $media->post_id = $post->id;
                     $media->media_url = "posts/". $folder_name."/".$file;
                     $media->media_type = $mime;
@@ -213,10 +214,10 @@ class PostsController extends Controller
         return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
     }
 
-    //загрузка файлов перед сохранением поста
+    //upload files before post creation
     public function upload_files(Request $request)
     {  
-       //получаем имя файла
+       //get filename
        $filename = $request->filename;
 
        $uuid8 = substr($request->dzuuid, 0, 7);
@@ -225,10 +226,10 @@ class PostsController extends Controller
        $name = $p['filename'];
        $filename = $name."-".$uuid8.".".$ext;
        
-       //создаем файл в нужной папке, и открываем его в режиме append
+       //create empty file and append
        $file = fopen(storage_path('app/public/temp/')."$filename","a");
 
-       //вставляем содержимое файла\чанк в открытый файл и закрываем\сохраняем
+       //insert check into the file and save it
        fputs($file,file_get_contents($request->file));
        fclose($file);
        return response()->json([
@@ -238,7 +239,7 @@ class PostsController extends Controller
         ]);
     }	    
 
-    //очистить папку temp
+    //clear temp folder
     public function clear_temp()
     {
         $temp_files = File::files(storage_path("app/public/temp"));
@@ -248,25 +249,25 @@ class PostsController extends Controller
         }
     }
 
-    //удаление файла из поста
+    //delete media file from post
     public function delete_media(Request $request)
     {
-        //если intval равен 0 значит вместо id было передано имя файла
-        //это значит что в пост во время редактирования был добавлен новый файл и пользователь решил его удалить
-        //т.к файл еще не прописан в БД, то вместо id передается его имя и при удалении мы просто удаляем его из temp по имени
+        //if id is not digit, this means the file was just added into the temp folder and it's not written into database yet
+        //the file should be removed from the temp folder
         if(ctype_digit($request->id) == false)
         {   
-            $filename = $request->id; //чтобы было чуть лаконичнее, записываем имя файла в переменную
+            $filename = $request->id; 
             
+            //check if file exists
             if(is_file(storage_path("app/public/temp/".$filename)))
-            {
+            {   
+                //delete file from temp
                 $check = unlink(storage_path("app/public/temp/".$filename));
-                if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);}
+                if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);} //if succes, return response message
             }
         }
-
-        //если же был передан id, значит этот файл уже был добавлен ранее и он прописан в БД
-        //мы удаляем как сам файл, так и саму запись о нём в базе данных по id
+        //if id IS digit, this means the file is written into the database
+        //the file should be deleted both physically and from the database
         else
         {
             $media = App\Media::find($request->id);
@@ -291,74 +292,76 @@ class PostsController extends Controller
 
     }
 
-    //ВЫВОД
-    //вывод постов на главной странице сайта
+    //VIEWS
+    //view all posts on the main page of the website
     public function index()
     {
-        //получаем список всех видимых постов и сортируем его по дате по убыванию
+        //get all the visible posts and sort them by date (desc)
         $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
 
         foreach($posts as $post)
         {
-            //получаем теги поста и прикрепляем к посту
+            //get tags of a current post and attach them
             $tags= explode(",", $post->tags);
-            //если в теге записан один пустой символ то делаем теги = null
+            //if $tags variable contains one empty character (which means there are no tags for this Post)
             if(count($tags) == 1 && $tags[0]=="")
-            {$post->tags = null;}
+            {$post->tags = null;} //make it null
             else
             {$post->tags = $tags;}
 
-            //прикрепляем название категории к посту
+            //attach the name of the Category to current Post 
             $post->category = App\Category::find($post->category_id)->category_name;
 
-            if($post->category == "blank") //если это пустая категория, то категория не будет выводиться
+            if($post->category == "blank") //if it is the 'blank' category, it won't be displayed
             {$post->category = "";}
 
-            //считаем количество комментариев у поста
+            //count comments in current Post
             $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
 
-            //если комментариев больше одного то выводим commentS, а не comment
+            //if theres more than one comment
             if($post->comment_count > 1 || $post->comment_count == 0)
             {
-                $post->comment_count .= " comments"; 
+                $post->comment_count .= " comments"; //the label will be commentS
             } 
             else 
             {
-                $post->comment_count .= " comment"; 
+                $post->comment_count .= " comment"; //else, commenT
             }
 
-            //получаем список медиа файлов у поста
+            //get the list of files for current Post
             $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
             
-            //если файлы есть
+            //if current Post has files
             if(count($media) != 0)
             {
+                //add subtitles for each file
                 foreach($media as $m)
                 {
                     $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->orderBy('display_name','asc')->get();
                     $m->subs = $subs;
                 }
 
+                //attach media files to current Post
                 $post->media = $media;
+                //attach media_type to current Post
                 $post->media_type = $media[0]->media_type;
             }
 
         }
 
-        //для вывода постов по тегам
-        //установливаем имя тега - null, чтобы когда выводятся все посты на главной
-        //не было ошибки
+        //for sorting by tag
+        //set tag name to null to avoid error when posts aren't sorted by tag
         $tag_name = null;
 
         return view('home', compact('posts', 'tag_name'));
     }
 
-    //показать пост
+    //view post
     public function show_post($id)
     {
-        //получить пост по id
+        //get post by id
         $post = App\Post::find($id);
-        //получаем медиа
+        //get media files
         $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
 
         foreach($media as $m)
@@ -367,84 +370,84 @@ class PostsController extends Controller
             $m->subs = $subs;
         }
 
-        //если такой пост существует, то выводим его
+        //if post exists, view it
         if($post != null)
         {   
-            //если юзер залогинен
+            //if the user is logged in
             if(Auth::check())
             {   
-                $username = Auth::user()->name; //получаем его юзернейм
-                //если юзер - админ
+                $username = Auth::user()->name; //get username
+                //if user is Admin
                 if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
-                {$is_admin = true;} //то указываем что он админ
-                else  //или не админ
+                {$is_admin = true;} //user is Admin
+                else  //user is not Admin
                 {$is_admin = false;}
             }
-            else //если не залогинен, то юзернейм пустой, а не админ
+            else //if user is not logged in, the username is empty and the user is not Admin
             {
                 $username="";
                 $is_admin = false;
             }
 
-            //получаем комменты к посту
-            if($is_admin == true) //если админ, то получаем все комменты, если нет то только видимые
+            //get comments for Posts
+            if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
             {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
             else
             {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
            
-            //считаем количество комментов
+            //count comment
             $post->comment_count = count($comments);
 
-            //если комментов больше одного, или их ноль
+            //if theres more than one comment
             if($post->comment_count > 1 || $post->comment_count == 0)
-            {$post->comment_count .= " comments";}  //тогда приписка будет comments
+            {$post->comment_count .= " comments";}  //commentS
             else
-            {$post->comment_count .= " comment";} //или comment
+            {$post->comment_count .= " comment";} //or commenT
 
-            //получаем теги поста
+            //gets tags for post
             $tags= explode(",", $post->tags);
             if(count($tags) == 1 && $tags[0]=="")
             {$post->tags = null;}
             else
             {$post->tags = $tags;}
 
-            //получаем категорию поста
+            //get category of the post
             $post->category = App\Category::find($post->category_id)->category_name;
-            //если категория "blank", то не будем выводить её название
+            //if it's 'blank', it won't be displayed
             if($post->category == "blank")
             {$post->category = "";}
            
-            //проверяем статус поста, если visibility == 1, то пост виден всем без исключения
+            //check post status, if visibility == 1, the post is visible to everyone
             if($post->visibility == 1)
             {   
                  return view('post', compact('post','username','comments','media','is_admin'));
             }
-            else //если visibility == 0, то пост виден только админу
-            {   //проверяем залогинен ли юзер
+            else //if visibility == 0, the post is only visible to Admin
+            {   //check if user is logged in
                 if(Auth::check()){
-                    //если он админ
+                    //if its Admin
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
                         return view('post', compact('post','username','media','comments'));
                     } 
-                    else //если залогинен, но не админ, то 404
+                    else //if logged in but not Admin, throw 404
                     {
                         return abort(404);
                     }
                 }
-                else //если не залогинен вообще, то 404
+                else //if not logged in at all, throw 404
                 {
                     return abort(404);
                 }
             } 
         }
-        else //если поста не существует, то 404
+        else //if post doesn't exist, throw 404
         {
             return abort(404);
         }
     }
 
-    //показать все посты по тегу N
+    //view all posts by tag
     public function show_posts_by_tag ($tag)
     {
         $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
@@ -453,13 +456,12 @@ class PostsController extends Controller
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
 
-            //прикрепляем название категории к посту
+            //attach category name to post
             $post->category = App\Category::find($post->category_id)->category_name;
 
-            //считаем количество комментариев у поста
+            //count comments
             $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
 
-            //если комментариев больше одного то выводим commentS, а не comment
             if($post->comment_count > 1 || $post->comment_count == 0)
             {
                 $post->comment_count .= " comments"; 
@@ -489,7 +491,7 @@ class PostsController extends Controller
         return view('home', compact('posts','tag_name'));
     }
 
-    //изменить видимость поста
+    //change post visibility
     public function change_post_visibility($id, $status)
     {
         $post = App\Post::find($id);    
@@ -512,18 +514,16 @@ class PostsController extends Controller
 
     }
 
-    //удалить пост
+    //delete post
     public function delete_post(Request $request)
     {
-        //сначала удаляем все комментрии связанные с этим постом
+        //delete all comments associated with this post
         $comments = App\Comment::where('post_id', $request->modal_form_input)->get();
         foreach($comments as $comment){
             $comment->delete();
         }
-        //и медиа файлы тоже
+        //delete all files associated with this post
         $media = App\Media::where('post_id', $request->modal_form_input)->get();
-
-      
 
         foreach($media as $m)
         {
@@ -548,7 +548,7 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
-    //отправить комментарий
+    //submit comment
     public function submit_comment(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -556,8 +556,6 @@ class PostsController extends Controller
             'comment_content' => 'required|max:1000'
         ]);
 
-      
-        //если валидатор фейлит, то редиректим назад с якорем
         if($validator->fails())
         {
             return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput();
@@ -582,7 +580,7 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
-    //спрятать/показать/удалить комментарий
+    //show/hide/delete comment (for Admin)
     public function change_comment_status(Request $request)
     {
         $comment = App\Comment::find($request->comment_id);
@@ -609,7 +607,7 @@ class PostsController extends Controller
         return redirect(url()->previous());
     }
 
-    //закрепить\открепить пост
+    //pin/unpin post
     public function pin_post(Request $request)
     {
         $post = App\Post::find($request->id);

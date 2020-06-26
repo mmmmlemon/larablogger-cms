@@ -24,17 +24,16 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    //вывод главной страницы сайта
+    //view the index page of the website
     public function index()
     {
         return view('home');
     }
 
-    //показать страницу About
+    //view About page
     public function about()
     {
         $content = App\Settings::get()[0]->about_content;
-        $is_admin = false;
         $settings = App\Settings::all()->first();
 
         if($settings->show_about == 0)
@@ -42,6 +41,8 @@ class HomeController extends Controller
             return redirect()->back();
         }
 
+        //if current user is Admin, the page will also show 'Edit About page' button
+        $is_admin = false;
         if(Auth::check())
         {
             if(Auth::user()->user_type == 0)
