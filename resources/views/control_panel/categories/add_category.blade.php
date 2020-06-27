@@ -2,10 +2,9 @@
 
 @section('content')
 @php
- $blank = ""; //пустой символ для атрибута value, в input   
+ $blank = ""; //empty character for value atrribute in inputs
 @endphp
 <div class="container white-bg">
-    <!--НАВИГАЦИЯ-->
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
           <li><a href="/control">Control panel</a></li>
@@ -13,7 +12,6 @@
           <li class="is-active"><a href="/control/categories" aria-current="page">Add category</a></li>
         </ul>
       </nav>
-    <!--КНОПКА BACK-->
     <div class="column is-12">
         <a href="/control/categories" class="button is-link">
             <span class="icon">
@@ -29,11 +27,9 @@
 
     <div class="columns">
         <div class="column">
-            <!--ФОРМА-->
-            <form action="/control/categories/add" method="POST" id="category_form">
+             <form action="/control/categories/add" method="POST" id="category_form">
                 @csrf
 
-                <!--НАЗВАНИЕ КАТЕГОРИИ-->
                 <div class="field">
                     <label class="label">Category name</label>
                     <div class="control">
@@ -45,8 +41,7 @@
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
                    @enderror
                 </div>
-                
-                <!--КНОПКА ОТПРАВКИ-->
+
                 <div class="control">
                     <button class="button is-link" id="save_category">
                         <span class="icon is-small">
@@ -62,8 +57,6 @@
 @endsection
 
 @push('scripts')
-<!--счетчик символов-->
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script> 
-<!--скрипты для этой страницы-->
 <script src="{{ asset('js/custom/control_panel/create_category.js') }}"></script>
 @endpush

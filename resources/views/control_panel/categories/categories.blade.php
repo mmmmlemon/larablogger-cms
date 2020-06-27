@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container white-bg">
-    <!--НАВИГАЦИЯ-->
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
           <li><a href="/control">Control panel</a></li>
@@ -11,7 +10,6 @@
       </nav>
     
     <div class="column is-12">
-        {{-- КНОПКА BACK --}}
         <a href="/control" class="button is-link">
             <span class="icon">
                 <i class="fas fa-arrow-left"></i>
@@ -21,7 +19,6 @@
             </span>
         </a>    
 
-        {{-- КНОПКА Add new category --}}
         <a href="/control/categories/add" class="button is-link">
             <span class="icon">
                 <i class="fas fa-plus"></i>
@@ -36,7 +33,6 @@
 
     <div class="columns">
         <div class="column">
-            {{-- ТАБЛИЦА СО СПИСКОМ КАТЕГОРИЙ --}}
             <table class="table is-hoverable is-fullwidth">
                 <thead>
                     <th>Name</th>
@@ -50,27 +46,23 @@
                             </td>
                             <td>
 
-                               {{-- кнопка редактирования категории --}}
                                 <form action="/control/categories/raise" method="post" style="display:inline;">
                                     @csrf
                                     <input type="text" name="id" value="{{$categ->id}}" class="invisible">
                                     <button @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
                                 </form>
 
-                                   {{-- кнопка редактирования категории --}}
                                 <form action="/control/categories/lower" method="post" style="display:inline;">
                                     @csrf
                                     <input type="text" name="id" value="{{$categ->id}}" class="invisible">
                                     <button @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
                                 </form>
 
-                                {{-- кнопка редактирования категории --}}
                                 <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
                                     <span class="icon is-small" data-tooltip="Edit this category">
                                         <i class="fas fa-edit"></i>
                                     </span>
                                 </a>
-                                {{-- кнопка удаления категории --}}
                                 <button class="button is-danger showModalDelete" data-tooltip="Delete this category" 
                                     data-title="{{$categ->category_name}}" data-id="{{$categ->id}}">
                                     <i class="fas fa-trash"></i>
@@ -85,9 +77,7 @@
 </div>
 @endsection
 
-{{-- МОДАЛЬНЫЕ ОКНА --}}
 @section('modals')
-{{-- УДАЛЕНИЕ КАТЕГОРИИ --}}
 <div class="modal modalDelete">
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -115,6 +105,5 @@
 
 
 @push('scripts')
-{{-- скрипты для этой страницы --}}
 <script src="{{ asset('js/custom/control_panel/categories.js') }}"></script>
 @endpush

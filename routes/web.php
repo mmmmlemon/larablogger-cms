@@ -13,76 +13,71 @@ use Carbon\Carbon;
 |
 */
 
-//рауты доступные всем пользователям сайта
-Route::get('/', 'PostsController@index'); //главная страница
-Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category'); //вывод постов по категории
-Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag'); //вывод постов по тегу
-Route::get('/post/{id}', 'PostsController@show_post'); //показать пост
-Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //отправить комментарий
-Route::get('/about', 'HomeController@about'); //страница About
-Route::post('/send_feedback','FeedbackController@mail'); //форма обратной связи
+//routes available for everyone
+Route::get('/', 'PostsController@index'); //index page
+Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category'); //view posts by category
+Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag'); //view post by tag
+Route::get('/post/{id}', 'PostsController@show_post'); //view post
+Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //submit comment
+Route::get('/about', 'HomeController@about'); //view About page
+Route::post('/send_feedback','FeedbackController@mail'); //submit Feedback e-mail 
 
-
+//routes for logged in users
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('/control', 'ControlPanelController@show_control_panel'); //показать панель управления   
-    Route::post('/control/update_profile', 'ControlPanelController@update_profile'); //обновить настройки профиля
+    Route::get('/control', 'ControlPanelController@show_control_panel'); //view Control Panel
+    Route::post('/control/update_profile', 'ControlPanelController@update_profile'); //update user profile
 });
 
-//рауты доступные только админу
+//routes for Admin
 Route::group(['middleware' => ['auth', 'admin']], function(){
+    Route::get('/control/edit_about','ControlPanelController@show_edit_about'); //edit About page
+    Route::post('/control/save_about','ControlPanelController@save_about'); //save changes in About
 
-   
-    Route::get('/control/edit_about','ControlPanelController@show_edit_about'); //страница редактирования About
-    Route::post('/control/save_about','ControlPanelController@save_about'); //сохранение настроек About
+    //SETTINGS
+    Route::post('/control/update_settings', 'ControlPanelController@update_settings'); //update general site settings
+    Route::post('/control/update_social', 'ControlPanelController@update_social'); //update social media
+    Route::post('/control/change_user_type', 'ControlPanelController@change_user_type'); //change user type
 
-    //НАСТРОЙКИ
-    Route::post('/control/update_settings', 'ControlPanelController@update_settings'); //обновить общие настройки сайта
-    Route::post('/control/update_social', 'ControlPanelController@update_social'); //обновить соц. сети
-    Route::post('/control/change_user_type', 'ControlPanelController@change_user_type'); //сменить тип пользователя
+    Route::post('/control/update_design', 'ControlPanelController@update_design'); //update design settings
 
-    Route::post('/control/update_design', 'ControlPanelController@update_design'); //обновить настройки дизайна
+    //POSTS
+    Route::get('/control/create_post', 'PostsController@show_create_post'); //view Create Post page
+    Route::post('/control/create_new_post', 'PostsController@create_post'); //save post
+    Route::get('/control/posts', 'PostsController@show_list_of_posts'); //view all posts by date (desc)
+    Route::get('/control/posts/date', 'PostsController@show_list_of_posts_by_date'); //view all posts by date (asc)
+    Route::post('/control/post_status/{id}/{status}', 'PostsController@change_post_visibility'); //change post visibility
+    Route::delete('/control/delete_post', 'PostsController@delete_post'); //delete post
+    Route::get('/post/{id}/edit', 'PostsController@show_edit_post'); //view Edit Post page
+    Route::post('/post/{id}/edit', 'PostsController@edit_post'); //save changes in post
+    Route::post('/post/change_comment_status','PostsController@change_comment_status'); //show/hide/delete comment
+    Route::post('/post/upload_files','PostsController@upload_files'); //upload files attached to the post
+    Route::get('/clear_temp', 'PostsController@clear_temp'); //clear temp folder
+    Route::post('/delete_media', 'PostsController@delete_media'); //delete attached file from post
+    Route::post('/control/pin_post','PostsController@pin_post'); //pin/unpin post
 
-    //ПОСТЫ
-    Route::get('/control/create_post', 'PostsController@show_create_post'); //показать страницу создания поста
-    Route::post('/control/create_new_post', 'PostsController@create_post'); //сохранить пост
-    Route::get('/control/posts', 'PostsController@show_list_of_posts'); //вывести посты в меню постов
-    Route::get('/control/posts/date', 'PostsController@show_list_of_posts_by_date'); //вывести посты в меню постов по дате
-    //vv пофиксить это vv//
-    Route::post('/control/post_status/{id}/{status}', 'PostsController@change_post_visibility');
-    //^^ пофиксить это ^^//
-    Route::delete('/control/delete_post', 'PostsController@delete_post'); //удалить пост
-    Route::get('/post/{id}/edit', 'PostsController@show_edit_post'); //показать страницу редактирования поста
-    Route::post('/post/{id}/edit', 'PostsController@edit_post'); //сохранить изменения в посте
-    Route::post('/post/change_comment_status','PostsController@change_comment_status'); //спрятать\показать\удалить комментарий
-    Route::post('/post/upload_files','PostsController@upload_files'); //загрузить файлы, прикрепленные к посту
-    Route::get('/clear_temp', 'PostsController@clear_temp'); //очистить папку temp с временными файлами
-    Route::post('/delete_media', 'PostsController@delete_media'); //удалить прикрепленный файл из поста
-    Route::post('/upload_files', 'PostsController@upload_files'); //загрузка файлов
-    Route::post('/control/pin_post','PostsController@pin_post'); //закрепить\открепить пост
+    //MEDIA
+    Route::get('/control/media','MediaController@media_list'); //view media browser
+    Route::get('/control/media/{id}','MediaController@view_media'); //view edit media page
+    Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //save chnages in media
+    Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //delete thumbnail
+    Route::post('/control/media/change_subs_status','MediaController@change_subs_status'); //show/hide subtitles
+    Route::post('/control/media/delete_subs','MediaController@delete_subs'); //delete subtitles
+    Route::post('/control/media/change_subs_display_name','MediaController@change_subs_display_name'); //change subtitles display name
+    Route::post('/control/media/delete_media','MediaController@delete_media'); //delete media
 
-    //МЕДИА
-    Route::get('/control/media','MediaController@media_list'); //главная страница с медиа файлами
-    Route::get('/control/media/{id}','MediaController@view_media'); //показать информацию о медиа\редактор медиа
-    Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //сохранить изменения в файле
-    Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //удалить thumbnail
-    Route::post('/control/media/change_subs_status','MediaController@change_subs_status'); //спрятать\показать субтитры
-    Route::post('/control/media/delete_subs','MediaController@delete_subs'); //удалить субтитры
-    Route::post('/control/media/change_subs_display_name','MediaController@change_subs_display_name'); //сменить имя файла субтитров
-    Route::post('/control/media/delete_media','MediaController@delete_media'); //удалить медиа
-
-    //КАТЕГОРИИ
-    Route::get('/control/categories', 'CategoryController@category_list'); //вывод списка категорий в панели управления
-    Route::get('/control/categories/add', 'CategoryController@show_create_category'); //показать страницу создания категорий
-    Route::post('/control/categories/add', 'CategoryController@create_category'); //создать категорию
-    Route::get('/control/categories/edit/{id}','CategoryController@show_edit_category'); //редактировать категорию
-    Route::post('/control/categories/edit/{id}','CategoryController@edit_category'); //сохранить изменения в категории
-    Route::delete('/control/categories/delete','CategoryController@delete_category'); //удалить категорию
-    Route::post('/control/categories/raise','CategoryController@raise_category'); //поднять категорию в списке
-    Route::post('/control/categories/lower','CategoryController@lower_category'); //поднять категорию в списке
-
-
+    //CATEGORIES
+    Route::get('/control/categories', 'CategoryController@category_list'); //view category list in control panel
+    Route::get('/control/categories/add', 'CategoryController@show_create_category'); //view create category page
+    Route::post('/control/categories/add', 'CategoryController@create_category'); //create category
+    Route::get('/control/categories/edit/{id}','CategoryController@show_edit_category'); //view edit category page
+    Route::post('/control/categories/edit/{id}','CategoryController@edit_category'); //save changes in category
+    Route::delete('/control/categories/delete','CategoryController@delete_category'); //delete category
+    Route::post('/control/categories/raise','CategoryController@raise_category'); //raise category in list
+    Route::post('/control/categories/lower','CategoryController@lower_category'); //lower category in list
 });
 
+
+//enable/disable register route
 Auth::routes([
     'register' => true,
 ]

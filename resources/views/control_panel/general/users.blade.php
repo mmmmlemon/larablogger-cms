@@ -1,8 +1,5 @@
-
-<!-- ПОЛЬЗОВАТЕЛИ -->
 <div id="users_content"  class="invisible">
     <div class="columns">
-        {{-- таблица со списком пользователей --}}
         <table class="table is-fullwidth is-hoverable">
             <thead>
                 <th>Username</th>
@@ -27,9 +24,7 @@
                         </td>
                         <td>{{$user->created_at}}</td>
                         <td>
-                            {{-- если юзер - админ и это не залогиненый юзер--}}
                             @if($user->user_type == 1 && $user->id != Auth::user()->id)
-                                {{-- назначить роль "User" --}}
                                 <button class="button is-danger"  data-tooltip="Downgrade to User">
                                     <span class="icon is-small"
                                     onclick="document.getElementById('change_user_{{$user->id}}').submit();">
@@ -41,15 +36,12 @@
                                     <input type="text" name="user_id" value="{{$user->id}}">
                                     <input type="text" name="user_type" value="admin"> 
                                 </form>
-                            {{-- если юзер - суперадмин, и он не залогинен --}}
                             @elseif($user->user_type == 0 && $user->user_id != Auth::user()->id)
-                            {{-- иконка суперюзера, потому что ему поменять роль нельзя :^) --}}
                                 <button class="button is-warning"  data-tooltip="This user is Super Admin">
                                     <span class="icon is-small">
                                         <i class="fas fa-crown"></i>
                                     </span>
                                 </button>
-                            {{-- если юзер - юзер, и он не залогинен --}}
                             @elseif($user->user_type == 2 && $user->id != Auth::user()->id)   
                                 <button class="button is-primary"  data-tooltip="Upgrade to Admin">
                                     <span class="icon is-small" onclick="document.getElementById('change_user_{{$user->id}}').submit();">
@@ -61,7 +53,6 @@
                                     <input type="text" name="user_id" value="{{$user->id}}">
                                     <input type="text" name="user_type" value="user"> 
                                 </form>
-                            {{-- если ни одно из условий не подошло --}}
                             @else
                                 <button class="button is-disabled"  data-tooltip="It's You! :)">
                                     <span class="icon is-small">
@@ -86,7 +77,6 @@
     </script>
     @endif
 
-    {{-- пагинация --}}
     <div>
         {{ $users->links('pagination.default') }}
     </div>

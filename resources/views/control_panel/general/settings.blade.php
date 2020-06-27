@@ -1,8 +1,6 @@
-<!--НАСТРОЙКИ -->
 <div id="settings_content" class="current-content">   
     <div class="columns">
         <div class="column is-12">
-            {{-- заголовок страницы --}}
             <div class="has-text-centered">
                 <span class="icon">
                     <i class="fas fa-cog"></i>
@@ -12,10 +10,8 @@
 
             <br>
 
-            {{-- форма для общих настроек сайта--}}
             <form action="control/update_settings" method="POST" id="general_form">
                 @csrf
-                {{-- заголовок сайта --}}
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Site title</label>
@@ -34,7 +30,6 @@
                     </div>
                 </div>
 
-                {{-- подзаголовок сайта --}}
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Site subtitle</label>
@@ -52,8 +47,6 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- контактный E-Mail для формы связи --}}
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Contact E-Mail</label>
@@ -73,7 +66,6 @@
                 </div>
 
                 
-                {{-- E-Mail с которого будут идти письма--}}
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Sender E-Mail</label>
@@ -92,7 +84,6 @@
                     </div>
                 </div>
 
-                {{-- текст для формы связи --}}
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Contact text</label>
@@ -111,23 +102,9 @@
                     </div>
                 </div>
 
-                {{-- текст для формы связи --}}
-                {{-- <div class="field is-horizontal">
-                    <div class="field-label is-normal">
-                        <label class="label"></label>
-                    </div>
-                    <div class="field-body"> --}}
-                       {{-- спрятать страницу регистрации --}}
-                        {{-- <div class="register_check">
-                            <input class="is-checkradio is-link" name="register_check" id="register_check" type="checkbox" @if($settings->hide_reg == 0) checked @endif>
-                            <label class="label" for="register_check">Hide register page</label>
-                        </div>
-                    </div>
-                </div> --}}
-
                 <div class="field is-horizontal">
                     <div class="field-label">
-                        <!-- Left empty for spacing -->
+               
                     </div>
                     <div class="field-body">
                         <div class="field">
@@ -153,12 +130,10 @@
                 <i class="fas fa-link"></i>
             </span>
             <h3 class="subtitle">Social media (Links)</h3>
-
-            {{-- форма для соц. сетей --}}
             <form id="form_social" action="control/update_social" method="POST">
                 @csrf 
                 
-                {{-- поле №1 --}}
+                {{-- №1 --}}
                 <div class="field is-horizontal" id="soc-media-field-0">
                     <div class="field-label is-normal">
                         <label class="label">#1</label>
@@ -182,7 +157,7 @@
                     </div>
                 </div>
 
-                <!-- поле №2 -->
+                <!-- №2 -->
                 <div class="field is-horizontal" id="soc-media-field-0">
                     <div class="field-label is-normal">
                         <label class="label">#2</label>
@@ -206,7 +181,7 @@
                     </div>
                 </div>
 
-                <!--поле №3 -->
+                <!--№3 -->
                 <div class="field is-horizontal" id="soc-media-field-0">
                     <div class="field-label is-normal">
                         <label class="label">#3</label>
@@ -230,7 +205,7 @@
                     </div>
                 </div>
 
-                <!-- поле №4 -->
+                <!-- №4 -->
                 <div class="field is-horizontal" id="soc-media-field-0">
                     <div class="field-label is-normal">
                         <label class="label">#4</label>
@@ -254,10 +229,9 @@
                     </div>
                 </div>
 
-                {{-- кнопка сохранить --}}
                 <div class="field is-horizontal">
                     <div class="field-label">
-                        <!-- Left empty for spacing -->
+
                     </div>
                     <div class="field-body">
                         <div class="field">

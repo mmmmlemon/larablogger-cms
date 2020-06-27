@@ -1,8 +1,6 @@
-<!-- ПРОФИЛЬ -->
 <div id="profile_content" class="invisible">
     <div class="columns">
         <div class="column has-text-centered">
-            {{-- иконка пользователя --}}
             <span class="icon">
                 @if($current_user->user_type == 0)
                 <i class="fas fa-crown" ></i>
@@ -13,13 +11,11 @@
                 @endif
             </span>
 
-            {{-- юзернейм --}}
             <h3 class="subtitle">{{$current_user->name}}</h3>
 
-            {{-- форма --}}
             <form action="control/update_profile" method="POST" id="profile_form">
                 @csrf
-                {{-- input - имя пользователя --}}
+                {{-- input - username --}}
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Username</label>
@@ -100,11 +96,9 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- кнопка - сохранить --}}
                 <div class="field is-horizontal">
                     <div class="field-label">
-                        <!-- Left empty for spacing -->
+
                     </div>
                     <div class="field-body">
                         <div class="field">

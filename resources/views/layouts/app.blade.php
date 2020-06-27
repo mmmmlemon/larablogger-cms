@@ -48,9 +48,7 @@
         <link href="{{asset('css/bulma-checkradio.min.css')}}" rel="stylesheet">
         <link href="{{asset('css/bulma-radio-checkbox.min.css')}}" rel="stylesheet">
     </head>
-    {{-- BODY --}}
     <body>
-        {{-- заголовок сайта и подзаголовок --}}
         <section class="hero header">
             <div class="hero-body">
                 <div class="container has-text-centered">
@@ -64,7 +62,6 @@
             </div>
         </section>
 
-        {{-- навигация --}}
         <nav class="navbar" id="navigation" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item">
@@ -146,13 +143,12 @@
             </div>
         </nav>
 
-        {{-- контейнер для выводящегося контента сайта --}}
+        {{-- content --}}
         <main id="main_content" class="py-4">
             @yield('content')
         </main>
         </div>
         
-        {{-- модальное окно для формы обратной связи --}}
         <div class="modal" id="contact-modal">
             <div class="modal-background"></div>
             <div class="modal-content">
@@ -211,7 +207,7 @@
 
                         <article id="contact_overlay" class="invisible">
                             <div class="has-text-centered">
-                                {{-- спиннер --}}
+                  
                                 <div id="contact_ring">
                                     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                                 </div>
@@ -236,10 +232,8 @@
             <button class="modal-close is-large" id="contact_close" aria-label="close"></button>
         </div>
 
-        {{-- секция для модальных окон --}}
         @yield('modals')
     </body>
 </html>
 
-{{-- секция для скриптов --}}
 @stack('scripts')

@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container white-bg">
-    {{-- навигация --}}
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             @if(Auth::check())
@@ -68,8 +67,6 @@
                 @endforeach
                 <br>
             @endif
-
-            
 
             <article class="media">
                 <div class="media-content">
@@ -229,9 +226,7 @@
 
 @endsection
 
-{{-- модальные окна --}}
 @section('modals')
-{{-- просмотр изображения --}}
 <div class="modal" id="img-modal">
   <div class="modal-background"></div>
   <div class="modal-content column is-two-thirds-desktop is-12-mobile">
@@ -248,12 +243,8 @@
 @endsection
 
 @push('scripts')
-{{-- Plyr --}}
 <script src="{{ asset('js/plyr.js') }}"></script>
-{{-- jQuery - RichText --}}
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
-{{-- счетчик символов --}}
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
-{{-- скрипты для этой страницы --}}
 <script src="{{ asset('js/custom/post.js') }}"></script>
 @endpush

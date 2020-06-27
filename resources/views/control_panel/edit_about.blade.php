@@ -3,7 +3,6 @@
 @section('content')
     <div class="container">
         <div class="white-bg">
-            {{-- навигация --}}
             <nav class="breadcrumb" aria-label="breadcrumbs">
                 <ul>
                 <li><a href="/control">Control panel</a></li>
@@ -12,7 +11,6 @@
                 </ul>
             </nav>
                     
-            <!--кнопка назад-->
             <a href="{{url()->previous()}}" class="button is-link">
                     <span class="icon">
                         <i class="fas fa-arrow-left"></i>
@@ -22,10 +20,8 @@
 
             <div class="is-divider"></div>   
             
-            {{-- форма --}}
             <form action="/control/save_about" method="POST">
                 @csrf
-                <!--textarea, содержимое поста-->
                 <label class="label">About page contents</label>
                 <textarea class="textarea" id="post_content" maxlength="700" name="about_content" placeholder="Write your post here">
                     {{$content}}
@@ -46,8 +42,6 @@
 @endsection
 
 @push('scripts')
-{{-- jQuery - RichText --}}
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
-{{-- скрипты для этой страницы --}}
 <script src="{{ asset('js/custom/control_panel/edit_about.js') }}"></script>
 @endpush

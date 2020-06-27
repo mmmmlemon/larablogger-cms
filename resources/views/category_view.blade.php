@@ -3,10 +3,8 @@
 @section('content')
     <div class="container">
         <div class="white-bg has-text-centered">
-            {{-- наименование категории --}}
             <h1 class="title post_title">{{$categ->category_name}}</h1>
         </div>
-        {{-- если есть посты то выводим их --}}
         @if(count($posts) > 0)
             <div class="">
                 @foreach($posts as $post)
@@ -16,7 +14,6 @@
             <div>
                 {{ $posts->links('pagination.default') }}
             </div>
-        {{-- если нет постов, то выводим плашку --}}
         @else
             <div class="white-bg has-text-centered">
                 <h1 class="title">Nothing to see here yet</h1>
@@ -27,7 +24,6 @@
     </div>
 @endsection
 
-{{-- модальные окна --}}
 @section('modals')
     <div class="modal" id="img-modal">
         <div class="modal-background"></div>
@@ -45,9 +41,7 @@
 @endsection
 
 @push('scripts')
-{{-- Plyr --}}
 <script src="{{ asset('js/plyr.js') }}"></script>
-{{-- скрипты для этой страницы --}}
 <script src="{{ asset('js/custom/category_view.js') }}"></script>
 <script src="{{ asset('js/custom/shared/shared.js') }}"></script>
 @endpush
