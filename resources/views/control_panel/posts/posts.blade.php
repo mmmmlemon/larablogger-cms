@@ -40,6 +40,8 @@
                             <th>Title</th>
                             <th>Visibility</th>
                             <th>Category</th>
+                            <th>
+                            
                                 <a @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>Date</a>  
                                 @if($page=="normal")
                                     <i class="fas fa-sort-down"></i></th>
@@ -51,8 +53,10 @@
                         <tbody>
                             @foreach($posts as $post)
                                 <tr>
+                           
                                     <td><b><a href="/post/{{$post->id}}">{{$post->post_title}}</a></b></td>
                                     <td>
+                               
                                         @if($post->visibility == 1)
                                             <span class="icon is-small" data-tooltip="Post is visible">
                                                 <i class="fas fa-check"></i>
@@ -63,39 +67,49 @@
                                             </span>
                                         @endif
                                     </td>
+                       
                                     <td>{{App\Category::find($post->category_id)->category_name}}</td>
+                            
                                     <td>{{date('d.m.Y', strtotime($post->date))}}</td>
                                     <td>
+                               
                                         @if($post->pinned == 0)
+                                          
                                             <form action="/control/pin_post" method="post" style="display:inline;">
                                                 @csrf
                                                 <input type="text" name="id" value="{{$post->id}}" class="invisible">
                                                 <button class="button is-success" data-tooltip="Pin this post"><i class="fas fa-thumbtack"></i></button>
                                             </form>
                                         @else
-                                             <form action="/control/pin_post" method="post" style="display:inline;">
+                                   
+                                            <form action="/control/pin_post" method="post" style="display:inline;">
                                                 @csrf
                                                 <input type="text" name="id" value="{{$post->id}}" class="invisible">
                                                 <button class="button is-warning" data-tooltip="Unpin this post"><i class="fas fa-thumbtack"></i></button>
                                             </form>
                                         @endif
                                         
+                                  
                                         @if($post->visibility == 1)
-                                             <form action="/control/post_status/{{$post->id}}/0" method="post" style="display:inline;">
+                                      
+                                            <form action="/control/post_status/{{$post->id}}/0" method="post" style="display:inline;">
                                                 @csrf
                                                 <button class="button is-warning" data-tooltip="Hide this post"><i class="fas fa-eye-slash"></i></button>
                                             </form>
                                         @else
+                               
                                             <form action="/control/post_status/{{$post->id}}/1" method="post" style="display:inline;">
                                                 @csrf
                                                 <button class="button is-primary" data-tooltip="Show this post"><i class="fas fa-eye"></i></button>
                                             </form>
                                         @endif
-                                             <a href="/post/{{$post->id}}/edit" class="button is-info">
+                         
+                                            <a href="/post/{{$post->id}}/edit" class="button is-info">
                                                 <span class="icon is-small" data-tooltip="Edit this post">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
+                 
                                         <button class="button is-danger showModalDelete" 
                                             data-tooltip="Delete this post" data-title="{{$post->post_title}}" data-id="{{$post->id}}">
                                             <i class="fas fa-trash"></i>
@@ -121,6 +135,8 @@
             </div>
         </div>
     </div>
+
+  
 </div>
 <div class="container">
     {{ $posts->links('pagination.default') }}

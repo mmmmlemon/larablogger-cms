@@ -81,7 +81,7 @@
                 </div> 
             </div>
 
-            <div class="is-divider"></div>
+            {{-- <div class="is-divider"></div>
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -100,7 +100,7 @@
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
                 </div>
             </div>
-            @enderror
+            @enderror --}}
 
             <div class="field is-horizontal">
                 <div class="field-label">
