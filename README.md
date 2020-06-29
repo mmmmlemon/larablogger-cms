@@ -1,1 +1,1 @@
-Dev repository for LaraBlog
+Larablogger dev repisitory
