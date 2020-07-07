@@ -118,7 +118,7 @@
     <div class="column">
         <div class="subtitle">{{$post->comment_count}} / <a href="#comment_form">Leave a comment</a></div> 
         @foreach($comments as $comment)
-            <article class="media">
+        <article class="media" id="comment_{{$comment->id}}">
                 <div class="media-content">
                     <div class="content">
                         <div class="is-4">

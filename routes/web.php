@@ -49,7 +49,6 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::delete('/control/delete_post', 'PostsController@delete_post'); //delete post
     Route::get('/post/{id}/edit', 'PostsController@show_edit_post'); //view Edit Post page
     Route::post('/post/{id}/edit', 'PostsController@edit_post'); //save changes in post
-    Route::post('/post/change_comment_status','PostsController@change_comment_status'); //show/hide/delete comment
     Route::post('/post/upload_files','PostsController@upload_files'); //upload files attached to the post
     Route::get('/clear_temp', 'PostsController@clear_temp'); //clear temp folder
     Route::post('/delete_media', 'PostsController@delete_media'); //delete attached file from post
@@ -74,7 +73,12 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::delete('/control/categories/delete','CategoryController@delete_category'); //delete category
     Route::post('/control/categories/raise','CategoryController@raise_category'); //raise category in list
     Route::post('/control/categories/lower','CategoryController@lower_category'); //lower category in list
+
+    //COMMENTS
+    Route::get('/control/comments','ControlPanelController@view_comments'); //view comments
+    Route::post('/post/change_comment_status','PostsController@change_comment_status'); //show/hide/delete comment
 });
+
 
 
 //enable/disable register route

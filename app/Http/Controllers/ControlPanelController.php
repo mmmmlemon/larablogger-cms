@@ -243,6 +243,19 @@ class ControlPanelController extends Controller
         return redirect(url()->previous() . "#profile");
         
     }
+
+
+    //COMMENTS
+    public function view_comments(){
+        $comments = App\Comment::orderBy('created_at','desc')->paginate(20);
+
+        foreach($comments as $c){
+            $post_title = App\Post::where('id','=',$c->post_id)->first()->post_title;
+            $c->post_title = $post_title;
+        }
+        
+        return view('control_panel/comments/comments', compact('comments'));
+    }
     
 }
  

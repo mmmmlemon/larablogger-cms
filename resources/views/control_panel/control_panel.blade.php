@@ -44,6 +44,12 @@ $blank = ""; //empty character for value attribute in inputs
                     </span>
                     <span>Categories</span>
                 </a>
+                <a href="control/comments" class="button is-link is-medium" data-tooltip="View latest comments">
+                    <span class="icon">
+                        <i class="fas fa-comment"></i>
+                    </span>
+                    <span>Comments</span>
+                </a>
             </div>
         </div>
     @endif
