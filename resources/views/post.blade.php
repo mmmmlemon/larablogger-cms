@@ -202,7 +202,7 @@
                         <p class="help is-danger"><b> {{ $message }}</b></p>  
                     @enderror
                 </div>
-                <textarea class="textarea" name="comment_content" placeholder="Add a comment..." required></textarea>
+                <textarea class="textarea" name="comment_content" id="comment_textarea" placeholder="Add a comment..." required></textarea>
                 @error('comment_content')
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
                 @enderror

@@ -1,8 +1,7 @@
 //scripts for posts page
 
 $(document).ready(function(){
-
-    $('.textarea').richText({
+    $('#comment_textarea').richText({
         imageUpload: false,
         videoEmbed: false,
         table: false,
@@ -16,7 +15,6 @@ $(document).ready(function(){
         justify: false,
         code: false
     });
-    
     
     $(document).ready(function () {
         $('#username').charCounter();
@@ -57,16 +55,12 @@ $(document).ready(function(){
         $("#img-in-modal").width("").height("");
     });
 
-
     if (window.location.hash) {
         var hash = window.location.hash.substring(1);
         if(hash.includes("comment_anchor"))
         {
             var elem = $("#"+hash).addClass("comment-blinking-anim");
         }
-      
     }
-    
-    
 });
 
