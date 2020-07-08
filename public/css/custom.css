@@ -1,3 +1,6 @@
+/*здесь хранятся кастомные стили не связанные с bulma*/
+/*стили элементов созданных вручную (например, шапка сайта и т.д)*/
+
 @font-face {
     font-family: "Riffic";
     src: url("/fonts/font.woff") format("woff")
@@ -22,10 +25,12 @@ body::after{ content:''; display:block; height:100px; }
     display: none;
 }
 
+/*шапка сайта, div блок*/
 .header {
     background-color: rgba(218, 134, 40, 0.171);
 }
 
+/*заголовок сайта, h1*/
 .web-site-title {
     color:white;
     font-size: 45pt;
@@ -33,6 +38,7 @@ body::after{ content:''; display:block; height:100px; }
     font-family: 'Riffic';
     font-weight: 50;
 }
+
 
 @media (max-width: 1080px) {
 
@@ -66,6 +72,7 @@ body::after{ content:''; display:block; height:100px; }
     } 
 }
 
+/*подзаголовок сайтаю, h2*/
 .web-site-subtitle {
     color:white;
     font-weight: bold;
@@ -171,4 +178,14 @@ body::after{ content:''; display:block; height:100px; }
 .blur_image, .darken_image{
     margin-top: 7px;
     margin-left: 7px;
+}
+
+.comment_link{
+    color: black;
+}
+
+.comment{
+    padding-left: 15px;
+    padding-bottom: 15px;
+    padding-top:10px;
 }

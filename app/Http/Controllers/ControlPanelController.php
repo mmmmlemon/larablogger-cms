@@ -251,6 +251,7 @@ class ControlPanelController extends Controller
 
         foreach($comments as $c){
             $post_title = App\Post::where('id','=',$c->post_id)->first()->post_title;
+            $c->comment_content = strip_tags($c->comment_content);
             $c->post_title = $post_title;
         }
         

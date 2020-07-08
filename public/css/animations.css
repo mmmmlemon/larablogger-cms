@@ -1,3 +1,4 @@
+/* анимации */
 .fade-in {
     animation: fadeIn ease 0.3s;
     -webkit-animation: fadeIn ease 0.3s;
@@ -165,6 +166,8 @@
     }
   }
 
+
+  /*АНИМАЦИЯ СПИННЕРА*/
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -202,6 +205,9 @@
   }
 }
 
+
+
+
 .blinking-anim{
 animation:blink 1.5s infinite ease-in;
 }
@@ -216,3 +222,29 @@ animation:blink 1.5s infinite ease-in;
          color: rgba(0,0,0,1)
   }
 }
+
+
+@keyframes comment_blink {
+  0% {
+         background-color:rgba(255,255,255,0.0);
+  }
+  25% {
+    background-color:rgba(255, 255, 255, 0.76);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.925);
+  }
+
+  75% {
+    background-color:rgba(255, 255, 255, 0.76);
+  }
+
+  100% {
+    background-color:rgba(255,255,255,0.0);
+  }
+}
+
+.comment-blinking-anim{
+  animation:comment_blink 3s ease-in;
+  border-radius: 15px;
+  }

@@ -41,7 +41,7 @@
                 @foreach($media as $m)
                     @if($m->media_type == "image")
                         <article class="has-text-center">
-                            <div class="media-content">
+                            <div class="media-content ">
                                 <figure class="has-text-centered">
                                 <img class="imagee" width="900px" src="{{asset("storage/".$m->media_url)}}" alt="">
                                 </figure>
@@ -118,7 +118,7 @@
     <div class="column">
         <div class="subtitle">{{$post->comment_count}} / <a href="#comment_form">Leave a comment</a></div> 
         @foreach($comments as $comment)
-        <article class="media" id="comment_{{$comment->id}}">
+        <article class="media comment" id="comment_anchor_{{$comment->id}}">
                 <div class="media-content">
                     <div class="content">
                         <div class="is-4">

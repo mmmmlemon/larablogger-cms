@@ -44,9 +44,9 @@
 <tbody>
   @foreach($comments as $c)
     <tr>
-    <td>{!!$c->comment_content!!}</td>
+    <td style="width:40%;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" data-tooltip="Go to this comment" class="comment_link">{!!$c->comment_content!!}</a></td>
     <td>{{$c->username}}</td>
-    <td><a  data-tooltip="Go to this comment" href="{{ url('/post/'.$c->post_id."#comment_".$c->id)}}" target="_blank">{{$c->post_title}}</a></td>
+    <td><a  href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{$c->post_title}}</a></td>
 
     <td>{{date('d.m.Y',strtotime($c->date))}}</td>
     <td>

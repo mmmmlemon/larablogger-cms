@@ -56,6 +56,17 @@ $(document).ready(function(){
         $("#img-modal").removeClass("is-active");
         $("#img-in-modal").width("").height("");
     });
+
+
+    if (window.location.hash) {
+        var hash = window.location.hash.substring(1);
+        if(hash.includes("comment_anchor"))
+        {
+            var elem = $("#"+hash).addClass("comment-blinking-anim");
+        }
+      
+    }
+    
     
 });
 
