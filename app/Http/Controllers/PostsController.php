@@ -84,7 +84,7 @@ class PostsController extends Controller
             //create new folder for media files associated with the post
             //posts/[date + post_title]
             $folder_name_old = date('d-m-Y')."-".$request->post_title;
-            $folder_name = preg_replace("/[^a-zA-Z0-9\s]/", "", $folder_name_old);
+            $folder_name = preg_replace("/[^a-zA-Z0-9\-\s]/", "", $folder_name_old);
             $folder_created= Storage::disk('public')->makeDirectory("posts/". $folder_name);
             //if folder crated, replace files from temp
             if($folder_created == true)
