@@ -232,8 +232,8 @@ $("#submit_post").click(function () {
             tags: $("#tags").val()
         },
         success: function (response) {
-            //window.location.replace("/control/posts");
-            window.history.back();
+            window.location.replace(document.referrer);
+            //window.history.back();
         }
     });
 });

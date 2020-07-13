@@ -60,7 +60,7 @@
       <div class="field">
         <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" @if($post->visibility == 1) checked @endif>
         <label class="label" for="publish_checkbox">Visibility</label>
-        <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everone">
+        <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everyone">
           <i class="fas fa-question-circle"></i>
         </span>
       </div>
@@ -103,7 +103,7 @@
                       <td><a target="_blank" href="/control/media/{{$m->id}}">Edit</a></td>
                       <td>{{$m->media_type}}</td>
                       <td>
-                        <a class="button is-small is-danger delete_media" data-tooltip="Delete this media" data-id="{{$m->id}}">
+                        <a class="button is-small is-danger delete_media" data-tooltip="Delete this media file" data-id="{{$m->id}}">
                             <span class="icon">
                               <i class="fas fa-trash"></i>
                             </span>
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <form action="/upload_files" method="POST" class="dropzone" id="dropzone_form">
+      <form action="/post/upload_files" method="POST" class="dropzone" id="dropzone_form">
         @csrf
         <div class="fallback">
         <input type="text" name="post_id" value="{{$post->id}}">
