@@ -12,6 +12,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('/storage/'.$settings->bg_image) }})">
     {{-- HEAD --}}
     <head>
+        @include('feed::links')
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- CSRF Token -->
