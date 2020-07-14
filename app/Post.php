@@ -26,7 +26,7 @@ class Post extends Model implements Feedable
 
     public static function getFeedItems()
     {
-        return Post::where('visibility','=',1)->orderBy("created_at","desc")->limit(10)->get();
+        return Post::where('visibility','=',1)->orderBy('date','desc')->orderBy("created_at","desc")->limit(10)->get();
         redirect()->back();
     }
 
