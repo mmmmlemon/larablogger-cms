@@ -18,8 +18,8 @@ return [
              */
             'url' => '/feed',
 
-            'title' => 'Weird Web-Site of [Mr. o_O]',
-            'description' => 'TF2 Gmod and SFM Animations',
+            'title' => 'My website',
+            'description' => 'Description',
             'language' => 'en-US',
 
             /*
