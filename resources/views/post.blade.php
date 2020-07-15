@@ -131,7 +131,16 @@
                             @else
 
                             @endif
-                            
+
+                   
+                            <i class="comment-date">| {{date('d.m.Y', strtotime($comment->date))}}</i>
+
+                            <a href="#reply_p" class="action-reply-button" data-tooltip="Reply to this comment" data-id={{$comment->id}} data-user={{$comment->username}}>
+                                <span class="icon has-text-link">
+                                    <i class="fas fa-reply"></i>
+                                </span>
+                            </a>
+
                             @if($is_admin == true)
                                 <form action="/post/change_comment_status" method="POST" style="display:inline">
                                     @csrf
@@ -172,7 +181,8 @@
                                             <span class="icon has-text-dark">
                                                 <i class="fas fa-trash"></i>
                                             </span>
-                                        </button>
+                                        </button> 
+                                    </div>
                                 </form>
                             @endif  
                         </div>
@@ -180,7 +190,9 @@
                         <div class="content">
                             {!!$comment->comment_content!!}
                         </div>
-                        <i>{{date('d.m.Y', strtotime($comment->date))}}</i>
+
+                        <div>
+                        
                     </div>
                 </div>
             </article>
@@ -197,6 +209,9 @@
                 <div class="field">
                     <p class="control">
                         <input class="input" name="username" placeholder="Username" maxlength="25" id="username" value="{{$username}}" required/>
+                        <input type="text" id="reply_to" class="invisible" value="" name="reply_to">
+                        <a id="reply_p"></a>
+                        <b id="remove_reply" class="remove_reply invisible">X</b>
                     </p>
                     @error('username')
                         <p class="help is-danger"><b> {{ $message }}</b></p>  

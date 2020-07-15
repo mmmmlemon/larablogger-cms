@@ -62,5 +62,23 @@ $(document).ready(function(){
             var elem = $("#"+hash).addClass("comment-blinking-anim");
         }
     }
+
+
+
+    $(".action-reply-button").on('click', function(e){
+        var id = $(this).data("id");
+        var username = $(this).data("user");
+
+        $("#reply_to").attr("value",id)
+        $("#reply_p").text(`A reply to user ${username}`).attr("href",`#comment_anchor_${id}`);
+        $("#remove_reply").removeClass("invisible");
+    });
+
+    $("#remove_reply").on('click', function(){
+        $("#reply_to").val("");
+        $("#reply_p").text("");
+        $(this).addClass("invisible");
+    });
+
 });
 
