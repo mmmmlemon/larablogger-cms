@@ -21,57 +21,61 @@
 </div>
 
 <div class="is-divider"></div>
+@if(count($comments) <= 0)
+    <div class="column has-text-centered">
+      <h3 class="subtitle">No comments yet</h3>
+    </div>
+@else
+    <table class="table is-hoverable is-fullwidth">
+    <thead>
+      <th>
+        Comment
+      </th>
+      <th>
+        User
+      </th>
+      <th>
+        Post
+      </th>
+    
+      <th>
+        Date
+      </th>
+      <th>
+        Actions
+      </th>
+    </thead>
+    <tbody>
+      @foreach($comments as $c)
+        <tr>
+        <td style="width:40%;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" data-tooltip="Go to this comment" class="comment_link">{!!$c->comment_content!!}</a></td>
+        <td>{{$c->username}}</td>
+        <td><a  href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{$c->post_title}}</a></td>
 
-<table class="table is-hoverable is-fullwidth">
-<thead>
-  <th>
-    Comment
-  </th>
-  <th>
-    User
-  </th>
-  <th>
-    Post
-  </th>
- 
-  <th>
-    Date
-  </th>
-  <th>
-    Actions
-  </th>
-</thead>
-<tbody>
-  @foreach($comments as $c)
-    <tr>
-    <td style="width:40%;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" data-tooltip="Go to this comment" class="comment_link">{!!$c->comment_content!!}</a></td>
-    <td>{{$c->username}}</td>
-    <td><a  href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{$c->post_title}}</a></td>
-
-    <td>{{date('d.m.Y',strtotime($c->date))}}</td>
-    <td>
-      @if($c->visibility == 1)
-        <form action="/post/change_comment_status" method="post" style="display:inline;">
-          @csrf
-          <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
-          <input type="text" class="invisible "name="action" value="hide">
-          <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
-        </form>
-      @else
-      <form action="/post/change_comment_status" method="post" style="display:inline;">
-        @csrf
-        <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
-        <input type="text" class="invisible "name="action" value="show">
-        <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
-      </form>
-      @endif
-    <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$c->id}}"><i class="fas fa-trash"></i></button>
-    </td>
-    </tr>
-  @endforeach
-</tbody>
-</table>
-
+        <td>{{date('d.m.Y',strtotime($c->date))}}</td>
+        <td>
+          @if($c->visibility == 1)
+            <form action="/post/change_comment_status" method="post" style="display:inline;">
+              @csrf
+              <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
+              <input type="text" class="invisible "name="action" value="hide">
+              <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+            </form>
+          @else
+          <form action="/post/change_comment_status" method="post" style="display:inline;">
+            @csrf
+            <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
+            <input type="text" class="invisible "name="action" value="show">
+            <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
+          </form>
+          @endif
+        <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$c->id}}"><i class="fas fa-trash"></i></button>
+        </td>
+        </tr>
+      @endforeach
+    </tbody>
+    </table>
+@endif
 </div>
 <div class="container">
   {{ $comments->links('pagination.default') }}

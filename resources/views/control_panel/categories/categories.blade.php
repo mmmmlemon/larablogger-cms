@@ -33,45 +33,51 @@
 
     <div class="columns">
         <div class="column">
-            <table class="table is-hoverable is-fullwidth">
-                <thead>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </thead>
-                <tbody>
-                    @foreach($categs as $categ)
-                        <tr>
-                            <td>
-                            <a href="/category/{{$categ->category_name}}"><b>{{$categ->category_name}}</b></a>
-                            </td>
-                            <td>
+            @if(count($categs) <= 0)
+                <div class="column has-text-centered">
+                <h3 class="subtitle">No categories yet</h3>
+                </div>
+            @else
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        @foreach($categs as $categ)
+                            <tr>
+                                <td>
+                                <a href="/category/{{$categ->category_name}}"><b>{{$categ->category_name}}</b></a>
+                                </td>
+                                <td>
 
-                                <form action="/control/categories/raise" method="post" style="display:inline;">
-                                    @csrf
-                                    <input type="text" name="id" value="{{$categ->id}}" class="invisible">
-                                    <button @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
-                                </form>
+                                    <form action="/control/categories/raise" method="post" style="display:inline;">
+                                        @csrf
+                                        <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                        <button @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
+                                    </form>
 
-                                <form action="/control/categories/lower" method="post" style="display:inline;">
-                                    @csrf
-                                    <input type="text" name="id" value="{{$categ->id}}" class="invisible">
-                                    <button @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
-                                </form>
+                                    <form action="/control/categories/lower" method="post" style="display:inline;">
+                                        @csrf
+                                        <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                        <button @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
+                                    </form>
 
-                                <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
-                                    <span class="icon is-small" data-tooltip="Edit this category">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </a>
-                                <button class="button is-danger showModalDelete" data-tooltip="Delete this category" 
-                                    data-title="{{$categ->category_name}}" data-id="{{$categ->id}}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                    <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
+                                        <span class="icon is-small" data-tooltip="Edit this category">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </a>
+                                    <button class="button is-danger showModalDelete" data-tooltip="Delete this category" 
+                                        data-title="{{$categ->category_name}}" data-id="{{$categ->id}}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 </div>
