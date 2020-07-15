@@ -567,6 +567,7 @@ class PostsController extends Controller
         $comment->comment_content = $request->comment_content;
         $comment->post_id = $id;
         $comment->date = Carbon::now();
+        $comment->reply_to = null;
         if(Auth::check())
         {
             $comment->is_logged_on = 1;            
