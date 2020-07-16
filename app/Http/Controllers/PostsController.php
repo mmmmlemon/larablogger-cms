@@ -390,11 +390,29 @@ class PostsController extends Controller
             }
 
             //get comments for Posts
-            if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
-            {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
-            else
-            {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
+            // if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
+            // {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
+            // else
+            // {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
+
            
+            $comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
+
+            //recursive function that collects all the comments with replies and generates a comment 
+            function collect_comments($array)
+            {
+                foreach($array as $a)
+                {
+                    $replies = App\Comment::where('reply_to','=', $a->id)->get();
+                    $a->replies = $replies;
+                    collect_comments($replies);
+                }
+
+                
+            }
+
+            collect_comments($comments);
+
             //count comment
             $post->comment_count = count($comments);
 
