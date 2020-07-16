@@ -390,31 +390,46 @@ class PostsController extends Controller
             }
 
             //get comments for Posts
-            // if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
-            // {$comments = App\Comment::where('post_id','=',$id)->orderBy('date','asc')->orderBy('id','asc')->get();}
-            // else
-            // {$comments = App\Comment::where('post_id','=',$id)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();}
-
-           
-            $comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
-
-            //recursive function that collects all the comments with replies and generates a comment 
-            function collect_comments($array)
+            if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
             {
-                foreach($array as $a)
-                {
-                    $replies = App\Comment::where('reply_to','=', $a->id)->get();
-                    $a->replies = $replies;
-                    collect_comments($replies);
-                }
-
-                
+                $comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
+            }
+            else
+            {
+                $comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();
             }
 
-            collect_comments($comments);
+           
+            //$comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
+
+            //recursive function that collects all the comments with replies and generates a comment 
+            function collect_comments($array, $admin)
+            {
+                foreach($array as $a)
+                {   
+                    if($admin == true)
+                    {
+                        $replies = App\Comment::where('reply_to','=', $a->id)->get();
+                        $a->replies = $replies;
+                        collect_comments($replies, $admin);
+                    }
+                    
+                    else{
+                        $replies = App\Comment::where('reply_to','=', $a->id)->where('visibility','=',1)->get();
+                        $a->replies = $replies;
+                        collect_comments($replies, $admin);
+                    }
+                } 
+            }
+
+            collect_comments($comments, $is_admin);
 
             //count comment
-            $post->comment_count = count($comments);
+            if($is_admin == true)
+            {$post->comment_count = count(App\Comment::where('post_id','=',$id)->get());}
+            else
+            {$post->comment_count = count(App\Comment::where('post_id','=',$id)->where('visibility','=',1)->get());}
+
 
             //if theres more than one comment
             if($post->comment_count > 1 || $post->comment_count == 0)

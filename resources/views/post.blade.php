@@ -132,7 +132,7 @@
                         <input class="input" name="username" placeholder="Username" maxlength="25" id="username" value="{{$username}}" required/>
                         <input type="text" id="reply_to" class="invisible" value="" name="reply_to">
                         <a id="reply_p"></a>
-                        <b id="remove_reply" class="remove_reply invisible">X</b>
+                        <b id="remove_reply" class="remove_reply invisible" data-tooltip="Remove reply">X</b>
                     </p>
                     @error('username')
                         <p class="help is-danger"><b> {{ $message }}</b></p>  
