@@ -611,7 +611,10 @@ class PostsController extends Controller
         }
 
         $comment->save();
-        return redirect(url()->previous());
+
+        $latest_comment_id = App\Comment::orderBy('id','desc')->first()->id;
+
+        return redirect(url()->previous()."#comment_anchor_".$latest_comment_id);
     }
 
     //show/hide/delete comment (for Admin)
