@@ -3,6 +3,8 @@
 //turn off autodiscover for Dropzone
 Dropzone.autoDiscover = false;
 
+
+
 var canceled = false;
 
 //list of uploaded files
@@ -120,10 +122,31 @@ $("#submit_post").click(function () {
 
 //richText
 //text editor
-$('#post_content').richText({
-    imageUpload: false,
-    videoEmbed: false,
-    fileUpload: false
+// $('#post_content').richText({
+//     imageUpload: false,
+//     videoEmbed: false,
+//     fileUpload: false
+// });
+
+$('#post_content').trumbowyg({
+    tagsToRemove:['script','img'],
+    autogrow: true,
+    imageWidthModalEdit: true,
+    urlProtocol: true,
+    btns: [
+        ['viewHTML'],
+        ['undo', 'redo'], // Only supported in Blink browsers
+        ['formatting'],
+        ['strong', 'em'],
+        ['superscript', 'subscript'],
+        ['link'],
+        ['insertImage'],
+        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+        ['unorderedList', 'orderedList'],
+        ['horizontalRule'],
+        ['removeformat'],
+        ['fullscreen']
+    ]
 });
 
 //tagEditor

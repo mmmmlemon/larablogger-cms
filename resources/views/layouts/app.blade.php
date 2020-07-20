@@ -22,7 +22,13 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/scripts.js') }}" defer></script>
         <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+
+        {{-- TrumboWYG Text Editor --}}
+        <script>window.jQuery || document.write('{{ asset('js/jquery-3.4.1.min.js') }}')</script>
+        <script src="{{ asset('js/trumbowyg/trumbowyg.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('js/trumbowyg/ui/trumbowyg.min.css') }}">
+
         <!-- FontAwesome -->
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
         <!--Shared Scripts-->
