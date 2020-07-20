@@ -461,7 +461,7 @@ class PostsController extends Controller
                     //if its Admin
                     if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
                     {   
-                        return view('post', compact('post','username','media','comments'));
+                        return view('post', compact('post','username','media','comments','is_admin'));
                     } 
                     else //if logged in but not Admin, throw 404
                     {
