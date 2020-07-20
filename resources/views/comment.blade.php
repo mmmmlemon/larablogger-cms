@@ -67,7 +67,7 @@
                 @endif  
             </div>
             <br>
-            <div class="content">
+            <div class="content p_fix">
                 {!!$comment->comment_content!!}
             </div>
 

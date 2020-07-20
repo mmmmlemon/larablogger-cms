@@ -70,7 +70,7 @@
 
             <article class="media">
                 <div class="media-content">
-                    <div class="content">
+                    <div class="content p_fix">
                         {!!$post->post_content!!}
                     </div>
                     <div class="is-divider"></div>

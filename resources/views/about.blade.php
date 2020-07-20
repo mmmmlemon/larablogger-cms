@@ -14,9 +14,13 @@
                     <div class="is-divider"></div>
                 </div>
             @endif
-            <div class="content">
+            <div class="content p_fix">
                 {!!$content!!}
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/custom/about.js') }}"></script>
+@endpush

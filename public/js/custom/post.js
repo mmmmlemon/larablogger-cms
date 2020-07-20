@@ -79,5 +79,9 @@ $(document).ready(function(){
         $(this).addClass("invisible");
     });
 
+
+    //paragraph fix
+    parapgraph_workaround();
+
 });
 
