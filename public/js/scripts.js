@@ -40,17 +40,23 @@
 
     //richText
     //text editor for Feedback Form
-    $('.contact_feedback').richText({
-        imageUpload: false,
-        videoEmbed: false,
-        fileUpload: false,
-        fonts: false,
-        fontColor: false,
-        fontSize: false,
-        table: false,
-        removeStyles: false,
-        code: false,
-        heading: false
+    $('.contact_feedback').trumbowyg({
+        tagsToRemove:['script'],
+        autogrow: true,
+        imageWidthModalEdit: true,
+        urlProtocol: true,
+        btns: [
+            ['viewHTML'],
+            ['undo', 'redo'], // Only supported in Blink browsers
+            ['strong', 'em'],
+            ['link'],
+            ['insertImage'],
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            ['unorderedList', 'orderedList'],
+            ['horizontalRule'],
+            ['removeformat'],
+            ['fullscreen']
+        ]
     });
 
     //send an e-mail through the Feedback Form

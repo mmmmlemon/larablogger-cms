@@ -1,19 +1,18 @@
 //scripts for posts page
 
 $(document).ready(function(){
-    $('#comment_textarea').richText({
-        imageUpload: false,
-        videoEmbed: false,
-        table: false,
-        fileUpload: false,
-        heading: false,
-        fonts: false,
-        ul: false,
-        leftAlign: false,
-        centerAlign: false,
-        rightAlign: false,
-        justify: false,
-        code: false
+    $('#comment_textarea').trumbowyg({
+        tagsToRemove:['script','img'],
+        autogrow: true,
+        imageWidthModalEdit: true,
+        urlProtocol: true,
+        btns: [
+            ['undo', 'redo'], // Only supported in Blink browsers
+            ['strong', 'em'],
+            ['link'],
+            ['removeformat'],
+            ['fullscreen']
+        ]
     });
     
     $(document).ready(function () {
