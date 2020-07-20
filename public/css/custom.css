@@ -39,6 +39,20 @@ body::after{ content:''; display:block; height:100px; }
     font-weight: 50;
 }
 
+.rollup_button{
+    position: fixed;
+    width: 4rem;
+    height: 3rem;
+    margin-left:4rem;
+    right: 4rem;
+    bottom: 2rem;
+    z-index:9999;
+    border-radius: 10px;
+    border-style: none;
+    cursor:pointer;
+    background-color: rgba(255, 255, 255, 0.575);
+}
+
 
 @media (max-width: 1080px) {
 
@@ -65,11 +79,14 @@ body::after{ content:''; display:block; height:100px; }
         margin-right:5px;
     }
 
-
-
     .home_button{
         margin-top:10px;
     } 
+
+    .rollup_button{
+        right: 1.5rem;
+    }
+  
 }
 
 /*подзаголовок сайтаю, h2*/
@@ -228,3 +245,4 @@ body::after{ content:''; display:block; height:100px; }
     border-left-style: solid; 
     border-color: rgba(255, 255, 255, 0.336);
 }
+

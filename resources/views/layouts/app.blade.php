@@ -56,6 +56,13 @@
         <link href="{{asset('css/bulma-radio-checkbox.min.css')}}" rel="stylesheet">
     </head>
     <body>
+
+      <button class="rollup_button invisible" id="rollup_button">
+          <span>
+              <i class="fas fa-chevron-up" style="font-size: 1.8rem;"></i>
+          </span>
+      </button>
+
         <section class="hero header">
             <div class="hero-body">
                 <div class="container has-text-centered">
