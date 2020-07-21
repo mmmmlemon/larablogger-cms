@@ -81,7 +81,7 @@ $(document).ready(function(){
 
 
     //paragraph fix
-    parapgraph_workaround();
+    paragraph_workaround();
 
 });
 

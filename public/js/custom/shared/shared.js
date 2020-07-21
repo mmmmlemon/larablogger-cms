@@ -1,6 +1,4 @@
 //shared functions
-$(document).ready(function(){
-
     //ajax-request for temp folder purge
     var clear_temp = function () {
         $.ajax('/clear_temp', {
@@ -11,7 +9,7 @@ $(document).ready(function(){
     }
 
     //trumblewyg paragraph margin workaround
-    var parapgraph_workaround = function () {
+    var paragraph_workaround = function () {
         var p_fixes =  $(".p_fix"); //get all elements that require a workaround
         for(p of p_fixes)
         {
@@ -24,6 +22,9 @@ $(document).ready(function(){
             }
         }
     }
+
+
+$(document).ready(function(){
 
     var lastScrollTop = 0;
     $(window).scroll(function (event) {
@@ -42,9 +43,7 @@ $(document).ready(function(){
                 $("#rollup_button").addClass("invisible").removeClass("fade-in");
             }
         }
-        lastScrollTop = st;
-
-       
+        lastScrollTop = st;  
     });
 
     $("#rollup_button").on('click', function(){
@@ -53,3 +52,7 @@ $(document).ready(function(){
     });
 
 });
+
+
+
+  

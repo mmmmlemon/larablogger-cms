@@ -3,21 +3,10 @@
 //turn off autodiscover for Dropzone
 Dropzone.autoDiscover = false;
 
-
-
 var canceled = false;
 
 //list of uploaded files
 var uploaded_files = [];
-
-//ajax-request, clear temp folder
-var clear_temp = function () {
-    $.ajax('/clear_temp', {
-        success: function (data, status, xhr) {
-            console.log("%cTemp directory has been p u r g e d", "color: red;");
-        }
-    });
-}
 
 //initializing dropzone with options
 var dropzone = $("#file_form").dropzone({
