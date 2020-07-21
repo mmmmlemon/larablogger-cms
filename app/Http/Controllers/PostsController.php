@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Validator;
 use Storage;
 use File;
+use Jenssegers\Agent\Agent;
 
 //functions related to Post contol
 class PostsController extends Controller
@@ -296,6 +297,8 @@ class PostsController extends Controller
     //view all posts on the main page of the website
     public function index()
     {
+        $agent = new Agent();
+
         //get all the visible posts and sort them by date (desc)
         $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
 
