@@ -299,6 +299,8 @@ class PostsController extends Controller
     {
         $agent = new Agent();
 
+        $isMobile = $agent->isMobile();
+
         //get all the visible posts and sort them by date (desc)
         $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
 
@@ -356,7 +358,7 @@ class PostsController extends Controller
         //set tag name to null to avoid error when posts aren't sorted by tag
         $tag_name = null;
 
-        return view('home', compact('posts', 'tag_name'));
+        return view('home', compact('posts', 'tag_name','isMobile'));
     }
 
     //view post

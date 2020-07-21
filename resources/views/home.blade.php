@@ -1,6 +1,41 @@
 @extends('layouts.app')
-
 @section('content')
+    {{-- grid/list view --}}
+    {{-- search --}}
+    @if($isMobile == false)
+    <div class="container white-bg">
+        <div class="columns">
+            <div class="buttons has-addons" style="width:7rem; margin-left:2pt; margin-top:4pt; margin-bottom:0;">
+                <button class="button view_button_active" data-tooltip="Grid view">
+                    <span>
+                        <i class="fas fa-grip-horizontal"></i>
+                    </span>
+                </button>
+                <button class="button view_button" data-tooltip="List view">
+                    <span>
+                        <i class="fas fa-list"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="" style="width:100%; margin-left:2pt; margin-top:4pt; margin-bottom:0;">
+                <div class="field has-addons">
+                    <div class="control has-icons-left"  style="width:60%;">
+                      <input class="input" type="text" placeholder="Find a repository">
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                      </span>
+                    </div>
+                    <div class="control">
+                      <a class="button is-info">
+                        Search
+                      </a>
+                    </div>
+                  </div>
+        
+            </div>
+        </div>
+    </div>
+    @endif
     <div class="container">
         @if($tag_name != null)
             <div class="white-bg has-text-centered">

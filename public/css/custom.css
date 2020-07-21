@@ -246,3 +246,15 @@ body::after{ content:''; display:block; height:100px; }
     border-color: rgba(255, 255, 255, 0.336);
 }
 
+.view_button{
+    background-color: rgba(255, 255, 255, 0.507);
+}
+
+.view_button_active{
+    background-color: rgba(255, 255, 255, 0.699);
+}
+
+.view_button_active:active, .view_button:active{
+    background-color: rgba(255, 255, 255, 0.897);
+}
+
