@@ -17,6 +17,7 @@ Route::feeds();
 
 //COOKIES
 Route::get('/setCookie','HomeController@setCookie');
+Route::post('/change_view_type','HomeController@change_view_type');
 
 //routes available for everyone
 Route::get('/', 'PostsController@index'); //index page

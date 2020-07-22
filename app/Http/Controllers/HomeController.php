@@ -50,6 +50,14 @@ class HomeController extends Controller
         } 
      }
 
+     public function change_view_type(Request $request)
+     {
+        $response = new Response("The 'view_type' cookie has been set.");
+        $response->withCookie(cookie('view_type', $request->view_type, $request->view_type));
+
+        return $response;
+     }
+
      //view About page
     public function about()
     {

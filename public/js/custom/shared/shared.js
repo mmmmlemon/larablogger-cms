@@ -25,8 +25,55 @@
 
     //set 'view_type' cookie
     $.ajax('/setCookie');
-    
+ 
 $(document).ready(function(){
+
+        //list view press
+        $("#list_view").on("click", function(){
+            //csrf-token for ajax request
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //ajax-request
+            $.ajax({
+                type: 'POST',
+                url: `/change_view_type`,
+                data: {
+                   view_type: "list"
+                },
+                //redirect to posts on success
+                success: function (response) {
+                   window.location.replace("/");
+                }
+            });
+        });
+
+        //list grid press
+        $("#grid_view").on("click", function(){
+            //csrf-token for ajax request
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //ajax-request
+            $.ajax({
+                type: 'POST',
+                url: `/change_view_type`,
+                data: {
+                   view_type: "grid"
+                },
+                //redirect to posts on success
+                success: function (response) {
+                   window.location.replace("/");
+                }
+            });
+        });
+
 
     var lastScrollTop = 0;
     $(window).scroll(function (event) {
