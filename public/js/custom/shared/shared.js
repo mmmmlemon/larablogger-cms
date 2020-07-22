@@ -23,7 +23,9 @@
         }
     }
 
-
+    //set 'view_type' cookie
+    $.ajax('/setCookie');
+    
 $(document).ready(function(){
 
     var lastScrollTop = 0;

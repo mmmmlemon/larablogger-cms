@@ -15,6 +15,9 @@ use Carbon\Carbon;
 
 Route::feeds();
 
+//COOKIES
+Route::get('/setCookie','HomeController@setCookie');
+
 //routes available for everyone
 Route::get('/', 'PostsController@index'); //index page
 Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category'); //view posts by category

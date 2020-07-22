@@ -295,8 +295,15 @@ class PostsController extends Controller
 
     //VIEWS
     //view all posts on the main page of the website
-    public function index()
+    public function index(Request $request)
     {
+        $view_type = $request->cookie('view_type');
+
+        if($view_type == null)
+        {
+            $view_type = App\Settings::all()[0]->view_type;
+        }
+
         $agent = new Agent();
 
         $isMobile = $agent->isMobile();
@@ -357,8 +364,8 @@ class PostsController extends Controller
         //for sorting by tag
         //set tag name to null to avoid error when posts aren't sorted by tag
         $tag_name = null;
-
-        return view('home', compact('posts', 'tag_name','isMobile'));
+        
+        return view('home', compact('posts', 'tag_name','isMobile', 'view_type'));
     }
 
     //view post

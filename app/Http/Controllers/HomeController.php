@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App;
 use Auth;
+use Illuminate\Http\Response;
 
 class HomeController extends Controller
 {
@@ -26,11 +27,30 @@ class HomeController extends Controller
 
     //view the index page of the website
     public function index()
-    {
+    {   
         return view('home');
     }
 
-    //view About page
+    //set 'view_type' cookie
+    public function setCookie(Request $request)
+    {
+        $value = $request->cookie('view_type');
+        
+        if($value == null)
+        {
+            $view_type = App\Settings::all()[0]->view_type;
+            $response = new Response("The 'view_type' cookie has been set.");
+            $response->withCookie(cookie('view_type', $view_type, $view_type));
+            return $response;
+        }
+        else
+        {
+            $response = new Response("The 'view_type' cookie was already set.");
+            return $response;
+        } 
+     }
+
+     //view About page
     public function about()
     {
         $content = App\Settings::get()[0]->about_content;
