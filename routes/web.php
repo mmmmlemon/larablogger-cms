@@ -16,7 +16,7 @@ use Carbon\Carbon;
 Route::feeds();
 
 //COOKIES
-Route::get('/setCookie','HomeController@setCookie');
+Route::post('/setCookie','HomeController@setCookie');
 Route::post('/change_view_type','HomeController@change_view_type');
 
 //routes available for everyone

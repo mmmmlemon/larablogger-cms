@@ -24,7 +24,12 @@
     }
 
     //set 'view_type' cookie
-    $.ajax('/setCookie');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({type:'POST',url:'/setCookie'});
  
 $(document).ready(function(){
 
@@ -40,9 +45,10 @@ $(document).ready(function(){
             //ajax-request
             $.ajax({
                 type: 'POST',
-                url: `/change_view_type`,
+                url: `/setCookie`,
                 data: {
-                   view_type: "list"
+                   view_type: "list",
+                   change_view: true
                 },
                 //redirect to posts on success
                 success: function (response) {
@@ -63,9 +69,10 @@ $(document).ready(function(){
             //ajax-request
             $.ajax({
                 type: 'POST',
-                url: `/change_view_type`,
+                url: `/setCookie`,
                 data: {
-                   view_type: "grid"
+                   view_type: "grid",
+                   change_view: true
                 },
                 //redirect to posts on success
                 success: function (response) {

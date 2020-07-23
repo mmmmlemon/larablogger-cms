@@ -35,30 +35,32 @@ class HomeController extends Controller
     public function setCookie(Request $request)
     {
         $value = $request->cookie('view_type');
-        
-        if($value == null)
+
+        if($request->change_view == null)
         {
-            $view_type = App\Settings::all()[0]->view_type;
+            if($value == null)
+            {
+                $view_type = App\Settings::all()[0]->view_type;
+                $response = new Response("The 'view_type' cookie has been set.");
+                $response->withCookie(cookie('view_type', $view_type, $view_type));
+                return $response;
+            }
+            else
+            {
+                $response = new Response("The 'view_type' cookie was already set.");
+                return $response;
+            } 
+        }
+        if($request->change_view == true)
+        {
             $response = new Response("The 'view_type' cookie has been set.");
-            $response->withCookie(cookie('view_type', $view_type, $view_type));
+            $response->withCookie(cookie('view_type', $request->view_type, $request->view_type));
             return $response;
         }
-        else
-        {
-            $response = new Response("The 'view_type' cookie was already set.");
-            return $response;
-        } 
-     }
+     
+    }
 
-     public function change_view_type(Request $request)
-     {
-        $response = new Response("The 'view_type' cookie has been set.");
-        $response->withCookie(cookie('view_type', $request->view_type, $request->view_type));
-
-        return $response;
-     }
-
-     //view About page
+    //view About page
     public function about()
     {
         $content = App\Settings::get()[0]->about_content;

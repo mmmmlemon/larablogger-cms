@@ -11,7 +11,7 @@
                         <i class="fas fa-grip-horizontal"></i>
                     </span>
                 </button>
-                <button class="button @if($view_type == 'list') view_button_active @else view_button @endif" id="list_view">
+                <button class="button @if($view_type == 'list') view_button_active ignore @else view_button @endif" id="list_view">
                     <span>
                         <i class="fas fa-list"></i>
                     </span>
@@ -41,9 +41,11 @@
                 <h1 class="title post_title">Posts by tag '{{$tag_name}}'</h1>
             </div>
         @endif
-        @if($view_type == 'grid')
+        @if($view_type == 'grid' && $isMobile == false)
             @yield('grid_view', View::make('posts/grid_view'))
-        @elseif($view_type == 'list')
+        @elseif($view_type == 'list' && $isMobile == false)
+            @yield('list_view', View::make('posts/list_view'))
+        @elseif($isMobile == true)
             @yield('list_view', View::make('posts/list_view'))
         @else
             
