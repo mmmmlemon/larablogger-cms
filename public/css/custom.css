@@ -258,3 +258,11 @@ body::after{ content:''; display:block; height:100px; }
     background-color: rgba(255, 255, 255, 0.897);
 }
 
+.custom_card{
+    background-color: rgba(255, 255, 255, 0.76);
+    border-radius: 20px 20px;
+}
+
+.custom_card_rooftop{
+    border-radius: 20px 20px 0 0;
+}

@@ -1,4 +1,4 @@
 {{-- List view for posts --}}
-<div class="white-bg">
-    <h1 class="title">List View</h1>
-</div>
+@foreach($posts as $post)
+    @yield('post', View::make('post_template', compact('post')))
+@endforeach

@@ -13,7 +13,7 @@
                 </button>
                 <button class="button @if($view_type == 'list') view_button_active ignore @else view_button @endif" id="list_view">
                     <span>
-                        <i class="fas fa-list"></i>
+                        <i class="fas fa-bars"></i>
                     </span>
                 </button>
             </div>
@@ -41,24 +41,33 @@
                 <h1 class="title post_title">Posts by tag '{{$tag_name}}'</h1>
             </div>
         @endif
-        @if($view_type == 'grid' && $isMobile == false)
-            @yield('grid_view', View::make('posts/grid_view'))
-        @elseif($view_type == 'list' && $isMobile == false)
-            @yield('list_view', View::make('posts/list_view'))
-        @elseif($isMobile == true)
-            @yield('list_view', View::make('posts/list_view'))
+        @if(count($posts)>0)
+            @if($view_type == 'grid' && $isMobile == false)
+                @yield('grid_view', View::make('posts/grid_view', compact('posts')))
+            @elseif($view_type == 'list' && $isMobile == false)
+                @yield('list_view', View::make('posts/list_view', compact('posts')))
+            @elseif($isMobile == true)
+                @yield('list_view', View::make('posts/list_view', compact('posts')))
+            @else
+                
+            @endif
         @else
-            
+            <div class="white-bg has-text-centered">
+                <h1 class="title">Nothing to see here yet</h1>
+                <i class="fas fa-hand-peace"></i>
+                <h1 class="subtitle">Come again later</h1>
+            </div>
         @endif
+        <div>
+            {{ $posts->links('pagination.default') }}
+        </div>
         {{-- @if(count($posts) > 0)
             <div class="">
                 @foreach($posts as $post)
                     @yield('post', View::make('post_template', compact('post')))
                 @endforeach
             </div>
-            <div>
-                {{ $posts->links('pagination.default') }}
-            </div>
+          
         @else
             <div class="white-bg has-text-centered">
                 <h1 class="title">Nothing to see here yet</h1>

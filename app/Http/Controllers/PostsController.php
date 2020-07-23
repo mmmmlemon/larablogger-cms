@@ -309,7 +309,7 @@ class PostsController extends Controller
         $isMobile = $agent->isMobile();
 
         //get all the visible posts and sort them by date (desc)
-        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
+        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(9);
 
         foreach($posts as $post)
         {
