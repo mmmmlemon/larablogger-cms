@@ -11,6 +11,7 @@ $('.share-button').on('click', function () {
 
 const players = Plyr.setup('.video-player');
 
+
 var img_height = $("#img-in-modal").height();
 
 //show image preview modal
@@ -33,5 +34,20 @@ $(".imagee").click(function () {
 $("#modal-close").click(function () {
     $("#img-modal").removeClass("is-active");
     $("#img-in-modal").width("").height("");
+});
+
+// $(window).on('load',function(){
+
+//     var video_players = $(".video-player");
+//         for(var vp of video_players)
+//         {
+//             var parent = $(vp).parents('div[class^="column is-4 transparent"]').eq(0);
+//             $(parent).addClass("fade-in").removeClass("transparent");
+//         }
+// });
+
+$(".video-player").on('ready', function(){
+    var parent = $(this).parents('div[class^="column is-4 transparent"]').eq(0);
+    $(parent).addClass("fade-in").removeClass("transparent");
 });
 
