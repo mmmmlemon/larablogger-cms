@@ -6,14 +6,14 @@
     <div class="container white-bg">
         <div class="columns">
             <div class="buttons has-addons" style="width:7rem; margin-left:2pt; margin-top:4pt; margin-bottom:0;">
-                <button class="button @if($view_type == 'grid') view_button_active ignore @else view_button @endif" id="grid_view">
-                    <span>
-                        <i class="fas fa-grip-horizontal"></i>
-                    </span>
-                </button>
                 <button class="button @if($view_type == 'list') view_button_active ignore @else view_button @endif" id="list_view">
                     <span>
                         <i class="fas fa-bars"></i>
+                    </span>
+                </button>
+                <button class="button @if($view_type == 'grid') view_button_active ignore @else view_button @endif" id="grid_view">
+                    <span>
+                        <i class="fas fa-grip-horizontal"></i>
                     </span>
                 </button>
             </div>
@@ -61,20 +61,6 @@
         <div>
             {{ $posts->links('pagination.default') }}
         </div>
-        {{-- @if(count($posts) > 0)
-            <div class="">
-                @foreach($posts as $post)
-                    @yield('post', View::make('post_template', compact('post')))
-                @endforeach
-            </div>
-          
-        @else
-            <div class="white-bg has-text-centered">
-                <h1 class="title">Nothing to see here yet</h1>
-                <i class="fas fa-hand-peace"></i>
-                <h1 class="subtitle">Come again later</h1>
-            </div>
-        @endif --}}
     </div>
 @endsection
 

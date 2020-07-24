@@ -117,7 +117,7 @@
   <div class="columns">
     <div class="column">
         <div class="subtitle">{{$post->comment_count}} / <a href="#comment_form">Leave a comment</a></div> 
-            @include('comment_tree',['comments'=>$comments])
+            @include('posts/comment_tree',['comments'=>$comments])
     </div>
   </div>
 </div>

@@ -14,7 +14,7 @@ class AddViewTypeToSettings extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->enum("view_type",["grid","list"]);
+            $table->enum("view_type",["list","grid"]);
 
         });
     }
