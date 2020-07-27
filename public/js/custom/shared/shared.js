@@ -52,7 +52,7 @@ $(document).ready(function(){
                 },
                 //redirect to posts on success
                 success: function (response) {
-                   window.location.replace("/");
+                   window.location.replace(window.location);
                 }
             });
         });
@@ -76,8 +76,7 @@ $(document).ready(function(){
                 },
                 //redirect to posts on success
                 success: function (response) {
-                   
-                   window.location.replace("/");
+                   window.location.replace(window.location);
                 }
             });
         });
