@@ -112,6 +112,49 @@ $(document).ready(function(){
 
 });
 
+//Cookie Message
+$(document).ready(function(){
+    //ajax-request
+    $.ajax({
+        type: 'GET',
+        url: `/check_first_visit`,
+        //success
+        success: function (response) {
+            if(response === "1")
+            {
+                $("#cookies_message").removeClass("invisible").addClass("slideUp");
+                $("#ok_cookie").click(function(){   
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    //ajax-request
+                    $.ajax({
+                        type: 'POST',
+                        url: `/set_first_visit`,
+                        //success
+                        success: function (response) {     
+                            $("#cookies_message").remove();
+                        }
+                    });
+                })
+        
+
+            }
+            else
+            {
+                $("#cookies_message").remove();
+            }
+        }
+    });
+})
+
+
+
+
+
 
 
   

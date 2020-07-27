@@ -246,6 +246,31 @@
             <button class="modal-close is-large" id="contact_close" aria-label="close"></button>
         </div>
 
+        {{-- Cookies Message --}}
+        @if($isMobile == false)
+            <div class="white-bg invisible cookies_message" id="cookies_message">
+                <p>This web-site uses cookies to enhance your experience. It is used for the UI to work properly.</p>
+                <hr>
+                <button id="ok_cookie" class="button is-link">
+                    <span class="icon is-small">
+                        <i class="fa fa-cookie-bite"></i>
+                    </span>
+                    <span>Got it!</span>
+                </button>
+            </div>
+        @else
+            <div class="white-bg invisible cookies_message_mobile" id="cookies_message">
+                <p>This web-site uses cookies to enhance your experience. It is used for the UI to work properly.</p>
+                <br>
+                  <button id="ok_cookie" class="button is-link is-small is-fullwidth">
+                      <span class="icon is-small">
+                          <i class="fa fa-cookie-bite"></i>
+                      </span>
+                      <span>Got it!</span>
+                    </button>
+            </div>
+        @endif
+
         @yield('modals')
     </body>
 </html>

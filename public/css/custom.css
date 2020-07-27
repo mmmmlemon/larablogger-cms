@@ -275,3 +275,20 @@ body::after{ content:''; display:block; height:100px; }
     opacity: 0;
 }
 
+.cookies_message{
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 14rem;
+}
+
+.cookies_message_mobile{
+    position: fixed;
+    bottom:0px;
+    font-size: 10pt;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color:rgba(255, 255, 255, 0.829);
+    margin:0;
+    z-index: 9999;
+}

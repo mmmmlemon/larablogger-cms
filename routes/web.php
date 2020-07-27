@@ -18,6 +18,8 @@ Route::feeds();
 //COOKIES
 Route::post('/setCookie','HomeController@setCookie');
 Route::post('/change_view_type','HomeController@change_view_type');
+Route::get('/check_first_visit', 'HomeController@check_first_visit');
+Route::post('/set_first_visit', 'HomeController@set_first_visit');
 
 //routes available for everyone
 Route::get('/', 'PostsController@index'); //index page

@@ -33,7 +33,7 @@ class HomeController extends Controller
 
     //set 'view_type' cookie
     public function setCookie(Request $request)
-    {
+    {   
         $value = $request->cookie('view_type');
 
         if($request->change_view == null)
@@ -57,7 +57,27 @@ class HomeController extends Controller
             $response->withCookie(cookie('view_type', $request->view_type, $request->view_type));
             return $response;
         }
-     
+    }
+
+    //check if its first visit
+    public function check_first_visit(Request $request)
+    {
+        $value = $request->cookie('visitedBefore');
+        if($value == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function set_first_visit(Request $request)
+    {
+        $response = new Response("The 'visitedBefore' cookie has been set.");
+        $response->withCookie(cookie('visitedBefore', true, true));
+        return $response;
     }
 
     //view About page

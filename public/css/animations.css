@@ -39,6 +39,14 @@
     -ms-animation: slideDown ease 0.3s;
   }
 
+  .slideUp{
+    animation: slideUp ease 0.2s;
+    -webkit-animation: slideUp ease 0.3s;
+    -moz-animation: slideUp ease 0.3s;
+    -o-animation: slideUp ease 0.3s;
+    -ms-animation: slideUp ease 0.3s;
+  }
+
 
   @keyframes bounceIn{
     0%{
@@ -153,7 +161,7 @@
     }
   }
 
-
+/* SLIDE DOWN */
   @keyframes slideDown{
     0% {
       opacity:0;
@@ -210,6 +218,64 @@
     100% {
       opacity:1;
       top:0px;
+    }
+  }
+
+  /* SLIDE UP */
+  @keyframes slideUp{
+    0% {
+      opacity:0;
+      bottom:-20px;
+    }
+    100% {
+      opacity:1;
+      bottom:0px;
+    }
+  }
+
+  
+  @-moz-keyframes slideUp{
+    0% {
+      opacity:0;
+      bottom:-20px;
+    }
+    100% {
+      opacity:1;
+      bottom:0px;
+    }
+  }
+
+  
+  @-webkit-keyframes slideUp{
+    0% {
+      opacity:0;
+      bottom:-20px;
+    }
+    100% {
+      opacity:1;
+      bottom:0px;
+    }
+  }
+
+  @-o-keyframes slideUp{
+    0% {
+      opacity:0;
+      bottom:-20px;
+    }
+    100% {
+      opacity:1;
+      bottom:0px;
+    }
+  }
+
+  @-ms-keyframes slideUp{
+    0% {
+      opacity:0;
+      bottom:-20px;
+    }
+    100% {
+      opacity:1;
+      bottom:0px;
     }
   }
 
