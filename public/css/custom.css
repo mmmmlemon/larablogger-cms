@@ -201,6 +201,10 @@ body::after{ content:''; display:block; height:100px; }
     margin: 0 auto;
 }
 
+.imagee{
+    cursor: pointer;
+}
+
 .black_screen{
     background-color: rgba(0,0,0,0.45);
     position: fixed;
@@ -270,3 +274,4 @@ body::after{ content:''; display:block; height:100px; }
 .transparent{
     opacity: 0;
 }
+

@@ -2,7 +2,7 @@
         <div class="card custom_card">
             <div class="card-image">
                 @if($post->media_type == "image")
-                    <figure class="has-text-centered">
+                    <figure class="has-text-centered image_figure">
                         <img class="imagee custom_card_rooftop" src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
                         {{-- @if(count($post->media) > 1)
                             <p><a href="/post/{{$post->id}}">(and {{count($post->media)-1}} more images)</a></p>
