@@ -46,8 +46,7 @@ $("#modal-close").click(function () {
 //         }
 // });
 
-$(".video-player").on('ready', function(){
-    var parent = $(this).parents('div[class^="column is-4 transparent"]').eq(0);
-    $(parent).addClass("fade-in").removeClass("transparent");
-});
-
+// show grid after the page has been loaded
+$(window).on('load',function(){
+    $(".grid_element").removeClass("transparent").addClass("fade-in");
+})

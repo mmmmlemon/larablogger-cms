@@ -299,6 +299,8 @@ class PostsController extends Controller
     {
         $view_type = $request->cookie('view_type');
 
+        $paginate = 9;
+
         if($view_type == null)
         {
             $view_type = App\Settings::all()[0]->view_type;
@@ -308,8 +310,13 @@ class PostsController extends Controller
 
         $isMobile = $agent->isMobile();
 
+        if($view_type == 'grid')
+        {
+            $paginate = 27;
+        }
+
         //get all the visible posts and sort them by date (desc)
-        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate(9);
+        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate($paginate);
 
         foreach($posts as $post)
         {

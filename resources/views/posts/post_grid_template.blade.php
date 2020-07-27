@@ -1,4 +1,4 @@
-    <div class="column is-4 transparent">
+     <div class="column is-4 grid_element transparent">
         <div class="card custom_card">
             <div class="card-image">
                 @if($post->media_type == "image")
@@ -43,10 +43,11 @@
                 <br><br>
             @endif
                 <a href="/post/{{$post->id}}#comments">{{$post->comment_count}}</a><br>
-                @foreach($post->tags as $tag)
-                <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
-            @endforeach
-    
+                @if($post->tags != null)
+                    @foreach($post->tags as $tag)
+                        <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
+                    @endforeach
+                @endif
             </div>
             </div>
         </div>
