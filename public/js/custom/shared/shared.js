@@ -76,6 +76,7 @@ $(document).ready(function(){
                 },
                 //redirect to posts on success
                 success: function (response) {
+                   
                    window.location.replace("/");
                 }
             });

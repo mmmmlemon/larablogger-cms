@@ -500,9 +500,20 @@ class PostsController extends Controller
     }
 
     //view all posts by tag
-    public function show_posts_by_tag ($tag)
+    public function show_posts_by_tag ($tag, Request $request)
     {
         $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
+
+        $view_type = $request->cookie('view_type');
+
+        if($view_type == null)
+        {
+            $view_type = App\Settings::all()[0]->view_type;
+        }
+
+        $agent = new Agent();
+
+        $isMobile = $agent->isMobile();
 
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
@@ -540,7 +551,7 @@ class PostsController extends Controller
 
         $tag_name = $tag;
 
-        return view('home', compact('posts','tag_name'));
+        return view('home', compact('posts','tag_name','isMobile', 'view_type'));
     }
 
     //change post visibility
