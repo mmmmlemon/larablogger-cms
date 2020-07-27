@@ -33,3 +33,7 @@ $('.share-button').on('click', function () {
         $(id).addClass("invisible");
     }
 });
+
+$(window).on('load',function(){
+    $(".grid_element").removeClass("transparent").addClass("fade-in");
+})

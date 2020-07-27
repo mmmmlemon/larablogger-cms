@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App;
 use Carbon\Carbon;
+use Jenssegers\Agent\Agent;
 
 //functions related to Categories
 
@@ -86,13 +87,31 @@ class CategoryController extends Controller
 
     //POSTS DISPLAY
     //show Posts by a Category
-    public function show_posts_by_category($category_name)
+    public function show_posts_by_category($category_name, Request $request)
     {
+        $view_type = $request->cookie('view_type');
+
+        $paginate = 9;
+
+        if($view_type == null)
+        {
+            $view_type = App\Settings::all()[0]->view_type;
+        }
+        if($view_type == 'grid')
+        {
+            $paginate = 27;
+        }
+
+
+        $agent = new Agent();
+
+        $isMobile = $agent->isMobile();
+
         //get the Category by the name (from route url)
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
         //get all the posts in this Category by its id
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate(7);
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate($paginate);
 
         //for each Post in the list do this
         foreach($posts as $post)
@@ -136,7 +155,7 @@ class CategoryController extends Controller
           }
         }
         
-        return view('category_view', compact('categ', 'posts'));
+        return view('category_view', compact('categ', 'posts','isMobile','view_type'));
     }
 
     //raise a Category in the list of Categories

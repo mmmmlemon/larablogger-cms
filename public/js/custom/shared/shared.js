@@ -33,6 +33,7 @@
  
 $(document).ready(function(){
 
+        
         //list view press
         $("#list_view").on("click", function(){
             //csrf-token for ajax request
@@ -52,7 +53,8 @@ $(document).ready(function(){
                 },
                 //redirect to posts on success
                 success: function (response) {
-                   window.location.replace(window.location);
+                    var url = window.location.toString();
+                    window.location.replace(url.slice(0,url.indexOf("?page=")+1));;
                 }
             });
         });
@@ -76,7 +78,8 @@ $(document).ready(function(){
                 },
                 //redirect to posts on success
                 success: function (response) {
-                   window.location.replace(window.location);
+                    var url = window.location.toString();
+                    window.location.replace(url.slice(0,url.indexOf("?page=")+1));
                 }
             });
         });

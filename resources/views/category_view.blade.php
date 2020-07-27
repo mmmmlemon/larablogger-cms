@@ -1,19 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- grid/list view --}}
+    {{-- search --}}
+    @if($isMobile == false)
+        @yield("search_and_view", View::make('search_and_view', compact('view_type')))
+    @endif
     <div class="container">
         <div class="white-bg has-text-centered">
             <h1 class="title post_title">{{$categ->category_name}}</h1>
         </div>
-        @if(count($posts) > 0)
-            <div class="">
-                @foreach($posts as $post)
-                    @yield('post', View::make('posts/post_template', compact('post')))
-                @endforeach
-            </div>
-            <div>
-                {{ $posts->links('pagination.default') }}
-            </div>
+        @if(count($posts)>0)
+            @if($view_type == 'grid' && $isMobile == false)
+                @yield('grid_view', View::make('posts/grid_view', compact('posts')))
+            @elseif($view_type == 'list' && $isMobile == false)
+                @yield('list_view', View::make('posts/list_view', compact('posts')))
+            @elseif($isMobile == true)
+                @yield('list_view', View::make('posts/list_view', compact('posts')))
+            @else
+                
+            @endif
         @else
             <div class="white-bg has-text-centered">
                 <h1 class="title">Nothing to see here yet</h1>
@@ -21,6 +27,9 @@
                 <h1 class="subtitle">Come again later</h1>
             </div>
         @endif
+    <div>
+        {{ $posts->links('pagination.default') }}
+    </div>
     </div>
 @endsection
 
