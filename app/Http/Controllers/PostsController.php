@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use DB;
+
 use App;
 use Auth;
 use Carbon\Carbon;
@@ -688,7 +690,16 @@ class PostsController extends Controller
     //search post function
     public function search_post(Request $request)
     {   
-        dd($request->value);
+        $val = $request->value;
+
+        $result = DB::table('posts')->select('id','post_title','post_content')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->get();
+
+        foreach($result as $r)
+        {
+            $r->post_content = strip_tags($r->post_content);
+        }
+
+        return json_encode($result);
     }
 
 } 
