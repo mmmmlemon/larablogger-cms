@@ -122,7 +122,7 @@ $(document).ready(function(){
         success: function (response) {
             if(response === "1")
             {
-                $("#cookies_message").removeClass("invisible").addClass("slideUp");
+                // $("#cookies_message").removeClass("invisible").addClass("slideUp");
                 $("#ok_cookie").click(function(){   
                     $.ajaxSetup({
                         headers: {
@@ -149,7 +149,28 @@ $(document).ready(function(){
             }
         }
     });
-})
+
+
+    $("#search_bar").on('keyup', function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '/search_post',
+            data: {
+                value: $(this).val()
+            },
+            success: function(response)
+            {
+               // console.log(response);
+            }
+        })
+    });
+
+});
 
 
 

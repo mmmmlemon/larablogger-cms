@@ -21,6 +21,9 @@ Route::post('/change_view_type','HomeController@change_view_type');
 Route::get('/check_first_visit', 'HomeController@check_first_visit');
 Route::post('/set_first_visit', 'HomeController@set_first_visit');
 
+//SEARCH
+Route::post('/search_post', 'PostsController@search_post');
+
 //routes available for everyone
 Route::get('/', 'PostsController@index'); //index page
 Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category'); //view posts by category

@@ -15,7 +15,7 @@
         <div class="" style="width:100%; margin-left:2pt; margin-top:4pt; margin-bottom:0;">
             <div class="field has-addons">
                 <div class="control has-icons-left"  style="width:60%;">
-                  <input class="input" type="text" placeholder="Search">
+                  <input class="input" type="text" placeholder="Search" id="search_bar">
                   <span class="icon is-small is-left">
                     <i class="fas fa-search"></i>
                   </span>

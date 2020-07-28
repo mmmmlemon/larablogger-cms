@@ -675,13 +675,20 @@ class PostsController extends Controller
         {
             $post->pinned = 1;
         }
-        else{
+        else
+        {
             $post->pinned = 0;
         }
 
         $post->save();
 
         return redirect()->back();
+    }
+
+    //search post function
+    public function search_post(Request $request)
+    {   
+        dd($request->value);
     }
 
 } 
