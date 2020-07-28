@@ -2,7 +2,7 @@
 @section('content')
     {{-- grid/list view --}}
     {{-- search --}}
-    @if($isMobile == false)
+    @if(config('isMobile') == false)
         @yield("search_and_view", View::make('search_and_view', compact('view_type')))
     @endif
     <div class="container">
@@ -12,11 +12,11 @@
             </div>
         @endif
         @if(count($posts)>0)
-            @if($view_type == 'grid' && $isMobile == false)
+            @if($view_type == 'grid' && config('isMobile') == false)
                 @yield('grid_view', View::make('posts/grid_view', compact('posts')))
-            @elseif($view_type == 'list' && $isMobile == false)
+            @elseif($view_type == 'list' && config('isMobile') == false)
                 @yield('list_view', View::make('posts/list_view', compact('posts')))
-            @elseif($isMobile == true)
+            @elseif(config('isMobile') == true)
                 @yield('list_view', View::make('posts/list_view', compact('posts')))
             @else
                 

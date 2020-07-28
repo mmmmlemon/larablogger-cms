@@ -306,10 +306,6 @@ class PostsController extends Controller
             $view_type = App\Settings::all()[0]->view_type;
         }
 
-        $agent = new Agent();
-
-        $isMobile = $agent->isMobile();
-
         if($view_type == 'grid')
         {
             $paginate = 27;
@@ -372,7 +368,7 @@ class PostsController extends Controller
         //set tag name to null to avoid error when posts aren't sorted by tag
         $tag_name = null;
         
-        return view('home', compact('posts', 'tag_name','isMobile', 'view_type'));
+        return view('home', compact('posts', 'tag_name', 'view_type'));
     }
 
     //view post
@@ -511,10 +507,6 @@ class PostsController extends Controller
             $view_type = App\Settings::all()[0]->view_type;
         }
 
-        $agent = new Agent();
-
-        $isMobile = $agent->isMobile();
-
         foreach($posts as $post){
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
@@ -551,7 +543,7 @@ class PostsController extends Controller
 
         $tag_name = $tag;
 
-        return view('home', compact('posts','tag_name','isMobile', 'view_type'));
+        return view('home', compact('posts','tag_name', 'view_type'));
     }
 
     //change post visibility

@@ -247,7 +247,7 @@
         </div>
 
         {{-- Cookies Message --}}
-        @if($isMobile == false)
+        @if(config('isMobile') == false)
             <div class="white-bg invisible cookies_message" id="cookies_message">
                 <p>This web-site uses cookies to enhance your experience. It is used for the UI to work properly.</p>
                 <hr>

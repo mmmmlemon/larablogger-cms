@@ -21,7 +21,7 @@
                   </span>
                 </div>
                 <div class="control">
-                  <a class="button is-info">
+                  <a class="button is-link">
                     Search
                   </a>
                 </div>

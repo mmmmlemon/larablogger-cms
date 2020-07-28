@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Schema;
+use Jenssegers\Agent\Agent;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+        config(['isMobile' => $isMobile]);
     }
 }
