@@ -175,6 +175,7 @@ $(document).ready(function(){
                    console.log(result);
                     
                    $("#search_results").html("");
+                   $("#search_bar_div").toggleClass("is-loading");
     
                    for(var el of result)
                    {
@@ -183,12 +184,11 @@ $(document).ready(function(){
                         <p>${el.post_content}</p><br>
                         <p><a href="/category/${el.category}">${el.category}</a> | ${el.date}</p></div>`);
                    }
-                   
                 }
             });
+
+            $("#search_bar_div").toggleClass("is-loading");
         }
-        
-   
     });
 
 });
