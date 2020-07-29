@@ -34,6 +34,7 @@
 //on document fully loaded
 $(document).ready(function(){
     
+    //switch posts view between List and Grid
     function change_preferred_view(view)
     {
         //csrf-token for ajax request
@@ -54,9 +55,21 @@ $(document).ready(function(){
             //redirect to current page
             success: function (response) {
                 var url = window.location.toString();
-                window.location.replace(url.slice(0,url.indexOf("?page=")+1)); //remove '?page' attribute, to avoid redirect to non existant page
+                window.location.replace(url.slice(0,url.indexOf("?page=")+1)); //remove '?page' attribute, to avoid redirect to a non existant page
             }
         });
+    }
+
+    //hightlight for search results
+    function highlight_substr(str, substr){
+        
+        var indexOfSubstr = str.toLowerCase().indexOf(substr.toLowerCase());
+
+        var extracted = str.substring(indexOfSubstr, indexOfSubstr + substr.length);
+        var extract = "<b>"+extracted+"</b>";
+
+        var new_string = str.substring(0,indexOfSubstr) + extract + str.substring(indexOfSubstr+substr.length, str.length);
+        return `<p>${new_string}</p>`;
     }
 
     //when 'List View' is selected
@@ -97,10 +110,8 @@ $(document).ready(function(){
         $("#rollup_button").addClass("invisible");
     });
 
-});
 
 //Accept Cookies Message
-$(document).ready(function(){
     //ajax-request, check if cookies were accepted already
     $.ajax({
         type: 'GET',
@@ -138,8 +149,9 @@ $(document).ready(function(){
 
     //search bar, on typing
     $("#search_bar").on('keyup', function(){
+        var search_value = $(this).val();
         //if search bar is empty
-        if($(this).val() === "")
+        if(search_value === "")
         {   //remove all search results
             $("#search_results").html("");
         }
@@ -157,7 +169,7 @@ $(document).ready(function(){
                 type: 'POST',
                 url: '/search_post',
                 data: {
-                    value: $(this).val()
+                    value: search_value
                 },
                 //on success
                 success: function(response)
@@ -172,10 +184,11 @@ $(document).ready(function(){
                    //for each element from json
                    for(var el of result)
                    {    
+                        var post_content =  highlight_substr(el.post_content, search_value);
                         //show search results preview
                         $("#search_results").append(`<div class='white-bg search_results_block'>
                         <h1 class="subtitle"><a href="/post/${el.id}">${el.post_title}</a></h1>
-                        <p>${el.post_content}</p><br>
+                        ${post_content}<br>
                         <p><a href="/category/${el.category}">${el.category}</a> | ${el.date}</p></div>`);
                    }
                 }
