@@ -152,22 +152,43 @@ $(document).ready(function(){
 
 
     $("#search_bar").on('keyup', function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: '/search_post',
-            data: {
-                value: $(this).val()
-            },
-            success: function(response)
-            {
-               console.log(response);
-            }
-        })
+        if($(this).val() === "")
+        {
+            $("#search_results").html("");
+        }
+        else
+        {   
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '/search_post',
+                data: {
+                    value: $(this).val()
+                },
+                success: function(response)
+                {
+                   var result = JSON.parse(response);
+                   console.log(result);
+                    
+                   $("#search_results").html("");
+    
+                   for(var el of result)
+                   {
+                        $("#search_results").append(`<div class='white-bg search_results_block'>
+                        <h1 class="subtitle"><a href="/post/${el.id}">${el.post_title}</a></h1>
+                        <p>${el.post_content}</p><br>
+                        <p><a href="/category/${el.category}">${el.category}</a> | ${el.date}</p></div>`);
+                   }
+                   
+                }
+            });
+        }
+        
+   
     });
 
 });

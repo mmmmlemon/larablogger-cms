@@ -692,11 +692,24 @@ class PostsController extends Controller
     {   
         $val = $request->value;
 
-        $result = DB::table('posts')->select('id','post_title','post_content')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->get();
+        $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->take(3)->get();
 
         foreach($result as $r)
         {
             $r->post_content = strip_tags($r->post_content);
+            $r->date = date('d.m.Y', strtotime($r->date));
+            $r->category = App\Category::find($r->category_id)->category_name;
+
+            $pos = strpos(strtolower($r->post_content), strtolower($request->value));
+
+            if($pos === false)
+            {
+                $r->post_content = substr($r->post_content, 0, 100)."...";
+            }
+            else{
+                $space_pos = strrpos(substr($r->post_content,0,$pos)," ");
+                $r->post_content = substr($r->post_content, $space_pos, $space_pos+100)."...";
+            }
         }
 
         return json_encode($result);

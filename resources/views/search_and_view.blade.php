@@ -28,4 +28,8 @@
               </div>
         </div>
     </div>
+  
+</div>
+<div class="white-bg search_results" id="search_results">
+
 </div>
