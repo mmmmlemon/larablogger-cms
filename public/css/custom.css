@@ -307,3 +307,8 @@ body::after{ content:''; display:block; height:100px; }
     margin: 0 0 10px 0;
     background-color: rgba(255, 255, 255, 0.932);
 }
+
+.search_full_results_block{
+    margin: 0 0 20px 0;
+    background-color: rgba(255, 255, 255, 0.849);
+}

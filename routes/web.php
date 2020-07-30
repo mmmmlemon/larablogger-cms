@@ -23,6 +23,7 @@ Route::post('/set_first_visit', 'HomeController@set_first_visit');
 
 //SEARCH
 Route::post('/search_post', 'PostsController@search_post');
+Route::post('/search','PostsController@search');
 
 //routes available for everyone
 Route::get('/', 'PostsController@index'); //index page

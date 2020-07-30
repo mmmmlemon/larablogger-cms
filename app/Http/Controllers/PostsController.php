@@ -715,5 +715,40 @@ class PostsController extends Controller
         return json_encode($result);
     }
 
+    //full search
+    public function search(Request $request){
+        $view_type = $request->cookie('view_type');
+
+        if($view_type == null)
+        {
+            $view_type = App\Settings::all()[0]->view_type;
+        }
+
+        $val = $request->search_value;
+
+        $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
+
+        foreach($results as $r)
+        {
+            $r->post_content = strip_tags($r->post_content);
+            $r->date = date('d.m.Y', strtotime($r->date));
+            $r->category = App\Category::find($r->category_id)->category_name;
+
+            $pos = strpos(strtolower($r->post_content), strtolower($val));
+
+            if($pos === false)
+            {
+                $r->post_content = substr($r->post_content, 0, 100)."...";
+            }
+            else{
+                $space_pos = strrpos(substr($r->post_content,0,$pos)," ");
+                $r->post_content = substr($r->post_content, $space_pos, $space_pos+100)."...";
+            }
+        }
+
+         return view('search', compact('results','view_type'));
+
+    }
+
 } 
 

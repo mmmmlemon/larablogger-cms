@@ -13,19 +13,22 @@
             </button>
         </div>
         <div class="" style="width:100%; margin-left:2pt; margin-top:4pt; margin-bottom:0;">
+          <form action="/search" method="POST">
+            @csrf
             <div class="field has-addons">
                 <div class="control has-icons-left has-icons-right"  style="width:60%;" id="search_bar_div">
-                  <input class="input" type="text" placeholder="Search" id="search_bar">
+                  <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value">
                   <span class="icon is-small is-left">
                     <i class="fas fa-search"></i>
                   </span>
                 </div>
                 <div class="control">
-                  <a class="button is-link">
+                  <button class="button is-link">
                     Search
-                  </a>
+                  </button>
                 </div>
               </div>
+            </form>
         </div>
     </div>
   
