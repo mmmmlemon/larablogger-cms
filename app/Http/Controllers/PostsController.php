@@ -703,12 +703,27 @@ class PostsController extends Controller
             $pos = strpos(strtolower($r->post_content), strtolower($request->value));
 
             if($pos === false)
-            {
-                $r->post_content = substr($r->post_content, 0, 100)."...";
+            {   $dots_end = "...";
+                if(strlen($r->post_content) <= 100)
+                {
+                    $dots_end ="";
+                }
+                $r->post_content = substr($r->post_content, 0, 100).$dots_end;
             }
             else{
-                $space_pos = strrpos(substr($r->post_content,0,$pos)," ");
-                $r->post_content = substr($r->post_content, $space_pos, $space_pos+100)."...";
+                $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
+                $dots_start = "...";
+                $dots_end = "...";
+                if($space_pos <= 0)
+                {
+                    $dots_start = "";
+                }
+                //dd($space_pos+100);
+                if($space_pos+100 >= strlen($r->post_content))
+                {
+                    $dots_end = "";  
+                }
+                $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
             }
         }
 
@@ -737,12 +752,27 @@ class PostsController extends Controller
             $pos = strpos(strtolower($r->post_content), strtolower($val));
 
             if($pos === false)
-            {
-                $r->post_content = substr($r->post_content, 0, 100)."...";
+            {   $dots_end = "...";
+                if(strlen($r->post_content) <= 100)
+                {
+                    $dots_end ="";
+                }
+                $r->post_content = substr($r->post_content, 0, 100).$dots_end;
             }
             else{
-                $space_pos = strrpos(substr($r->post_content,0,$pos)," ");
-                $r->post_content = substr($r->post_content, $space_pos, $space_pos+100)."...";
+                $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
+                $dots_start = "...";
+                $dots_end = "...";
+                if($space_pos <= 0)
+                {
+                    $dots_start = "";
+                }
+                //dd($space_pos+100);
+                if($space_pos+100 >= strlen($r->post_content))
+                {
+                    $dots_end = "";  
+                }
+                $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
             }
         }
 
