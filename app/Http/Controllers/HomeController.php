@@ -76,7 +76,7 @@ class HomeController extends Controller
     public function set_first_visit(Request $request)
     {
         $response = new Response("The 'visitedBefore' cookie has been set.");
-        $response->withCookie(cookie('visitedBefore', true, true));
+        $response->withCookie(cookie()->forever('visitedBefore', true));
         return $response;
     }
 

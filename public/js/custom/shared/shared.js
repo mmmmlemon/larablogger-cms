@@ -85,7 +85,7 @@ $(document).ready(function(){
 
     //page scroll detection
     var lastScrollTop = 0;
-    $(window).scroll(function (event) {
+    $(window).scroll(function (event){
         var st = $(this).scrollTop();
         if (st > lastScrollTop){
             // if scrolled more than 1000 pixels
@@ -120,6 +120,7 @@ $(document).ready(function(){
         success: function (response) {
             if(response === "1") //if response == 1, cookies were not acceped
             {   
+                $("#cookies_message").removeClass("invisible").addClass("slideUp");
                 //send ajax-request on clicking "Got it" button
                 $("#ok_cookie").click(function(){   
                     $.ajaxSetup({
