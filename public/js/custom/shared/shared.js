@@ -64,12 +64,17 @@ $(document).ready(function(){
     function highlight_substr(str, substr){
         
         var indexOfSubstr = str.toLowerCase().indexOf(substr.toLowerCase());
+        if(indexOfSubstr != -1)
+        {
+            var extracted = str.substring(indexOfSubstr, indexOfSubstr + substr.length);
+            var extract = "<b>"+extracted+"</b>";
 
-        var extracted = str.substring(indexOfSubstr, indexOfSubstr + substr.length);
-        var extract = "<b>"+extracted+"</b>";
-
-        var new_string = str.substring(0,indexOfSubstr) + extract + str.substring(indexOfSubstr+substr.length, str.length);
-        return `<p>${new_string}</p>`;
+            var new_string = str.substring(0,indexOfSubstr) + extract + str.substring(indexOfSubstr+substr.length, str.length);
+            return `<p>${new_string}</p>`;
+        }
+        else{
+            return `<p>${str}</p>`;
+        }
     }
 
     //when 'List View' is selected
