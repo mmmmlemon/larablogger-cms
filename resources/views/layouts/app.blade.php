@@ -116,7 +116,7 @@
                         <a class="navbar-link">
                             Links
                         </a>
-                        <div class="navbar-dropdown">
+                        <div class="navbar-dropdown" >
                             @foreach($social_media as $item)
                                 <a class="navbar-item" target="_blank" href={{$item->url}}>
                                     {{$item->platform_name}}

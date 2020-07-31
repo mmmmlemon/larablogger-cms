@@ -745,6 +745,11 @@ class PostsController extends Controller
         }
 
         $val = $request->search_value;
+
+        if($val == null)
+        {
+            return redirect()->back();
+        }
      
 
         $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
