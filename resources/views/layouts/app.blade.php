@@ -33,6 +33,7 @@
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
         <!--Shared Scripts-->
         <script src="{{ asset('js/custom/shared/shared.js') }}"></script>
+        <script src="{{ asset('js/custom/search.js') }}"></script>
         {{--  jQuery - RichText --}}
         <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
         <!-- Fonts -->

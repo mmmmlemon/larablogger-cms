@@ -10,10 +10,14 @@
         @foreach($results as $result)
         <div class='white-bg search_full_results_block'>
             <h1 class="subtitle"><a href="/post/{{$result->id}}">{{$result->post_title}}</a></h1>
-            <p>{{$result->post_content}}</p>
+            <div class="post_content">{!!$result->post_content!!}</div>
             <p><a href="/category/${el.category}">{{$result->category}}</a> | {{$result->date}}</p></div>
         @endforeach
     </div>    
 </div>
 
 @endsection
+
+@push('scripts')
+
+@endpush
