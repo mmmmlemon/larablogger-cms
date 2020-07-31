@@ -745,6 +745,7 @@ class PostsController extends Controller
         }
 
         $val = $request->search_value;
+     
 
         $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
 
@@ -786,8 +787,8 @@ class PostsController extends Controller
                 $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
             }
         }
-
-         return view('search', compact('results','view_type'));
+       // dd($val);
+         return view('search', compact('results','view_type','val'));
     }
 
 } 
