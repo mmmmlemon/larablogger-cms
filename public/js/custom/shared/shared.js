@@ -72,12 +72,18 @@ $(document).ready(function(){
             //redirect to current page
             success: function (response) {
                 var url = window.location.toString();
-                window.location.replace(url.slice(0,url.indexOf("?page=")+1)); //remove '?page' attribute, to avoid redirect to a non existant page
+                if(url.indexOf("search") != -1)
+                {
+                    window.location.replace('/');
+                }
+                else
+                {
+                    window.location.replace(url.slice(0,url.indexOf("?page=")+1)); //remove '?page' attribute, to avoid redirect to a non existant page
+                }
+                
             }
         });
     }
-
-
 
     //when 'List View' is selected
     $("#list_view").on("click", function(){
