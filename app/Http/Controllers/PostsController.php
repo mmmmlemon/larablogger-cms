@@ -697,6 +697,7 @@ class PostsController extends Controller
         foreach($result as $r)
         {
             $r->post_content = strip_tags($r->post_content);
+            $r->post_content = str_replace('&nbsp;','',$r->post_content);
             $r->date = date('d.m.Y', strtotime($r->date));
             $r->category = App\Category::find($r->category_id)->category_name;
 
@@ -750,6 +751,7 @@ class PostsController extends Controller
         foreach($results as $r)
         {
             $r->post_content = strip_tags($r->post_content);
+            $r->post_content = str_replace('&nbsp;','',$r->post_content);
             $r->date = date('d.m.Y', strtotime($r->date));
             $r->category = App\Category::find($r->category_id)->category_name;
 
