@@ -113,7 +113,7 @@
     </div>
 </div>
 
-<div class="container white-bg" id="comments">
+<div class="container white-bg-comments" id="comments">
   <div class="columns">
     <div class="column">
         <div class="subtitle">{{$post->comment_count}} / <a href="#comment_form">Leave a comment</a></div> 
@@ -130,7 +130,7 @@
                 <div class="field">
                     <p class="control">
                         <input class="input" name="username" placeholder="Username" maxlength="25" id="username" value="{{$username}}" required 
-                            @if($username != "") disabled @endif/>
+                            @if($username != "") readonly @endif/>
                         <input type="text" id="reply_to" class="invisible" value="" name="reply_to">
                         <a id="reply_p"></a>
                         <b id="remove_reply" class="remove_reply invisible" data-tooltip="Remove reply">X</b>

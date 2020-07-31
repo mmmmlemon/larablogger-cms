@@ -30,7 +30,7 @@
         if(indexOfSubstr != -1)
         {
             var extracted = str.substring(indexOfSubstr, indexOfSubstr + substr.length);
-            var extract = "<b>"+extracted+"</b>";
+            var extract = "<b class='highlighted'>"+extracted+"</b>";
 
             var new_string = str.substring(0,indexOfSubstr) + extract + str.substring(indexOfSubstr+substr.length, str.length);
             return `<p>${new_string}</p>`;
@@ -201,7 +201,7 @@ $(document).ready(function(){
                         var post_content =  highlight_substr(el.post_content, search_value);
                         //show search results preview
                         $("#search_results").append(`<div class='white-bg search_results_block'>
-                        <h1 class="subtitle"><a href="/post/${el.id}">${el.post_title}</a></h1>
+                        <h1 class="post_title_small"><a href="/post/${el.id}">${el.post_title}</a></h1>
                         ${post_content}<br>
                         <p><a href="/category/${el.category}">${el.category}</a> | ${el.date}</p></div>`);
                    }

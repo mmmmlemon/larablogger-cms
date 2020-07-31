@@ -26,6 +26,12 @@
                     <br>
                 @endif
             </figure>
+            <div class="has-text-left">
+                {!!strip_tags(Str::limit($post->post_content,strpos($post->post_content,"</p>"),''));!!}
+                @if(Str::length($post->post_content) > strpos($post->post_content,"</p>"))
+                    <a href="/post/{{$post->id}}">Read more</a>
+                @endif
+            </div>
             @endif
 
             @if($post->media_type == "video")
@@ -38,12 +44,20 @@
                                 @endforeach
                             @endif 
                     </video>
+                    <br>
+                    <div class="has-text-left">
+                        {!!strip_tags(Str::limit($post->post_content,strpos($post->post_content,"</p>"),''));!!}
+                        @if(Str::length($post->post_content) > strpos($post->post_content,"</p>"))
+                            <a href="/post/{{$post->id}}">Read more</a>
+                        @endif
+                    </div>
+                   
                 </div>
                 <br>
             @endif
         </div>
   </article>
-
+<div class="is-divider"></div>
   <div class="media-content">
         <div class="content">
             @if($post->media == null)

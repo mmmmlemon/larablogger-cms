@@ -1,4 +1,45 @@
-/*здесь хранятся стили, вносящие изменения в стандартные стили bulma, если это понадобится*/
+/*BULMA CSS STYLES OVERRIDES*/
 .table {
     background-color: rgba(255,255,255,0)
    }
+
+.tag:not(body).is-info{
+    background-color: #3298dc;
+}
+
+.is-divider{
+    border-top: .1rem solid #ffffff;   
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.button.is-link{
+    background-color:#2f83bb;
+    transition: all 0.2s ease-in-out;
+}
+
+.button.is-link:hover{
+    background-color:#3298dc;
+}
+
+.pagination-link.is-current{
+    background-color: #3298dc;
+    border-color: #3298dc;
+}
+.pagination-link 
+{
+    border-color: white;
+}
+
+.pagination-link:active{
+    border-color: #3298dc;
+}
+
+.pagination-next:hover{
+    border-color: white;
+}
+
+.pagination-previous:hover{
+    border-color: white;
+}
+

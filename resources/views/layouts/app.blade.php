@@ -43,7 +43,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         <link href="{{ asset('css/animations.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
+
         <link href="{{ asset('css/richtext.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/jquery.tag-editor.css') }}" rel="stylesheet">
         <link href="{{ asset('css/plyr.css') }}" rel="stylesheet">
@@ -55,6 +55,8 @@
         <link href="{{ asset('css/bulma-divider.min.css') }}" rel="stylesheet">
         <link href="{{asset('css/bulma-checkradio.min.css')}}" rel="stylesheet">
         <link href="{{asset('css/bulma-radio-checkbox.min.css')}}" rel="stylesheet">
+
+        <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
     </head>
     <body>
 
@@ -250,7 +252,7 @@
         {{-- Cookies Message --}}
         @if(config('isMobile') == false)
             <div class="white-bg invisible cookies_message" id="cookies_message">
-                <p>This web-site uses cookies to enhance your experience. It is used for the UI to work properly.</p>
+                <p>This web-site uses cookies to enhance your experience. It is used for the user interface to work properly.</p>
                 <hr>
                 <button id="ok_cookie" class="button is-link">
                     <span class="icon is-small">
