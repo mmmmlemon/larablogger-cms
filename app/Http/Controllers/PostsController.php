@@ -702,7 +702,11 @@ class PostsController extends Controller
 
             $pos = strpos(strtolower($r->post_content), strtolower($request->value));
 
-            if($pos === false)
+            if(strlen($r->post_content) < 120)
+            {
+                //if post content is less than 120 characters, do nothing and show full post_content
+            }
+            else if($pos === false) 
             {   $dots_end = "...";
                 if(strlen($r->post_content) <= 100)
                 {
@@ -751,7 +755,12 @@ class PostsController extends Controller
 
             $pos = strpos(strtolower($r->post_content), strtolower($val));
 
-            if($pos === false)
+            if(strlen($r->post_content) < 120)
+            {
+                //if post content is less than 120 characters, do nothing and show full post_content
+            }
+
+            else if($pos === false) 
             {   $dots_end = "...";
                 if(strlen($r->post_content) <= 100)
                 {
@@ -777,7 +786,6 @@ class PostsController extends Controller
         }
 
          return view('search', compact('results','view_type'));
-
     }
 
 } 
