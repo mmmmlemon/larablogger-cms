@@ -28,10 +28,49 @@
                 @endif
             </div>
             <div class="card-content">
-            <div class="media">
+            <div class="media" style="margin-bottom:10px;">
                 <div class="media-content">
-                    <p class="title is-4"><a href="/post/{{$post->id}}">{{$post->post_title}}</a></p>
-                    <p class="subtitle is-6"><a href="/category/{{$post->category}}">{{$post->category}}</a></p>
+                    <p class="title is-4" style="margin-bottom: 0px;"><a class="post_title_grid" href="/post/{{$post->id}}">{{$post->post_title}}</a></p>
+                    <div class="level">
+                        <div class="level-left">
+                            <div class="level-item" style="padding-top:10px;">
+                                <p class="subtitle is-6" style="margin-bottom:10px;"><a href="/category/{{$post->category}}">{{$post->category}}</a> </p>
+                            </div>
+                   
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <nav class="breadcrumb" style="margin-top:0;" aria-label="breadcrumbs" id="share_{{$post->id}}">
+                                    <ul>
+                                        <li class="" data-tooltip="Share through VK">  
+                                            <a href="https://vk.com/share.php?url={{URL::to('/') . '/post/'.$post->id}}" class="" target="_blank">
+                                                <span class="icon has-text-info">
+                                                    <i class="fab fa-lg fa-vk"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="" data-tooltip="Share through Facebook">  
+                                            <a href="https://www.facebook.com/sharer.php?u={{URL::to('/') . '/post/'.$post->id}}&amp;t={{$post->post_title}}" class="" target="_blank">
+                                                <span class="icon has-text-white">
+                                                    <i class="fab fa-lg fa-facebook-f"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="" data-tooltip="Share through Twitter">  
+                                            <a href="https://twitter.com/share?url={{URL::to('/') . '/post/'.$post->id}}&amp;text={{$post->post_title}}&amp;" class="" target="_blank">
+                                                <span class="icon has-text-link">
+                                                    <i class="fab fa-lg fa-twitter"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                     
+                        </div>
+                    </div>
+                
+           
                 </div>
             </div>
             <div class="content">
@@ -42,12 +81,16 @@
                 @endif
                 <br><br>
             @endif
+                <div class="is-divider" style="margin-top:0; margin-bottom:15px;"></div>
                 <a href="/post/{{$post->id}}#comments">{{$post->comment_count}}</a><br>
-                @if($post->tags != null)
+                <div style="margin-top:10px;">
+                    @if($post->tags != null)
                     @foreach($post->tags as $tag)
                         <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
                     @endforeach
                 @endif
+                </div>
+
             </div>
             </div>
         </div>

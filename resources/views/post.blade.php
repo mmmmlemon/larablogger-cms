@@ -17,12 +17,14 @@
         </ul>
     </nav>
 
-    <a href="{{url()->previous()}}" class="button is-link">
+    @if($is_admin == true)
+    <a href="/post/{{$post->id}}/edit" class="button is-link">
         <span class="icon">
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-edit"></i>
         </span>
-        <span>Back</span>
+        <span>Edit this post</span>
     </a>
+    @endif
     
     <div>&nbsp;</div>
 

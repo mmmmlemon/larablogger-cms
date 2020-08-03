@@ -74,7 +74,7 @@ box-shadow: 0px 0px 66px -16px rgba(0,0,0,0.75);
     transition: all 0.2s ease-in-out;
 }
 
-.post_title:hover{
+.post_title:hover, .post_title_grid:hover{
     color: #55565a; 
 }
 
@@ -83,6 +83,13 @@ box-shadow: 0px 0px 66px -16px rgba(0,0,0,0.75);
     font-size: 12pt;
     font-weight: 100;
     transition: color 0.2s ease-in-out;
+}
+
+.post_title_grid{
+    font-family: 'Riffic';
+    font-weight: 100;
+    transition: all 0.2s ease-in-out;
+    color: #363636;
 }
 
 .footer {
@@ -257,10 +264,15 @@ box-shadow: 0px 0px 66px -16px rgba(0,0,0,0.75);
 .custom_card{
     background-color: rgba(255, 255, 255, 0.76);
     border-radius: 20px 20px;
+    -webkit-box-shadow: -1px 1px 55px -10px rgba(0,0,0,0.38);
+    -moz-box-shadow: -1px 1px 55px -10px rgba(0,0,0,0.38);
+    box-shadow: -1px 1px 55px -10px rgba(0,0,0,0.48);
+
 }
 
 .custom_card_rooftop{
     border-radius: 20px 20px 0 0;
+    transition: all 0.2s ease-in-out;
 }
 
 .transparent{
@@ -325,6 +337,10 @@ box-shadow: 0px 0px 66px -16px rgba(0,0,0,0.75);
     -webkit-box-shadow: -1px 1px 55px -10px rgba(0,0,0,0.38);
     -moz-box-shadow: -1px 1px 55px -10px rgba(0,0,0,0.38);
     box-shadow: -1px 1px 55px -10px rgba(0,0,0,0.38);
+}
+
+.a_reply_tag{
+    font-size: 10pt;
 }
 
 @media (max-width: 1080px) {

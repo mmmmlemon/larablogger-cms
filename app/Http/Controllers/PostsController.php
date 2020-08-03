@@ -427,13 +427,29 @@ class PostsController extends Controller
                     if($admin == true)
                     {
                         $replies = App\Comment::where('reply_to','=', $a->id)->get();
+                        //get username for a reply
+                        foreach($replies as $r){
+                            if($r->reply_to != null)
+                            {
+                                $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username;
+                            }
+                        }
                         $a->replies = $replies;
+                    
                         collect_comments($replies, $admin);
                     }
                     
                     else{
                         $replies = App\Comment::where('reply_to','=', $a->id)->where('visibility','=',1)->get();
+                         //get username for a reply
+                        foreach($replies as $r){
+                            if($r->reply_to != null)
+                            {
+                                $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username;
+                            }
+                        }
                         $a->replies = $replies;
+                    
                         collect_comments($replies, $admin);
                     }
                 } 

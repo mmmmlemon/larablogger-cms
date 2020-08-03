@@ -62,8 +62,6 @@ $(document).ready(function(){
         }
     }
 
-
-
     $(".action-reply-button").on('click', function(e){
         var id = $(this).data("id");
         var username = $(this).data("user");
@@ -83,5 +81,12 @@ $(document).ready(function(){
     //paragraph fix
     paragraph_workaround();
 
+    $(".a_reply_tag").click(function(){
+        var anchor = $(this).attr("href");
+        $(anchor).removeClass("comment-blinking-anim").delay(1).queue(function() {  // Wait for 1 second.
+            $(this).addClass("comment-blinking-anim").dequeue();
+        });
+    });
+    
 });
 

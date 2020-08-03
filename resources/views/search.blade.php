@@ -16,7 +16,7 @@
         @else
             @foreach($results as $result)
             <div class='white-bg search_full_results_block'>
-                <h1 class="subtitle"><a href="/post/{{$result->id}}">{{$result->post_title}}</a></h1>
+                <h1 class="subtitle post_title"><a href="/post/{{$result->id}}">{{$result->post_title}}</a></h1>
                 <div class="post_content">{!!$result->post_content!!}</div>
                 <p><a href="/category/${el.category}">{{$result->category}}</a> | {{$result->date}}</p></div>
             @endforeach
