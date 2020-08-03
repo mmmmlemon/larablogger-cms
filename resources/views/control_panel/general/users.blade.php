@@ -1,5 +1,12 @@
 <div id="users_content"  class="invisible">
     <div class="columns">
+        <div class="has-text-centered">
+            <span class="icon">
+                <i class="fas fa-user"></i>
+            </span>
+            <h3 class="subtitle">User list</h3>
+        </div>
+        <br>
         <table class="table is-fullwidth is-hoverable">
             <thead>
                 <th>Username</th>
