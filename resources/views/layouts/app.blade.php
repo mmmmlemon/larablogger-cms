@@ -1,3 +1,5 @@
+
+
 <!--ОСНОВНОЙ ЛЕЙАУТ САЙТА-->
 @php
     //получаю название и подзаголовок сайта с соц.сетями для шапки сайта (и другую инфу если она понадобится)
@@ -84,11 +86,36 @@
                 <a class="navbar-item">
 
                 </a>
-                <a href="/" id="home_button" class="home_button invisible">
-                    <span class="icon is-medium">
-                        <i class="fas fa-home fa-2x"></i>
-                    </span>
-                </a>
+                @if(config('isMobile') == true)
+
+                    <a href="/" id="home_button" class="home_button invisible has-text-info">
+                        <span class="icon is-medium">
+                            <i class="fas fa-home fa-2x"></i>
+                        </span>
+                    </a>
+                    @if(Auth::check())
+                        @if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
+                        <a href="/control" id="home_button" class="contol_panel_button has-text-info">
+                            <span class="icon is-medium">
+                                <i class="fas fa-cog fa-2x"></i>
+                            </span>
+                        </a>
+                        @endif
+
+                        <a class="navbar-item logout_mobile">
+                            <span class="icon has-text-info has-tooltip-left" data-tooltip="Logout"
+                            onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt fa-2x"></i>
+                            </span>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="invisible">
+                                @csrf
+                            </form>
+                        </a>
+                    @endif
+
+                @endif
+
                 <a role="button" id="nav-toggle" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -98,6 +125,28 @@
 
             <div id="nav-menu" class="navbar-menu">
                 <div class="navbar-start">
+                    @if(config('isMobile') == true)
+                        <div class="" style="margin-left: 30pt;">
+                            <form action="/search" method="POST">
+                            @csrf
+                            <div class="field has-addons">
+                                <div class="control has-icons-left has-icons-right"  style="width:60%;" id="search_bar_div">
+                                    <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value" value="{{$val ?? '' }}">
+                                    <span class="icon is-small is-left">
+                                    <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-link">
+                                    Search
+                                    </button>
+                                </div>
+                                </div>
+                            </form>
+                        </div>
+              
+                    @endif
+
                     <a class="navbar-item" href="/">
                         Home
                     </a>

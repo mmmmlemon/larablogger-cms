@@ -30,7 +30,13 @@
             <div class="card-content">
             <div class="media" style="margin-bottom:10px;">
                 <div class="media-content">
-                    <p class="title is-4" style="margin-bottom: 0px;"><a class="post_title_grid" href="/post/{{$post->id}}">{{$post->post_title}}</a></p>
+                    <div>
+                        <p class="title is-4" style="margin-bottom: 0px; display:inline-block;"><a class="post_title_grid" href="/post/{{$post->id}}">{{$post->post_title}}</a></p>
+                        @if($post->pinned == 1)
+                            <i class="fas fa-thumbtack pin" style="display:inline-block;" ></i>
+                        @endif
+                    </div>
+                
                     <div class="level">
                         <div class="level-left">
                             <div class="level-item" style="padding-top:10px;">
@@ -42,25 +48,34 @@
                             <div class="level-item">
                                 <nav class="breadcrumb" style="margin-top:0;" aria-label="breadcrumbs" id="share_{{$post->id}}">
                                     <ul>
-                                        <li class="" data-tooltip="Share through VK">  
+                                        <li class="">  
                                             <a href="https://vk.com/share.php?url={{URL::to('/') . '/post/'.$post->id}}" class="" target="_blank">
-                                                <span class="icon has-text-info">
+                                                <span class="icon vk_color">
                                                     <i class="fab fa-lg fa-vk"></i>
                                                 </span>
                                             </a>
                                         </li>
-                                        <li class="" data-tooltip="Share through Facebook">  
+                                        <li class="">  
                                             <a href="https://www.facebook.com/sharer.php?u={{URL::to('/') . '/post/'.$post->id}}&amp;t={{$post->post_title}}" class="" target="_blank">
-                                                <span class="icon has-text-white">
+                                                <span class="icon fb_color">
                                                     <i class="fab fa-lg fa-facebook-f"></i>
                                                 </span>
                                             </a>
                                         </li>
-                                        <li class="" data-tooltip="Share through Twitter">  
+                                        <li class="">  
                                             <a href="https://twitter.com/share?url={{URL::to('/') . '/post/'.$post->id}}&amp;text={{$post->post_title}}&amp;" class="" target="_blank">
-                                                <span class="icon has-text-link">
+                                                <span class="icon tw_color">
                                                     <i class="fab fa-lg fa-twitter"></i>
                                                 </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://t.me/share/url?url={{URL::to('/') . '/post/'.$post->id}}&text={{$post->post_title}}" class="" target="_blank">
+                                                <span class="icon tg_color">
+                                                    <i class="fab fa-lg fa-telegram"></i>
+                                                </span>
+                
+                                            
                                             </a>
                                         </li>
                                     </ul>
@@ -73,13 +88,15 @@
            
                 </div>
             </div>
-            <div class="content">
-                @if($post->media == null)
-                {!!Str::limit(strip_tags($post->post_content),460,'...');!!}
-                @if(Str::length($post->post_content) > 460)
-                    <a href="/post/{{$post->id}}">Read more</a>
-                @endif
-                <br><br>
+            <div class="content" style="word-wrap: break-word;">
+                <p >
+                    @if($post->media == null)
+                         {!!Str::limit(strip_tags($post->post_content),460,'...');!!}
+                    @if(Str::length($post->post_content) > 460)
+                        <a href="/post/{{$post->id}}">Read more</a>
+                    @endif
+                </p>
+            
             @endif
                 <div class="is-divider" style="margin-top:0; margin-bottom:15px;"></div>
                 <a href="/post/{{$post->id}}#comments">{{$post->comment_count}}</a><br>

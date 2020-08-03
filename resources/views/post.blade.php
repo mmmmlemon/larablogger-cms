@@ -24,10 +24,10 @@
         </span>
         <span>Edit this post</span>
     </a>
-    @endif
+
     
     <div>&nbsp;</div>
-
+    @endif
     <div class="columns">
         <div class="column">
             <h1 class="title post_title">{{$post->post_title}}</h1>
@@ -77,38 +77,86 @@
                     </div>
                     <div class="is-divider"></div>
 
-                    <nav class="level is-mobile">
-                        <div class="level-left">
-                            <a class="level-item share-button" for="share_{{$post->id}}">
-                                <span class="icon is-large"><i class="fas fa-2x fa-share"></i></span>
-                            </a>
-                            <nav class="breadcrumb invisible" aria-label="breadcrumbs" id="share_{{$post->id}}">
-                                <ul>
-                                    <li class="">  
-                                        <a href="https://vk.com/share.php?url={{URL::to('/') . '/post/'.$post->id}}" class="" target="_blank">
-                                            <span class="icon has-text-info">
-                                                <i class="fab fa-2x fa-vk"></i>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="">  
-                                        <a href="https://www.facebook.com/sharer.php?u={{URL::to('/') . '/post/'.$post->id}}&amp;t={{$post->post_title}}" class="" target="_blank">
-                                            <span class="icon has-text-white">
-                                                <i class="fab fa-2x fa-facebook-f"></i>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="">  
-                                        <a href="https://twitter.com/share?url={{URL::to('/') . '/post/'.$post->id}}&amp;text={{$post->post_title}}&amp;" class="" target="_blank">
-                                            <span class="icon has-text-link">
-                                                <i class="fab fa-2x fa-twitter"></i>
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </nav>
+                    @if(config('isMobile') != true)
+                        <nav class="level is-mobile">
+                            <div class="level-left">
+                                <a class="level-item share-button has-text-info" for="share_{{$post->id}}">
+                                    <span class="icon is-large"><i class="fas fa-2x fa-share"></i></span>
+                                </a>
+                                <nav class="breadcrumb invisible" aria-label="breadcrumbs" id="share_{{$post->id}}">
+                                    <ul>
+                                        <li class="">  
+                                            <a href="https://vk.com/share.php?url={{URL::to('/') . '/post/'.$post->id}}" class="" target="_blank">
+                                                <span class="icon vk_color">
+                                                    <i class="fab fa-2x fa-vk"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://www.facebook.com/sharer.php?u={{URL::to('/') . '/post/'.$post->id}}&amp;t={{$post->post_title}}" class="" target="_blank">
+                                                <span class="icon fb_color">
+                                                    <i class="fab fa-2x fa-facebook-f"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://twitter.com/share?url={{URL::to('/') . '/post/'.$post->id}}&amp;text={{$post->post_title}}&amp;" class="" target="_blank">
+                                                <span class="icon tw_color">
+                                                    <i class="fab fa-2x fa-twitter"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://t.me/share/url?url={{URL::to('/') . '/post/'.$post->id}}&text={{$post->post_title}}" class="" target="_blank">
+                                                <span class="icon tg_color">
+                                                    <i class="fab fa-2x fa-telegram"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </nav>
+                    @else
+                        <nav class="level is-mobile">
+                            <div class="level-left">
+                                <nav class="breadcrumb " aria-label="breadcrumbs" id="share_{{$post->id}}">
+                                    <ul>
+                                        <li class="">  
+                                            <a href="https://vk.com/share.php?url={{URL::to('/') . '/post/'.$post->id}}" class="" target="_blank">
+                                                <span class="icon vk_color">
+                                                    <i class="fab fa-lg fa-vk"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://www.facebook.com/sharer.php?u={{URL::to('/') . '/post/'.$post->id}}&amp;t={{$post->post_title}}" class="" target="_blank">
+                                                <span class="icon fb_color">
+                                                    <i class="fab fa-lg fa-facebook-f"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://twitter.com/share?url={{URL::to('/') . '/post/'.$post->id}}&amp;text={{$post->post_title}}&amp;" class="" target="_blank">
+                                                <span class="icon tw_color">
+                                                    <i class="fab fa-lg fa-twitter"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="">  
+                                            <a href="https://t.me/share/url?url={{URL::to('/') . '/post/'.$post->id}}&text={{$post->post_title}}" class="" target="_blank">
+                                                <span class="icon tg_color">
+                                                    <i class="fab fa-lg fa-telegram"></i>
+                                                </span>
+
+                                            
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </nav>
+                    @endif
                 </div>
             </article>
         </div>

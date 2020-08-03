@@ -65,7 +65,7 @@
         e.preventDefault();
 
         //if text editor is empty
-        if($("#contact_feedback").val() === "<div><br></div>")
+        if($("#contact_feedback").val() === "")
         {   
             //do nothing and focus on it
             $("#contact_feedback").focus();
