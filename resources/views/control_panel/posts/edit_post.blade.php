@@ -11,14 +11,8 @@
     </ul>
   </nav>
  
-  <a href="{{url()->previous()}}" class="button is-link">
-    <span class="icon">
-        <i class="fas fa-arrow-left"></i>
-    </span>
-    <span>Back</span>
-  </a>
-
   <h1 class="title has-text-centered">Edit Post</h1>
+<h2 class="subtitle has-text-centered"><a href="/post/{{$post->id}}">{{$post->post_title}}</a></h2>
   <div class="is-divider"></div>
 
   <form id="post_form" action="/post/{{$post->id}}/edit" method="POST">
@@ -88,32 +82,70 @@
           <div style="margin:0;" class="subtitle @if(count($media)>0) invisible @endif" id="no_files">No files attached</div>
           <div class="field  @if(count($media)==0) invisible @endif" id="file_browser">
               <div class="subtitle">Attached media</div>
+              @if(config('isMobile') != true)
+                <table class="table is-fullwidth is-hoverable is-narrow" >
+                  <thead>
+                    <th>Filename</th>
+                    <th></th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </thead>
+                  <tbody id="tbody">
+                  
+                      @if(count($media) > 0)
+                        @foreach($media as $m)
+                        <tr>
+                          <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->display_name}}</a></td>
+                          <td><a target="_blank" href="/control/media/{{$m->id}}">Edit</a></td>
+                          <td>{{$m->media_type}}</td>
+                          <td>
+                            <a class="button is-small is-danger delete_media" data-tooltip="Delete this media file" data-id="{{$m->id}}">
+                                <span class="icon">
+                                  <i class="fas fa-trash"></i>
+                                </span>
+                            </a>
+                          </td>
+                        </tr>
+                        @endforeach
+                      @endif
+              
+                  </tbody>
+              </table>
+              @else
               <table class="table is-fullwidth is-hoverable is-narrow" >
-                <thead>
-                  <th>Filename</th>
-                  <th></th>
-                  <th>Type</th>
-                  <th>Actions</th>
-                </thead>
                 <tbody id="tbody">
-                  @if(count($media) > 0)
-                    @foreach($media as $m)
-                    <tr>
-                      <td><a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{$m->display_name}}</a></td>
-                      <td><a target="_blank" href="/control/media/{{$m->id}}">Edit</a></td>
-                      <td>{{$m->media_type}}</td>
-                      <td>
-                        <a class="button is-small is-danger delete_media" data-tooltip="Delete this media file" data-id="{{$m->id}}">
-                            <span class="icon">
-                              <i class="fas fa-trash"></i>
-                            </span>
-                        </a>
-                      </td>
-                    </tr>
-                    @endforeach
-                  @endif
+                
+                    @if(count($media) > 0)
+                      @foreach($media as $m)
+                      <tr>
+                        <td>
+                          <a class="preview" data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">{{Str::limit($m->display_name, 15, "...")}}</a>
+                        </td>
+                        <td>
+                          <div class="field has-addons">
+                            <p class="control">
+                            <a href="/control/media/{{$m->id}}" class="button is-link">
+                                <span class="icon is-small">
+                                  <i class="fas fa-edit"></i>
+                                </span>
+                              </a>
+                            </p>
+                            <p class="control">
+                              <button class="button is-danger delete_media" data-tooltip="Delete this media file" data-id="{{$m->id}}" data-ismobile="true">
+                                <span class="icon is-small">
+                                  <i class="fas fa-trash"></i>
+                                </span>
+                              </button>
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                      @endforeach
+                    @endif
+            
                 </tbody>
             </table>
+            @endif
           </div>
         </div>
       </div>
@@ -180,4 +212,9 @@
 <script src="{{ asset('js/dropzone.js') }}"></script>
 <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
 <script src="{{ asset('js/custom/control_panel/edit_post.js') }}"></script>
+@if(config('isMobile') != true)
+<script src="{{ asset('js/custom/control_panel/edit_post_dropzone_desktop.js') }}"></script>
+@else
+<script src="{{ asset('js/custom/control_panel/edit_post_dropzone_mobile.js') }}"></script>
+@endif
 @endpush

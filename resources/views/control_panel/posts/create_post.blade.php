@@ -14,13 +14,7 @@ $blank="";
     </ul>
   </nav>
         
-  <a href="/control/posts" class="button is-link">
-    <span class="icon">
-      <i class="fas fa-arrow-left"></i>
-    </span>
-    <span>Back</span>
-  </a>
-  
+
   <h1 class="title has-text-centered">Add Post</h1>
   <div class="is-divider"></div>
 
