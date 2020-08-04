@@ -1,10 +1,12 @@
+
 <div class="black_screen invisible">
-        <div class="white-bg loader_pill has-text-centered">
+        <div class="@if(config('isMobile') != true)loader_pill @else loader_pill_mobile @endif has-text-centered">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             <div>Just a moment... do not close this page</div>
             <div class="subtitle" width="style=top:50%;">Applying new design</div>  
         </div>
 </div>
+
 
 <div id="design_content" class="invisible">
     <div class="has-text-centered">
@@ -69,15 +71,35 @@
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                 </div>
+                
                 <div class="field-body">
-                    <input class="is-checkradio is-link" name="show_about" id="show_about" type="checkbox" @if($settings->show_about == 1) checked @endif>
-                    <label class="label" for="show_about">Show 'About' page</label>
-                    <a href="/control/edit_about" class="button is-link">
-                        <span class="icon is-small">
-                            <i class="fas fa-edit"></i>
-                        </span>
-                        <span>Edit 'About' page</span>
-                    </a>
+                    @if(config('isMobile') == false)
+                        <input class="is-checkradio is-link" name="show_about" id="show_about" type="checkbox" @if($settings->show_about == 1) checked @endif>
+                        <label class="label" for="show_about">Show 'About' page</label>
+                        <a href="/control/edit_about" class="button is-link">
+                            <span class="icon is-small">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                            <span>Edit 'About' page</span>
+                        </a>
+                    @else
+                        <div class="columns">
+                            <div class="column">
+                                <div class="column"><input class="is-checkradio is-link" name="show_about" id="show_about" type="checkbox" @if($settings->show_about == 1) checked @endif>
+                                    <label class="label" for="show_about">Show 'About' page</label></div>
+                                <div class="column">
+                                    <a href="/control/edit_about" class="button is-link">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        <span>Edit 'About' page</span>
+                                    </a>
+                                </div>
+                            </div>
+                         
+                        </div>
+                        <div class="is-divider"></div>
+                    @endif
                 </div> 
             </div>
 
