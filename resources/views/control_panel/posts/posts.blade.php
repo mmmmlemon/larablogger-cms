@@ -75,11 +75,11 @@
                                 
                                             @if($post->visibility == 1)
                                                 <span class="icon is-small" data-tooltip="Post is visible">
-                                                    <i class="fas fa-check"></i>
+                                                    <i class="fas fa-eye"></i>
                                                 </span>
                                             @else
                                                 <span class="icon is-small" data-tooltip="Post is hidden">
-                                                    <i class="fas fa-times"></i>
+                                                    <i class="fas fa-eye-slash"></i>
                                                 </span>
                                             @endif
                                         </td>
@@ -136,11 +136,21 @@
                             </tbody>  
                         </table>
                     @else
+                        <a class="button is-small is-fullwidth" @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>
+                            <span class="icon">
+                            @if($page=="normal")
+                                <i class="fas fa-chevron-down"></i>
+                            @else 
+                                <i class="fas fa-chevron-up"></i></th>
+                            @endif
+                            </span>
+                            <span>Date</span>
+                        </a>
                         <table class="table is-fullwidth is-hoverable ">
                             @foreach($posts as $post)
                                 <tr class="">
-                                    <td>
-                                    <p class="has-text-centered" style="font-size: 14pt;"><a href="/post/{{$post->id}}"><b>{{$post->post_title}}</b></a></p>
+                                    <td style="width:50px;">
+                                    <p class="has-text-centered" style="font-size: 14pt;"><a href="/post/{{$post->id}}"><b>{{Str::limit($post->post_title,30,"...")}}</b></a></p>
                                     <p class="has-text-centered" style="font-size: 10pt;">
                                         {{date('d.m.y',strtotime($post->created_at))}} |
                                         <a href="/category/{{App\Category::find($post->category_id)->category_name}}">{{App\Category::find($post->category_id)->category_name}}</a>

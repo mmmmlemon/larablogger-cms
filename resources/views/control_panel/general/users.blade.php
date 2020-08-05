@@ -79,7 +79,7 @@
                 @foreach($users as $user)
                     <tr>
                     <td>
-                        <p style="font-size:15pt;">{{$user->name}}</p>
+                        <p style="font-size:15pt;">{{Str::limit($user->name,10,"...")}}</p>
                         <p style="font-size: 10pt;">{{$user->email}}</p>
                         <p style="font-size: 10pt; color: grey;">{{date('d.m.Y',strtotime($user->created_at))}}</p>
                     </td>
