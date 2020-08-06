@@ -90,7 +90,7 @@ $blank="";
   <div>&nbsp;</div>
 
 
-  <a id="submit_post" class="button is-link">
+  <a id="submit_post" class="button is-link @if(config('isMobile')) is-fullwidth @endif">
     <span class="icon">
       <i class="fas fa-save"></i>
     </span>

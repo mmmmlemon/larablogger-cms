@@ -220,7 +220,7 @@ class ControlPanelController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:25',
             'email' => 'required|email',
-            'password' => 'min:8|confirmed',
+            'password' => 'min:8|confirmed|nullable',
             'password_confirmation' => 'min:8'
         ]);
 

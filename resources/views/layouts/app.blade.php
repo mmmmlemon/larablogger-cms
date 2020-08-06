@@ -312,7 +312,7 @@
             </div>
         @else
             <div class="white-bg invisible cookies_message_mobile" id="cookies_message">
-                <p>This web-site uses cookies to enhance your experience. It is used for the UI to work properly.</p>
+                <p>This web-site uses cookies to enhance your experience. It is used for the user interface to work properly.</p>
                 <br>
                   <button id="ok_cookie" class="button is-link is-small is-fullwidth">
                       <span class="icon is-small">

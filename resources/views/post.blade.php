@@ -13,7 +13,7 @@
             @if($post->category != "")
                 <li><a href="/category/{{$post->category}}">{{$post->category}}</a></li>
             @endif
-            <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{Str::limit($post->post_title,30,"...")}}</a></li>
         </ul>
     </nav>
 
@@ -197,7 +197,7 @@
                 <nav class="level">
                     <div class="level-left">
                         <div class="level-item">
-                            <button type="submit" id="submit_comment" class="button is-link">
+                            <button type="submit" id="submit_comment" class="button is-link @if(config('isMobile')) is-fullwidth @endif" >
                                 <span class="icon">
                                     <i class="fas fa-comment"></i>
                                 </span>

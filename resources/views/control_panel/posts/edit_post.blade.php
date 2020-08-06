@@ -7,7 +7,7 @@
       <li><a href="/control">Control panel</a></li>
       <li><a href="/control/posts" aria-current="page">Posts</a></li>
       <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
-      <li class="is-active"><a href="#" aria-current="page">{{$post->post_title}}</a></li>
+      <li class="is-active"><a href="#" aria-current="page">{{Str::limit($post->post_title,30,"...")}}</a></li>
     </ul>
   </nav>
  
@@ -158,7 +158,7 @@
         </div>
       </form>
       <br>
-      <button id="submit_post" type="submit" class="button is-link">
+      <button id="submit_post" type="submit" class="button is-link @if(config('isMobile')) is-fullwidth @endif">
         <span class="icon">
             <i class="fas fa-save" id="submit_icon"></i>
         </span>

@@ -12,17 +12,7 @@
           <li class="is-active"><a href="/control/categories" aria-current="page">Add category</a></li>
         </ul>
       </nav>
-    <div class="column is-12">
-        <a href="/control/categories" class="button is-link">
-            <span class="icon">
-                <i class="fas fa-arrow-left"></i>
-            </span>
-            <span>
-             Back
-            </span>
-        </a>
-    </div>
-    
+
     <div class="is-divider"></div>
 
     <div class="columns">
@@ -43,7 +33,7 @@
                 </div>
 
                 <div class="control">
-                    <button class="button is-link" id="save_category">
+                    <button class="button is-link @if(config('isMobile')) is-fullwidth @endif" id="save_category">
                         <span class="icon is-small">
                             <i class="fas fa-arrow-right"></i>
                           </span>

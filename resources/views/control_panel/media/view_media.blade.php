@@ -11,14 +11,6 @@
         <li class="is-active"><a href="/control">{{$media->display_name}}</a></li>
       </ul>
     </nav>
-    <div class="column">
-        <a href="/control/media" class="button is-link">
-            <span class="icon">
-                <i class="fas fa-arrow-left"></i>
-            </span>
-            <span>Back</span>
-        </a>
-    </div>
 
     <div class="is-divider"></div>
 
@@ -33,7 +25,7 @@
             <div class="field">
                 <label class="label">Post</label>
                 <div class="control">
-                  <a target="_blank" href="/post/{{$media->post_id}}">{{$media->post_title}}</a>
+                  <a target="_blank" href="/post/{{$media->post_id}}">{{Str::limit($media->post_title,30,"...")}}</a>
                 </div>
             </div>
 
@@ -149,45 +141,91 @@
 
               <div id="subtitle_table" class="invisible">
                   @if(count($subs)>0)
-                  <table id="subs_table" class="table is-fullwidth is-hover">
-                    <thead>
-                      <tr><th>Subtitle</th><th>Visibility</th><th></th></tr>
-                    </thead>
-                    <tbody id="subs_list">
-                      @foreach($subs as $sub)
-                      <tr id="sub{{$sub->id}}">
-                        <td id="sub_file_{{$sub->id}}">
-                            <p class="ignore display_text">{{$sub->display_name}}</p>
-                            <div class="invisible ignore">      
-                              <div class="field is-grouped">
-                                <input class="input is-info edit_display_input" type="text" placeholder="Subtitle display name" value="{{$sub->display_name}}">
-                                <button class="button is-info edit_display_name">✓</button>
-                              </div>
-                            </div>
-                        </td>
-                        <td>
-                            @if($sub->visibility == 1)
-                              <button class="button is-warning is-small hide_subs" data-sub="{{$sub->id}}" data-tooltip="Disable these subtitles">
-                                <i class="fas fa-eye-slash"></i>
-                              </button>
-                            @else
-                              <button class="button is-primary is-small show_subs" data-sub="{{$sub->id}}" data-tooltip="Enable these subtitles">
-                                <i class="fas fa-eye"></i>
-                              </button>
-                            @endif
-                        </td>
-                        <td>
-                          <button class="button is-info is-small edit_subs" data-sub="{{$sub->id}}" data-tooltip="Edit subtitle file display name">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="button is-danger is-small delete_subs" data-sub="{{$sub->id}}" data-tooltip="Delete subtitle file">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+                  @if(config('isMobile') != true)
+                        <table id="subs_table" class="table is-fullwidth is-hover">
+                            <thead>
+                                <tr><th>Subtitle</th><th>Visibility</th><th></th></tr>
+                            </thead>
+                            <tbody id="subs_list">
+                                @foreach($subs as $sub)
+                                <tr id="sub{{$sub->id}}">
+                                <td id="sub_file_{{$sub->id}}">
+                                    <p class="ignore display_text">{{$sub->display_name}}</p>
+                                    <div class="invisible ignore">      
+                                        <div class="field is-grouped">
+                                        <input class="input is-info edit_display_input" type="text" placeholder="Subtitle display name" value="{{$sub->display_name}}">
+                                        <button class="button is-info edit_display_name">✓</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if($sub->visibility == 1)
+                                        <button class="button is-warning is-small hide_subs" data-sub="{{$sub->id}}" data-tooltip="Disable these subtitles">
+                                        <i class="fas fa-eye-slash"></i>
+                                        </button>
+                                    @else
+                                        <button class="button is-primary is-small show_subs" data-sub="{{$sub->id}}" data-tooltip="Enable these subtitles">
+                                        <i class="fas fa-eye"></i>
+                                        </button>
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="button is-info is-small edit_subs" data-sub="{{$sub->id}}" data-tooltip="Edit subtitle file display name">
+                                    <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="button is-danger is-small delete_subs" data-sub="{{$sub->id}}" data-tooltip="Delete subtitle file">
+                                    <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <table id="subs_table" class="table is-fullwidth is-hover">
+                            <tbody id="subs_list">
+                                @foreach($subs as $sub)
+                                <tr id="sub{{$sub->id}}">
+                                <td id="sub_file_{{$sub->id}}">
+                                    <p class="ignore display_text">{{$sub->display_name}}</p>
+                                    <div class="invisible ignore">      
+                                        <div class="field is-grouped">
+                                        <input class="input is-info edit_display_input" type="text" placeholder="Subtitle display name" value="{{$sub->display_name}}">
+                                        <button class="button is-info edit_display_name">✓</button>
+                                        </div>
+                                    </div>
+                                </td>
+                               
+                                <td>
+                                    <div class="field has-addons">
+                                        <p class="control">
+                                            @if($sub->visibility == 1)
+                                                <button class="button is-warning is-small hide_subs" data-sub="{{$sub->id}}" data-tooltip="Disable these subtitles">
+                                                <i class="fas fa-eye-slash"></i>
+                                                </button>
+                                            @else
+                                                <button class="button is-primary is-small show_subs" data-sub="{{$sub->id}}" data-tooltip="Enable these subtitles">
+                                                <i class="fas fa-eye"></i>
+                                                </button>
+                                            @endif
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-info is-small edit_subs" data-sub="{{$sub->id}}" data-tooltip="Edit subtitle file display name">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-danger is-small delete_subs" data-sub="{{$sub->id}}" data-tooltip="Delete subtitle file">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </p>
+                                      </div>
+                                </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                   @else
                     <h1 class="subtitle has-text-centered">No subtitles attached to this video</h1>
                   @endif

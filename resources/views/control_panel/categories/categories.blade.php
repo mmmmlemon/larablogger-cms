@@ -10,16 +10,7 @@
       </nav>
     
     <div class="column is-12">
-        <a href="/control" class="button is-link">
-            <span class="icon">
-                <i class="fas fa-arrow-left"></i>
-            </span>
-            <span>
-             Back
-            </span>
-        </a>    
-
-        <a href="/control/categories/add" class="button is-link">
+        <a href="/control/categories/add" class="button is-link @if(config('isMobile')) is-fullwidth @endif">
             <span class="icon">
                 <i class="fas fa-plus"></i>
             </span>
@@ -50,28 +41,59 @@
                                 <a href="/category/{{$categ->category_name}}"><b>{{$categ->category_name}}</b></a>
                                 </td>
                                 <td>
+                                    @if(config('isMobile') != true)
+                                        <form action="/control/categories/raise" method="post" style="display:inline;">
+                                            @csrf
+                                            <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                            <button @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
+                                        </form>
 
-                                    <form action="/control/categories/raise" method="post" style="display:inline;">
-                                        @csrf
-                                        <input type="text" name="id" value="{{$categ->id}}" class="invisible">
-                                        <button @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
-                                    </form>
+                                        <form action="/control/categories/lower" method="post" style="display:inline;">
+                                            @csrf
+                                            <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                            <button @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
+                                        </form>
 
-                                    <form action="/control/categories/lower" method="post" style="display:inline;">
-                                        @csrf
-                                        <input type="text" name="id" value="{{$categ->id}}" class="invisible">
-                                        <button @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
-                                    </form>
-
-                                    <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
-                                        <span class="icon is-small" data-tooltip="Edit this category">
-                                            <i class="fas fa-edit"></i>
-                                        </span>
-                                    </a>
-                                    <button class="button is-danger showModalDelete" data-tooltip="Delete this category" 
-                                        data-title="{{$categ->category_name}}" data-id="{{$categ->id}}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                        <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
+                                            <span class="icon is-small" data-tooltip="Edit this category">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+                                        <button class="button is-danger showModalDelete" data-tooltip="Delete this category" 
+                                            data-title="{{$categ->category_name}}" data-id="{{$categ->id}}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    @else
+                                        <div class="field has-addons">
+                                            <p class="control">
+                                                <form action="/control/categories/raise" method="post" style="display:inline;">
+                                                    @csrf
+                                                    <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                                    <button style="border-top-right-radius: 0; border-bottom-right-radius: 0;" @if($categ->visual_order == 1) disabled @endif class="button is-success" data-tooltip="Raise this category in list"><i class="fas fa-arrow-up"></i></button>
+                                                </form>
+                                            </p>
+                                            <p class="control">
+                                                <form action="/control/categories/lower" method="post" style="display:inline;">
+                                                    @csrf
+                                                    <input type="text" name="id" value="{{$categ->id}}" class="invisible">
+                                                    <button style="border-radius:0;" @if($categ->visual_order == $max) disabled @endif  class="button is-primary" data-tooltip="Lower this category in list"><i class="fas fa-arrow-down"></i></button>
+                                                </form>
+                                            </p>
+                                            <p class="control">
+                                                <a href="/control/categories/edit/{{$categ->id}}" class="button is-info">
+                                                    <span class="icon is-small" data-tooltip="Edit this category">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                </a>
+                                            </p>
+                                            <p class="control">
+                                                <button class="button is-danger showModalDelete" data-tooltip="Delete this category" 
+                                                    data-title="{{$categ->category_name}}" data-id="{{$categ->id}}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </p>
+                                        </div>    
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -94,6 +116,7 @@
       <section class="modal-card-body">
         <p>Are you sure you want to delete this category?</p>
         <b id="modal_post_title"></b>
+        <p>This will not delete the posts associated with this category.</p>
         <p class="has-text-danger">This action cannot be undone.</p>
       </section>
       <footer class="modal-card-foot">
