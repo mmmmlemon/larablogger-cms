@@ -74,9 +74,11 @@
 					<tr>
 						<td >
 							<p><b>{{$c->username}}</b></p>
-							<p><a  href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{Str::limit($c->post_title,30,"...")}}</a></p>
+						
 							<p style="word-wrap: break-word;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" class="comment_link">{!!$c->comment_content!!}</a></p>
-							<p style="margin-top:5px; font-size:10pt;">{{date('d.m.Y',strtotime($c->date))}}</p>
+							<p style="margin-top:5px; font-size:10pt;"><a href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{Str::limit($c->post_title,30,"...")}}</a></p>
+							<p style="margin-top:5px; font-size:10pt;
+							">{{date('d.m.Y',strtotime($c->date))}}</p>
 						
 							<div class="buttons has-addons is-left" style="margin-top: 10px;">
 								<p class="control">

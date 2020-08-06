@@ -249,6 +249,10 @@ class ControlPanelController extends Controller
         $comments = App\Comment::orderBy('created_at','desc')->paginate(20);
 
         foreach($comments as $c){
+            if($c->is_logged_on != -1)
+            {
+                $c->username = App\User::where('id','=',1)->get()[0]->name;
+            }
             $post_title = App\Post::where('id','=',$c->post_id)->first()->post_title;
             $c->comment_content = str_replace("&nbsp;"," ",strip_tags($c->comment_content));
             $c->post_title = $post_title;

@@ -420,10 +420,16 @@ class PostsController extends Controller
             //$comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
 
             //recursive function that collects all the comments with replies and generates a comment 
-            function collect_comments($array, $admin)
-            {
+            function prepare_comments($array, $admin)
+            {   
                 foreach($array as $a)
                 {   
+                    if($a->is_logged_on != -1)
+                    {   
+                        $username = App\User::where('id','=',$a->is_logged_on)->get()[0]->name;
+                        $a->username = $username;
+                    }
+             
                     if($admin == true)
                     {
                         $replies = App\Comment::where('reply_to','=', $a->id)->get();
@@ -436,7 +442,7 @@ class PostsController extends Controller
                         }
                         $a->replies = $replies;
                     
-                        collect_comments($replies, $admin);
+                        prepare_comments($replies, $admin);
                     }
                     
                     else{
@@ -450,12 +456,14 @@ class PostsController extends Controller
                         }
                         $a->replies = $replies;
                     
-                        collect_comments($replies, $admin);
+                        prepare_comments($replies, $admin);
                     }
                 } 
             }
 
-            collect_comments($comments, $is_admin);
+            prepare_comments($comments, $is_admin);
+
+            // dd($comments);
 
             //count comment
             if($is_admin == true)
@@ -636,18 +644,20 @@ class PostsController extends Controller
 
         $comment = new App\Comment;
 
-        $comment->username = $request->username;
+  
         $comment->comment_content = $request->comment_content;
         $comment->post_id = $id;
         $comment->date = Carbon::now();
         $comment->reply_to = $request->reply_to;
         if(Auth::check())
         {
-            $comment->is_logged_on = 1;            
+            $comment->is_logged_on = Auth::user()->id;    
+            $comment->username = Auth::user()->name;        
         }
         else
         {
-            $comment->is_logged_on = 0;
+            $comment->is_logged_on = -1;
+            $comment->username = $request->username;
         }
 
         $comment->save();
