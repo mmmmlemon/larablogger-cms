@@ -16,6 +16,7 @@
           <form action="/full_search" method="GET">
             <div class="field has-addons">
                 <div class="control has-icons-left has-icons-right"  style="width:60%;" id="search_bar_div">
+                  <input type="text" name="type" value="post" class="invisible">
                   <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value" value="{{$val ?? '' }}" data-type="post">
                   <span class="icon is-small is-left">
                     <i class="fas fa-search"></i>

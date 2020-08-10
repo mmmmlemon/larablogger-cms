@@ -26,9 +26,10 @@
             </div>
             <div class="column is-8">
                 <form action="/full_search" method="GET">
-                    @csrf
                     <div class="field has-addons">
                         <div class="control has-icons-left has-icons-right"  style="width:60%;" id="search_bar_div">
+                          <input type="text" name="type" value="post" class="invisible">
+                          <input type="text" name="is_control_panel" value="true" class="invisible">
                           <input class="input" type="text" placeholder="Search post" id="search_bar" name="search_value" value="{{$val ?? '' }}" data-type="post">
                           <span class="icon is-small is-left">
                             <i class="fas fa-search"></i>
@@ -40,7 +41,7 @@
                           </button>
                         </div>
                       </div>
-                    </form>
+                </form>
                    
             </div>
           
@@ -66,6 +67,25 @@
                     <span>Media browser</span>
                 </a>
             </div>
+        </div>
+        <div class="column">
+            <form action="/full_search" method="GET">
+                <div class="field has-addons">
+                    <div class="control has-icons-left has-icons-right" id="search_bar_div">
+                      <input type="text" name="type" value="post" class="invisible">
+                      <input type="text" name="is_control_panel" value="true" class="invisible">
+                      <input class="input" type="text" placeholder="Search post" id="search_bar" name="search_value" value="{{$val ?? '' }}" data-type="post">
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                      </span>
+                    </div>
+                    <div class="control">
+                      <button class="button is-link">
+                        Search
+                      </button>
+                    </div>
+                  </div>
+            </form>
         </div>
     </div>
     @endif

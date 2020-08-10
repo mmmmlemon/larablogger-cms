@@ -15,6 +15,20 @@ use DB;
 //functions for the Admin control panel
 class ControlPanelController extends Controller
 {
+
+    private function check_admin(){
+        if(Auth::check())
+        {
+            if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
+            {
+                return true;
+            }
+            else { return false;}
+        }
+        else
+        { return false; }
+    }
+
     public function __construct()
     {
    
@@ -269,18 +283,20 @@ class ControlPanelController extends Controller
       {   
           $val = $request->value;
           $result = "";
+          $is_admin = $this->check_admin();
 
             //POST SEARCH
             if($request->type == "post")
             {   
-                dd($this->is_admin);
                 //if user, search only for visible posts
-                if($this->is_admin == false)
+                if($is_admin == false)
                 {
-               
-                    $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->take(3)->get();
+                    $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where(function($query) use ($val) { 
+                        $query->where('post_title','like','%'.$val.'%');
+                        $query->orWhere('post_content','like','%'.$val.'%');
+                    })->orderBy('id','desc')->get();
                 }
-                else if($this->is_admin  == true)
+                else if($is_admin  == true)
                 {
                     $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->take(3)->get();  
                 }
@@ -337,6 +353,8 @@ class ControlPanelController extends Controller
       {
           $view_type = $request->cookie('view_type');
           $result = "";
+          $is_admin = $this->check_admin();
+
           if($view_type == null)
           {
               $view_type = App\Settings::all()[0]->view_type;
@@ -348,57 +366,84 @@ class ControlPanelController extends Controller
           {
               return redirect()->back();
           }
-          
-          if($is_admin == false)
+
+          //POST SEARCH
+          if($request->type == "post")
           {
-            $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
-          }
-          else if ($is_admin == true)
-          {
-            $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
-          }
-          
-  
-          foreach($results as $r)
-          {
-              $r->post_content = strip_tags($r->post_content);
-              $r->post_content = str_replace('&nbsp;','',$r->post_content);
-              $r->date = date('d.m.Y', strtotime($r->date));
-              $r->category = App\Category::find($r->category_id)->category_name;
-  
-              $pos = strpos(strtolower($r->post_content), strtolower($val));
-  
-              if(strlen($r->post_content) < 120)
+            $type = $request->type;
+            if($is_admin == false)
+            {
+              $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where(function($query) use ($val) { 
+                  $query->where('post_title','like','%'.$val.'%');
+                  $query->orWhere('post_content','like','%'.$val.'%');
+              })->orderBy('id','desc')->get();
+            }
+            else if ($is_admin == true)
+            {
+              $results = App\Post::where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
+            }
+            
+    
+            foreach($results as $r)
+            {
+                $r->post_content = strip_tags($r->post_content);
+                $r->post_content = str_replace('&nbsp;','',$r->post_content);
+                $r->date = date('d.m.Y', strtotime($r->date));
+                $r->category = App\Category::find($r->category_id)->category_name;
+    
+                $pos = strpos(strtolower($r->post_content), strtolower($val));
+    
+                if(strlen($r->post_content) < 120)
+                {
+                    //if post content is less than 120 characters, do nothing and show full post_content
+                }
+    
+                else if($pos === false) 
+                {   $dots_end = "...";
+                    if(strlen($r->post_content) <= 100)
+                    {
+                        $dots_end ="";
+                    }
+                    $r->post_content = substr($r->post_content, 0, 100).$dots_end;
+                }
+                else{
+                    $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
+                    $dots_start = "...";
+                    $dots_end = "...";
+                    if($space_pos <= 0)
+                    {
+                        $dots_start = "";
+                    }
+
+                    if($space_pos+100 >= strlen($r->post_content))
+                    {
+                        $dots_end = "";  
+                    }
+                    $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
+                }
+            }
+
+              //if its search from the main page
+              if($request->is_control_panel == null)
               {
-                  //if post content is less than 120 characters, do nothing and show full post_content
+                return view('search/search', compact('results','view_type','val'));
               }
-  
-              else if($pos === false) 
-              {   $dots_end = "...";
-                  if(strlen($r->post_content) <= 100)
-                  {
-                      $dots_end ="";
-                  }
-                  $r->post_content = substr($r->post_content, 0, 100).$dots_end;
+              //if its search from the control panel
+              else if ($request->is_control_panel == "true")
+              { 
+                if($is_admin == true)
+                {
+                 
+                    return view('search/search_control_panel', compact('results','view_type','val','type'));
+                }
+                else
+                {
+                    return redirect('/');
+                }
               }
-              else{
-                  $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
-                  $dots_start = "...";
-                  $dots_end = "...";
-                  if($space_pos <= 0)
-                  {
-                      $dots_start = "";
-                  }
-                  //dd($space_pos+100);
-                  if($space_pos+100 >= strlen($r->post_content))
-                  {
-                      $dots_end = "";  
-                  }
-                  $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
-              }
+   
           }
-          
-            return view('search', compact('results','view_type','val'));
+  
       }
     
 }

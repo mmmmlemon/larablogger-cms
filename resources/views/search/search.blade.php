@@ -2,7 +2,7 @@
 
 @section('content')
 @if(config('isMobile') == false)
-@yield("search_and_view", View::make('search_and_view', compact('view_type','val')))
+@yield("search_and_view", View::make('search/search_and_view', compact('view_type','val')))
 @endif
 <div class="container">
     <div class="white-bg">
