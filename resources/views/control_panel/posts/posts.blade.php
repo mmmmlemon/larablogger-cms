@@ -9,20 +9,46 @@
         </ul>
     </nav>
     @if(config('isMobile') != true)
-        <div class="column">
-            <a href="/control/create_post" class="button is-link">
-                <span class="icon">
-                    <i class="fas fa-pen"></i>
-                </span>
-                <span>Add post</span>
-            </a>
-            <a href="/control/media" class="button is-link" data-tooltip="Add/edit categories">
-                <span class="icon">
-                    <i class="fas fa-video"></i>
-                </span>
-                <span>Media browser</span>
-            </a>
+        <div class="columns">
+            <div class="column is-4">
+                <a href="/control/create_post" class="button is-link">
+                    <span class="icon">
+                        <i class="fas fa-pen"></i>
+                    </span>
+                    <span>Add post</span>
+                </a>
+                <a href="/control/media" class="button is-link" data-tooltip="Add/edit categories">
+                    <span class="icon">
+                        <i class="fas fa-video"></i>
+                    </span>
+                    <span>Media browser</span>
+                </a>
+            </div>
+            <div class="column is-8">
+                <form action="/full_search" method="GET">
+                    @csrf
+                    <div class="field has-addons">
+                        <div class="control has-icons-left has-icons-right"  style="width:60%;" id="search_bar_div">
+                          <input class="input" type="text" placeholder="Search post" id="search_bar" name="search_value" value="{{$val ?? '' }}" data-type="post">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-search"></i>
+                          </span>
+                        </div>
+                        <div class="control">
+                          <button class="button is-link">
+                            Search
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                   
+            </div>
+          
         </div>
+        <div class="white-bg search_results_posts" id="search_results">
+
+        </div>
+ 
     @else
     <div class="columns has-text-centered">
         <div class="column is-12">

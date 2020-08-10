@@ -164,6 +164,9 @@ $(document).ready(function(){
     //search bar, on typing
     $("#search_bar").on('keyup', function(){
         var search_value = $(this).val();
+        var search_type = $(this).data("type");
+        var user_type = $(this).data("user");
+        console.log(search_type)
         //if search bar is empty
         if(search_value === "")
         {   //remove all search results
@@ -181,9 +184,10 @@ $(document).ready(function(){
             //ajax-request, search for posts
             $.ajax({
                 type: 'POST',
-                url: '/search_post',
+                url: '/simple_search',
                 data: {
-                    value: search_value
+                    value: search_value,
+                    type: search_type
                 },
                 //on success
                 success: function(response)

@@ -15,15 +15,16 @@ use Carbon\Carbon;
 
 Route::feeds();
 
+//SEARCH
+Route::post('/simple_search', 'ControlPanelController@simple_search');
+Route::get('/full_search','ControlPanelController@full_search');
+
 //COOKIES
 Route::post('/setCookie','HomeController@setCookie');
 Route::post('/change_view_type','HomeController@change_view_type');
 Route::get('/check_first_visit', 'HomeController@check_first_visit');
 Route::post('/set_first_visit', 'HomeController@set_first_visit');
 
-//SEARCH
-Route::post('/search_post', 'PostsController@search_post');
-Route::post('/search','PostsController@search');
 
 //routes available for everyone
 Route::get('/', 'PostsController@index'); //index page
@@ -33,6 +34,8 @@ Route::get('/post/{id}', 'PostsController@show_post'); //view post
 Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //submit comment
 Route::get('/about', 'HomeController@about'); //view About page
 Route::post('/send_feedback','FeedbackController@mail'); //submit Feedback e-mail 
+
+
 
 //routes for logged in users
 Route::group(['middleware' => ['auth']], function() {

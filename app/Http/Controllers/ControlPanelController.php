@@ -10,13 +10,14 @@ use Carbon\Carbon;
 use Image;
 use File;
 use Hash;
+use DB;
 
 //functions for the Admin control panel
 class ControlPanelController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+   
     }
 
     //show Control panel
@@ -260,6 +261,145 @@ class ControlPanelController extends Controller
         
         return view('control_panel/comments/comments', compact('comments'));
     }
+
+
+    //SEARCH FUNCTIONS
+      //search first three results
+      public function simple_search(Request $request)
+      {   
+          $val = $request->value;
+          $result = "";
+
+            //POST SEARCH
+            if($request->type == "post")
+            {   
+                dd($this->is_admin);
+                //if user, search only for visible posts
+                if($this->is_admin == false)
+                {
+               
+                    $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->take(3)->get();
+                }
+                else if($this->is_admin  == true)
+                {
+                    $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->take(3)->get();  
+                }
+
+                foreach($result as $r)
+                {
+                    $r->post_content = strip_tags($r->post_content);
+                    $r->post_content = str_replace('&nbsp;','',$r->post_content);
+                    $r->date = date('d.m.Y', strtotime($r->date));
+                    $r->category = App\Category::find($r->category_id)->category_name;
+        
+                    $pos = strpos(strtolower($r->post_content), strtolower($request->value));
+        
+                    if(strlen($r->post_content) < 120)
+                    {
+                        //if post content is less than 120 characters, do nothing and show full post_content
+                    }
+                    else if($pos === false) 
+                    {   $dots_end = "...";
+                        if(strlen($r->post_content) <= 100)
+                        {
+                            $dots_end ="";
+                        }
+                        $r->post_content = substr($r->post_content, 0, 100).$dots_end;
+                    }
+                    else
+                    {
+                        $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
+                        $dots_start = "...";
+                        $dots_end = "...";
+                        if($space_pos <= 0)
+                        {
+                            $dots_start = "";
+                        }
+                        //dd($space_pos+100);
+                        if($space_pos+100 >= strlen($r->post_content))
+                        {
+                            $dots_end = "";  
+                        }
+                        $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
+                    }
+                }
+            }
+            else if($request->type == "comment")
+            {
+               $result = "damn boi";
+            }
+
+          return json_encode($result);
+      }
+  
+      //search full results
+      public function full_search(Request $request)
+      {
+          $view_type = $request->cookie('view_type');
+          $result = "";
+          if($view_type == null)
+          {
+              $view_type = App\Settings::all()[0]->view_type;
+          }
+  
+          $val = $request->search_value;
+  
+          if($val == null)
+          {
+              return redirect()->back();
+          }
+          
+          if($is_admin == false)
+          {
+            $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
+          }
+          else if ($is_admin == true)
+          {
+            $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
+          }
+          
+  
+          foreach($results as $r)
+          {
+              $r->post_content = strip_tags($r->post_content);
+              $r->post_content = str_replace('&nbsp;','',$r->post_content);
+              $r->date = date('d.m.Y', strtotime($r->date));
+              $r->category = App\Category::find($r->category_id)->category_name;
+  
+              $pos = strpos(strtolower($r->post_content), strtolower($val));
+  
+              if(strlen($r->post_content) < 120)
+              {
+                  //if post content is less than 120 characters, do nothing and show full post_content
+              }
+  
+              else if($pos === false) 
+              {   $dots_end = "...";
+                  if(strlen($r->post_content) <= 100)
+                  {
+                      $dots_end ="";
+                  }
+                  $r->post_content = substr($r->post_content, 0, 100).$dots_end;
+              }
+              else{
+                  $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
+                  $dots_start = "...";
+                  $dots_end = "...";
+                  if($space_pos <= 0)
+                  {
+                      $dots_start = "";
+                  }
+                  //dd($space_pos+100);
+                  if($space_pos+100 >= strlen($r->post_content))
+                  {
+                      $dots_end = "";  
+                  }
+                  $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
+              }
+          }
+          
+            return view('search', compact('results','view_type','val'));
+      }
     
 }
  

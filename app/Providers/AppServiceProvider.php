@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Schema;
 use Jenssegers\Agent\Agent;
+use Auth;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
