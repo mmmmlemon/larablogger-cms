@@ -1,20 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container white-bg">
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
           <li><a href="/control">Control panel</a></li>
-          <li><a href="/control/posts">Posts</a></li>
-          <li class="is-active"><a href="#" aria-current="page">
-            @if($type = "post")
+            @if($type == "post")
+            <li><a href="/control/posts">Posts</a></li>
+            <li class="is-active"><a href="#" aria-current="page">
                 Search post
-            @endif
             </a></li>
+            @endif
+            @if($type == "comment")
+            <li><a href="/control/comments">Comments</a></li>
+            <li class="is-active"><a href="#" aria-current="page">
+                Search comment
+            </a></li>
+            @endif
         </ul>
     </nav>
     @if($type == "post")
         <h1 class="title">Search post</h1>
+    @elseif($type == "comment")
+        <h1 class="title">Search comment</h1>
     @endif
     <div class="columns">
         <div class="" style="width:100%; margin-left:2pt; margin-top:4pt; margin-bottom:0;">
@@ -22,7 +31,14 @@
             <div class="field has-addons">
                 <div class="control has-icons-left has-icons-right"  style="width:90%; margin-left:5px; margin-bottom: 5px;" id="search_bar_div">
                   <input type="text" name="type" value="post" class="invisible">
-                  <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value" value="{{$val ?? '' }}" data-type="post">
+                  @if($type == "post")
+                    <input type="text" name="type" value="post" class="invisible">
+                    <input type="text" name="is_control_panel" value="true" class="invisible">
+                  @elseif($type == "comment")
+                    <input type="text" name="type" value="" class="invisible">
+                  @endif
+        
+                  <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value" value="{{$val ?? '' }}">
                   <span class="icon is-small is-left">
                     <i class="fas fa-search"></i>
                   </span>
@@ -105,6 +121,8 @@
             </div>
             @endforeach
         @endif
+    @elseif($type == "comment")
+            <h1>damn boi</h1>
     @endif
     </div>    
 </div>

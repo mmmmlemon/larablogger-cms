@@ -4,7 +4,7 @@
     {{-- grid/list view --}}
     {{-- search --}}
     @if($isMobile == false)
-        @yield("search_and_view", View::make('search_and_view', compact('view_type')))
+        @yield("search_and_view", View::make('search/search_and_view', compact('view_type')))
     @endif
     <div class="container">
         <div class="white-bg has-text-centered">

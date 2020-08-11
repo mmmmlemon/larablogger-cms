@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -16,48 +15,47 @@ use DB;
 class ControlPanelController extends Controller
 {
 
-    private function check_admin(){
-        if(Auth::check())
+    private function check_admin()
+    {
+        if (Auth::check())
         {
-            if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
+            if (Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
             {
                 return true;
             }
-            else { return false;}
+            else
+            {
+                return false;
+            }
         }
         else
-        { return false; }
+        {
+            return false;
+        }
     }
 
     public function __construct()
     {
-   
+
     }
 
     //show Control panel
     public function show_control_panel()
-    {   
+    {
         //get all the settings
         $settings = App\Settings::all()->first(); //general settings
         $social_media = App\SocialMedia::all(); //social media
-        $users = App\User::orderBy('user_type','asc')->paginate(15)->fragment('users'); //users list
+        $users = App\User::orderBy('user_type', 'asc')->paginate(15)
+            ->fragment('users'); //users list
         $current_user = Auth::user(); //current user
-
         return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
     }
-
 
     //GENERAL SETTINGS
     //update general web-site settings
     public function update_settings(Request $request)
     {
-        $request->validate([
-            'site_title'=>'required|max:55',
-            'site_subtitle'=>'required|max:55',
-            'contact_email'=>'email|nullable',
-            'from_email' => 'email',
-            'contact_text'=>'string|max:200|nullable'
-        ]);
+        $request->validate(['site_title' => 'required|max:55', 'site_subtitle' => 'required|max:55', 'contact_email' => 'email|nullable', 'from_email' => 'email', 'contact_text' => 'string|max:200|nullable']);
 
         $settings = App\Settings::all()->first();
 
@@ -69,54 +67,44 @@ class ControlPanelController extends Controller
 
         $settings->save();
 
-        return redirect()->to('/control#settings');
+        return redirect()
+            ->to('/control#settings');
     }
 
     //update list of social media
     public function update_social(Request $request)
     {
-        $request->validate([
-            'platform_0'=>'max:20|nullable',
-            'platform_1'=>'max:20|nullable',
-            'platform_2'=>'max:20|nullable',
-            'platform_3'=>'max:20|nullable',
-            'url_0'=>'url|nullable',
-            'url_1'=>'url|nullable',
-            'url_2'=>'url|nullable',
-            'url_3'=>'url|nullable',
-        ]);
-       
-       //pass through for loop four times (because there 4 fields for social media) 
-       //and rewrite the info about social media
-       for($i = 0; $i < 4; $i++)
-       {
-           $id = $request->get('id_'. $i);
-           $data = App\SocialMedia::where('id','=', $id)->first();
-           //if such data exists, fill it with the new info
-           if($data != null)
-           {
-              $data->platform_name = $request->get('platform_'.$i);
-              $data->url = $request->get('url_'.$i);
-              $data->save();
-           }
-       }
+        $request->validate(['platform_0' => 'max:20|nullable', 'platform_1' => 'max:20|nullable', 'platform_2' => 'max:20|nullable', 'platform_3' => 'max:20|nullable', 'url_0' => 'url|nullable', 'url_1' => 'url|nullable', 'url_2' => 'url|nullable', 'url_3' => 'url|nullable', ]);
 
-       return redirect()->to('/control#settings');
+        //pass through for loop four times (because there 4 fields for social media)
+        //and rewrite the info about social media
+        for ($i = 0;$i < 4;$i++)
+        {
+            $id = $request->get('id_' . $i);
+            $data = App\SocialMedia::where('id', '=', $id)->first();
+            //if such data exists, fill it with the new info
+            if ($data != null)
+            {
+                $data->platform_name = $request->get('platform_' . $i);
+                $data->url = $request->get('url_' . $i);
+                $data->save();
+            }
+        }
+
+        return redirect()
+            ->to('/control#settings');
     }
 
     //USERS
     //change user type
     public function change_user_type(Request $request)
-    {    
-        $request->validate([
-            'user_id' => 'int',
-            'user_type' => 'string|in:admin,user',
-        ]);
-            
+    {
+        $request->validate(['user_id' => 'int', 'user_type' => 'string|in:admin,user', ]);
+
         $user = App\User::find($request->user_id);
 
         //if user exists and he is an Admin, make him a common user
-        if($user != null && $request->user_type == 'admin')
+        if ($user != null && $request->user_type == 'admin')
         {
             $user->user_type = 2;
             $user->save();
@@ -131,9 +119,11 @@ class ControlPanelController extends Controller
         else
         {
             //do nothing
+            
         }
 
-        return redirect(url()->previous() . "#users");
+        return redirect(url()
+            ->previous() . "#users");
     }
 
     //DESIGN
@@ -141,35 +131,40 @@ class ControlPanelController extends Controller
     public function update_design(Request $request)
     {
         //get site settings
-        $settings = App\Settings::get()[0];
+        $settings = App\Settings::get() [0];
 
-        $validator = Validator::make($request->all(), [
-            'background_image' => 'mimes:jpeg,jpg,png|max:3000',
-            'footer_content' => 'string|max:500'
-        ]);
+        $validator = Validator::make($request->all() , ['background_image' => 'mimes:jpeg,jpg,png|max:3000', 'footer_content' => 'string|max:500']);
 
-        if($validator->fails()){
-            return redirect(url()->previous()."#design")->withErrors($validator)->withInput();
+        if ($validator->fails())
+        {
+            return redirect(url()
+                ->previous() . "#design")
+                ->withErrors($validator)->withInput();
         }
 
         //save background image
         //if the form has an image
-        if($request->background_image != null)
+        if ($request->background_image != null)
         {
-            if($validator->fails()){
-                return redirect(url()->previous()."#design")->withErrors($validator)->withInput();
+            if ($validator->fails())
+            {
+                return redirect(url()
+                    ->previous() . "#design")
+                    ->withErrors($validator)->withInput();
             }
-            
-            //generate random file name with a number (0 to 99) and the original extension
-            $filename = "bg_".rand(0,99).".".$request->file('background_image')->getClientOriginalExtension();
-            $img = Image::make($request->background_image); //create image
-            $img->fit(1920,1080); //fit image into 1920x1080 resolution
 
+            //generate random file name with a number (0 to 99) and the original extension
+            $filename = "bg_" . rand(0, 99) . "." . $request->file('background_image')
+                ->getClientOriginalExtension();
+            $img = Image::make($request->background_image); //create image
+            $img->fit(1920, 1080); //fit image into 1920x1080 resolution
             //if 'Blue Image' or/and 'Darken Image' were check
             //blur or/and darken the image
-            if($request->blur_img == "on")
-            {$img->blur(85);}
-            if($request->dark_img == "on")
+            if ($request->blur_img == "on")
+            {
+                $img->blur(85);
+            }
+            if ($request->dark_img == "on")
             {
                 $img->brightness(-25);
                 $img->contrast(-20);
@@ -178,274 +173,326 @@ class ControlPanelController extends Controller
             //delete the old background image
             $files = File::files(storage_path("app/public/images/bg"));
 
-            foreach($files as $file)
+            foreach ($files as $file)
             {
                 unlink($file->getPathname());
             }
 
             //save the new image
-            $img->save(storage_path('/app/public/images/bg/').$filename);
-            $settings->bg_image = "/images/bg/"."/".$filename; //write path to image into the site settings
+            $img->save(storage_path('/app/public/images/bg/') . $filename);
+            $settings->bg_image = "/images/bg/" . "/" . $filename; //write path to image into the site settings
+            
         }
 
         //if Show About page is (un)checked, then (un)check it
-        if($request->show_about == "on")
-        { $settings->show_about = 1; }
-        else { $settings->show_about = 0; }
+        if ($request->show_about == "on")
+        {
+            $settings->show_about = 1;
+        }
+        else
+        {
+            $settings->show_about = 0;
+        }
 
         $settings->save();
 
-        return redirect()->to("/control#design");
+        return redirect()
+            ->to("/control#design");
     }
 
     //show page Edit About
     public function show_edit_about()
     {
-        if(Auth::check() && Auth::user()->user_type != 0)
+        if (Auth::check() && Auth::user()->user_type != 0)
         {
             return redirect('/');
         }
-        $content = App\Settings::get()[0]->about_content;
+        $content = App\Settings::get() [0]->about_content;
         return view('/control_panel/edit_about', compact('content'));
     }
 
     //save changes in About page
     public function save_about(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'about_content' => 'string|max:5000'
-        ]);
+        $validator = Validator::make($request->all() , ['about_content' => 'string|max:5000']);
 
-        if($validator->fails()){
-            return redirect("/control/edit_about")->withErrors($validator)->withInput();
+        if ($validator->fails())
+        {
+            return redirect("/control/edit_about")
+                ->withErrors($validator)->withInput();
         }
 
-        $settings = App\Settings::get()[0];
+        $settings = App\Settings::get() [0];
         $settings->about_content = $request->about_content;
 
         $settings->save();
 
-        return redirect()->to('/control#design');
+        return redirect()
+            ->to('/control#design');
     }
 
     //PROFILE
     //update user profile
     public function update_profile(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:25',
-            'email' => 'required|email',
-            'password' => 'min:8|confirmed|nullable'
-        ]);
+        $validator = Validator::make($request->all() , ['username' => 'required|string|max:25', 'email' => 'required|email', 'password' => 'min:8|confirmed|nullable']);
 
-        if($validator->fails()){
-            return redirect(url()->previous() . "#profile")->withErrors($validator)->withInput();
+        if ($validator->fails())
+        {
+            return redirect(url()
+                ->previous() . "#profile")
+                ->withErrors($validator)->withInput();
         }
 
         $user = App\User::find(Auth::user()->id);
-        
+
         $user->name = $request->username;
         $user->email = $request->email;
 
-        if($request->password != null)
+        if ($request->password != null)
         {
-           $user->password = Hash::make($request->password);
+            $user->password = Hash::make($request->password);
         }
 
         $user->save();
 
-        return redirect(url()->previous() . "#profile");
-        
+        return redirect(url()
+            ->previous() . "#profile");
+
     }
 
-
     //COMMENTS
-    public function view_comments(){
-        $comments = App\Comment::orderBy('created_at','desc')->paginate(20);
+    public function view_comments()
+    {
+        $comments = App\Comment::orderBy('created_at', 'desc')->paginate(20);
 
-        foreach($comments as $c){
-            if($c->is_logged_on != -1)
+        foreach ($comments as $c)
+        {
+            if ($c->is_logged_on != - 1)
             {
-                $c->username = App\User::where('id','=',1)->get()[0]->name;
+                $c->username = App\User::where('id', '=', 1)
+                    ->get() [0]->name;
             }
-            $post_title = App\Post::where('id','=',$c->post_id)->first()->post_title;
-            $c->comment_content = str_replace("&nbsp;"," ",strip_tags($c->comment_content));
+            $post_title = App\Post::where('id', '=', $c->post_id)
+                ->first()->post_title;
+            $c->comment_content = str_replace("&nbsp;", " ", strip_tags($c->comment_content));
             $c->post_title = $post_title;
         }
-        
+
         return view('control_panel/comments/comments', compact('comments'));
     }
 
-
     //SEARCH FUNCTIONS
-      //search first three results
-      public function simple_search(Request $request)
-      {   
-          $val = $request->value;
-          $result = "";
-          $is_admin = $this->check_admin();
+    //search first three results
+    public function simple_search(Request $request)
+    {
+        $val = $request->value;
+        $result = "";
+        $is_admin = $this->check_admin();
 
-            //POST SEARCH
-            if($request->type == "post")
-            {   
-                //if user, search only for visible posts
-                if($is_admin == false)
-                {
-                    $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where(function($query) use ($val) { 
-                        $query->where('post_title','like','%'.$val.'%');
-                        $query->orWhere('post_content','like','%'.$val.'%');
-                    })->orderBy('id','desc')->get();
-                }
-                else if($is_admin  == true)
-                {
-                    $result = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->take(3)->get();  
-                }
-
-                foreach($result as $r)
-                {
-                    $r->post_content = strip_tags($r->post_content);
-                    $r->post_content = str_replace('&nbsp;','',$r->post_content);
-                    $r->date = date('d.m.Y', strtotime($r->date));
-                    $r->category = App\Category::find($r->category_id)->category_name;
-        
-                    $pos = strpos(strtolower($r->post_content), strtolower($request->value));
-        
-                    if(strlen($r->post_content) < 120)
-                    {
-                        //if post content is less than 120 characters, do nothing and show full post_content
-                    }
-                    else if($pos === false) 
-                    {   $dots_end = "...";
-                        if(strlen($r->post_content) <= 100)
-                        {
-                            $dots_end ="";
-                        }
-                        $r->post_content = substr($r->post_content, 0, 100).$dots_end;
-                    }
-                    else
-                    {
-                        $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
-                        $dots_start = "...";
-                        $dots_end = "...";
-                        if($space_pos <= 0)
-                        {
-                            $dots_start = "";
-                        }
-                        //dd($space_pos+100);
-                        if($space_pos+100 >= strlen($r->post_content))
-                        {
-                            $dots_end = "";  
-                        }
-                        $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
-                    }
-                }
-            }
-            else if($request->type == "comment")
+        //POST SEARCH
+        if ($request->type == "post")
+        {
+            //if user, search only for visible posts
+            if ($is_admin == false)
             {
-               $result = "damn boi";
-            }
-
-          return json_encode($result);
-      }
-  
-      //search full results
-      public function full_search(Request $request)
-      {
-          $view_type = $request->cookie('view_type');
-          $result = "";
-          $is_admin = $this->check_admin();
-
-          if($view_type == null)
-          {
-              $view_type = App\Settings::all()[0]->view_type;
-          }
-  
-          $val = $request->search_value;
-  
-          if($val == null)
-          {
-              return redirect()->back();
-          }
-
-          //POST SEARCH
-          if($request->type == "post")
-          {
-            $type = $request->type;
-            if($is_admin == false)
-            {
-              $results = DB::table('posts')->select('id','post_title','post_content','category_id','date')->where('visibility','=',1)->where(function($query) use ($val) { 
-                  $query->where('post_title','like','%'.$val.'%');
-                  $query->orWhere('post_content','like','%'.$val.'%');
-              })->orderBy('id','desc')->get();
+                $result = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
+                    ->where('visibility', '=', 1)->where(function ($query) use ($val)
+                {
+                    $query->where('post_title', 'like', '%' . $val . '%');
+                    $query->orWhere('post_content', 'like', '%' . $val . '%');
+                })->orderBy('id', 'desc')
+                    ->get();
             }
             else if ($is_admin == true)
             {
-              $results = App\Post::where('post_title','like','%'.$val.'%')->orWhere('post_content','like','%'.$val.'%')->orderBy('id','desc')->get();
+                $result = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
+                    ->where('post_title', 'like', '%' . $val . '%')->orWhere('post_content', 'like', '%' . $val . '%')->orderBy('id', 'desc')
+                    ->take(3)
+                    ->get();
             }
-            
-    
-            foreach($results as $r)
+
+            foreach ($result as $r)
             {
                 $r->post_content = strip_tags($r->post_content);
-                $r->post_content = str_replace('&nbsp;','',$r->post_content);
+                $r->post_content = str_replace('&nbsp;', '', $r->post_content);
                 $r->date = date('d.m.Y', strtotime($r->date));
                 $r->category = App\Category::find($r->category_id)->category_name;
-    
-                $pos = strpos(strtolower($r->post_content), strtolower($val));
-    
-                if(strlen($r->post_content) < 120)
+
+                $pos = strpos(strtolower($r->post_content) , strtolower($request->value));
+
+                if (strlen($r->post_content) < 120)
                 {
                     //if post content is less than 120 characters, do nothing and show full post_content
+                    
                 }
-    
-                else if($pos === false) 
-                {   $dots_end = "...";
-                    if(strlen($r->post_content) <= 100)
+                else if ($pos === false)
+                {
+                    $dots_end = "...";
+                    if (strlen($r->post_content) <= 100)
                     {
-                        $dots_end ="";
+                        $dots_end = "";
                     }
-                    $r->post_content = substr($r->post_content, 0, 100).$dots_end;
+                    $r->post_content = substr($r->post_content, 0, 100) . $dots_end;
                 }
-                else{
-                    $space_pos = strrpos(substr($r->post_content,0,$pos-5)," ");
+                else
+                {
+                    $space_pos = strrpos(substr($r->post_content, 0, $pos - 5) , " ");
                     $dots_start = "...";
                     $dots_end = "...";
-                    if($space_pos <= 0)
+                    if ($space_pos <= 0)
+                    {
+                        $dots_start = "";
+                    }
+                    //dd($space_pos+100);
+                    if ($space_pos + 100 >= strlen($r->post_content))
+                    {
+                        $dots_end = "";
+                    }
+                    $r->post_content = $dots_start . substr($r->post_content, $space_pos, $space_pos + 100) . $dots_end;
+                }
+            }
+        }
+        //SEARCH COMMENT
+        else if ($request->type == "comment")
+        {
+            if ($is_admin == true)
+            {
+                $result = App\Comment::where("is_logged_on", "=", -1)->where('username', 'like', '%' . $val . '%')->orWhere('comment_content', 'like', '%' . $val . '%')->get();
+            }
+            else
+            {
+                return "Authentication needed";
+            }
+        }
+
+        return json_encode($result);
+    }
+
+    //search full results
+    public function full_search(Request $request)
+    {
+        $view_type = $request->cookie('view_type');
+        $result = "";
+        $is_admin = $this->check_admin();
+
+        if ($view_type == null)
+        {
+            $view_type = App\Settings::all() [0]->view_type;
+        }
+
+        $val = $request->search_value;
+
+        if ($val == null)
+        {
+            return redirect()->back();
+        }
+
+        //POST SEARCH
+        if ($request->type == "post")
+        {
+            $type = $request->type;
+            if ($is_admin == false)
+            {
+                $results = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
+                    ->where('visibility', '=', 1)->where(function ($query) use ($val)
+                {
+                    $query->where('post_title', 'like', '%' . $val . '%');
+                    $query->orWhere('post_content', 'like', '%' . $val . '%');
+                })->orderBy('id', 'desc')
+                    ->get();
+            }
+            else if ($is_admin == true)
+            {
+                $results = App\Post::where('post_title', 'like', '%' . $val . '%')->orWhere('post_content', 'like', '%' . $val . '%')->orderBy('id', 'desc')
+                    ->get();
+            }
+
+            foreach ($results as $r)
+            {
+                $r->post_content = strip_tags($r->post_content);
+                $r->post_content = str_replace('&nbsp;', '', $r->post_content);
+                $r->date = date('d.m.Y', strtotime($r->date));
+                $r->category = App\Category::find($r->category_id)->category_name;
+
+                $pos = strpos(strtolower($r->post_content) , strtolower($val));
+
+                if (strlen($r->post_content) < 120)
+                {
+                    //if post content is less than 120 characters, do nothing and show full post_content
+                    
+                }
+
+                else if ($pos === false)
+                {
+                    $dots_end = "...";
+                    if (strlen($r->post_content) <= 100)
+                    {
+                        $dots_end = "";
+                    }
+                    $r->post_content = substr($r->post_content, 0, 100) . $dots_end;
+                }
+                else
+                {
+                    $space_pos = strrpos(substr($r->post_content, 0, $pos - 5) , " ");
+                    $dots_start = "...";
+                    $dots_end = "...";
+                    if ($space_pos <= 0)
                     {
                         $dots_start = "";
                     }
 
-                    if($space_pos+100 >= strlen($r->post_content))
+                    if ($space_pos + 100 >= strlen($r->post_content))
                     {
-                        $dots_end = "";  
+                        $dots_end = "";
                     }
-                    $r->post_content = $dots_start.substr($r->post_content, $space_pos, $space_pos+100).$dots_end;
+                    $r->post_content = $dots_start . substr($r->post_content, $space_pos, $space_pos + 100) . $dots_end;
                 }
             }
 
-              //if its search from the main page
-              if($request->is_control_panel == null)
-              {
-                return view('search/search', compact('results','view_type','val'));
-              }
-              //if its search from the control panel
-              else if ($request->is_control_panel == "true")
-              { 
-                if($is_admin == true)
+            //if its search from the main page
+            if ($request->is_control_panel == null)
+            {
+                return view('search/search', compact('results', 'view_type', 'val'));
+            }
+            //if its search from the control panel
+            else if ($request->is_control_panel == "true")
+            {
+                if ($is_admin == true)
                 {
-                 
-                    return view('search/search_control_panel', compact('results','view_type','val','type'));
+
+                    return view('search/search_control_panel', compact('results','val', 'type'));
                 }
                 else
                 {
                     return redirect('/');
                 }
-              }
-   
-          }
-  
-      }
-    
+            }
+
+        }
+        //SEARCH COMMENT
+        else if ($request->type == "comment")
+        {
+            $type = $request->type;
+
+            if ($is_admin == true)
+            {
+                $results = App\Comment::where('username', 'like', '%' . $val . '%')->orWhere('comment_content', 'like', '%' . $val . '%')->get();
+                return view('search/search_control_panel', compact('results','val','type'));
+            }
+            else
+            {
+                abort(403, 'Unauthorized action');
+            }
+        }
+
+        //else, redirect to main page
+        else
+        {
+            return redirect('/');
+        }
+
+    }
+
 }
- 
 
