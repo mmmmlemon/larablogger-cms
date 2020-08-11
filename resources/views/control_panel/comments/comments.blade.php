@@ -27,9 +27,6 @@
             </div>
           </div>
     </form>
-    <div class="white-bg search_results_comments" id="search_results">
-
-    </div>
 </div>
 
 

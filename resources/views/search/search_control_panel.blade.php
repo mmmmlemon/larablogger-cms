@@ -35,7 +35,7 @@
                     <input type="text" name="type" value="post" class="invisible">
                     <input type="text" name="is_control_panel" value="true" class="invisible">
                   @elseif($type == "comment")
-                    <input type="text" name="type" value="" class="invisible">
+                    <input type="text" name="type" value="comment" class="invisible">
                   @endif
         
                   <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value" value="{{$val ?? '' }}">
@@ -52,11 +52,12 @@
             </form>
         </div>
     </div>
-  
 </div>
+
 <div class="white-bg search_results" id="search_results">
 
 </div>
+
 <div class="container">
     <div class="white-bg">
     <h1 class="subtitle">Search results: {{count($results)}}</h1>
@@ -121,9 +122,34 @@
             </div>
             @endforeach
         @endif
-    @elseif($type == "comment")
-            <h1>damn boi</h1>
-    @endif
+        @elseif($type == "comment")
+            @foreach($results as $result)
+                <div class='white-bg search_full_results_block'>
+                    <h1 class="subtitle">{{$result->username}}
+                    | <a style="font-size: 13pt;" href="/post/{{$result->post_id}}#comment_anchor_{{$result->id}}">{{$result->post_title}}</a></h1>
+                    <div class="post_content">{!!$result->comment_content!!}</div>
+                    <p>{{date("d.m.Y", strtotime($result->date))}}</p>
+                    <div>
+                        @if($result->visibility == 1)
+                        <form action="/post/change_comment_status" method="post" style="display:inline;">
+                          @csrf
+                          <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                          <input type="text" class="invisible "name="action" value="hide">
+                          <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+                        </form>
+                      @else
+                      <form action="/post/change_comment_status" method="post" style="display:inline;">
+                        @csrf
+                        <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                        <input type="text" class="invisible "name="action" value="show">
+                        <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
+                      </form>
+                      @endif
+                    <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$result->id}}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     </div>    
 </div>
 
@@ -155,7 +181,31 @@
         </footer>
         </div>
     </div>
+@elseif($type == "comment")
+    <div class="modal modalDelete">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">You sure?</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <p>Are you sure you want to delete this comment?</p>
+            <b id="modal_post_title"></b>
+            <p class="has-text-danger">This action cannot be undone.</p>
+        </section>
+        <footer class="modal-card-foot">
+            <form id="modal_form" action="/post/change_comment_status" method="post" style="display:inline;">
+                    @csrf
+                    <input type="text" class="invisible" id="modal_form_input" name="comment_id">
+                    <input type="text" class="invisible "name="action" value="delete">
+            </form>
+            <button class="button is-danger" id="submit_modal">Delete</button>
+            <button class="button cancel">Cancel</button>
+        </footer>
+    </div>
 @endif
+
 @endsection
 
 
