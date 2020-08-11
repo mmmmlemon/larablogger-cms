@@ -1,5 +1,4 @@
 @extends('layouts.app')
-{{-- @php dd($comments); @endphp --}}
 @section('content')
 <div class="container white-bg">
     <nav class="breadcrumb" aria-label="breadcrumbs">
@@ -24,13 +23,17 @@
         </span>
         <span>Edit this post</span>
     </a>
-
-    
     <div>&nbsp;</div>
     @endif
     <div class="columns">
         <div class="column">
-            <h1 class="title post_title">{{$post->post_title}}</h1>
+            <div>
+                <h1 class="title post_title" style="display:inline-block;">{{$post->post_title}}</h1>
+                @if($post->pinned == 1)
+                    <i class="fas fa-thumbtack pin" style="display:inline-block; "></i>
+                @endif
+            </div>
+        
             @if($post->tags != null)
                 @foreach($post->tags as $tag)
                     <span class="tag is-info"><a class="has-text-white" href="/post/tag/{{$tag}}">{{$tag}}</a></span>
