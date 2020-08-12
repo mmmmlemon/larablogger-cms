@@ -474,24 +474,29 @@ class ControlPanelController extends Controller
         else if ($request->type == "comment")
         {
             $type = $request->type;
-
-            if ($is_admin == true)
+            $val = $request->search_value;
+            if($is_admin == true)
             {
-                $results = App\Comment::where('username', 'like', '%' . $val . '%')->orWhere('comment_content', 'like', '%' . $val . '%')->orderBy('date','desc')->get();
+                $results = App\Comment::leftJoin('users','users.id','=','comments.is_logged_on')->where('name','like','%'.$val.'%')->orWhere('username','like','%'.$val.'%')->orWhere('comment_content','like','%'.$val.'%')->get();
+
+
                 foreach($results as $res)
                 {
                     $res->post_title = App\Post::where('id','=',$res->post_id)->get()->first()->post_title;
-                    if($res->is_logged_on != -1)
-                    {
-                        $res->username = App\User::where('id','=',$res->is_logged_on)->get()->first()->name;
-                    }
                 }
+
                 return view('search/search_control_panel', compact('results','val','type'));
             }
             else
             {
                 abort(403, 'Unauthorized action');
             }
+        }
+
+        else if ($request->type == "media")
+        {
+            $type = $request->type;
+            return "Coming soon";
         }
 
         //else, redirect to main page

@@ -125,7 +125,11 @@
         @elseif($type == "comment")
             @foreach($results as $result)
                 <div class='white-bg search_full_results_block'>
-                    <h1 class="subtitle">{{$result->username}}
+                    @if($result->name != null)
+                        <h1 class="subtitle">{{$result->name}}
+                    @else
+                        <h1 class="subtitle">{{$result->username}}
+                    @endif
                     | <a style="font-size: 13pt;" href="/post/{{$result->post_id}}#comment_anchor_{{$result->id}}">{{$result->post_title}}</a></h1>
                     <div class="post_content">{!!$result->comment_content!!}</div>
                     <p>{{date("d.m.Y", strtotime($result->date))}}</p>

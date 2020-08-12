@@ -11,6 +11,27 @@
             </ul>
         </nav>
 
+        <div class="columns has-text-left">
+            <div class="column is-fullwidth">
+                <form action="/full_search" method="GET">
+                    <div class="field has-addons">
+                        <div class="control has-icons-left has-icons-right" style="width:100%;" id="search_bar_div">
+                          <input type="text" name="type" value="media" class="invisible">
+                          <input class="input" type="text" placeholder="Search media" id="search_bar" name="search_value" value="{{$val ?? '' }}">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-search"></i>
+                          </span>
+                        </div>
+                        <div class="control">
+                          <button class="button is-link">
+                            Search
+                          </button>
+                        </div>
+                      </div>
+                </form>
+            </div>
+          </div>
+
         <div class="is-divider"></div>
 
         <div class="columns">
