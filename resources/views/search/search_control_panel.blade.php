@@ -18,6 +18,13 @@
                 Search comment
             </a></li>
             @endif
+            @if($type == "media")
+            <li><a href="/control/posts">Posts</a></li>
+            <li><a href="/control/media">Media browser</a></li>
+            <li class="is-active"><a href="#" aria-current="page">
+                Search media
+            </a></li>
+            @endif
         </ul>
     </nav>
     @if($type == "post")
@@ -36,6 +43,8 @@
                     <input type="text" name="is_control_panel" value="true" class="invisible">
                   @elseif($type == "comment")
                     <input type="text" name="type" value="comment" class="invisible">
+                  @elseif($type == "media")
+                    <input type="text" name="type" value="media" class="invisible">
                   @endif
         
                   <input class="input" type="text" placeholder="Search" id="search_bar" name="search_value" value="{{$val ?? '' }}">
@@ -153,6 +162,12 @@
                     </div>
                 </div>
             @endforeach
+        @elseif($type == "media")
+            @foreach($results as $result)
+            <div class='white-bg search_full_results_block'>
+                    <h1 class="subtitle">{{$result->display_name}}
+            </div>
+        @endforeach
         @endif
     </div>    
 </div>

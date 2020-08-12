@@ -496,7 +496,10 @@ class ControlPanelController extends Controller
         else if ($request->type == "media")
         {
             $type = $request->type;
-            return "Coming soon";
+            $val = $request->search_value;
+            $results = App\Media::leftJoin('posts','posts.id','=','media.post_id')->where('display_name','like','%'.$val.'%')->orWhere('actual_name','like','%'.$val.'%')->orWhere('post_title','like','%'.$val.'%')->get();
+
+            return view('search/search_control_panel', compact('results','val','type'));
         }
 
         //else, redirect to main page
