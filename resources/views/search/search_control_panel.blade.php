@@ -23,6 +23,8 @@
             <li><a href="/control/media">Media browser</a></li>
             <li class="is-active"><a href="#" aria-current="page">
                 Search media
+
+
             </a></li>
             @endif
         </ul>
@@ -134,8 +136,8 @@
         @elseif($type == "comment")
             @foreach($results as $result)
                 <div class='white-bg search_full_results_block'>
-                    @if($result->name != null)
-                        <h1 class="subtitle">{{$result->name}}
+                    @if($result->real_username != null)
+                        <h1 class="subtitle">{{$result->real_username}}
                     @else
                         <h1 class="subtitle">{{$result->username}}
                     @endif
@@ -165,7 +167,12 @@
         @elseif($type == "media")
             @foreach($results as $result)
             <div class='white-bg search_full_results_block'>
-                    <h1 class="subtitle">{{$result->display_name}}
+                    <h1 style="font-size: 15pt;">{{$result->display_name}}
+                    <h4>{{$result->actual_name}}</h4>
+                    <h4><a href="/post/{{$result->post_id}}">{{$result->post_title}}</a></h4>
+                    <div>
+                        
+                    </div>
             </div>
         @endforeach
         @endif

@@ -477,9 +477,12 @@ class ControlPanelController extends Controller
             $val = $request->search_value;
             if($is_admin == true)
             {
-                $results = App\Comment::leftJoin('users','users.id','=','comments.is_logged_on')->where('name','like','%'.$val.'%')->orWhere('username','like','%'.$val.'%')->orWhere('comment_content','like','%'.$val.'%')->get();
-
-
+                $results = App\Comment::select('comments.post_id as post_id','comments.comment_content as comment_content',
+                'comments.username as username', 'comments.date as date', 'comments.id as id', 'users.name as real_username')
+                ->leftJoin('users','users.id','=','comments.is_logged_on')
+                ->where('name','like','%'.$val.'%')->orWhere('username','like','%'.$val.'%')
+                ->orWhere('comment_content','like','%'.$val.'%')->orderBy('date','desc')->get();
+           
                 foreach($results as $res)
                 {
                     $res->post_title = App\Post::where('id','=',$res->post_id)->get()->first()->post_title;
@@ -497,7 +500,13 @@ class ControlPanelController extends Controller
         {
             $type = $request->type;
             $val = $request->search_value;
-            $results = App\Media::leftJoin('posts','posts.id','=','media.post_id')->where('display_name','like','%'.$val.'%')->orWhere('actual_name','like','%'.$val.'%')->orWhere('post_title','like','%'.$val.'%')->get();
+            $results = App\Media::select('media.id as id', 'media.display_name as display_name',
+            'media.actual_name as actual_name', 'media.created_at as created_at',
+            'posts.post_title as post_title', 'posts.id as post_id', 'posts.post_title as post_title')
+            ->leftJoin('posts','posts.id','=','media.post_id')
+            ->where('display_name','like','%'.$val.'%')
+            ->orWhere('actual_name','like','%'.$val.'%')
+            ->orWhere('post_title','like','%'.$val.'%')->orderBy('created_at','desc')->get();
 
             return view('search/search_control_panel', compact('results','val','type'));
         }
