@@ -501,14 +501,16 @@ class ControlPanelController extends Controller
             $type = $request->type;
             $val = $request->search_value;
             $results = App\Media::select('media.id as id', 'media.display_name as display_name',
-            'media.actual_name as actual_name', 'media.created_at as created_at',
-            'posts.post_title as post_title', 'posts.id as post_id', 'posts.post_title as post_title')
+            'media.actual_name as actual_name', 'media.created_at as created_at', 'media.media_type as media_type',
+            'media.media_url as media_url', 'posts.post_title as post_title', 
+            'posts.id as post_id', 'posts.post_title as post_title')
             ->leftJoin('posts','posts.id','=','media.post_id')
             ->where('display_name','like','%'.$val.'%')
             ->orWhere('actual_name','like','%'.$val.'%')
             ->orWhere('post_title','like','%'.$val.'%')->orderBy('created_at','desc')->get();
 
             return view('search/search_control_panel', compact('results','val','type'));
+            
         }
 
         //else, redirect to main page

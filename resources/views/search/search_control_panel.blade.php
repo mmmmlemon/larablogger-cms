@@ -167,11 +167,20 @@
         @elseif($type == "media")
             @foreach($results as $result)
             <div class='white-bg search_full_results_block'>
-                    <h1 style="font-size: 15pt;">{{$result->display_name}}
+                    <h1 style="font-size: 15pt;"><a href="/control/media/{{$result->id}}">{{$result->display_name}}</a></h1>
                     <h4>{{$result->actual_name}}</h4>
                     <h4><a href="/post/{{$result->post_id}}">{{$result->post_title}}</a></h4>
-                    <div>
-                        
+                    <div style="margin-top: 10px;">
+                        <button class="button is-success preview" data-tooltip="Preview"
+                            data-type="{{$result->media_type}}" data-url="{{asset("storage/".$result->media_url)}}">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <a href="/control/media/{{$result->id}}" class="button is-info" data-tooltip="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="deleteFile button is-danger" data-id="{{$result->id}}" data-tooltip="Delete this file">
+                            <i class="fas fa-trash"></i>
+                        </a>
                     </div>
             </div>
         @endforeach
@@ -230,6 +239,48 @@
             <button class="button cancel">Cancel</button>
         </footer>
     </div>
+@elseif($type == "media")
+
+    <div class="modal" id="preview-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content column is-two-thirds-desktop is-12-mobile">
+            <p class="image has-text-centered">
+            <div class="has-text-centered">
+                <img id="content-in-modal" width="90%" class="centered_image" src="" alt="" style="padding:0px;">
+                <div id="player_div" style="display: none;">
+                    <video controls="controls" id="player">
+                        <source src="" id="content-video">
+                    </video>
+                </div>
+            </div>
+            </p>
+        </div>
+        <button class="modal-close is-large" id="modal-close" aria-label="close"></button>
+    </div>
+
+    <div class="modal modalDelete">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">You sure?</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <p>Are you sure you want to delete this file?</p>
+            <b id="modal_post_title"></b>
+            <p>The file will be removed both from post and physically.</p>
+            <p class="has-text-danger">This action cannot be undone.</p>
+        </section>
+        <footer class="modal-card-foot">
+                <form id="modal_form" action="/control/media/delete_media" method="post" style="display:inline;">
+                    @csrf
+                    <input type="text" name="id" value="pee" id="modal_input" class="invisible">
+                </form>
+                <button class="button is-danger" id="submit_modal">Delete</button>
+                <button class="button cancel">Cancel</button>
+        </footer>
+        </div>
+    </div>
 @endif
 
 @endsection
@@ -237,5 +288,13 @@
 
 @push('scripts')
 <script src="{{ asset('js/custom/search.js') }}"></script>
-<script src="{{ asset('js/custom/control_panel/posts.js') }}"></script>
+
+    @if($type == "post")
+        <script src="{{ asset('js/custom/control_panel/posts.js') }}"></script>
+    @elseif($type == "media")
+        <script src="{{ asset('js/plyr.js') }}"></script>
+        <script src="{{ asset('js/custom/control_panel/media.js') }}"></script>
+
+    @endif
+
 @endpush
