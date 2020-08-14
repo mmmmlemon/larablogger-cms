@@ -167,21 +167,37 @@
         @elseif($type == "media")
             @foreach($results as $result)
             <div class='white-bg search_full_results_block'>
-                    <h1 style="font-size: 15pt;"><a href="/control/media/{{$result->id}}">{{$result->display_name}}</a></h1>
-                    <h4>{{$result->actual_name}}</h4>
-                    <h4><a href="/post/{{$result->post_id}}">{{$result->post_title}}</a></h4>
-                    <div style="margin-top: 10px;">
-                        <button class="button is-success preview" data-tooltip="Preview"
-                            data-type="{{$result->media_type}}" data-url="{{asset("storage/".$result->media_url)}}">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <a href="/control/media/{{$result->id}}" class="button is-info" data-tooltip="Edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="deleteFile button is-danger" data-id="{{$result->id}}" data-tooltip="Delete this file">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                <div class="columns">
+                    <div class="column">
+                        @if($result->media_type == "image")
+                            <img src="{{asset("/storage/")."/".$result->media_url}}" alt="">
+                        @elseif($result->media_type == "video")
+                            <video style="" controls="controls" id="player" @if($result->thumbnail_url != null) preload="none" poster = "{{asset('/storage/')."/".$result->thumbnail_url}} @endif">
+                                <source src="{{url('/')}}/storage/{{$result->media_url}}" id="content-video">
+                            </video>
+                        @endif
                     </div>
+                    <div class="column is-8">
+                        <h1 style="font-size: 15pt;"><a href="/control/media/{{$result->id}}">{{$result->display_name}}</a></h1>
+                        <h4>{{$result->actual_name}}</h4>
+                        <h4><a href="/post/{{$result->post_id}}">{{$result->post_title}}</a></h4>
+                        <div style="margin-top: 10px;">
+                            @if($result->media_type == "image")
+                                <button class="button is-success preview" data-tooltip="Preview"
+                                    data-type="{{$result->media_type}}" data-url="{{asset("storage/".$result->media_url)}}">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            @endif
+                            <a href="/control/media/{{$result->id}}" class="button is-info" data-tooltip="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="deleteFile button is-danger" data-id="{{$result->id}}" data-tooltip="Delete this file">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>  
+                    </div>
+                </div>
+                 
             </div>
         @endforeach
         @endif
@@ -294,7 +310,6 @@
     @elseif($type == "media")
         <script src="{{ asset('js/plyr.js') }}"></script>
         <script src="{{ asset('js/custom/control_panel/media.js') }}"></script>
-
     @endif
 
 @endpush
