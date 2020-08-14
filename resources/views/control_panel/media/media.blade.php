@@ -13,6 +13,17 @@
 
         <div class="columns has-text-left">
             <div class="column is-fullwidth">
+                <div style="margin-top:10px; margin-bottom:20px;">
+                    <a class="button is-link" href="/control/media/upload_file">
+                        <span class="icon is-small">
+                          <i class="fas fa-upload"></i>
+                        </span>
+                        <span>
+                            Upload a file
+                        </span>
+                    </a>
+                </div>
+                
                 <form action="/full_search" method="GET">
                     <div class="field has-addons">
                         <div class="control has-icons-left has-icons-right" style="width:100%;" id="search_bar_div">

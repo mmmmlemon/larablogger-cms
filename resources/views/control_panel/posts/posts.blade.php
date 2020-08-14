@@ -10,24 +10,26 @@
     </nav>
     @if(config('isMobile') != true)
         <div class="columns">
-            <div class="column is-4">
-                <a href="/control/create_post" class="button is-link">
-                    <span class="icon">
-                        <i class="fas fa-pen"></i>
-                    </span>
-                    <span>Add post</span>
-                </a>
-                <a href="/control/media" class="button is-link" data-tooltip="Add/edit categories">
-                    <span class="icon">
-                        <i class="fas fa-video"></i>
-                    </span>
-                    <span>Media browser</span>
-                </a>
-            </div>
-            <div class="column is-8">
+            <div class="column is-fullwidth">
+                <div style="margin-top:10px; margin-bottom:20px;">
+                    <a href="/control/create_post" class="button is-link">
+                        <span class="icon">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                        <span>Add post</span>
+                    </a>
+                    <a href="/control/media" class="button is-link" data-tooltip="Add/edit categories">
+                        <span class="icon">
+                            <i class="fas fa-video"></i>
+                        </span>
+                        <span>Media browser</span>
+                    </a>
+    
+                </div>
+        
                 <form action="/full_search" method="GET">
                     <div class="field has-addons">
-                        <div class="control has-icons-left has-icons-right"  style="width:60%;" id="search_bar_div">
+                        <div class="control has-icons-left has-icons-right"  style="width:100%;" id="search_bar_div">
                           <input type="text" name="type" value="post" class="invisible">
                           <input type="text" name="is_control_panel" value="true" class="invisible">
                           <input class="input" type="text" placeholder="Search post" id="search_bar" name="search_value" value="{{$val ?? '' }}" data-type="post">

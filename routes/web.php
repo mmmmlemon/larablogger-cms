@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/pin_post','PostsController@pin_post'); //pin/unpin post
 
     //MEDIA
+    Route::get('/control/media/upload_file', 'MediaController@show_upload_file'); //upload a file
     Route::get('/control/media','MediaController@media_list'); //view media browser
     Route::get('/control/media/{id}','MediaController@view_media'); //view edit media page
     Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //save chnages in media
@@ -78,6 +79,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/media/delete_subs','MediaController@delete_subs'); //delete subtitles
     Route::post('/control/media/change_subs_display_name','MediaController@change_subs_display_name'); //change subtitles display name
     Route::post('/control/media/delete_media','MediaController@delete_media'); //delete media
+
 
     //CATEGORIES
     Route::get('/control/categories', 'CategoryController@category_list'); //view category list in control panel

@@ -197,4 +197,9 @@ class MediaController extends Controller
         $media->delete();
         return redirect()->back();
     }
+
+    public function show_upload_file(){
+        
+        return view('/control_panel/media/upload_file');
+    }
 }
