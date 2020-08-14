@@ -72,14 +72,23 @@
 <div class="container">
     <div class="white-bg">
     <h1 class="subtitle">Search results: {{count($results)}}</h1>
-    @if($type == "post")
+    @if(count($results) <= 0)
         @if(count($results) == 0)
         <div class="has-text-centered">
-            <h1 class="title">Nothing found</h1>
+            @if($type == "post")
+                <h1 class="title">No posts found</h1>
+            @elseif($type == "comment")
+                <h1 class="title">No comments found</h1>
+            @elseif($type == "media")
+                <h1 class="title">No media files found</h1>
+            @endif
             <i class="fas fa-search"></i>
             <h1 class="subtitle">Try to search something different</h1>
         </div>
-        @else
+        @endif
+    @else
+            @if($type == "post")
+
             @foreach($results as $result)
             <div class='white-bg search_full_results_block'>
                 <h1 class="subtitle post_title"><a href="/post/{{$result->id}}">{{$result->post_title}}</a></h1>
@@ -94,7 +103,7 @@
                             <button class="button is-success" data-tooltip="Pin this post"><i class="fas fa-thumbtack"></i></button>
                         </form>
                     @else
-        
+
                         <form action="/control/pin_post" method="post" style="display:inline;">
                             @csrf
                             <input type="text" name="id" value="{{$result->id}}" class="invisible">
@@ -102,7 +111,7 @@
                         </form>
                     @endif
             
-        
+
                     @if($result->visibility == 1)
                 
                         <form action="/control/post_status/{{$result->id}}/0" method="post" style="display:inline;">
@@ -128,11 +137,10 @@
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
-      
+
             
             </div>
             @endforeach
-        @endif
         @elseif($type == "comment")
             @foreach($results as $result)
                 <div class='white-bg search_full_results_block'>
@@ -147,19 +155,19 @@
                     <div>
                         @if($result->visibility == 1)
                         <form action="/post/change_comment_status" method="post" style="display:inline;">
-                          @csrf
-                          <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
-                          <input type="text" class="invisible "name="action" value="hide">
-                          <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+                        @csrf
+                        <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                        <input type="text" class="invisible "name="action" value="hide">
+                        <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
                         </form>
-                      @else
-                      <form action="/post/change_comment_status" method="post" style="display:inline;">
+                    @else
+                    <form action="/post/change_comment_status" method="post" style="display:inline;">
                         @csrf
                         <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
                         <input type="text" class="invisible "name="action" value="show">
                         <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
-                      </form>
-                      @endif
+                    </form>
+                    @endif
                     <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$result->id}}"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
@@ -197,10 +205,12 @@
                         </div>  
                     </div>
                 </div>
-                 
+                
             </div>
         @endforeach
         @endif
+    @endif
+    
     </div>    
 </div>
 
