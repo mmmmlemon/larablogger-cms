@@ -154,20 +154,20 @@
                     <p>{{date("d.m.Y", strtotime($result->date))}}</p>
                     <div>
                         @if($result->visibility == 1)
-                        <form action="/post/change_comment_status" method="post" style="display:inline;">
-                        @csrf
-                        <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
-                        <input type="text" class="invisible "name="action" value="hide">
-                        <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
-                        </form>
-                    @else
-                    <form action="/post/change_comment_status" method="post" style="display:inline;">
-                        @csrf
-                        <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
-                        <input type="text" class="invisible "name="action" value="show">
-                        <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
-                    </form>
-                    @endif
+                            <form action="/post/change_comment_status" method="post" style="display:inline;">
+                            @csrf
+                            <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                            <input type="text" class="invisible "name="action" value="hide">
+                            <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+                            </form>
+                        @else
+                            <form action="/post/change_comment_status" method="post" style="display:inline;">
+                                @csrf
+                                <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                                <input type="text" class="invisible "name="action" value="show">
+                                <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
+                            </form>
+                        @endif
                     <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$result->id}}"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>

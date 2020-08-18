@@ -19,7 +19,7 @@
                           <i class="fas fa-upload"></i>
                         </span>
                         <span>
-                            Upload a file
+                            Upload files
                         </span>
                     </a>
                 </div>

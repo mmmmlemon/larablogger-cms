@@ -419,8 +419,7 @@ class ControlPanelController extends Controller
 
                 if (strlen($r->post_content) < 120)
                 {
-                    //if post content is less than 120 characters, do nothing and show full post_content
-                    
+                    //if post content is less than 120 characters, do nothing and show full post_content  
                 }
 
                 else if ($pos === false)
@@ -468,7 +467,6 @@ class ControlPanelController extends Controller
                     return redirect('/');
                 }
             }
-
         }
         //SEARCH COMMENT
         else if ($request->type == "comment")
@@ -478,7 +476,8 @@ class ControlPanelController extends Controller
             if($is_admin == true)
             {
                 $results = App\Comment::select('comments.post_id as post_id','comments.comment_content as comment_content',
-                'comments.username as username', 'comments.date as date', 'comments.id as id', 'users.name as real_username')
+                'comments.username as username', 'comments.date as date', 'comments.id as id', 
+                'comments.visibility as visibility','users.name as real_username')
                 ->leftJoin('users','users.id','=','comments.is_logged_on')
                 ->where('name','like','%'.$val.'%')->orWhere('username','like','%'.$val.'%')
                 ->orWhere('comment_content','like','%'.$val.'%')->orderBy('date','desc')->get();
@@ -495,7 +494,8 @@ class ControlPanelController extends Controller
                 abort(403, 'Unauthorized action');
             }
         }
-
+        
+        //SEARCH MEDIA
         else if ($request->type == "media")
         {
             $type = $request->type;
@@ -510,7 +510,6 @@ class ControlPanelController extends Controller
             ->orWhere('post_title','like','%'.$val.'%')->orderBy('created_at','desc')->get();
 
             return view('search/search_control_panel', compact('results','val','type'));
-            
         }
 
         //else, redirect to main page
