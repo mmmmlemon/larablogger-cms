@@ -30,12 +30,16 @@
         </div>
     </div>
     
-    <button class="button is-link">
-        <span class="icon">
-            <i class="fas fa-save"></i>
-        </span>
-        <span>Save files</span>
-    </button>
+    <form action="/control/save_uploaded_media" method="POST">
+        @csrf
+        <button class="button is-link" id="submit_files">
+            <span class="icon">
+                <i class="fas fa-save"></i>
+            </span>
+            <span>Save files</span>
+        </button>
+    </form>
+
 </div>
 
 @endsection

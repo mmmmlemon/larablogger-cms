@@ -70,3 +70,30 @@ var dropzone = $("#file_form").dropzone({
         console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }
 });
+
+
+//submit post
+$("#submit_files").click(function () {
+    $(this).attr("disabled", "disabled");
+
+    //csrf-token for ajax request
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    //ajax-request
+    $.ajax({
+        type: 'POST',
+        url: `/control/save_uploaded_media`,
+        data: {
+            file_list: JSON.stringify(uploaded_files)
+        },
+        //redirect to posts on success
+        success: function (response) {
+            window.location.replace("/control/media");
+            console.log(response)
+        }
+    });
+});

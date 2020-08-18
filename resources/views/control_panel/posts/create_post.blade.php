@@ -100,9 +100,9 @@ $blank="";
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/tags-input.js') }}"></script>
-<script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
-<script src="{{ asset('js/dropzone.js') }}"></script>
-<script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
-<script src="{{ asset('js/custom/control_panel/create_post.js') }}"></script>
+  <script src="{{ asset('js/tags-input.js') }}"></script>
+  <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+  <script src="{{ asset('js/dropzone.js') }}"></script>
+  <script src="{{ asset('js/custom/shared/char_counter.js') }}"></script>
+  <script src="{{ asset('js/custom/control_panel/create_post.js') }}"></script>
 @endpush
