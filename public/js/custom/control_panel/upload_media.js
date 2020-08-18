@@ -63,9 +63,29 @@ var dropzone = $("#file_form").dropzone({
     chunksUploaded: function (file, done) {
         var response = JSON.parse(file.xhr.response);
         uploaded_files.push({
-            filename: response.filename,
-            uuid: file.upload.uuid
+            num: uploaded_files.length,
+            display_filename: response.filename,
+            actual_filename: response.filename,
+            post_id: null,
+            uuid: file.upload.uuid,
+            appended_to_list: false
         });
+
+        for(let file of uploaded_files)
+        {   
+            if($("#no_files_yet").length > 0)
+            {
+                $("#no_files_yet").remove();
+            }
+            if(file.appended_to_list === false)
+            {
+                $("#uploaded_list").append(`<div><input class="input" type="text" value="${file.display_filename}"></div>`);
+                file.appended_to_list = true;
+            }
+       
+            
+        }
+
         done();
         console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }

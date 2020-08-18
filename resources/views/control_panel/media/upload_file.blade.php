@@ -24,9 +24,7 @@
     <div class="white-bg">
         <h3 class="subtitle">Uploaded files</h3>
         <div id="uploaded_list">
-            <form action="">
                 <p id="no_files_yet">No files uploaded yet</p>
-            </form>
         </div>
     </div>
     

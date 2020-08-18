@@ -540,9 +540,9 @@ class ControlPanelController extends Controller
         {
            
             //path for replacement
-            $new_path = storage_path("app/public/").$folder_name."/".$file->filename;
+            $new_path = storage_path("app/public/").$folder_name."/".$file->actual_filename;
 
-            $move = File::move(storage_path("app/public/temp/".$file->filename), $new_path);
+            $move = File::move(storage_path("app/public/temp/".$file->actual_filename), $new_path);
         
             //if replacement failed, redirect back with error
             if($move != true) 
