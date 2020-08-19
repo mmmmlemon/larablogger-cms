@@ -79,7 +79,17 @@ var dropzone = $("#file_form").dropzone({
             }
             if(file.appended_to_list === false)
             {
-                $("#uploaded_list").append(`<div><input class="input" type="text" value="${file.display_filename}"></div>`);
+                $("#uploaded_list").append(`<div id="file_${file.num}" class="fade-in uploaded_file_div"><b>${file.actual_filename}</b><br>
+                <div class="columns">
+                    <div class="column is-4">
+                        <label>Display name</label>
+                        <input class="input is-link display_name_input" type="text" value="${file.display_filename}" data-num="${file.num}">
+                    </div>
+                    <div class="column">
+                        <label>Attach to post: None</label>
+                        <input class="input is-link" type="text" value="" placeholder="Type in the post name...">
+                    </div>
+                </div></div><hr>`);
                 file.appended_to_list = true;
             }
        
@@ -89,6 +99,12 @@ var dropzone = $("#file_form").dropzone({
         done();
         console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }
+});
+
+
+//on display name change
+$(document).on('keyup', ".display_name_input", function(){
+    uploaded_files[$(this).data("num")].display_filename = $(this).val();
 });
 
 
