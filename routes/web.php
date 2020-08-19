@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     //MEDIA
     Route::get('/control/media/upload_file', 'MediaController@show_upload_file'); //upload a file
     Route::get('/control/media','MediaController@media_list'); //view media browser
+    Route::post('/control/find_post', 'MediaController@find_post'); //find post (for file upload)
     Route::get('/control/media/{id}','MediaController@view_media'); //view edit media page
     Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //save chnages in media
     Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //delete thumbnail

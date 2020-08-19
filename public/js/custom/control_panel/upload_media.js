@@ -86,9 +86,13 @@ var dropzone = $("#file_form").dropzone({
                         <input class="input is-link display_name_input" type="text" value="${file.display_filename}" data-num="${file.num}">
                     </div>
                     <div class="column">
-                        <label>Attach to post: None</label>
-                        <input class="input is-link" type="text" value="" placeholder="Type in the post name...">
+                        <label id="label_${file.num}">Attach to post: None</label>
+                        <input class="input is-link post_search" type="text" value="" id="post_edit_${file.num}" data-num="${file.num}" placeholder="Type in the post name...">
                     </div>
+                    
+                <div class="white-bg upload_media_search_results" id="search_results_${file.num}">
+
+                </div>
                 </div></div><hr>`);
                 file.appended_to_list = true;
             }
@@ -103,6 +107,54 @@ var dropzone = $("#file_form").dropzone({
 //on display name change
 $(document).on('keyup', ".display_name_input", function(){
     uploaded_files[$(this).data("num")].display_filename = $(this).val();
+});
+
+//on post search
+$(document).on('keyup','.post_search', function(){
+    var value = $(this).val();
+    var num = $(this).data("num");
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/control/find_post',
+        data: {
+            search_value: value
+        },
+        success: function(response){
+            var result = JSON.parse(response);
+           $(`#search_results_${num}`).html("");
+           for(post of result)
+           {
+               $(`#search_results_${num}`).append(`<div class="white-bg columns"><div style="display:inline-block">
+               <a target="_blank" href="/post/${post.id}">${post.post_title}</a>
+               <p style="font-size:10pt;">${post.date}</p><p style="font-size:10pt;"><a href="/category/${post.category}">${post.category}</a></p></div>
+               <div style="display:inline-block; width:80%;">
+               <button style="position: absolute; right:60px; margin-top:10px;" class="button is-success add_post"
+                data-title="${post.post_title}" data-id="${post.id}" data-num="${num}">
+                <span class="icon"><i class="fas fa-check"></i></span>
+               </button>
+               </div>
+               </div>`)
+           }
+        }
+    });
+});
+
+$(document).on("click", ".add_post", function(){
+
+    var num = $(this).data("num");
+    var title = $(this).data("title");
+    var id = $(this).data("id");
+    $(`#post_edit_${num}`).val(title).attr("data-id", id);
+    $(`#label_${num}`).html(`Attach to post: <a href="/post/${id}" target="_blank">${title}</a>`);
+    $(`#search_results_${num}`).html("");
+
 });
 
 
@@ -127,7 +179,6 @@ $("#submit_files").click(function () {
         //redirect to posts on success
         success: function (response) {
             window.location.replace("/control/media");
-            console.log(response)
         }
     });
 });

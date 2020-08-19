@@ -66,7 +66,6 @@
 </div>
 
 <div class="white-bg search_results" id="search_results">
-
 </div>
 
 <div class="container">

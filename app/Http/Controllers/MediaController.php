@@ -211,7 +211,8 @@ class MediaController extends Controller
 
     
     //SAVE MANUALLY UPLOADED MEDIA FILES
-    public function save_uploaded_media_files(Request $request){
+    public function save_uploaded_media_files(Request $request)
+    {
 
         //get list of files in the temp folder
         $temp_files = json_decode($request->file_list);
@@ -249,6 +250,20 @@ class MediaController extends Controller
             }
         }   
 
+    }
+
+    //find post
+    public function find_post(Request $request)
+    {
+        $posts = App\Post::select('post_title','date','id','category_id')->where('post_title','like', '%'.$request->search_value.'%')->get();
+
+        foreach($posts as $post)
+        {
+            $post->date = date('d.m.Y', strtotime($post->date));
+            $post->category = App\Category::where('id','=', $post->category_id)->get()->first()->category_name;
+        }
+  
+        return json_encode($posts);
     }
 
 }
