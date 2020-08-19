@@ -16,17 +16,19 @@ class MediaController extends Controller
     public function media_list()
     {
         //get all the media from database
-        $media = App\Media::orderBy('post_id','desc')->paginate(15);
-
+        $media = App\Media::orderBy('id','desc')->orderBy('post_id','desc')->paginate(15);
+   
         //add additional info to each media file
         foreach($media as $m)
         {   
             $m->filename = basename($m->media_url); //filename
-          
-            $post_title = App\Post::find($m->post_id)->post_title;
+            $post_title = "";
+            if($m->post_id != null)
+            { $post_title = App\Post::find($m->post_id)->post_title; }
+            else
+            { $post_title = "—"; }
             $m->post_title = $post_title; //title of the Post that is related to the media file
         }
-        
         return view('/control_panel/media/media', compact('media'));
     }
 
@@ -34,8 +36,11 @@ class MediaController extends Controller
     public function view_media($id)
     {
         $media = App\Media::find($id); //media file
-        $post_title = App\Post::find($media->post_id)->post_title;
-        $media->post_title = $post_title;  //Post title
+        if($media->post_id != null)
+        {
+            $post_title = App\Post::find($media->post_id)->post_title;
+            $media->post_title = $post_title;  //Post title
+        }
         $media->date = date('d.m.Y',strtotime($media->created_at)); //media - date of upload
         $media->size = round(Storage::size('/public/'.$media->media_url) / 1000000, 1) . " Mb"; //media - size
 

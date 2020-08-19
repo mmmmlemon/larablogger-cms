@@ -25,7 +25,11 @@
             <div class="field">
                 <label class="label">Post</label>
                 <div class="control">
-                  <a target="_blank" href="/post/{{$media->post_id}}">{{Str::limit($media->post_title,30,"...")}}</a>
+                  @if($media->post_id != null)
+                    <a target="_blank" href="/post/{{$media->post_id}}">{{Str::limit($media->post_title,30,"...")}}</a>
+                  @else
+                    <a>—</a>
+                  @endif
                 </div>
             </div>
 

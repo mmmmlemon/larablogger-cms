@@ -75,7 +75,11 @@
                                     {{$m->media_type}}
                                 </td>
                                 <td>
-                                    <a target="_blank" href="/post/{{$m->post_id}}">{{$m->post_title}}</a>
+                                    @if($m->post_id != null)
+                                        <a target="_blank" href="/post/{{$m->post_id}}">{{$m->post_title}}</a>
+                                    @else
+                                        <p>{{$m->post_title}}</p>
+                                    @endif
                                 </td>
                                 <td>
                                     <button class="button is-success preview" data-tooltip="Preview"
@@ -106,7 +110,11 @@
                                         @endif
                                     </p>
                                     <p style="font-size: 10pt; display: inline-block;">
-                                        <a href="/post/{{$m->post_id}}">{{Str::limit($m->post_title,20,"...")}}</a>
+                                        @if($m->post_id != null)
+                                            <a target="_blank" href="/post/{{$m->post_id}}">{{Str::limit($m->post_title,20,"...")}}</a>
+                                        @else
+                                            <a>—</a>
+                                        @endif
                                     </p>
                                 </td>
                                 <td>
@@ -130,8 +138,14 @@
                 @endif
             </div>
             @endif
+        </div>
+    </div>
+    <div class="container">
+        {{ $media->links('pagination.default') }}
+    </div>
         
 @endsection
+
 
 @section('modals')
 <div class="modal" id="preview-modal">

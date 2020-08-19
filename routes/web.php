@@ -81,7 +81,6 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/media/delete_media','MediaController@delete_media'); //delete media
     Route::post('/control/save_uploaded_media', 'MediaController@save_uploaded_media_files'); //save manually uploaded media files
 
-
     //CATEGORIES
     Route::get('/control/categories', 'CategoryController@category_list'); //view category list in control panel
     Route::get('/control/categories/add', 'CategoryController@show_create_category'); //view create category page

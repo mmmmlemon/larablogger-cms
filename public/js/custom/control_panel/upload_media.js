@@ -92,15 +92,13 @@ var dropzone = $("#file_form").dropzone({
                 </div></div><hr>`);
                 file.appended_to_list = true;
             }
-       
-            
+   
         }
 
         done();
         console.log(`%cFile ${file.name} has been uploaded`, 'color:green;');
     }
 });
-
 
 //on display name change
 $(document).on('keyup', ".display_name_input", function(){
