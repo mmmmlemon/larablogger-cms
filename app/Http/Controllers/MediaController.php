@@ -198,8 +198,52 @@ class MediaController extends Controller
         return redirect()->back();
     }
 
+    //show page for file uploads
     public function show_upload_file(){
         
         return view('/control_panel/media/upload_file');
     }
+
+    
+    //SAVE MANUALLY UPLOADED MEDIA FILES
+    public function save_uploaded_media_files(Request $request){
+
+        //get list of files in the temp folder
+        $temp_files = json_decode($request->file_list);
+        $folder_name = "uploaded_manually/".date("M Y");
+        //check if folder has been created
+        $check = File::exists(storage_path("app/public/".$folder_name));
+
+        if($check != true)
+        {
+            Storage::disk('public')->makeDirectory($folder_name);
+        }
+
+        foreach($temp_files as $file)
+        {
+           
+            //path for replacement
+            $new_path = storage_path("app/public/").$folder_name."/".$file->actual_filename;
+
+            $move = File::move(storage_path("app/public/temp/".$file->actual_filename), $new_path);
+        
+            //if replacement failed, redirect back with error
+            if($move != true) 
+            {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+            else
+            {   
+                $media = new App\Media; //write media into the database
+                $media->post_id = null;
+                $media->media_url = $folder_name."/".$file->actual_filename;
+                $mime = substr(File::mimeType($new_path), 0, 5); //get mime type of media
+                $media->media_type = $mime;
+                $media->display_name = $file->display_filename;
+                $media->actual_name = $file->actual_filename;
+                $media->visibility = 1;
+                $media->save(); 
+            }
+        }   
+
+    }
+
 }

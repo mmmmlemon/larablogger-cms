@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/media/delete_subs','MediaController@delete_subs'); //delete subtitles
     Route::post('/control/media/change_subs_display_name','MediaController@change_subs_display_name'); //change subtitles display name
     Route::post('/control/media/delete_media','MediaController@delete_media'); //delete media
-    Route::post('/control/save_uploaded_media', 'ControlPanelController@save_uploaded_media_files'); //save manually uploaded media files
+    Route::post('/control/save_uploaded_media', 'MediaController@save_uploaded_media_files'); //save manually uploaded media files
 
 
     //CATEGORIES
