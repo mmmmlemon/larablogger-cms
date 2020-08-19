@@ -549,15 +549,15 @@ class ControlPanelController extends Controller
             {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
             else
             {   
-                //save the post before saving the media (to extract $post->id)
-                // $media = new App\Media; //write media into the database
-                // $media->post_id = null;
-                // $media->media_url = "posts/". $folder_name."/".$file;
-                // $media->media_type = $mime;
-                // $media->display_name = $file;
-                // $media->actual_name = $file;
-                // $media->visibility = 1;
-                // $media->save(); 
+                $media = new App\Media; //write media into the database
+                $media->post_id = null;
+                $media->media_url = $folder_name."/".$file->actual_filename;
+                $mime = substr(File::mimeType($new_path), 0, 5); //get mime type of media
+                $media->media_type = $mime;
+                $media->display_name = $file->display_filename;
+                $media->actual_name = $file->actual_filename;
+                $media->visibility = 1;
+                $media->save(); 
             }
         }   
 
