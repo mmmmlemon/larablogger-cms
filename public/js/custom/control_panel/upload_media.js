@@ -53,9 +53,14 @@ var dropzone = $("#file_form").dropzone({
         });
 
         this.on("removedfile", function (file) {
+            
+            
             var index_of_el = uploaded_files.findIndex(x => x.uuid === file.upload.uuid);
+            var num = uploaded_files[index_of_el].num;
             uploaded_files.splice(index_of_el, 1);
-            console.log(uploaded_files);
+
+            $(`#file_${num}`).remove();
+
         });
 
     },
@@ -93,7 +98,7 @@ var dropzone = $("#file_form").dropzone({
                 <div class="white-bg upload_media_search_results" id="search_results_${file.num}">
 
                 </div>
-                </div></div><hr>`);
+                </div><hr></div>`);
                 file.appended_to_list = true;
             }
    
