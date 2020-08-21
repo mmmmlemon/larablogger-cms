@@ -154,14 +154,19 @@ $(document).on("click", ".add_post", function(){
     $(`#post_edit_${num}`).val(title).attr("data-id", id);
     $(`#label_${num}`).html(`Attach to post: <a href="/post/${id}" target="_blank">${title}</a> <a class="X_button" data-num="${num}">X</a>`);
     $(`#search_results_${num}`).html("");
+    var index = uploaded_files.findIndex(x => x.num === num);
+    uploaded_files[index].post_id = id;
 });
 
 //on X clicked
 $(document).on("click", ".X_button", function(){
     var num = $(this).data("num");
+    var id = $(`#post_edit_${num}`).data("id");
     $(`#label_${num}`).html("Attach to post: None");
     $(`#post_edit_${num}`).val("");
     $(`#post_edit_${num}`).removeAttr("data-id");
+    var index = uploaded_files.findIndex(x => x.num === num);
+    uploaded_files[index].post_id = null;
 });
 
 //submit post
