@@ -146,17 +146,23 @@ $(document).on('keyup','.post_search', function(){
     });
 });
 
+//on Add Post clicked
 $(document).on("click", ".add_post", function(){
-
     var num = $(this).data("num");
     var title = $(this).data("title");
     var id = $(this).data("id");
     $(`#post_edit_${num}`).val(title).attr("data-id", id);
-    $(`#label_${num}`).html(`Attach to post: <a href="/post/${id}" target="_blank">${title}</a>`);
+    $(`#label_${num}`).html(`Attach to post: <a href="/post/${id}" target="_blank">${title}</a> <a class="X_button" data-num="${num}">X</a>`);
     $(`#search_results_${num}`).html("");
-
 });
 
+//on X clicked
+$(document).on("click", ".X_button", function(){
+    var num = $(this).data("num");
+    $(`#label_${num}`).html("Attach to post: None");
+    $(`#post_edit_${num}`).val("");
+    $(`#post_edit_${num}`).removeAttr("data-id");
+});
 
 //submit post
 $("#submit_files").click(function () {
