@@ -213,7 +213,6 @@ class MediaController extends Controller
     //SAVE MANUALLY UPLOADED MEDIA FILES
     public function save_uploaded_media_files(Request $request)
     {
-
         //get list of files in the temp folder
         $temp_files = json_decode($request->file_list);
         $folder_name = "uploaded_manually/".date("M Y");
@@ -227,7 +226,6 @@ class MediaController extends Controller
 
         foreach($temp_files as $file)
         {
-           
             //path for replacement
             $new_path = storage_path("app/public/").$folder_name."/".$file->actual_filename;
 
@@ -239,7 +237,10 @@ class MediaController extends Controller
             else
             {   
                 $media = new App\Media; //write media into the database
-                $media->post_id = null;
+                if($file->post_id == null)
+                {$media->post_id = null;}
+                else
+                {$media->post_id = $file->post_id;}
                 $media->media_url = $folder_name."/".$file->actual_filename;
                 $mime = substr(File::mimeType($new_path), 0, 5); //get mime type of media
                 $media->media_type = $mime;
