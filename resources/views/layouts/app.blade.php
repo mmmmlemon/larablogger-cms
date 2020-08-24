@@ -325,6 +325,10 @@
         @endif
 
         @yield('modals')
+
+        <div id="notifications" class="notifications">
+
+        </div>
     </body>
 </html>
 

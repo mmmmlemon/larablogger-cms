@@ -72,3 +72,21 @@ $(".cancel").click(function () {
     $(".modalDelete").removeClass("is-active");
 });
 
+//on copy link
+$(".copy_link").on("click", function(){
+    var url = $(this).data("url");
+    var temp = $("<input>");
+    $("body").append(temp);
+    temp.val(url).select();
+    document.execCommand("copy");
+    temp.remove();
+
+    var rand = Math.floor( Math.random() * 100 / 2 ) * 2;
+
+    $("#notifications").append(`<div id="notification_${rand}" class="white-bg link_copied fade-in">The URL has been copied! <i style="margin-left:5px;" class="fa fa-link"></i></div>`);
+
+    setTimeout(function(){
+        $(`#notification_${rand}`).remove();
+    }, 3500);
+});
+

@@ -138,9 +138,8 @@ $(document).on('keyup','.post_search', function(){
            {
                $(`#search_results_${num}`).append(`<div class="white-bg columns"><div style="display:inline-block">
                <a target="_blank" href="/post/${post.id}">${post.post_title}</a>
-               <p style="font-size:10pt;">${post.date}</p><p style="font-size:10pt;"><a href="/category/${post.category}">${post.category}</a></p></div>
-               <div style="display:inline-block; width:80%;">
-               <button style="position: absolute; right:60px; margin-top:10px;" class="button is-success add_post"
+               <p style="font-size:10pt;">${post.date}</p><p style="font-size:10pt;"><a href="/category/${post.category}">${post.category}</a></p>
+               <button class="button is-success add_post"
                 data-title="${post.post_title}" data-id="${post.id}" data-num="${num}">
                 <span class="icon"><i class="fas fa-check"></i></span>
                </button>

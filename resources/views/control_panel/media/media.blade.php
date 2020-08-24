@@ -86,6 +86,10 @@
                                         data-type="{{$m->media_type}}" data-url="{{asset("storage/".$m->media_url)}}">
                                         <i class="fas fa-play"></i>
                                     </button>
+                                    <button class="button is-warning copy_link" data-tooltip="Copy the URL of this file"
+                                        data-url="{{asset("storage/".$m->media_url)}}">
+                                        <i class="fas fa-link"></i>
+                                    </button>
                                     <a href="/control/media/{{$m->id}}" class="button is-info" data-tooltip="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -100,7 +104,7 @@
                     <table class="table is-fullwidth is-hoverable">
                         @foreach ($media as $m)
                             <tr>
-                                <td>
+                                <td style="border-bottom: 0px;">
                                     <p style="font-size: 13pt;"><a href="/control/media/{{$m->id}}"><b>{{$m->display_name}}</b></a></p>
                                     <p style="font-size: 10pt; display: inline-block;">
                                         @if($m->media_type == "image")
@@ -116,8 +120,9 @@
                                             <a>—</a>
                                         @endif
                                     </p>
-                                </td>
-                                <td>
+                            </tr>
+                            <tr>
+                                <td style="border-top: 0px;">
                                     <div class="field has-addons">
                                         <p class="control">
                                             <button class="button is-success preview is-small" data-tooltip="Preview"
@@ -126,12 +131,18 @@
                                             </button>
                                         </p>
                                         <p class="control">
+                                            <button class="button is-warning copy_link is-small" data-tooltip="Copy the URL of this file"
+                                                data-url="{{asset("storage/".$m->media_url)}}">
+                                                <i class="fas fa-link"></i>
+                                            </button>
+                                        </p>
+                                        <p class="control">
                                             <a class="deleteFile button is-danger is-small" data-id="{{$m->id}}" data-tooltip="Delete this file">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </p>
-                                      </div>
-                                </td>
+                                    </div>
+                                </td>   
                             </tr>
                         @endforeach
                     </table>
