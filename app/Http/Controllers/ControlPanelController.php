@@ -302,7 +302,7 @@ class ControlPanelController extends Controller
                 {
                     $query->where('post_title', 'like', '%' . $val . '%');
                     $query->orWhere('post_content', 'like', '%' . $val . '%');
-                })->orderBy('id', 'desc')
+                })->orderBy('id', 'desc')->take(3)
                     ->get();
             }
             else if ($is_admin == true)
