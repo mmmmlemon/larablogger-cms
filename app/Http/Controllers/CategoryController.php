@@ -111,7 +111,7 @@ class CategoryController extends Controller
         $categ = App\Category::where('category_name','=',$category_name)->first();
 
         //get all the posts in this Category by its id
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('date','desc')->orderBy('id','desc')->paginate($paginate);
+        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date','desc')->orderBy('id','desc')->paginate($paginate);
 
         //for each Post in the list do this
         foreach($posts as $post)
