@@ -61,6 +61,7 @@
                 </div>
               </div>
             </form>
+           
         </div>
     </div>
 </div>
@@ -135,9 +136,10 @@
                         data-tooltip="Delete this post" data-title="{{$result->post_title}}" data-id="{{$result->id}}">
                         <i class="fas fa-trash"></i>
                     </button>
-                </div>
 
-            
+                </div>
+                <br>
+                <p class="view_count_posts">{{$result->view_count}} views</p>
             </div>
             @endforeach
         @elseif($type == "comment")

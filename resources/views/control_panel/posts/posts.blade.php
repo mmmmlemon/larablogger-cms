@@ -43,10 +43,8 @@
                           </button>
                         </div>
                       </div>
-                </form>
-                   
+                </form>    
             </div>
-          
         </div>
         <div class="white-bg search_results_posts" id="search_results">
 
@@ -118,7 +116,7 @@
                                 @foreach($posts as $post)
                                     <tr>
                             
-                                        <td><b><a href="/post/{{$post->id}}">{{$post->post_title}}</a></b></td>
+                                        <td><b><a href="/post/{{$post->id}}">{{$post->post_title}} </b> </a>  <p class="view_count_posts">{{$post->view_count}} views</p></td>
                                         <td>
                                 
                                             @if($post->visibility == 1)
@@ -198,7 +196,7 @@
                             @foreach($posts as $post)
                                 <tr class="">
                                     <td style="width:50px;">
-                                    <p class="has-text-centered" style="font-size: 14pt;"><a href="/post/{{$post->id}}"><b>{{Str::limit($post->post_title,30,"...")}}</b></a></p>
+                                    <p class="has-text-centered" style="font-size: 14pt;"><a href="/post/{{$post->id}}"><b>{{Str::limit($post->post_title,30,"...")}}</b></a> <p class="view_count_posts has-text-centered">{{$post->view_count}} views</p></p>
                                     <p class="has-text-centered" style="font-size: 10pt;">
                                         {{date('d.m.y',strtotime($post->created_at))}} |
                                         <a href="/category/{{App\Category::find($post->category_id)->category_name}}">{{App\Category::find($post->category_id)->category_name}}</a>

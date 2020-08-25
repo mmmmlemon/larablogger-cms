@@ -376,8 +376,16 @@ class PostsController extends Controller
     //view post
     public function show_post($id)
     {
+
+
+
         //get post by id
         $post = App\Post::find($id);
+
+        //+1 to view counter
+        $post->view_count = $post->view_count + 1;
+        $post->save();
+
         //get media files
         $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
 

@@ -164,6 +164,9 @@
             </article>
         </div>
     </div>
+    @if($is_admin == true)
+        <p>Views: {{$post->view_count}}</p>
+    @endif
 </div>
 
 <div class="container white-bg-comments" id="comments">
