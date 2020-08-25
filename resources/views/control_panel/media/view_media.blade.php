@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', $media->display_name." -")
 @section('content')
 
 <div class="container">

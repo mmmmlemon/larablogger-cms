@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Search'." -")
 @section('content')
 @if(config('isMobile') == false)
 @yield("search_and_view", View::make('search/search_and_view', compact('view_type','val')))

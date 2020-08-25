@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', $post->post_title." -")
 @section('content')
 <div class="container white-bg">
     <nav class="breadcrumb" aria-label="breadcrumbs">

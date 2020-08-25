@@ -7,6 +7,7 @@ use Schema;
 use Jenssegers\Agent\Agent;
 use Auth;
 use View;
+use App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,5 +37,9 @@ class AppServiceProvider extends ServiceProvider
         $agent = new Agent();
         $isMobile = $agent->isMobile();
         config(['isMobile' => $isMobile]);
+
+        $site_title = App\Settings::all()[0]->site_title;
+        config(['site_title' => $site_title]);
+
     }
 }

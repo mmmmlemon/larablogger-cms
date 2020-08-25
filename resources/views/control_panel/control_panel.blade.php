@@ -1,6 +1,6 @@
 
 @extends('layouts.app') 
-
+@section('title', 'Control panel'." -")
 @section('content')
 @php
 $blank = ""; //empty character for value attribute in inputs

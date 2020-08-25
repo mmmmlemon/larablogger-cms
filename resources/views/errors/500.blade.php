@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Error 503'." -")
 @section('content')
     <div class="container white-bg">
         <div class="column bounce-in has-text-centered">

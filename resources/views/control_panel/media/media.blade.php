@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Media browser'." -")
 @section('content')  
 <div class="container">
     <div class="white-bg">

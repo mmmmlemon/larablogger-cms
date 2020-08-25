@@ -7,7 +7,6 @@
     $settings = App\Settings::all()->first();
     $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
     $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
-    $settings = App\Settings::get()[0];
  @endphp
 
 <!doctype html>
@@ -19,7 +18,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{$settings->site_title}}</title>
+        <title>@yield('title') {{config('site_title')}}</title>
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/scripts.js') }}" defer></script>

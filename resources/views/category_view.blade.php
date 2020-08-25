@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', $categ->category_name." -")
 @section('content')
     {{-- grid/list view --}}
     {{-- search --}}

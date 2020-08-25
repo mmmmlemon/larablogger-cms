@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Upload media files'." -")
 @section('content')  
 <div class="container white-bg">
     <nav class="breadcrumb" aria-label="breadcrumbs">

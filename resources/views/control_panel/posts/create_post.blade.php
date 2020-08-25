@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Add a new post'." -")
 @section('content')
 @php
 $blank="";

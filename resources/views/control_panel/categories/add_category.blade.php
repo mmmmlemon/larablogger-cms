@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Add a category'." -")
 @section('content')
 @php
  $blank = ""; //empty character for value atrribute in inputs

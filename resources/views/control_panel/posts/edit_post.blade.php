@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Edit a post'." -")
 @section('content')
 <div class="container white-bg">
   <nav class="breadcrumb" aria-label="breadcrumbs">
