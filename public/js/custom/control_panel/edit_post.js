@@ -79,7 +79,6 @@ $("#close_delete_modal").click(function () {
 
 //delete file ajax request
 function send_delete_media_request(media_id) {
-    alert("D E L E T")
     //csrf-token
     $.ajaxSetup({
         headers: {
@@ -197,3 +196,26 @@ $("#submit_post").click(function () {
         }
     });
 });
+
+//scripts for posts page
+$("#submit_post_modal").on('click', function (e) {
+    e.preventDefault();
+    $(this).attr("disabled","disabled");
+    $("#modal_post_form").submit();
+});
+
+//show Contacts modal
+$(".showModalPostDelete").click(function () {
+    $(".modalPostDelete").addClass("is-active fade-in");
+    $("#modal_post_title").text($(this).data("title"));
+    $("#modal_form_input").val($(this).data("id"));
+});
+
+$(".delete").click(function () {
+    $(".modalPostDelete").removeClass("is-active");
+});
+
+$(".cancel").click(function () {
+    $(".modalPostDelete").removeClass("is-active");
+});
+

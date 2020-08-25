@@ -171,6 +171,14 @@
         </span>
         <span>Save post</span>
       </button>
+      
+      <button class="button is-danger showModalPostDelete" 
+      data-tooltip="Delete this post" data-title="{{$post->post_title}}" data-id="{{$post->id}}">
+      <span class="icon">
+        <i class="fas fa-trash" id="submit_icon"></i>
+    </span>
+    <span>Delete post</span>
+  </button>
 </div>
 @endsection
 
@@ -206,6 +214,32 @@
     </section>
     <footer class="modal-card-foot">
       <button class="button is-danger" id="submit_modal" data-id="">Delete</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal modalPostDelete">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">You sure?</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Are you sure you want to delete this post?</p>
+      <b id="modal_post_title"></b>
+      <p>This action will also delete all media attached to this post.</p>
+      <p class="has-text-danger">This action cannot be undone.</p>
+    </section>
+    <footer class="modal-card-foot">
+          <form id="modal_post_form" action="/control/delete_post" method="post" style="display:inline;">
+              @method('DELETE')
+              @csrf
+              <input type="text" class="invisible" id="modal_form_input" name="modal_form_input">
+              <input type="text" class="invisible" name="edit_post_delete" value="true">
+          </form>
+          <button class="button is-danger" id="submit_post_modal">Delete</button>
+          <button class="button cancel">Cancel</button>
     </footer>
   </div>
 </div>

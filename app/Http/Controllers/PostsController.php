@@ -652,6 +652,10 @@ class PostsController extends Controller
 
         $post = App\Post::find($request->modal_form_input);
         $post->delete();
+        if($request->edit_post_delete === "true")
+        {
+         return redirect()->to('/control/posts');
+        }
         return redirect(url()->previous());
     }
 
