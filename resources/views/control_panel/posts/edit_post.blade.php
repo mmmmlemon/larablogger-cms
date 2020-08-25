@@ -52,6 +52,13 @@
       </div>
         
       <div class="field">
+        <input class="is-checkradio is-link" name="pinned" id="pinned_checkbox" type="checkbox" @if($post->pinned == 1) checked @endif>
+        <label class="label" for="pinned_checkbox">Pinned</label>
+        <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be pinned to the top of the page"">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </div>
+      <div class="field">
         <input class="is-checkradio is-link" name="publish" id="publish_checkbox" type="checkbox" @if($post->visibility == 1) checked @endif>
         <label class="label" for="publish_checkbox">Visibility</label>
         <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everyone">

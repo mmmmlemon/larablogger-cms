@@ -76,14 +76,10 @@ $("#close_delete_modal").click(function () {
     $(".modalDelete").removeClass("is-active fade-in");
 });
 
-//confirm delete file
-$("#submit_modal").click(function () {
-    //remove tr row in the table and send ajax request
-    send_delete_media_request($(this).data("id"));
-});
 
 //delete file ajax request
 function send_delete_media_request(media_id) {
+    alert("D E L E T")
     //csrf-token
     $.ajaxSetup({
         headers: {
@@ -117,6 +113,13 @@ function send_delete_media_request(media_id) {
         }
     });
 }
+
+//confirm delete file
+$("#submit_modal").click(function () {
+    //remove tr row in the table and send ajax request
+    send_delete_media_request($(this).data("id"));
+});
+
 
 //show file preview
 $(document).on('click', ".preview", function () {
@@ -182,6 +185,7 @@ $("#submit_post").click(function () {
             file_list: JSON.stringify(uploaded_files),
             post_title: $("#post_title").val(),
             post_content: $(".textarea").val(),
+            post_pinned: $("#pinned_checkbox").is(":checked"),
             post_visibility: $("#publish_checkbox").is(":checked"),
             post_date: $("#publish_date").val(),
             post_category: $("#post_category").val(),

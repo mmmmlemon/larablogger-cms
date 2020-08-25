@@ -52,7 +52,14 @@ $blank="";
     @enderror
 
     <div class="field">
-      <br>
+      <input class="is-checkradio is-link" name="pinned" id="pinned_checkbox" type="checkbox">
+      <label class="label" for="pinned_checkbox">Pinned</label>
+      <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be pinned to the top of the page"">
+        <i class="fas fa-question-circle"></i>
+      </span>
+    </div>
+    <div class="field">
+   
       <input class="is-checkradio is-link" id="publish_checkbox" type="checkbox" name="publish" checked="checked">
       <label class="label" for="publish_checkbox">Visibility</label>
       <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be visible to everyone on the web-site, if not, it will be hidden.">

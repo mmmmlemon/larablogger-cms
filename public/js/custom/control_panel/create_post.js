@@ -97,6 +97,7 @@ $("#submit_post").click(function () {
             file_list: JSON.stringify(uploaded_files),
             post_title: $("#post_title").val(),
             post_content: $(".textarea").val(),
+            post_pinned: $("#pinned_checkbox").is(":checked"),
             post_visibility: $("#publish_checkbox").is(":checked"),
             post_date: $("#publish_date").val(),
             post_category: $("#post_category").val(),

@@ -72,6 +72,14 @@ class PostsController extends Controller
             $post->visibility = 0;
             $post->date = $request->post_date;
         }
+        if($request->post_pinned == "true")
+        { //true is a string type, because ajax sends strings
+            $post->pinned = 1;
+        } 
+        else 
+        {
+            $post->pinned = 0;
+        }
 
         //get list of files in temp folder
         $temp_files = json_decode($request->file_list);
@@ -170,6 +178,16 @@ class PostsController extends Controller
         {
             $post->visibility = 0;
         }
+
+        if($request->post_pinned == "true")
+        { //true is a string type, because ajax sends strings
+            $post->pinned = 1;
+        } 
+        else 
+        {
+            $post->pinned = 0;
+        }
+
 
         //get list of files in the temp folder
         $temp_files = json_decode($request->file_list);
