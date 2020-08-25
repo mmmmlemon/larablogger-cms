@@ -38,8 +38,18 @@ class AppServiceProvider extends ServiceProvider
         $isMobile = $agent->isMobile();
         config(['isMobile' => $isMobile]);
 
+        //site title
         $site_title = App\Settings::all()[0]->site_title;
         config(['site_title' => $site_title]);
+
+        $settings = App\Settings::all()->first();
+        config(['settings' => $settings]);
+
+        $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
+        config(['social_media' => $social_media]);
+
+        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
+        config(['categories' => $categories]);
 
     }
 }

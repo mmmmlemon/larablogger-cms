@@ -1,16 +1,8 @@
 
 
 <!--ОСНОВНОЙ ЛЕЙАУТ САЙТА-->
-@php
-    //получаю название и подзаголовок сайта с соц.сетями для шапки сайта (и другую инфу если она понадобится)
-    //так делать нельзя конечно (наверное), но здесь пусть будет (может потом поправлю)
-    $settings = App\Settings::all()->first();
-    $social_media = App\SocialMedia::whereNotNull('platform_name')->whereNotNull('url')->get();
-    $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
- @endphp
-
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('/storage/'.$settings->bg_image) }})">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('/storage/'.config('settings')->bg_image) }})">
     {{-- HEAD --}}
     <head>
         @include('feed::links')
@@ -71,10 +63,10 @@
             <div class="hero-body">
                 <div class="container has-text-centered">
                     <h1 class="title web-site-title">
-                        {{$settings->site_title}}
+                        {{config('settings')->site_title}}
                     </h1>
                     <h2 class="subtitle web-site-subtitle">
-                        {{$settings->site_subtitle}}
+                        {{config('settings')->site_subtitle}}
                     </h2>
                 </div>
             </div>
@@ -151,13 +143,13 @@
                         Home
                     </a>
 
-                    @foreach($categories as $categ)
+                    @foreach(config('categories') as $categ)
                         <a class="navbar-item" href="/category/{{strtolower($categ->category_name)}}">
                         {{$categ->category_name}}
                         </a>
                     @endforeach
 
-                    @if($settings->show_about == 1)
+                    @if(config('settings')->show_about == 1)
                     <a class="navbar-item" href="/about">
                         About
                     </a>
@@ -168,12 +160,12 @@
                             Links
                         </a>
                         <div class="navbar-dropdown" >
-                            @foreach($social_media as $item)
+                            @foreach(config('social_media') as $item)
                                 <a class="navbar-item" target="_blank" href={{$item->url}}>
                                     {{$item->platform_name}}
                                 </a>
                             @endforeach
-                            @if(count($social_media)>0)
+                            @if(count(config('social_media'))>0)
                             <hr class="navbar-divider">
                             @endif
                             <a class="navbar-item" id="showModalContact">
@@ -224,12 +216,12 @@
                     </div>
                     <div class="message-body"> 
                         <div id="contact_content">
-                            @if($settings->contact_email !=null)
-                            @if($settings->contact_text)
-                                <p>{{$settings->contact_text}}</p>
+                            @if(config('settings')->contact_email !=null)
+                            @if(config('settings')->contact_text)
+                                <p>{{config('settings')->contact_text}}</p>
                             @endif
-                                <p>Contact E-mail: {{$settings->contact_email}}</p>
-                            @if($settings->contact_text || $settings->contact_email)
+                                <p>Contact E-mail: {{config('settings')->contact_email}}</p>
+                            @if(config('settings')->contact_text || config('settings')->contact_email)
                                 <div class="is-divider"></div>
                             @endif
                             <div class="field">
