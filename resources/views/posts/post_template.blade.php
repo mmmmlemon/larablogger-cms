@@ -18,7 +18,7 @@
         <div class="media-content">
             @if($post->media_type == "image")
             <figure class="has-text-centered">
-                <img class="imagee" src="{{asset("storage/".$post->media[0]->media_url)}}" alt="">
+                <img class="imagee" src="{{asset("storage/".$post->media[0]->media_url)}}" data-id="{{$post->media[0]->id}}" alt="">
                 @if(count($post->media) > 1)
                     <p><a href="/post/{{$post->id}}">(and {{count($post->media)-1}} more images)</a></p>
                     <br>
@@ -34,7 +34,7 @@
 
             @if($post->media_type == "video")
                 <div class="has-text-centered">
-                    <video class="video-player" controls="controls" @if($post->media[0]->thumbnail_url != null)preload="none"  poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}@endif">
+                    <video class="video-player" controls="controls" @if($post->media[0]->thumbnail_url != null)preload="none" data-id="{{$post->media[0]->id}}"  poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}@endif">
                         <source src="{{asset("storage/".$post->media[0]->media_url)}}">
                             @if($post->media[0] != null && $post->media[0]->subs != null)
                                 @foreach($post->media[0]->subs as $s)

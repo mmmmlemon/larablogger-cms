@@ -9,9 +9,6 @@ $('.share-button').on('click', function () {
     }
 });
 
-const players = Plyr.setup('.video-player');
-
-
 var img_height = $("#img-in-modal").height();
 
 //show image preview modal
@@ -36,15 +33,29 @@ $("#modal-close").click(function () {
     $("#img-in-modal").width("").height("");
 });
 
-// $(window).on('load',function(){
 
-//     var video_players = $(".video-player");
-//         for(var vp of video_players)
-//         {
-//             var parent = $(vp).parents('div[class^="column is-4 transparent"]').eq(0);
-//             $(parent).addClass("fade-in").removeClass("transparent");
-//         }
-// });
+//list of videos on this page
+var video_list = [];
+
+$(document).ready(function(){
+    var video_players = $(".video-player");
+    for(var video of video_players){
+        video_list.push({id:$(video).data("id"), viewed: false});
+    }
+});
+
+//Plyr
+const players = Plyr.setup('.video-player');
+
+for(var player of players)
+{
+    player.on('play', event => {
+        const instance = event.detail.plyr;
+        var id = $(instance.media).data("id");
+        var index = video_list.findIndex(x => x.id === id);
+        video_list[index].viewed = true;
+      });
+}
 
 // show grid after the page has been loaded
 $(window).on('load',function(){
