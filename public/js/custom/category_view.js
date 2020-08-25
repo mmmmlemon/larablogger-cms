@@ -1,7 +1,5 @@
 //scripts for category_view page
 
-const players = Plyr.setup('.video-player');
-
 //show image preview modal
 $(".imagee").click(function () {
     $("#img-modal").addClass("is-active fade-in");
@@ -33,6 +31,52 @@ $('.share-button').on('click', function () {
         $(id).addClass("invisible");
     }
 });
+
+
+//list of videos on this page
+var video_list = [];
+
+$(document).ready(function(){
+    var video_players = $(".video-player");
+    for(var video of video_players){
+        video_list.push({id:$(video).data("id"), viewed: false});
+    }
+});
+
+//Plyr
+const players = Plyr.setup('.video-player');
+
+for(var player of players)
+{
+    //on play button clicked, increment view_count for the video
+    player.on('play', event => {
+        const instance = event.detail.plyr;
+        var id = $(instance.media).data("id");
+        var index = video_list.findIndex(x => x.id === id);
+        if(video_list[index].viewed === false)
+        {
+            video_list[index].viewed = true;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/control/increment_view_count',
+                data: {
+                    media_id: id
+                },
+                success: function(response){
+                    //
+                }
+            })
+        }
+                
+      });
+}
 
 $(window).on('load',function(){
     $(".grid_element").removeClass("transparent").addClass("fade-in");

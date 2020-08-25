@@ -15,7 +15,7 @@
                     <figure class="has-text-centered">
                         <div class="custom_card_rooftop" style="overflow: hidden;">
                         {{-- <img class="imagee" src="{{asset("storage/".$post->media[0]->media_url)}}" alt=""> --}}
-                        <video class="video-player" controls="controls" @if($post->media[0]->thumbnail_url != null)preload="none"  poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}@endif">
+                        <video class="video-player" controls="controls" @if($post->media[0]->thumbnail_url != null)preload="none" data-id="{{$post->media[0]->id}}" poster="{{asset('/storage/')."/".$post->media[0]->thumbnail_url}}@endif">
                             <source class="custom_card_rooftop" src="{{asset("storage/".$post->media[0]->media_url)}}">
                                 @if($post->media[0] != null && $post->media[0]->subs != null)
                                     @foreach($post->media[0]->subs as $s)

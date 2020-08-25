@@ -34,6 +34,7 @@ Route::get('/post/{id}', 'PostsController@show_post'); //view post
 Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //submit comment
 Route::get('/about', 'HomeController@about'); //view About page
 Route::post('/send_feedback','FeedbackController@mail'); //submit Feedback e-mail 
+Route::post('/control/increment_view_count', 'MediaController@increment_view_count'); //increment view count for video
 
 
 
@@ -81,6 +82,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/media/change_subs_display_name','MediaController@change_subs_display_name'); //change subtitles display name
     Route::post('/control/media/delete_media','MediaController@delete_media'); //delete media
     Route::post('/control/save_uploaded_media', 'MediaController@save_uploaded_media_files'); //save manually uploaded media files
+
 
     //CATEGORIES
     Route::get('/control/categories', 'CategoryController@category_list'); //view category list in control panel

@@ -49,11 +49,33 @@ const players = Plyr.setup('.video-player');
 
 for(var player of players)
 {
+    //on play button clicked, increment view_count for the video
     player.on('play', event => {
         const instance = event.detail.plyr;
         var id = $(instance.media).data("id");
         var index = video_list.findIndex(x => x.id === id);
-        video_list[index].viewed = true;
+        if(video_list[index].viewed === false)
+        {
+            video_list[index].viewed = true;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/control/increment_view_count',
+                data: {
+                    media_id: id
+                },
+                success: function(response){
+                    //
+                }
+            })
+        }
+                
       });
 }
 

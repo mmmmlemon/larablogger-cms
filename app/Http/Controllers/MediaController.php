@@ -267,4 +267,21 @@ class MediaController extends Controller
         return json_encode($posts);
     }
 
+      //increment view count for the video
+      public function increment_view_count(Request $request)
+      {
+          $media = App\Media::find($request->media_id);
+          //if media file exists in DB, increment its view_counter
+          if($media != null)
+          {
+            $media->view_count = $media->view_count + 1;
+            $media->save();
+            return true;
+          }
+          else
+          {
+            return false;
+          }  
+      }
+
 }
