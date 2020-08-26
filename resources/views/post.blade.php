@@ -165,6 +165,27 @@
             </article>
         </div>
     </div>
+    <nav class="level is-mobile">
+        <!-- Left side -->
+        <div class="level-left">
+          @if($post->next != null)
+            <div class="level-item">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                <a href="/post/{{$post->next}}">Newer Post</a>
+            </div>
+          @endif
+        </div>
+      
+        <!-- Right side -->
+        <div class="level-right">
+            @if($post->previous != null)
+                <div class="level-item">
+                    <a href="/post/{{$post->previous}}">Older Post</a>
+                    <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                </div>
+            @endif
+        </div>
+      </nav>
     @if($is_admin == true)
         <p>Views: {{$post->view_count}}</p>
     @endif

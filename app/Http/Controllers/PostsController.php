@@ -394,16 +394,13 @@ class PostsController extends Controller
     //view post
     public function show_post($id)
     {
-
-
-
         //get post by id
         $post = App\Post::find($id);
 
         //+1 to view counter
         $post->view_count = $post->view_count + 1;
         $post->save();
-
+  
         //get media files
         $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
 
@@ -411,6 +408,33 @@ class PostsController extends Controller
         {
             $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->orderBy('display_name','asc')->get();
             $m->subs = $subs;
+        }
+
+        //get newer post and older post
+        $all_posts =  $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->get();
+        
+        $index = 0;
+        $previous_index = -1;
+        $next_index = -1;
+
+        foreach($all_posts as $p => $value){
+            if($value->id == $id)
+            {   
+                if($index-1 < 0 != true)
+                {
+                    $next_index = $index - 1;
+                    $post->next = $all_posts[$next_index]->id;
+                }
+                
+                if($index + 1 > count($all_posts)-1 != true)
+                {
+                    $previous_index = $index + 1;
+                    $post->previous = $all_posts[$previous_index]->id;
+                }
+                break;
+            }
+
+            $index++;
         }
 
         //if post exists, view it
@@ -489,7 +513,7 @@ class PostsController extends Controller
 
             prepare_comments($comments, $is_admin);
 
-            // dd($comments);
+           
 
             //count comment
             if($is_admin == true)
