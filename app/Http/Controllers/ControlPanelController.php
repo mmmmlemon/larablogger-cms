@@ -12,14 +12,16 @@ use Hash;
 use DB;
 use Storage;
 
-//functions for the Admin control panel
+//functions for the Admins control panel
 class ControlPanelController extends Controller
 {
 
+    //check if user is admin
     private function check_admin()
-    {
+    {   
         if (Auth::check())
         {
+            //if user type is 0 or 1, this user is admin
             if (Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
             {
                 return true;
@@ -40,15 +42,15 @@ class ControlPanelController extends Controller
 
     }
 
-    //show Control panel
+    //View control panel
     public function show_control_panel()
     {
         //get all the settings
         $settings = App\Settings::all()->first(); //general settings
         $social_media = App\SocialMedia::all(); //social media
-        $users = App\User::orderBy('user_type', 'asc')->paginate(15)
-            ->fragment('users'); //users list
+        $users = App\User::orderBy('user_type', 'asc')->paginate(15)->fragment('users'); //users list
         $current_user = Auth::user(); //current user
+
         return view('control_panel/control_panel', compact('settings', 'social_media', 'users', 'current_user'));
     }
 
@@ -56,7 +58,12 @@ class ControlPanelController extends Controller
     //update general web-site settings
     public function update_settings(Request $request)
     {
-        $request->validate(['site_title' => 'required|max:55', 'site_subtitle' => 'required|max:55', 'contact_email' => 'email|nullable', 'from_email' => 'email', 'contact_text' => 'string|max:200|nullable']);
+        $request->validate([
+        'site_title' => 'required|max:55', 
+        'site_subtitle' => 'required|max:55', 
+        'contact_email' => 'email|nullable', 
+        'from_email' => 'email', 
+        'contact_text' => 'string|max:200|nullable']);
 
         $settings = App\Settings::all()->first();
 
@@ -68,21 +75,29 @@ class ControlPanelController extends Controller
 
         $settings->save();
 
-        return redirect()
-            ->to('/control#settings');
+        return redirect()->to('/control#settings');
     }
 
     //update list of social media
     public function update_social(Request $request)
     {
-        $request->validate(['platform_0' => 'max:20|nullable', 'platform_1' => 'max:20|nullable', 'platform_2' => 'max:20|nullable', 'platform_3' => 'max:20|nullable', 'url_0' => 'url|nullable', 'url_1' => 'url|nullable', 'url_2' => 'url|nullable', 'url_3' => 'url|nullable', ]);
+        $request->validate([
+        'platform_0' => 'max:20|nullable', 
+        'platform_1' => 'max:20|nullable', 
+        'platform_2' => 'max:20|nullable', 
+        'platform_3' => 'max:20|nullable', 
+        'url_0' => 'url|nullable', 
+        'url_1' => 'url|nullable', 
+        'url_2' => 'url|nullable', 
+        'url_3' => 'url|nullable']);
 
-        //pass through for loop four times (because there 4 fields for social media)
+        //pass through for loop four times (because there are 4 fields for social media)
         //and rewrite the info about social media
-        for ($i = 0;$i < 4;$i++)
+        for ($i = 0; $i < 4; $i++)
         {
             $id = $request->get('id_' . $i);
             $data = App\SocialMedia::where('id', '=', $id)->first();
+
             //if such data exists, fill it with the new info
             if ($data != null)
             {
@@ -92,15 +107,16 @@ class ControlPanelController extends Controller
             }
         }
 
-        return redirect()
-            ->to('/control#settings');
+        return redirect()->to('/control#settings');
     }
 
     //USERS
     //change user type
     public function change_user_type(Request $request)
     {
-        $request->validate(['user_id' => 'int', 'user_type' => 'string|in:admin,user', ]);
+        $request->validate([
+            'user_id' => 'int', 
+            'user_type' => 'string|in:admin,user']);
 
         $user = App\User::find($request->user_id);
 
@@ -110,7 +126,7 @@ class ControlPanelController extends Controller
             $user->user_type = 2;
             $user->save();
         }
-        //if user exists and he's a common user, make him an Admin
+        //if user exists and he is a common user, make him an Admin
         else if ($user != null && $request->user_type == 'user')
         {
             $user->user_type = 1;
@@ -119,12 +135,10 @@ class ControlPanelController extends Controller
         //do nothing if both conditions were not met
         else
         {
-            //do nothing
-            
+            //do nothing  
         }
 
-        return redirect(url()
-            ->previous() . "#users");
+        return redirect(url()->previous() . "#users");
     }
 
     //DESIGN
@@ -132,15 +146,15 @@ class ControlPanelController extends Controller
     public function update_design(Request $request)
     {
         //get site settings
-        $settings = App\Settings::get() [0];
+        $settings = App\Settings::get()[0];
 
-        $validator = Validator::make($request->all() , ['background_image' => 'mimes:jpeg,jpg,png|max:3000', 'footer_content' => 'string|max:500']);
+        $validator = Validator::make($request->all(), 
+        ['background_image' => 'mimes:jpeg,jpg,png|max:3000', 
+         'footer_content' => 'string|max:500']);
 
         if ($validator->fails())
         {
-            return redirect(url()
-                ->previous() . "#design")
-                ->withErrors($validator)->withInput();
+            return redirect(url()->previous() . "#design")->withErrors($validator)->withInput();
         }
 
         //save background image
@@ -149,17 +163,14 @@ class ControlPanelController extends Controller
         {
             if ($validator->fails())
             {
-                return redirect(url()
-                    ->previous() . "#design")
-                    ->withErrors($validator)->withInput();
+                return redirect(url()->previous() . "#design")->withErrors($validator)->withInput();
             }
 
             //generate random file name with a number (0 to 99) and the original extension
-            $filename = "bg_" . rand(0, 99) . "." . $request->file('background_image')
-                ->getClientOriginalExtension();
+            $filename = "bg_" . rand(0, 99) . "." . $request->file('background_image')->getClientOriginalExtension();
             $img = Image::make($request->background_image); //create image
             $img->fit(1920, 1080); //fit image into 1920x1080 resolution
-            //if 'Blue Image' or/and 'Darken Image' were check
+            //if 'Blue Image' or/and 'Darken Image' is check
             //blur or/and darken the image
             if ($request->blur_img == "on")
             {
@@ -181,8 +192,7 @@ class ControlPanelController extends Controller
 
             //save the new image
             $img->save(storage_path('/app/public/images/bg/') . $filename);
-            $settings->bg_image = "/images/bg/" . "/" . $filename; //write path to image into the site settings
-            
+            $settings->bg_image = "/images/bg/" . "/" . $filename; //write path to image into the site settings  
         }
 
         //if Show About page is (un)checked, then (un)check it
@@ -197,8 +207,7 @@ class ControlPanelController extends Controller
 
         $settings->save();
 
-        return redirect()
-            ->to("/control#design");
+        return redirect()->to("/control#design");
     }
 
     //show page Edit About
@@ -228,21 +237,21 @@ class ControlPanelController extends Controller
 
         $settings->save();
 
-        return redirect()
-            ->to('/control#design');
+        return redirect()->to('/control#design');
     }
 
     //PROFILE
     //update user profile
     public function update_profile(Request $request)
     {
-        $validator = Validator::make($request->all() , ['username' => 'required|string|max:25', 'email' => 'required|email', 'password' => 'min:8|confirmed|nullable']);
+        $validator = Validator::make($request->all(), 
+        ['username' => 'required|string|max:25', 
+         'email' => 'required|email', 
+         'password' => 'min:8|confirmed|nullable']);
 
         if ($validator->fails())
         {
-            return redirect(url()
-                ->previous() . "#profile")
-                ->withErrors($validator)->withInput();
+            return redirect(url()->previous() . "#profile")->withErrors($validator)->withInput();
         }
 
         $user = App\User::find(Auth::user()->id);
@@ -257,12 +266,12 @@ class ControlPanelController extends Controller
 
         $user->save();
 
-        return redirect(url()
-            ->previous() . "#profile");
+        return redirect(url()->previous() . "#profile");
 
     }
 
     //COMMENTS
+    //show list of all comments
     public function view_comments()
     {
         $comments = App\Comment::orderBy('created_at', 'desc')->paginate(20);
@@ -271,11 +280,9 @@ class ControlPanelController extends Controller
         {
             if ($c->is_logged_on != - 1)
             {
-                $c->username = App\User::where('id', '=', 1)
-                    ->get() [0]->name;
+                $c->username = App\User::where('id', '=', 1)->get()[0]->name;
             }
-            $post_title = App\Post::where('id', '=', $c->post_id)
-                ->first()->post_title;
+            $post_title = App\Post::where('id', '=', $c->post_id)->first()->post_title;
             $c->comment_content = str_replace("&nbsp;", " ", strip_tags($c->comment_content));
             $c->post_title = $post_title;
         }
@@ -298,35 +305,35 @@ class ControlPanelController extends Controller
             if ($is_admin == false)
             {
                 $result = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
-                    ->where('visibility', '=', 1)->where(function ($query) use ($val)
-                {
-                    $query->where('post_title', 'like', '%' . $val . '%');
-                    $query->orWhere('post_content', 'like', '%' . $val . '%');
-                })->orderBy('id', 'desc')->take(3)
-                    ->get();
+                    ->where('visibility', '=', 1)->where(function ($query) use ($val){
+                        $query->where('post_title', 'like', '%' . $val . '%');
+                        $query->orWhere('post_content', 'like', '%' . $val . '%');
+                    })->orderBy('id', 'desc')->take(3)->get();
             }
+            //if admin, search for all posts
             else if ($is_admin == true)
             {
                 $result = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
-                    ->where('post_title', 'like', '%' . $val . '%')->orWhere('post_content', 'like', '%' . $val . '%')->orderBy('id', 'desc')
-                    ->take(3)
-                    ->get();
+                    ->where('post_title', 'like', '%' . $val . '%')
+                    ->orWhere('post_content', 'like', '%' . $val . '%')
+                    ->orderBy('id', 'desc')->take(3)->get();
             }
 
+            //for each found post, do this
             foreach ($result as $r)
             {
-                $r->post_content = strip_tags($r->post_content);
-                $r->post_content = str_replace('&nbsp;', '', $r->post_content);
-                $r->date = date('d.m.Y', strtotime($r->date));
-                $r->category = App\Category::find($r->category_id)->category_name;
+                $r->post_content = strip_tags($r->post_content); //remove HTML tags from post contents
+                $r->post_content = str_replace('&nbsp;', '', $r->post_content); //remove &nbsp
+                $r->date = date('d.m.Y', strtotime($r->date)); //format date
+                $r->category = App\Category::find($r->category_id)->category_name; //add category name
 
-                $pos = strpos(strtolower($r->post_content) , strtolower($request->value));
+                $pos = strpos(strtolower($r->post_content) , strtolower($request->value));  //find the position of the search value
 
                 if (strlen($r->post_content) < 120)
                 {
-                    //if post content is less than 120 characters, do nothing and show full post_content
-                    
+                    //if post content is less than 120 characters, do nothing and show full post_content    
                 }
+                //if the search value was not found
                 else if ($pos === false)
                 {
                     $dots_end = "...";
@@ -334,10 +341,13 @@ class ControlPanelController extends Controller
                     {
                         $dots_end = "";
                     }
+                    //add (or do not add) triple dots at the end of the post content
                     $r->post_content = substr($r->post_content, 0, 100) . $dots_end;
                 }
+                //if search value was found
                 else
                 {
+                    //the closest position of space character near the search value
                     $space_pos = strrpos(substr($r->post_content, 0, $pos - 5) , " ");
                     $dots_start = "...";
                     $dots_end = "...";
@@ -345,34 +355,23 @@ class ControlPanelController extends Controller
                     {
                         $dots_start = "";
                     }
-                    //dd($space_pos+100);
+                    
                     if ($space_pos + 100 >= strlen($r->post_content))
                     {
                         $dots_end = "";
                     }
+                    //add triple dots at the start and the end of post content (or don't)
                     $r->post_content = $dots_start . substr($r->post_content, $space_pos, $space_pos + 100) . $dots_end;
                 }
             }
         }
-        //SEARCH COMMENT
-        else if ($request->type == "comment")
-        {
-            if ($is_admin == true)
-            {
-                $result = App\Comment::where("is_logged_on", "=", -1)->where('username', 'like', '%' . $val . '%')->orWhere('comment_content', 'like', '%' . $val . '%')->get();
-            }
-            else
-            {
-                return "Authentication needed";
-            }
-        }
-
+    
         return json_encode($result);
     }
 
     //search full results
     public function full_search(Request $request)
-    {
+    {   
         $view_type = $request->cookie('view_type');
         $result = "";
         $is_admin = $this->check_admin();
@@ -382,8 +381,10 @@ class ControlPanelController extends Controller
             $view_type = App\Settings::all() [0]->view_type;
         }
 
+        //search value
         $val = $request->search_value;
 
+        //if search value is null, redirect back
         if ($val == null)
         {
             return redirect()->back();
@@ -391,32 +392,35 @@ class ControlPanelController extends Controller
 
         //POST SEARCH
         if ($request->type == "post")
-        {
+        {   
             $type = $request->type;
+
+            //if user isn't admin, show only visible posts
             if ($is_admin == false)
             {
                 $results = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
-                    ->where('visibility', '=', 1)->where(function ($query) use ($val)
-                {
-                    $query->where('post_title', 'like', '%' . $val . '%');
-                    $query->orWhere('post_content', 'like', '%' . $val . '%');
-                })->orderBy('id', 'desc')
-                    ->get();
+                    ->where('visibility', '=', 1)->where(function ($query) use ($val){
+                        $query->where('post_title', 'like', '%' . $val . '%');
+                        $query->orWhere('post_content', 'like', '%' . $val . '%');
+                    })->orderBy('id', 'desc')->get();
             }
+            //if user is admin, show all posts
             else if ($is_admin == true)
             {
-                $results = App\Post::where('post_title', 'like', '%' . $val . '%')->orWhere('post_content', 'like', '%' . $val . '%')->orderBy('id', 'desc')
-                    ->get();
+                $results = App\Post::where('post_title', 'like', '%' . $val . '%')
+                    ->orWhere('post_content', 'like', '%' . $val . '%')
+                    ->orderBy('id', 'desc')->get();
             }
-
+            
+            //for each search result
             foreach ($results as $r)
             {
-                $r->post_content = strip_tags($r->post_content);
-                $r->post_content = str_replace('&nbsp;', '', $r->post_content);
-                $r->date = date('d.m.Y', strtotime($r->date));
-                $r->category = App\Category::find($r->category_id)->category_name;
+                $r->post_content = strip_tags($r->post_content); //remove HTML tags
+                $r->post_content = str_replace('&nbsp;', '', $r->post_content); //remove &nbsp
+                $r->date = date('d.m.Y', strtotime($r->date)); //format date
+                $r->category = App\Category::find($r->category_id)->category_name; //add category name
 
-                $pos = strpos(strtolower($r->post_content) , strtolower($val));
+                $pos = strpos(strtolower($r->post_content) , strtolower($val));  //find the position of the search value
 
                 if (strlen($r->post_content) < 120)
                 {
@@ -457,7 +461,8 @@ class ControlPanelController extends Controller
             }
             //if its search from the control panel
             else if ($request->is_control_panel == "true")
-            {
+            {   
+                //if admin, show results
                 if ($is_admin == true)
                 {
 
@@ -520,9 +525,5 @@ class ControlPanelController extends Controller
         }
 
     }
-
-  
-
-
 }
 
