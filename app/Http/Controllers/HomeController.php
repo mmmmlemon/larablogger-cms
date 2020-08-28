@@ -99,11 +99,12 @@ class HomeController extends Controller
         return $response;
     }
 
-    //view About page
-    public function about()
+    //view 'About' page
+    public function view_about_page()
     {
         $about_content = App\Settings::get()[0]->about_content;
 
+        //if 'About' page set is not visible, redirect back
         if(config('settings')->show_about == 0)
         {
             return redirect()->back();

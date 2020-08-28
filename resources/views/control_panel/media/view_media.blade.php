@@ -26,11 +26,7 @@
             <div class="field">
                 <label class="label">Post</label>
                 <div class="control">
-                  @if($media->post_id != null)
-                    <a target="_blank" href="/post/{{$media->post_id}}">{{Str::limit($media->post_title,30,"...")}}</a>
-                  @else
-                    <a>—</a>
-                  @endif
+                    <a target="_blank" @if($media->post_id != null) href="/post/{{$media->post_id}}"@endif >{{Str::limit($media->post_title,30,"...")}}</a>
                 </div>
             </div>
 
@@ -145,14 +141,14 @@
               </div>
 
               <div id="subtitle_table" class="invisible">
-                  @if(count($subs)>0)
+                  @if(count($subtitles)>0)
                   @if(config('isMobile') != true)
                         <table id="subs_table" class="table is-fullwidth is-hover">
                             <thead>
                                 <tr><th>Subtitle</th><th>Visibility</th><th></th></tr>
                             </thead>
                             <tbody id="subs_list">
-                                @foreach($subs as $sub)
+                                @foreach($subtitles as $sub)
                                 <tr id="sub{{$sub->id}}">
                                 <td id="sub_file_{{$sub->id}}">
                                     <p class="ignore display_text">{{$sub->display_name}}</p>
@@ -189,7 +185,7 @@
                     @else
                         <table id="subs_table" class="table is-fullwidth is-hover">
                             <tbody id="subs_list">
-                                @foreach($subs as $sub)
+                                @foreach($subtitles as $sub)
                                 <tr id="sub{{$sub->id}}">
                                 <td id="sub_file_{{$sub->id}}">
                                     <p class="ignore display_text">{{$sub->display_name}}</p>
@@ -239,7 +235,7 @@
               <div id="preview" class="invisible">
                 <video style="" controls="controls" id="player" @if($media->thumbnail_url != null) preload="none" poster = "{{asset('/storage/')."/".$media->thumbnail_url}} @endif">
                   <source src="{{url('/')}}/storage/{{$media->media_url}}" id="content-video">
-                    @foreach($subs_for_video as $sub)
+                    @foreach($subtitles_for_video as $sub)
                       <track kind="subtitles" label="{{$sub->display_name}}" src="{{asset('/storage/')."/".$sub->sub_url}}" default />
                     @endforeach
                 </video>

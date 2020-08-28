@@ -32,7 +32,7 @@ Route::get('/category/{category_name}', 'CategoryController@show_posts_by_catego
 Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag'); //view post by tag
 Route::get('/post/{id}', 'PostsController@show_post'); //view post
 Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //submit comment
-Route::get('/about', 'HomeController@about'); //view About page
+Route::get('/about', 'HomeController@view_about_page'); //view About page
 Route::post('/send_feedback','FeedbackController@mail'); //submit Feedback e-mail 
 Route::post('/control/increment_view_count', 'MediaController@increment_view_count'); //increment view count for video
 
@@ -71,15 +71,15 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/pin_post','PostsController@pin_post'); //pin/unpin post
 
     //MEDIA
-    Route::get('/control/media/upload_file', 'MediaController@show_upload_file'); //upload a file
-    Route::get('/control/media','MediaController@media_list'); //view media browser
+    Route::get('/control/media/upload_file', 'MediaController@view_upload_file_page'); //upload a file
+    Route::get('/control/media','MediaController@view_media_browser'); //view media browser
     Route::post('/control/find_post', 'MediaController@find_post'); //find post (for file upload)
     Route::get('/control/media/{id}','MediaController@view_media'); //view edit media page
     Route::post('/control/media/edit_media/{id}', 'MediaController@edit_media'); //save chnages in media
-    Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail'); //delete thumbnail
-    Route::post('/control/media/change_subs_status','MediaController@change_subs_status'); //show/hide subtitles
-    Route::post('/control/media/delete_subs','MediaController@delete_subs'); //delete subtitles
-    Route::post('/control/media/change_subs_display_name','MediaController@change_subs_display_name'); //change subtitles display name
+    Route::post('/control/media/remove_thumbnail/{id}', 'MediaController@remove_thumbnail_from_media'); //delete thumbnail
+    Route::post('/control/media/change_subs_status','MediaController@change_subtitles_visibility'); //show/hide subtitles
+    Route::post('/control/media/delete_subs','MediaController@delete_subtitles'); //delete subtitles
+    Route::post('/control/media/change_subs_display_name','MediaController@change_subtitles_display_name'); //change subtitles display name
     Route::post('/control/media/delete_media','MediaController@delete_media'); //delete media
     Route::post('/control/save_uploaded_media', 'MediaController@save_uploaded_media_files'); //save manually uploaded media files
 
