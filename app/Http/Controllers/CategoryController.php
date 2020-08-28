@@ -71,7 +71,8 @@ class CategoryController extends Controller
         $posts = App\Post::where('category_id','=', $request->modal_form_input)->get();
         
         //write the id of a 'blank' category to those posts
-        foreach($posts as $post){
+        foreach($posts as $post)
+        {
             $p = App\Post::find($post->id);
             $p->category_id = $blank_id;
             $p->save();
@@ -101,7 +102,6 @@ class CategoryController extends Controller
         {
             $paginate = 27;
         }
-
 
         $agent = new Agent();
 

@@ -17,7 +17,7 @@
             @endif
             <h1 class="title post_title">About this web-site</h1>
             <div class="content p_fix">
-                {!!$content!!}
+                {!!$about_content!!}
             </div>
         </div>
     </div>

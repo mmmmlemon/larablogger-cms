@@ -46,7 +46,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    $.ajax({type:'POST',url:'/setCookie'});
+    $.ajax({type:'POST',url:'/set_view_type'});
  
 //on document fully loaded
 $(document).ready(function(){
@@ -64,7 +64,7 @@ $(document).ready(function(){
         //ajax-request, change preferred view in cookies
         $.ajax({
             type: 'POST',
-            url: `/setCookie`,
+            url: `/set_view_type`,
             data: {
                 view_type: view,
                 change_view: true
@@ -79,8 +79,7 @@ $(document).ready(function(){
                 else
                 {
                     window.location.replace(url.slice(0,url.indexOf("?page=")+1)); //remove '?page' attribute, to avoid redirect to a non existant page
-                }
-                
+                } 
             }
         });
     }
@@ -128,7 +127,7 @@ $(document).ready(function(){
     //ajax-request, check if cookies were accepted already
     $.ajax({
         type: 'GET',
-        url: `/check_first_visit`,
+        url: `/check_cookies_accepted`,
         //success
         success: function (response) {
             if(response === "1") //if response == 1, cookies were not acceped
@@ -142,17 +141,17 @@ $(document).ready(function(){
                         }
                     });
 
-                    //ajax-request, set cookie 'visitedAlready', which means user accepted the cookies
+                    //ajax-request, set cookie 'visitedBefore', which means user accepted the cookies
                     $.ajax({
                         type: 'POST',
-                        url: `/set_first_visit`,
+                        url: `/set_cookies_accepted`,
                         //success
                         success: function (response) {    
                             //remove cookies notification 
                             $("#cookies_message").remove();
                         }
                     });
-                })
+                });
             }
             else
             {   //if response != 1, remove cookies notification

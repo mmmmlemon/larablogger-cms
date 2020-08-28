@@ -11,32 +11,11 @@ use File;
 use Hash;
 use DB;
 use Storage;
+use App\Globals\Globals;
 
 //functions for the Admins control panel
 class ControlPanelController extends Controller
 {
-
-    //check if user is admin
-    private function check_admin()
-    {   
-        if (Auth::check())
-        {
-            //if user type is 0 or 1, this user is admin
-            if (Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public function __construct()
     {
 
@@ -296,7 +275,7 @@ class ControlPanelController extends Controller
     {
         $val = $request->value;
         $result = "";
-        $is_admin = $this->check_admin();
+        $is_admin = Globals::check_admin();
 
         //POST SEARCH
         if ($request->type == "post")
@@ -374,7 +353,7 @@ class ControlPanelController extends Controller
     {   
         $view_type = $request->cookie('view_type');
         $result = "";
-        $is_admin = $this->check_admin();
+        $is_admin = Globals::check_admin();
 
         if ($view_type == null)
         {

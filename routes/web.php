@@ -20,10 +20,10 @@ Route::post('/simple_search', 'ControlPanelController@simple_search');
 Route::get('/full_search','ControlPanelController@full_search');
 
 //COOKIES
-Route::post('/setCookie','HomeController@setCookie');
+Route::post('/set_view_type','HomeController@set_view_type');
 Route::post('/change_view_type','HomeController@change_view_type');
-Route::get('/check_first_visit', 'HomeController@check_first_visit');
-Route::post('/set_first_visit', 'HomeController@set_first_visit');
+Route::get('/check_cookies_accepted', 'HomeController@check_cookies_accepted');
+Route::post('/set_cookies_accepted', 'HomeController@set_cookies_accepted');
 
 
 //routes available for everyone
