@@ -104,8 +104,8 @@
                                 <th>Category</th>
                                 <th>
                                 
-                                    <a @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>Date</a>  
-                                    @if($page=="normal")
+                                    <a @if($page=="date_desc")href="/control/posts/date"@else href="/control/posts"@endif>Date</a>  
+                                    @if($page=="date_desc")
                                         <i class="fas fa-sort-down"></i></th>
                                     @else 
                                         <i class="fas fa-sort-up"></i></th>
@@ -182,9 +182,9 @@
                             </tbody>  
                         </table>
                     @else
-                        <a class="button is-small is-fullwidth" @if($page=="normal")href="/control/posts/date"@else href="/control/posts"@endif>
+                        <a class="button is-small is-fullwidth" @if($page=="date_desc")href="/control/posts/date"@else href="/control/posts"@endif>
                             <span class="icon">
-                            @if($page=="normal")
+                            @if($page=="date_desc")
                                 <i class="fas fa-chevron-down"></i>
                             @else 
                                 <i class="fas fa-chevron-up"></i></th>

@@ -57,10 +57,10 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::post('/control/update_design', 'ControlPanelController@update_design'); //update design settings
 
     //POSTS
-    Route::get('/control/create_post', 'PostsController@show_create_post'); //view Create Post page
+    Route::get('/control/create_post', 'PostsController@view_add_post_page'); //view Create Post page
     Route::post('/control/create_new_post', 'PostsController@create_post'); //save post
-    Route::get('/control/posts', 'PostsController@show_list_of_posts'); //view all posts by date (desc)
-    Route::get('/control/posts/date', 'PostsController@show_list_of_posts_by_date'); //view all posts by date (asc)
+    Route::get('/control/posts', 'PostsController@view_posts_page'); //view all posts by date (desc)
+    Route::get('/control/posts/date', 'PostsController@view_posts_page_asc'); //view all posts by date (asc)
     Route::post('/control/post_status/{id}/{status}', 'PostsController@change_post_visibility'); //change post visibility
     Route::delete('/control/delete_post', 'PostsController@delete_post'); //delete post
     Route::get('/post/{id}/edit', 'PostsController@show_edit_post'); //view Edit Post page

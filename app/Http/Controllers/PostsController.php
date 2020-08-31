@@ -18,28 +18,51 @@ use Jenssegers\Agent\Agent;
 class PostsController extends Controller
 {   
     //CONTROL PANEL
-    //view all posts (date descending)
-    public function show_list_of_posts()
+    //view all posts page (date descending)
+    public function view_posts_page()
     {
         $posts = App\Post::orderBy('date','desc')->orderBy('id','desc')->paginate(10);
-        $page='normal';
-        return view('control_panel/posts/posts', compact('posts','page'));
+        $page='date_desc';
+        if($posts != null)
+        {
+            return view('control_panel/posts/posts', compact('posts','page'));
+        }
+        else
+        {
+            return abort (500, "Couldn't get posts from the database.");
+        }
     }
 
-    //view all posts (date ascending)
-    public function show_list_of_posts_by_date()
+    //view all posts page (date ascending)
+    public function view_posts_page_asc()
     {
         $posts = App\Post::orderBy('date','asc')->paginate(10);
-        $page = 'date_desc';
-        return view('control_panel/posts/posts', compact('posts', 'page'));
+        $page = 'date_asc';
+
+        if($posts != null)
+        {
+            return view('control_panel/posts/posts', compact('posts', 'page'));
+        }
+        else
+        {
+            return abort(500, "Couldn't get posts from the database.");
+        }
     }
 
-    //view Add Post page
-    public function show_create_post()
+    //view 'Add Post' page
+    public function view_add_post_page()
     {
         $current_date = Carbon::now();
         $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
-        return view('control_panel/posts/create_post', compact('categories','current_date'));
+        if($categories != null)
+        {
+            return view('control_panel/posts/create_post', compact('categories','current_date'));
+        }
+        else
+        {
+            return abort(500, "Couldn't get category list from the database.");
+        }
+
     }
 
     //create/save new post
@@ -50,7 +73,7 @@ class PostsController extends Controller
             'post_content' => 'string|nullable',
             'post_visibility' => 'string',
             'post_date' => 'date|after:yesterday',
-             'tags' => 'string|nullable'
+            'tags' => 'string|nullable'
         ]);
 
         //create a new post and fill it with data
@@ -58,22 +81,28 @@ class PostsController extends Controller
         $post->post_title = $request->post_title;
         $post->post_content = $request->post_content;
         $post->category_id = $request->post_category;
+
+        //if tags string is empty, set it to null
         if($request->tags == "")
-        {$post->tags =  NULL;}
+        { $post->tags =  null; }
         else
-        {$post->tags = $request->tags;}
-        //if "Publish" checkbox is checked, then the date of publishing will be set to current date
-        //in other case, the date of publishing will be date to the value of date field
-        
-        if($request->post_visibility == "true"){//true is a string, because ajax sends string variables
+        { $post->tags = $request->tags; }
+
+        //true is a string, because ajax sends string variables
+        if($request->post_visibility == "true")
+        {
             $post->visibility = 1;
             $post->date = $request->post_date;
-        } else {
+        } 
+        else 
+        {
             $post->visibility = 0;
             $post->date = $request->post_date;
         }
+
+        //true is a string type, because ajax sends string variables
         if($request->post_pinned == "true")
-        { //true is a string type, because ajax sends strings
+        { 
             $post->pinned = 1;
         } 
         else 
@@ -84,36 +113,44 @@ class PostsController extends Controller
         //get list of files in temp folder
         $temp_files = json_decode($request->file_list);
         
+        //if temp folder is empty, which means the user did not upload anything
+        //then just save the post
         if(count($temp_files) == 0)
         {   
-            //if temp folder is empty, which means the user did not upload anything
-            //then just save the post
             $post->save(); 
         }
-        else //else, replace all the files from the temp folder to the new folder, and then save the post
+        //else, replace all the files from the temp folder to the new folder, and then save the post
+        else 
         {
             //create new folder for media files associated with the post
             //posts/[date + post_title]
-            $folder_name_old = date('d-m-Y')."-".$request->post_title;
-            $folder_name = preg_replace("/[^a-zA-Z0-9\-\s]/", "", $folder_name_old);
+            $folder_name_unfiltered = date('d-m-Y')."-".$request->post_title;
+            //leave only letters and numbers
+            $folder_name = preg_replace("/[^a-zA-Z0-9\-\s]/", "", $folder_name_unfiltered);
             $folder_created= Storage::disk('public')->makeDirectory("posts/". $folder_name);
-            //if folder crated, replace files from temp
+
+            //if folder created, replace files from temp
             if($folder_created == true)
             {
-                foreach($temp_files as $file){
+                foreach($temp_files as $file)
+                {
                     //path for replacement
                     $new_path = storage_path("app/public/posts/").$folder_name."/".$file->filename;
                     $move = File::move(storage_path("app/public/temp/").$file->filename, $new_path);
                 
                     //if replacement failed, redirect with error
                     if($move != true) 
-                    {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                    {
+                        return abort(500, "Couldn't move file(s) from 'temp' to '".$folder_name."'.");
+                    }
                     else
                     {   
                         //save the post before saving the media (to extract $post->id)
                         $post->save();
-                        $mime = substr(File::mimeType($new_path), 0, 5); //get mime-type of file
-                        $media = new App\Media; //write media file into the database
+                        //get mime-type of file
+                        $mime = substr(File::mimeType($new_path), 0, 5); 
+                        //write media file into the database
+                        $media = new App\Media; 
                         $media->post_id = $post->id;
                         $media->media_url = "posts/". $folder_name."/".$file->filename;
                         $media->media_type = $mime;
@@ -124,30 +161,48 @@ class PostsController extends Controller
                     }
                 }         
             }
+            else
+            {
+                return abort(500, "Couldn't create folder '".$folder_name."'.");
+            }
         }
     
         return response()->json(['msg'=>'The post "'.$request->post_title.'" has been created.']);
     }
 
-
-    //view Edit Post page
-    public function show_edit_post($id)
+    //view 'Edit Post' page
+    public function view_edit_post_page($id)
     {
         $post = App\Post::find($id);
 
-        //categories list (without the 'blank' category)
-        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
-        $media = App\Media::where('post_id','=',$id)->get();
-
-        foreach($media as $m)
+        if($post != null)
         {
-            $url = $m->media_url;
-            $substr = strrchr($url, "/");
-            $filename = substr($substr,1, strlen($substr));
-            $m->filename = $filename;
-        }
+            //categories list (without the 'blank' category)
+            $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
 
-        return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
+            $media = App\Media::where('post_id','=',$id)->get();
+
+            foreach($media as $m)
+            {
+                $url = $m->media_url;
+                $substr = strrchr($url, "/");
+                $filename = substr($substr,1, strlen($substr));
+                $m->filename = $filename;
+            }
+
+            if($categories != null)
+            {
+                return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
+            }
+            else
+            {
+                return abort(500, "Couldn't get categories from the database.");
+            }
+        }
+        else
+        {
+            return abort(500, "Couldn't get the post from the database.");
+        }
     }
   
     //save changes to the edited post
@@ -161,78 +216,87 @@ class PostsController extends Controller
         ]);
             
         $post = App\Post::find($id);
-        $post->post_title = $request->post_title;
-        $post->post_content = $request->post_content;
-        $post->category_id = $request->post_category;
 
-        if($request->tags == "")
-        {$post->tags =  NULL;}
-        else
-        {$post->tags = $request->tags;}
-
-        if($request->post_visibility == "true")
-        { //true is a string type, because ajax sends strings
-            $post->visibility = 1;
-        } 
-        else 
+        if($post != null)
         {
-            $post->visibility = 0;
-        }
+            $post->post_title = $request->post_title;
+            $post->post_content = $request->post_content;
+            $post->category_id = $request->post_category;
 
-        if($request->post_pinned == "true")
-        { //true is a string type, because ajax sends strings
-            $post->pinned = 1;
-        } 
-        else 
-        {
-            $post->pinned = 0;
-        }
+            if($request->tags == "")
+            { $post->tags =  null; }
+            else
+            { $post->tags = $request->tags; }
 
-
-        //get list of files in the temp folder
-        $temp_files = json_decode($request->file_list);
-  
-        if(count($temp_files) == 0) //if temp is empty, this means no files were added, just save the post
-        {$post->save();}
-        else //if temp is not empty, replace all the files from the temp folder and then save
-        {
-            $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
-            //check if folder has been created
-            $check = File::exists(storage_path("app/public/posts/".$folder_name));
-            
-            if($check != true)
+            //true is a string type, because ajax sends strings
+            if($request->post_visibility == "true")
+            { 
+                $post->visibility = 1;
+            } 
+            else 
             {
-                Storage::disk('public')->makeDirectory("posts/". $folder_name);
+                $post->visibility = 0;
             }
 
-            foreach($temp_files as $file)
+            if($request->post_pinned == "true")
+            { //true is a string type, because ajax sends strings
+                $post->pinned = 1;
+            } 
+            else 
             {
-                //path for replacement
-                $new_path = storage_path("app/public/posts/").$folder_name."/".$file;
+                $post->pinned = 0;
+            }
+
+            //get list of files in the temp folder
+            $temp_files = json_decode($request->file_list);
+    
+            if(count($temp_files) == 0) //if temp is empty, this means no files were added, just save the post
+            { $post->save(); }
+            else //if temp is not empty, replace all the files from the temp folder and then save
+            {
+                $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
+                //check if folder has been created
+                $check = File::exists(storage_path("app/public/posts/".$folder_name));
                 
-                $move = File::move(storage_path("app/public/temp/".$file), $new_path);
-            
-                //if replacement failed, redirect back with error
-                if($move != true) 
-                {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
-                else
-                {   
-                    //save the post before saving the media (to extract $post->id)
-                    $post->save();
-                    $mime = substr(File::mimeType($new_path), 0, 5); //get mime type of media
-                    $media = new App\Media; //write media into the database
-                    $media->post_id = $post->id;
-                    $media->media_url = "posts/". $folder_name."/".$file;
-                    $media->media_type = $mime;
-                    $media->display_name = $file;
-                    $media->actual_name = $file;
-                    $media->visibility = 1;
-                    $media->save(); 
+                if($check != true)
+                {
+                    Storage::disk('public')->makeDirectory("posts/". $folder_name);
                 }
-            }             
+
+                foreach($temp_files as $file)
+                {
+                    //path for replacement
+                    $new_path = storage_path("app/public/posts/").$folder_name."/".$file;
+                    
+                    $move = File::move(storage_path("app/public/temp/".$file), $new_path);
+                
+                    //if replacement failed, redirect back with error
+                    if($move != true) 
+                    {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                    else
+                    {   
+                        //save the post before saving the media (to extract $post->id)
+                        $post->save();
+                        $mime = substr(File::mimeType($new_path), 0, 5); //get mime type of media
+                        $media = new App\Media; //write media into the database
+                        $media->post_id = $post->id;
+                        $media->media_url = "posts/". $folder_name."/".$file;
+                        $media->media_type = $mime;
+                        $media->display_name = $file;
+                        $media->actual_name = $file;
+                        $media->visibility = 1;
+                        $media->save(); 
+                    }
+                }             
+            }
+            
+            return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
+        }
+        else
+        {
+            return abort(500, "Couldn't get the post from the database.");
         }
         
-        return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
     }
 
     //upload files before post creation
