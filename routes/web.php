@@ -27,7 +27,7 @@ Route::post('/set_cookies_accepted', 'HomeController@set_cookies_accepted');
 
 
 //routes available for everyone
-Route::get('/', 'PostsController@index'); //index page
+Route::get('/', 'HomeController@index'); //index page
 Route::get('/category/{category_name}', 'CategoryController@show_posts_by_category'); //view posts by category
 Route::get('/post/tag/{tag}','PostsController@show_posts_by_tag'); //view post by tag
 Route::get('/post/{id}', 'PostsController@show_post'); //view post
@@ -63,11 +63,11 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/control/posts/date', 'PostsController@view_posts_page_asc'); //view all posts by date (asc)
     Route::post('/control/post_status/{id}/{status}', 'PostsController@change_post_visibility'); //change post visibility
     Route::delete('/control/delete_post', 'PostsController@delete_post'); //delete post
-    Route::get('/post/{id}/edit', 'PostsController@show_edit_post'); //view Edit Post page
+    Route::get('/post/{id}/edit', 'PostsController@view_edit_post_page'); //view Edit Post page
     Route::post('/post/{id}/edit', 'PostsController@edit_post'); //save changes in post
-    Route::post('/post/upload_files','PostsController@upload_files'); //upload files attached to the post
-    Route::get('/clear_temp', 'PostsController@clear_temp'); //clear temp folder
-    Route::post('/delete_media', 'PostsController@delete_media'); //delete attached file from post
+    Route::post('/post/upload_files','PostsController@upload_files_to_temp_folder'); //upload files attached to the post
+    Route::get('/clear_temp', 'PostsController@clear_temp_folder'); //clear temp folder
+    Route::post('/delete_media', 'PostsController@delete_file_from_post'); //delete attached file from post
     Route::post('/control/pin_post','PostsController@pin_post'); //pin/unpin post
 
     //MEDIA

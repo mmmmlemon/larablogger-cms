@@ -8,6 +8,8 @@
                 <i class="fas fa-3x fa-exclamation-triangle"></i>
             </span>
             <h1 class="subtitle">There's no such page on this web-site</h1>
+            <p>{{ $exception->getMessage()}}</p>
+            <br>
             <a href="/" class="button is-link">
                 Go to the home page
             </a>

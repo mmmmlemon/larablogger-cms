@@ -7,6 +7,7 @@ use App;
 use Auth;
 use Illuminate\Http\Response;
 use App\Globals\Globals;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -27,9 +28,87 @@ class HomeController extends Controller
      */
 
     //view the index page of the website
-    public function index()
-    {   
-        return view('home');
+    //view all posts on the main page of the website
+    public function index(Request $request)
+    {
+        //get current view type from cookies
+        $view_type = $request->cookie('view_type');
+
+        //pagination by default
+        $paginate = 9;
+
+        //pagination if view type is 'grid'
+        if($view_type == 'grid')
+        { $paginate = 27; }
+
+        if($view_type == null)
+        { $view_type = config('settings')->view_type; }
+
+        //get all the visible posts and sort them by date (desc)
+        $posts = App\Post::where('visibility','=','1')
+            ->where('date','<=',Carbon::now()->format('Y-m-d'))
+            ->orderBy('pinned','desc')->orderBy('date', 'desc')
+            ->orderBy('id','desc')->paginate($paginate);
+
+        if($posts != null)
+        {
+            foreach($posts as $post)
+            {
+                //get tags of a current post and attach them
+                $tags= explode(",", $post->tags);
+                //if $tags variable contains one empty character (which means there are no tags for this Post)
+                //make it null
+                if(count($tags) == 1 && $tags[0]=="")
+                { $post->tags = null; } 
+                else
+                { $post->tags = $tags; }
+    
+                //attach the name of the Category to current Post 
+                $post->category = App\Category::find($post->category_id)->category_name;
+                
+                //if it is the 'blank' category, it won't be displayed
+                if($post->category == "blank") 
+                { $post->category = ""; }
+    
+                //count comments in current Post
+                $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
+    
+                //if theres more than one comment
+                //the label will be commentS
+                //else, commenT
+                if($post->comment_count > 1 || $post->comment_count == 0)
+                { $post->comment_count .= " comments"; } 
+                else 
+                { $post->comment_count .= " comment"; }
+                    
+                //get the list of files for current Post
+                $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
+                
+                //if current Post has files
+                if(count($media) != 0)
+                {
+                    //add subtitles for each file
+                    foreach($media as $m)
+                    {
+                        $subs = App\Subtitles::where('media_id','=',$m->id)
+                            ->where('visibility','=','1')
+                            ->orderBy('display_name','asc')->get();
+                        $m->subs = $subs;
+                    }
+    
+                    //attach media files to current Post
+                    $post->media = $media;
+                    //attach media_type to current Post
+                    $post->media_type = $media[0]->media_type;
+                }
+            }
+    
+            //for sorting by tag
+            //set tag name to null to avoid error when posts aren't sorted by tag
+            $tag_name = null;
+            
+            return view('home', compact('posts', 'tag_name', 'view_type'));
+        }
     }
 
     //set 'view_type' cookie

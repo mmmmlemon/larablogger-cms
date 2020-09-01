@@ -13,6 +13,7 @@ use Validator;
 use Storage;
 use File;
 use Jenssegers\Agent\Agent;
+use App\Globals\Globals;
 
 //functions related to Post contol
 class PostsController extends Controller
@@ -54,7 +55,7 @@ class PostsController extends Controller
     {
         $current_date = Carbon::now();
         $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
-        if($categories != null)
+        if(count($categories) > 0)
         {
             return view('control_panel/posts/create_post', compact('categories','current_date'));
         }
@@ -102,13 +103,9 @@ class PostsController extends Controller
 
         //true is a string type, because ajax sends string variables
         if($request->post_pinned == "true")
-        { 
-            $post->pinned = 1;
-        } 
+        { $post->pinned = 1; } 
         else 
-        {
-            $post->pinned = 0;
-        }
+        { $post->pinned = 0; }
 
         //get list of files in temp folder
         $temp_files = json_decode($request->file_list);
@@ -116,9 +113,7 @@ class PostsController extends Controller
         //if temp folder is empty, which means the user did not upload anything
         //then just save the post
         if(count($temp_files) == 0)
-        {   
-            $post->save(); 
-        }
+        { $post->save(); }
         //else, replace all the files from the temp folder to the new folder, and then save the post
         else 
         {
@@ -140,9 +135,7 @@ class PostsController extends Controller
                 
                     //if replacement failed, redirect with error
                     if($move != true) 
-                    {
-                        return abort(500, "Couldn't move file(s) from 'temp' to '".$folder_name."'.");
-                    }
+                    { return abort(500, "Couldn't move file(s) from 'temp' to '".$folder_name."'."); }
                     else
                     {   
                         //save the post before saving the media (to extract $post->id)
@@ -162,9 +155,7 @@ class PostsController extends Controller
                 }         
             }
             else
-            {
-                return abort(500, "Couldn't create folder '".$folder_name."'.");
-            }
+            { return abort(500, "Couldn't create folder '".$folder_name."'."); }
         }
     
         return response()->json(['msg'=>'The post "'.$request->post_title.'" has been created.']);
@@ -190,19 +181,13 @@ class PostsController extends Controller
                 $m->filename = $filename;
             }
 
-            if($categories != null)
-            {
-                return view('control_panel/posts/edit_post', compact('post','categories', 'media'));
-            }
+            if(count($categories) > 0)
+            { return view('control_panel/posts/edit_post', compact('post','categories', 'media')); }
             else
-            {
-                return abort(500, "Couldn't get categories from the database.");
-            }
+            { return abort(500, "Couldn't get categories from the database."); }
         }
         else
-        {
-            return abort(500, "Couldn't get the post from the database.");
-        }
+        { return abort(500, "Couldn't get the post from the database."); }
     }
   
     //save changes to the edited post
@@ -230,49 +215,42 @@ class PostsController extends Controller
 
             //true is a string type, because ajax sends strings
             if($request->post_visibility == "true")
-            { 
-                $post->visibility = 1;
-            } 
+            { $post->visibility = 1; } 
             else 
-            {
-                $post->visibility = 0;
-            }
+            { $post->visibility = 0; }
 
+            //true is a string type, because ajax sends strings
             if($request->post_pinned == "true")
-            { //true is a string type, because ajax sends strings
-                $post->pinned = 1;
-            } 
+            { $post->pinned = 1; } 
             else 
-            {
-                $post->pinned = 0;
-            }
+            { $post->pinned = 0; }
 
             //get list of files in the temp folder
             $temp_files = json_decode($request->file_list);
     
-            if(count($temp_files) == 0) //if temp is empty, this means no files were added, just save the post
+            //if temp is empty, this means no files were added, just save the post
+            if(count($temp_files) == 0) 
             { $post->save(); }
-            else //if temp is not empty, replace all the files from the temp folder and then save
+            //if temp is not empty, replace all the files from the temp folder to another folder and then save the post
+            else 
             {
-                $folder_name = date("d-m-Y", strtotime($post->date))."-".$post->post_title;
+                $folder_name = date("d-m-Y", strtotime($post->date))."-" . $post->post_title;
                 //check if folder has been created
-                $check = File::exists(storage_path("app/public/posts/".$folder_name));
+                $check = File::exists(storage_path("app/public/posts/" . $folder_name));
                 
                 if($check != true)
-                {
-                    Storage::disk('public')->makeDirectory("posts/". $folder_name);
-                }
+                { Storage::disk('public')->makeDirectory("posts/" . $folder_name); }
 
                 foreach($temp_files as $file)
                 {
                     //path for replacement
-                    $new_path = storage_path("app/public/posts/").$folder_name."/".$file;
+                    $new_path = storage_path("app/public/posts/") . $folder_name . "/" . $file;
                     
-                    $move = File::move(storage_path("app/public/temp/".$file), $new_path);
+                    $move = File::move(storage_path("app/public/temp/" . $file), $new_path);
                 
                     //if replacement failed, redirect back with error
                     if($move != true) 
-                    {return Redirect::back()->withErrors(['err', 'Something went wrong while moving the files.']);}
+                    { return abort(500, "Something went wrong while moving the files."); }
                     else
                     {   
                         //save the post before saving the media (to extract $post->id)
@@ -290,250 +268,219 @@ class PostsController extends Controller
                 }             
             }
             
-            return response()->json(['msg' => 'The changes have been saved to post "'.$request->post_title.'"']);
+            return response()->json(['msg' => 'The changes have been saved to post "' . $request->post_title . '"']);
         }
         else
-        {
-            return abort(500, "Couldn't get the post from the database.");
-        }
-        
+        { return abort(500, "Couldn't get the post from the database."); }
     }
 
     //upload files before post creation
-    public function upload_files(Request $request)
+    public function upload_files_to_temp_folder(Request $request)
     {  
        //get filename
        $filename = $request->filename;
 
+       //uuid of a file
        $uuid8 = substr($request->dzuuid, 0, 7);
-       $p = pathinfo($filename);
-       $ext = $p['extension'];
-       $name = $p['filename'];
-       $filename = $name."-".$uuid8.".".$ext;
-       
-       //create empty file and append
-       $file = fopen(storage_path('app/public/temp/')."$filename","a");
 
-       //insert check into the file and save it
-       fputs($file,file_get_contents($request->file));
-       fclose($file);
-       return response()->json([
-        'file_url' => asset("storage/temp/".$filename),
-        'filename' =>  $filename,
-        'mime' => substr(File::mimeType(storage_path('app/public/temp/')."$filename"),0,5)
-        ]);
+       //get pathinfo of a file
+       $pathinfo = pathinfo($filename);
+
+       $extension = $pathinfo['extension'];
+       $name = $pathinfo['filename'];
+       $filename = $name . "-" . $uuid8 . "." . $extension;
+       
+       //create an empty file and append chunks to it
+       $file = fopen(storage_path('app/public/temp/') . $filename, "a");
+
+       if($file != false)
+       {
+           //append chunk and save it
+           $fwrite = fwrite($file, file_get_contents($request->file));
+
+           if($fwrite != false)
+           {
+               fclose($file);
+
+               return response()->json([
+                'file_url' => asset("storage/temp/" . $filename),
+                'filename' =>  $filename,
+                'mime' => substr(File::mimeType(storage_path('app/public/temp/') . $filename),0,5)
+               ]);  
+           }
+           else
+           {
+               return abort(500, "Couldn't append chunk to file '" . $filename . "'.");
+           }
+       }
+       else
+       {
+           return abort(500, "Couldn't write file '".$filename."' into the 'temp' folder.");
+       }
     }	    
 
     //clear temp folder
-    public function clear_temp()
+    public function clear_temp_folder()
     {
         $temp_files = File::files(storage_path("app/public/temp"));
+
         foreach($temp_files as $file)
-        {
-            unlink($file->getPathname());
-        }
+        { unlink($file->getPathname()); }
     }
 
     //delete media file from post
-    public function delete_media(Request $request)
+    public function delete_file_from_post(Request $request)
     {
-        //if id is not digit, this means the file was just added into the temp folder and it's not written into database yet
+        //if id is not digit, this means the file was just added into the temp folder and it's not written into the database yet
         //the file should be removed from the temp folder
         if(ctype_digit($request->id) == false)
         {   
             $filename = $request->id; 
             
             //check if file exists
-            if(is_file(storage_path("app/public/temp/".$filename)))
+            if(is_file(storage_path("app/public/temp/" . $filename)))
             {   
                 //delete file from temp
-                $check = unlink(storage_path("app/public/temp/".$filename));
-                if($check == true) {return response()->json(['msg'=> $filename . " has been deleted from 'Temp'."]);} //if succes, return response message
+                $check = unlink(storage_path("app/public/temp/" . $filename));
+                //if success, return response message
+                if($check == true) 
+                { return response()->json(['msg'=> $filename . " has been deleted from 'temp'."]); } 
+                else
+                { return abort(500, "Couldn't delete '" . $filename . "' from 'temp'."); }
             }
+            else
+            { return abort(500, "The file '" . $filename . "' doesn't exist in the 'temp' folder."); }
         }
         //if id IS digit, this means the file is written into the database
         //the file should be deleted both physically and from the database
         else
         {
             $media = App\Media::find($request->id);
-            
-            $check_delete = unlink(storage_path("app/public/").$media->media_url);
-            if($check_delete == true) 
-            {
-                $post = App\Post::find($media->post_id);
-                $folder_name = date("d-m-Y",strtotime($post->date))."-".$post->post_title;
-                $files = File::files(storage_path("app/public/posts/".$folder_name));
-                if(count($files)== 0)
-                {   
-                    File::deleteDirectory(storage_path("app/public/posts/").$folder_name);
+
+            if($media != null)
+            {   
+                //delete the media file physically
+                $check = unlink(storage_path("app/public/") . $media->media_url);
+
+                if($check == true) 
+                {
+                    //get the post associated with the media file
+                    $post = App\Post::find($media->post_id);
+
+                    if($post != null)
+                    {
+                        $folder_name = date("d-m-Y",strtotime($post->date)) . "-" . $post->post_title;
+                        $files = File::files(storage_path("app/public/posts/" . $folder_name));
+    
+                        //if the directory is empty, delete it
+                        if(count($files) == 0)
+                        { File::deleteDirectory(storage_path("app/public/posts/") . $folder_name); }
+                        
+                        $media->delete();
+    
+                        return response()->json(['result'=>'success']); 
+                    }
+                    else
+                    { return abort(500, "Couldn't get the post associated with the media file from the database."); }
                 }
-                
-                $media->delete();
-
-                return response()->json(['result'=>'success']); 
+                else 
+                { return abort(500, "Couldn't get the media file from the database"); }
             }
-            else { return response()->json(['result'=>'failure']);}
+            else
+            { return abort(500, "Couldn't get the media file from the database."); }
         }
-
     }
 
     //VIEWS
-    //view all posts on the main page of the website
-    public function index(Request $request)
-    {
-        $view_type = $request->cookie('view_type');
-
-        $paginate = 9;
-
-        if($view_type == null)
-        {
-            $view_type = App\Settings::all()[0]->view_type;
-        }
-
-        if($view_type == 'grid')
-        {
-            $paginate = 27;
-        }
-
-        //get all the visible posts and sort them by date (desc)
-        $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->paginate($paginate);
-
-        foreach($posts as $post)
-        {
-            //get tags of a current post and attach them
-            $tags= explode(",", $post->tags);
-            //if $tags variable contains one empty character (which means there are no tags for this Post)
-            if(count($tags) == 1 && $tags[0]=="")
-            {$post->tags = null;} //make it null
-            else
-            {$post->tags = $tags;}
-
-            //attach the name of the Category to current Post 
-            $post->category = App\Category::find($post->category_id)->category_name;
-
-            if($post->category == "blank") //if it is the 'blank' category, it won't be displayed
-            {$post->category = "";}
-
-            //count comments in current Post
-            $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
-
-            //if theres more than one comment
-            if($post->comment_count > 1 || $post->comment_count == 0)
-            {
-                $post->comment_count .= " comments"; //the label will be commentS
-            } 
-            else 
-            {
-                $post->comment_count .= " comment"; //else, commenT
-            }
-
-            //get the list of files for current Post
-            $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
-            
-            //if current Post has files
-            if(count($media) != 0)
-            {
-                //add subtitles for each file
-                foreach($media as $m)
-                {
-                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->orderBy('display_name','asc')->get();
-                    $m->subs = $subs;
-                }
-
-                //attach media files to current Post
-                $post->media = $media;
-                //attach media_type to current Post
-                $post->media_type = $media[0]->media_type;
-            }
-
-        }
-
-        //for sorting by tag
-        //set tag name to null to avoid error when posts aren't sorted by tag
-        $tag_name = null;
-        
-        return view('home', compact('posts', 'tag_name', 'view_type'));
-    }
-
     //view post
     public function show_post($id)
     {
         //get post by id
         $post = App\Post::find($id);
-
-        //+1 to view counter
-        $post->view_count = $post->view_count + 1;
-        $post->save();
-  
-        //get media files
-        $media = App\Media::where('post_id',$id)->where('visibility','=',1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
-
-        foreach($media as $m)
-        {
-            $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->orderBy('display_name','asc')->get();
-            $m->subs = $subs;
-        }
-
-        //get newer post and older post
-        $all_posts =  $posts = App\Post::where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date', 'desc')->orderBy('id','desc')->get();
-        
-        $index = 0;
-        $previous_index = -1;
-        $next_index = -1;
-
-        foreach($all_posts as $p => $value){
-            if($value->id == $id)
-            {   
-                if($index-1 < 0 != true)
-                {
-                    $next_index = $index - 1;
-                    $post->next = $all_posts[$next_index]->id;
-                }
-                
-                if($index + 1 > count($all_posts)-1 != true)
-                {
-                    $previous_index = $index + 1;
-                    $post->previous = $all_posts[$previous_index]->id;
-                }
-                break;
-            }
-
-            $index++;
-        }
-
         //if post exists, view it
         if($post != null)
         {   
-            //if the user is logged in
-            if(Auth::check())
-            {   
-                $username = Auth::user()->name; //get username
-                //if user is Admin
-                if(Auth::user()->user_type == 1 || Auth::user()->user_type == 0)
-                {$is_admin = true;} //user is Admin
-                else  //user is not Admin
-                {$is_admin = false;}
-            }
-            else //if user is not logged in, the username is empty and the user is not Admin
+            //+1 to view counter
+            $post->view_count = $post->view_count + 1;
+            $post->save();
+    
+            //get media files
+            $media = App\Media::where('post_id', $id)->where('visibility','=', 1)->orderBy('media_type','asc')->orderBy('id','asc')->get();
+            
+            //if theres any media attached to this post, add subtitles to it
+            if(count($media) > 0)
             {
-                $username="";
-                $is_admin = false;
+                foreach($media as $m)
+                {
+                    if($m->media_type == "video")
+                    {
+                        $subs = App\Subtitles::where('media_id','=', $m->id)
+                            ->where('visibility','=','1')
+                            ->orderBy('display_name','asc')->get();
+                        $m->subs = $subs;
+                    } 
+                }
+            }
+        
+            //get newer post and older post
+            $all_posts = App\Post::where('visibility','=','1')
+                ->where('date','<=',Carbon::now()->format('Y-m-d'))
+                ->orderBy('pinned','desc')
+                ->orderBy('date', 'desc')
+                ->orderBy('id','desc')->get();
+            
+            $current_index = 0;
+            $previous_index = -1;
+            $next_index = -1;
+
+            //iterate thourgh all posts and find ids of the next and the previous posts
+            foreach($all_posts as $p => $value)
+            {
+                if($value->id == $id)
+                {   
+                    if($current_index - 1 < 0 != true)
+                    {
+                        $next_index = $current_index - 1;
+                        $post->next = $all_posts[$next_index]->id;
+                    }
+                    
+                    if($current_index + 1 > count($all_posts)-1 != true)
+                    {
+                        $previous_index = $current_index + 1;
+                        $post->previous = $all_posts[$previous_index]->id;
+                    }
+
+                    break;
+                }
+
+                $current_index++;
             }
 
+            //check if user is admin
+            $is_admin = Globals::check_admin();
+            //get username
+            $username = "";
+            if(Auth::check())
+            { $username = Auth::user()->name; }
+            
             //get comments for Posts
             if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
             {
-                $comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
+                $comments = App\Comment::where('post_id','=', $id)
+                    ->where('reply_to','=',null)
+                    ->orderBy('date','asc')
+                    ->orderBy('id','asc')->get();
             }
             else
             {
-                $comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->where('visibility','=',1)->orderBy('date','asc')->orderBy('id','asc')->get();
+                $comments = App\Comment::where('post_id','=', $id)
+                    ->where('reply_to','=',null)
+                    ->where('visibility','=',1)
+                    ->orderBy('date','asc')
+                    ->orderBy('id','asc')->get();
             }
 
-           
-            //$comments = App\Comment::where('post_id','=',$id)->where('reply_to','=',null)->orderBy('date','asc')->orderBy('id','asc')->get();
-
-            //recursive function that collects all the comments with replies and generates a comment 
+            //recursive function that collects all the comments with replies and generates a comment tree
             function prepare_comments($array, $admin)
             {   
                 foreach($array as $a)
@@ -543,30 +490,30 @@ class PostsController extends Controller
                         $username = App\User::where('id','=',$a->is_logged_on)->get()[0]->name;
                         $a->username = $username;
                     }
-             
+            
                     if($admin == true)
                     {
                         $replies = App\Comment::where('reply_to','=', $a->id)->get();
                         //get username for a reply
-                        foreach($replies as $r){
+                        foreach($replies as $r)
+                        {
                             if($r->reply_to != null)
-                            {
-                                $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username;
-                            }
+                            { $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username; }                        
                         }
+
                         $a->replies = $replies;
                     
                         prepare_comments($replies, $admin);
                     }
                     
-                    else{
+                    else
+                    {
                         $replies = App\Comment::where('reply_to','=', $a->id)->where('visibility','=',1)->get();
-                         //get username for a reply
-                        foreach($replies as $r){
+                        //get username for a reply
+                        foreach($replies as $r)
+                        {
                             if($r->reply_to != null)
-                            {
-                                $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username;
-                            }
+                            { $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username; }
                         }
                         $a->replies = $replies;
                     
@@ -577,77 +524,66 @@ class PostsController extends Controller
 
             prepare_comments($comments, $is_admin);
 
-           
-
             //count comment
             if($is_admin == true)
-            {$post->comment_count = count(App\Comment::where('post_id','=',$id)->get());}
+            { $post->comment_count = count(App\Comment::where('post_id','=', $id)->get()); }
             else
-            {$post->comment_count = count(App\Comment::where('post_id','=',$id)->where('visibility','=',1)->get());}
-
+            { $post->comment_count = count(App\Comment::where('post_id','=', $id)->where('visibility','=',1)->get()); }
 
             //if theres more than one comment
+            //commentS
+            //or commenT
             if($post->comment_count > 1 || $post->comment_count == 0)
-            {$post->comment_count .= " comments";}  //commentS
+            { $post->comment_count .= " comments"; }  
             else
-            {$post->comment_count .= " comment";} //or commenT
+            { $post->comment_count .= " comment"; } 
 
             //gets tags for post
             $tags= explode(",", $post->tags);
-            if(count($tags) == 1 && $tags[0]=="")
-            {$post->tags = null;}
+            if(count($tags) == 1 && $tags[0] == "")
+            { $post->tags = null; }
             else
-            {$post->tags = $tags;}
+            { $post->tags = $tags; }
 
             //get category of the post
             $post->category = App\Category::find($post->category_id)->category_name;
             //if it's 'blank', it won't be displayed
             if($post->category == "blank")
-            {$post->category = "";}
-           
+            { $post->category = ""; }
+            
             //check post status, if visibility == 1, the post is visible to everyone
             if($post->visibility == 1)
+            { return view('post', compact('post','username','comments','media','is_admin')); }
+            //check if user is logged in
+            else
             {   
-                 return view('post', compact('post','username','comments','media','is_admin'));
-            }
-            else //if visibility == 0, the post is only visible to Admin
-            {   //check if user is logged in
-                if(Auth::check()){
-                    //if its Admin
-                    if(Auth::user()->user_type == 0 || Auth::user()->user_type == 1)
-                    {   
-                        return view('post', compact('post','username','media','comments','is_admin'));
-                    } 
-                    else //if logged in but not Admin, throw 404
-                    {
-                        return abort(404);
-                    }
-                }
-                else //if not logged in at all, throw 404
-                {
-                    return abort(404);
-                }
+                //if its Admin
+                if(Globals::check_admin() == true)
+                { return view('post', compact('post','username','media','comments','is_admin')); } 
+                else //if logged in but not Admin, throw 404
+                { return abort(403, "You must be logged in to view this page."); }
+
             } 
         }
         else //if post doesn't exist, throw 404
-        {
-            return abort(404);
-        }
+        { return abort(404, "Couldn't find the post."); }
     }
 
     //view all posts by tag
     public function show_posts_by_tag ($tag, Request $request)
     {
-        $posts = App\Post::where('visibility','=','1')->where('tags','like',"%".$tag."%")->orderBy('date', 'desc')->orderBy('id','desc')->paginate(7);
+        $posts = App\Post::where('visibility','=','1')
+            ->where('tags','like',"%" . $tag . "%")
+            ->orderBy('date', 'desc')
+            ->orderBy('id','desc')->paginate(7);
 
         $view_type = $request->cookie('view_type');
 
         if($view_type == null)
-        {
-            $view_type = App\Settings::all()[0]->view_type;
-        }
+        { $view_type = App\Settings::all()[0]->view_type; }
 
-        foreach($posts as $post){
+        foreach($posts as $post)
+        {
             $tags_separate = explode(",", $post->tags);
             $post->tags = $tags_separate;
 
@@ -658,16 +594,12 @@ class PostsController extends Controller
             $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
 
             if($post->comment_count > 1 || $post->comment_count == 0)
-            {
-                $post->comment_count .= " comments"; 
-            } 
+            { $post->comment_count .= " comments"; } 
             else 
-            {
-                $post->comment_count .= " comment"; 
-            }
-
+            { $post->comment_count .= " comment"; }
 
             $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
+
             if(count($media) != 0)
             {
                 foreach($media as $m)
@@ -686,65 +618,65 @@ class PostsController extends Controller
         return view('home', compact('posts','tag_name', 'view_type'));
     }
 
-    //change post visibility
-    public function change_post_visibility($id, $status)
-    {
-        $post = App\Post::find($id);    
-
-        $stat = 0;
-
-        if($status == 1)
-        {$stat = 1;}
-
-        if($post->visibility != $stat)
+    //change post's visibility
+    public function change_post_visibility($id, $post_visibility)
+    {   
+        //get post id
+        $post = App\Post::find($id);  
+        
+        if($post != null)
         {
-            $post->visibility = $stat;
-            $post->save();
-        }
-        else{
-            abort(403);
-        }
+            if($post->visibility != $post_visibility)
+            {
+                $post->visibility = $post_visibility;
+                $post->save();
+            }
+            else
+            { return redirect(url()->previous()); }
 
-        return redirect(url()->previous());
-
+            return redirect(url()->previous());
+        }
+        else
+        { return abort(503, "Couldn't get the post from the database."); }
     }
 
     //delete post
     public function delete_post(Request $request)
     {
-        //delete all comments associated with this post
-        $comments = App\Comment::where('post_id', $request->modal_form_input)->get();
-        foreach($comments as $comment){
-            $comment->delete();
-        }
-        //delete all files associated with this post
-        $media = App\Media::where('post_id', $request->modal_form_input)->get();
-
-        foreach($media as $m)
-        {
-            if($m->media_type == "video")
-            {
-                $subs = App\Subtitles::where('media_id',$m->id)->get();
-
-                foreach($subs as $s)
-                {
-                    $s->delete();
-                }
-            }
-            
-            $pos = strripos($m->media_url,"/");
-            $path = substr($m->media_url, 0, $pos);
-            File::deleteDirectory(storage_path('app/public/'.$path));
-            $m->delete();
-        }
-
         $post = App\Post::find($request->modal_form_input);
-        $post->delete();
-        if($request->edit_post_delete === "true")
+
+        if($post != null)
         {
-         return redirect()->to('/control/posts');
+            //delete all comments associated with this post
+            $comments = App\Comment::where('post_id', $request->modal_form_input)->get();
+
+            foreach($comments as $comment)
+            { $comment->delete(); }
+
+            //delete all files associated with this post
+            $media = App\Media::where('post_id', $request->modal_form_input)->get();
+
+            foreach($media as $m)
+            {
+                if($m->media_type == "video")
+                {
+                    $subtitles = App\Subtitles::where('media_id', $m->id)->get();
+
+                    foreach($subtitles as $s)
+                    { $s->delete(); }
+                }
+                
+                $pos = strripos($m->media_url,"/");
+                $path = substr($m->media_url, 0, $pos);
+                File::deleteDirectory(storage_path('app/public/'.$path));
+                $m->delete();
+            }
+
+            $post->delete();
+            if($request->edit_post_delete === "true")
+            { return redirect()->to('/control/posts'); }
+            return redirect(url()->previous());
         }
-        return redirect(url()->previous());
     }
 
     //submit comment
@@ -756,17 +688,15 @@ class PostsController extends Controller
         ]);
 
         if($validator->fails())
-        {
-            return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput();
-        }
+        { return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput(); }
 
         $comment = new App\Comment;
 
-  
         $comment->comment_content = $request->comment_content;
         $comment->post_id = $id;
         $comment->date = Carbon::now();
         $comment->reply_to = $request->reply_to;
+
         if(Auth::check())
         {
             $comment->is_logged_on = Auth::user()->id;    
@@ -782,7 +712,7 @@ class PostsController extends Controller
 
         $latest_comment_id = App\Comment::orderBy('id','desc')->first()->id;
 
-        return redirect(url()->previous()."#comment_anchor_".$latest_comment_id);
+        return redirect(url()->previous()."#comment_anchor_" . $latest_comment_id);
     }
 
     //show/hide/delete comment (for Admin)
