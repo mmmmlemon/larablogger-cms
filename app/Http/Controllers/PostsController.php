@@ -23,47 +23,39 @@ class PostsController extends Controller
     public function view_posts_page()
     {
         $posts = App\Post::orderBy('date','desc')->orderBy('id','desc')->paginate(10);
+
         $page='date_desc';
+
         if($posts != null)
-        {
-            return view('control_panel/posts/posts', compact('posts','page'));
-        }
+        { return view('control_panel/posts/posts', compact('posts','page')); }
         else
-        {
-            return abort (500, "Couldn't get posts from the database.");
-        }
+        { return abort (500, "Couldn't get posts from the database."); }
     }
 
     //view all posts page (date ascending)
     public function view_posts_page_asc()
     {
         $posts = App\Post::orderBy('date','asc')->paginate(10);
+
         $page = 'date_asc';
 
         if($posts != null)
-        {
-            return view('control_panel/posts/posts', compact('posts', 'page'));
-        }
+        { return view('control_panel/posts/posts', compact('posts', 'page')); }
         else
-        {
-            return abort(500, "Couldn't get posts from the database.");
-        }
+        { return abort(500, "Couldn't get posts from the database."); }
     }
 
     //view 'Add Post' page
     public function view_add_post_page()
     {
         $current_date = Carbon::now();
-        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
-        if(count($categories) > 0)
-        {
-            return view('control_panel/posts/create_post', compact('categories','current_date'));
-        }
-        else
-        {
-            return abort(500, "Couldn't get category list from the database.");
-        }
 
+        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
+
+        if(count($categories) > 0)
+        { return view('control_panel/posts/create_post', compact('categories','current_date')); }
+        else
+        { return abort(500, "Couldn't get category list from the database."); }
     }
 
     //create/save new post
@@ -122,7 +114,7 @@ class PostsController extends Controller
             $folder_name_unfiltered = date('d-m-Y')."-".$request->post_title;
             //leave only letters and numbers
             $folder_name = preg_replace("/[^a-zA-Z0-9\-\s]/", "", $folder_name_unfiltered);
-            $folder_created= Storage::disk('public')->makeDirectory("posts/". $folder_name);
+            $folder_created= Storage::disk('public')->makeDirectory("posts/" . $folder_name);
 
             //if folder created, replace files from temp
             if($folder_created == true)
@@ -130,12 +122,12 @@ class PostsController extends Controller
                 foreach($temp_files as $file)
                 {
                     //path for replacement
-                    $new_path = storage_path("app/public/posts/").$folder_name."/".$file->filename;
-                    $move = File::move(storage_path("app/public/temp/").$file->filename, $new_path);
+                    $new_path = storage_path("app/public/posts/") . $folder_name . "/" . $file->filename;
+                    $move = File::move(storage_path("app/public/temp/") . $file->filename, $new_path);
                 
                     //if replacement failed, redirect with error
                     if($move != true) 
-                    { return abort(500, "Couldn't move file(s) from 'temp' to '".$folder_name."'."); }
+                    { return abort(500, "Couldn't move file(s) from 'temp' to '" . $folder_name . "'."); }
                     else
                     {   
                         //save the post before saving the media (to extract $post->id)
@@ -145,7 +137,7 @@ class PostsController extends Controller
                         //write media file into the database
                         $media = new App\Media; 
                         $media->post_id = $post->id;
-                        $media->media_url = "posts/". $folder_name."/".$file->filename;
+                        $media->media_url = "posts/" . $folder_name . "/" . $file->filename;
                         $media->media_type = $mime;
                         $media->display_name = $file->filename;
                         $media->actual_name = $file->filename;
@@ -309,14 +301,10 @@ class PostsController extends Controller
                ]);  
            }
            else
-           {
-               return abort(500, "Couldn't append chunk to file '" . $filename . "'.");
-           }
+           { return abort(500, "Couldn't append chunk to file '" . $filename . "'."); }
        }
        else
-       {
-           return abort(500, "Couldn't write file '".$filename."' into the 'temp' folder.");
-       }
+       { return abort(500, "Couldn't write file '".$filename."' into the 'temp' folder."); }
     }	    
 
     //clear temp folder
@@ -562,7 +550,6 @@ class PostsController extends Controller
                 { return view('post', compact('post','username','media','comments','is_admin')); } 
                 else //if logged in but not Admin, throw 404
                 { return abort(403, "You must be logged in to view this page."); }
-
             } 
         }
         else //if post doesn't exist, throw 404
@@ -710,8 +697,10 @@ class PostsController extends Controller
 
         $comment->save();
 
+        //the id of the comment that was submitted
         $latest_comment_id = App\Comment::orderBy('id','desc')->first()->id;
 
+        //return to the post page with the anchor for the submitted comment
         return redirect(url()->previous()."#comment_anchor_" . $latest_comment_id);
     }
 
@@ -720,48 +709,50 @@ class PostsController extends Controller
     {
         $comment = App\Comment::find($request->comment_id);
 
-        if($request->action == "hide")
+        if($comment != null)
         {
-            $comment->visibility = 0;
-            $comment->save();
-        }
-        else if($request->action == "show")
-        {
-            $comment->visibility = 1;
-            $comment->save();
-        }
-        else if($request->action == "delete")
-        {
-            $comment = App\Comment::find($request->comment_id);
-            $comment->delete();
-        }
-        else{
+            if($request->action == "hide")
+            {
+                $comment->visibility = 0;
+                $comment->save();
+            }
+            else if($request->action == "show")
+            {
+                $comment->visibility = 1;
+                $comment->save();
+            }
+            else if($request->action == "delete")
+            {
+                $comment = App\Comment::find($request->comment_id);
+                $comment->delete();
+            }
+            else
+            { return redirect(url()->previous()); }
+            
             return redirect(url()->previous());
         }
-        
-        return redirect(url()->previous());
+        else
+        { return abort(500, "Couldn't get the comment from the database."); }
     }
 
     //pin/unpin post
     public function pin_post(Request $request)
     {
-        $post = App\Post::find($request->id);
+        $post = App\Post::find(5454);
 
-        if($post->pinned == 0)
+        if($post != null)
         {
-            $post->pinned = 1;
+            if($post->pinned == 0)
+            { $post->pinned = 1; }
+            else
+            { $post->pinned = 0; }
+    
+            $post->save();
+    
+            return redirect()->back();
         }
         else
-        {
-            $post->pinned = 0;
-        }
-
-        $post->save();
-
-        return redirect()->back();
+        { return abort(500, "Couldn't get the post from the database."); }
     }
-
-  
-
 } 
 
