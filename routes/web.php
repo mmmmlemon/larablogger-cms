@@ -85,10 +85,10 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
 
 
     //CATEGORIES
-    Route::get('/control/categories', 'CategoryController@category_list'); //view category list in control panel
-    Route::get('/control/categories/add', 'CategoryController@show_create_category'); //view create category page
+    Route::get('/control/categories', 'CategoryController@view_categories_page'); //view category list in control panel
+    Route::get('/control/categories/add', 'CategoryController@view_create_category_page'); //view create category page
     Route::post('/control/categories/add', 'CategoryController@create_category'); //create category
-    Route::get('/control/categories/edit/{id}','CategoryController@show_edit_category'); //view edit category page
+    Route::get('/control/categories/edit/{id}','CategoryController@view_edit_category_page'); //view edit category page
     Route::post('/control/categories/edit/{id}','CategoryController@edit_category'); //save changes in category
     Route::delete('/control/categories/delete','CategoryController@delete_category'); //delete category
     Route::post('/control/categories/raise','CategoryController@raise_category'); //raise category in list

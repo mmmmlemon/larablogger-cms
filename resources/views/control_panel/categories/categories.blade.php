@@ -24,7 +24,7 @@
 
     <div class="columns">
         <div class="column">
-            @if(count($categs) <= 0)
+            @if(count($categories) <= 0)
                 <div class="column has-text-centered">
                 <h3 class="subtitle">No categories yet</h3>
                 </div>
@@ -35,7 +35,7 @@
                         <th>Actions</th>
                     </thead>
                     <tbody>
-                        @foreach($categs as $categ)
+                        @foreach($categories as $categ)
                             <tr>
                                 <td>
                                 <a href="/category/{{$categ->category_name}}"><b>{{$categ->category_name}}</b></a>

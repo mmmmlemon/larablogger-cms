@@ -13,39 +13,55 @@ class CategoryController extends Controller
 {
     //CONTROL PANEL
     //show Category list in control panel
-    public function category_list ()
+    public function view_categories_page()
     {
-        $categs = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
-        $max = App\Category::max('visual_order');
-        return view('control_panel/categories/categories', compact('categs','max'));    
+        $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
+
+        if(count($categories) != null)
+        {   
+            //get max of visual_order property
+            $max = App\Category::max('visual_order');
+            return view('control_panel/categories/categories', compact('categories','max'));
+        }
+        else
+        { return abort(500, "Couldn't get categories from the database."); }
     }
 
     //show page 'Create category'
-    public function show_create_category()
+    public function view_create_category_page()
     {
         return view('control_panel/categories/add_category');
     }
 
-    //create and save a Category
+    //create and save a category
     public function create_category(Request $request)
     {
         $request->validate([
             'category_name' => 'string|max:50',
         ]);
 
-        $categ = new App\Category;
-        $categ->category_name = $request->category_name;
+        $category = new App\Category;
+        $category->category_name = $request->category_name;
+
+        //get max value of visual order
         $max = App\Category::max('visual_order');
-        $categ->visual_order = $max + 1;
-        $categ->save();
+
+        //increment it, so that the created category appears on the top of the list
+        $category->visual_order = $max + 1;
+        $category->save();
+
         return redirect(url('/control/categories'));
     }
 
     //show page 'Edit category'
-    public function show_edit_category($id)
+    public function view_edit_category_page($id)
     {
-        $categ = App\Category::find($id);
-        return view('control_panel/categories/edit_category', compact('categ'));
+        $category = App\Category::find($id);
+        if($category != null)
+        { return view('control_panel/categories/edit_category', compact('categ')); }
+        else
+        { return abort(500, "Couldn't get the category from the database."); }
+        
     }
     
     //save changes in a Category
@@ -55,10 +71,17 @@ class CategoryController extends Controller
             'category_name' => 'string|max:50',
         ]);
 
-        $categ = App\Category::find($id);
-        $categ->category_name = $request->category_name;
-        $categ->save();
-        return redirect(url('/control/categories'));
+        $category = App\Category::find($id);
+
+        if($category != null)
+        {
+            $category->category_name = $request->category_name;
+            $category->save();
+    
+            return redirect(url('/control/categories'));  
+        }
+        else
+        { return abort(500, "Couldn't get the category from the database."); }
     }
 
     //delete a Category from the database
@@ -79,12 +102,11 @@ class CategoryController extends Controller
         }
 
         //deleting the Category from the database
-        $categ = App\Category::find($request->modal_form_input);
-        $categ->delete();
+        $category = App\Category::find($request->modal_form_input);
+        $category->delete();
 
         return redirect(url('/control/categories'));
     }
-
 
     //POSTS DISPLAY
     //show Posts by a Category
@@ -95,48 +117,49 @@ class CategoryController extends Controller
         $paginate = 9;
 
         if($view_type == null)
-        {
-            $view_type = App\Settings::all()[0]->view_type;
-        }
+        { $view_type = config('settings')->view_type; }
         if($view_type == 'grid')
-        {
-            $paginate = 27;
-        }
+        { $paginate = 27; }
 
-        $agent = new Agent();
-
-        $isMobile = $agent->isMobile();
+        $isMobile = config('isMobile');
 
         //get the Category by the name (from route url)
-        $categ = App\Category::where('category_name','=',$category_name)->first();
+        $category = App\Category::where('category_name', '=', $category_name)->first();
 
         //get all the posts in this Category by its id
-        $posts = App\Post::where('category_id','=',$categ->id)->where('visibility','=','1')->where('date','<=',Carbon::now()->format('Y-m-d'))->orderBy('pinned','desc')->orderBy('date','desc')->orderBy('id','desc')->paginate($paginate);
+        $posts = App\Post::where('category_id', '=', $categ->id)
+            ->where('visibility','=','1')
+            ->where('date','<=',Carbon::now()->format('Y-m-d'))
+            ->orderBy('pinned','desc')
+            ->orderBy('date','desc')
+            ->orderBy('id','desc')->paginate($paginate);
 
         //for each Post in the list do this
         foreach($posts as $post)
         {
           //get tags from the current Post
           $tags = explode(",", $post->tags);
+
           //if $tags variable contains one empty character (which means there are no tags for this Post)
           if(count($tags) == 1 && $tags[0] == "")
-          {$post->tags = null;} //make it null
+          { $post->tags = null; } //make it null
           else 
-          {$post->tags = $tags;}
+          { $post->tags = $tags; }
 
           //attach the name of the Category to current Post 
           $post->category = App\Category::find($post->category_id)->category_name;
 
           //count comments in current Post
-          $post->comment_count = count(App\Comment::where('post_id','=',$post->id)->where('visibility','=',1)->get());
+          $post->comment_count = count(App\Comment::where('post_id','=', $post->id)->where('visibility','=', 1)->get());
+
           //if theres more than one comment
           if($post->comment_count > 1 || $post->comment_count == 0)
-          {$post->comment_count .= " comments";} //the label will be commentS
+          { $post->comment_count .= " comments"; } //the label will be commentS
           else 
-          {$post->comment_count .= " comment";} //or commenT
+          { $post->comment_count .= " comment"; } //or commenT
 
           //get the list of files for current Post
-          $media = App\Media::where('post_id','=',$post->id)->where('visibility','=',1)->get();
+          $media = App\Media::where('post_id','=', $post->id)->where('visibility','=',1)->get();
 
           //if current Post has files
           if(count($media) != 0)
@@ -144,12 +167,13 @@ class CategoryController extends Controller
                 //add subtitles for each file
                 foreach($media as $m)
                 {
-                    $subs = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
-                    $m->subs = $subs;
+                    $subtitles = App\Subtitles::where('media_id','=',$m->id)->where('visibility','=','1')->get();
+                    $m->subs = $subtitles;
                 }
                 
               //attach media files to current Post
               $post->media = $media;
+
               //attach media_type to current Post
               $post->media_type = $media[0]->media_type;
           }
@@ -161,59 +185,68 @@ class CategoryController extends Controller
     //raise a Category in the list of Categories
     function raise_category(Request $request)
     {
-        $categ = App\Category::find($request->id);
+        $category = App\Category::find($request->id);
 
-        //if the category above is 0 ('blank' category)
-        if($categ->visual_order - 1 == 0)
-        {
-            return redirect()->back(); //do nothing and redirect back
+        if($category != null)
+        {  
+            //if the category above is 0 ('blank' category)
+            //do nothing and redirect back
+            if($category->visual_order - 1 == 0)
+            { return redirect()->back(); }
+            else
+            {
+                //get the 'upper' category
+                $category_upper = App\Category::where('visual_order','=', $category->visual_order - 1)->get()[0];
+                
+                //raise the current category
+                $category->visual_order = $category->visual_order - 1;
+                
+                //lower the 'upper' category
+                $category_upper->visual_order = $category_upper->visual_order + 1;
+
+                //save changes
+                $category->save();
+                $category_upper->save();
+                return redirect()->back();    
+            }
         }
         else
-        {
-            //get the 'upper' category
-            $categ_upper = App\Category::where('visual_order','=', $categ->visual_order - 1)->get()[0];
-            
-            //raise the current category
-            $categ->visual_order = $categ->visual_order - 1;
-            
-            //lower the 'upper' category
-            $categ_upper->visual_order = $categ_upper->visual_order + 1;
-
-            //save changes
-            $categ->save();
-            $categ_upper->save();
-            return redirect()->back();    
-        }
-
+        { return abort(500, "Couldn't get the category from the database."); }
     }
     
     //lower a Category in the list of Categories
     function lower_category(Request $request)
     {
-        $categ = App\Category::find($request->id);
+        $category = App\Category::find($request->id);
 
-        //get id of the lowest Category in the list
-        $lowest = App\Category::max('visual_order');
-
-        //if after lowering of the category the id is bigger than max
-        if($categ->visual_order + 1 > $lowest)
+        if($category != null)
         {
-            return redirect()->back(); //do nothing, redirect back
+            //get id of the lowest Category in the list
+            $lowest = App\Category::max('visual_order');
+
+            //if after lowering of the category the id is bigger than max
+            //do nothing, redirect back
+            if($category->visual_order + 1 > $lowest)
+            { return redirect()->back(); }
+            else
+            {
+                //get 'lower'category
+                $category_lower = App\Category::where('visual_order','=', $category->visual_order + 1)->get()[0];
+            
+                $category->visual_order = $category->visual_order + 1;
+        
+                $category_lower->visual_order = $category_lower->visual_order - 1;
+
+                $category->save();
+                $category_lower->save();
+
+                return redirect()->back();    
+            }
         }
         else
-        {
-            //get 'lower'category
-            $categ_lower = App\Category::where('visual_order','=', $categ->visual_order + 1)->get()[0];
-        
-            $categ->visual_order = $categ->visual_order + 1;
-      
-            $categ_lower->visual_order = $categ_lower->visual_order - 1;
+        { return abort(500, "Couldn't get the category from the database."); }
 
-            $categ->save();
-            $categ_lower->save();
 
-            return redirect()->back();    
-        }
     }
 
 }
