@@ -296,7 +296,7 @@ class ControlPanelController extends Controller
     public function simple_search(Request $request)
     {   
         //search value
-        $value = $request->value;
+        $val = $request->value;
         //search results
         $result = "";
         //check if admin
@@ -309,17 +309,17 @@ class ControlPanelController extends Controller
             if ($is_admin == false)
             {
                 $result = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
-                    ->where('visibility', '=', 1)->where(function ($query) use ($value){
-                        $query->where('post_title', 'like', '%' . $value . '%');
-                        $query->orWhere('post_content', 'like', '%' . $value . '%');
+                    ->where('visibility', '=', 1)->where(function ($query) use ($val){
+                        $query->where('post_title', 'like', '%' . $val . '%');
+                        $query->orWhere('post_content', 'like', '%' . $val . '%');
                     })->orderBy('id', 'desc')->take(3)->get();
             }
             //if admin, search for all posts
             else if ($is_admin == true)
             {
                 $result = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
-                    ->where('post_title', 'like', '%' . $value . '%')
-                    ->orWhere('post_content', 'like', '%' . $value . '%')
+                    ->where('post_title', 'like', '%' . $val . '%')
+                    ->orWhere('post_content', 'like', '%' . $val . '%')
                     ->orderBy('id', 'desc')->take(3)->get();
             }
 
@@ -380,10 +380,10 @@ class ControlPanelController extends Controller
         { $view_type = config('settings')->view_type; }
 
         //search value
-        $value = $request->search_value;
+        $val = $request->search_value;
 
         //if search value is null, redirect back
-        if ($value == null)
+        if ($val == null)
         { return redirect()->back(); }
 
         //POST SEARCH
@@ -396,16 +396,16 @@ class ControlPanelController extends Controller
             if ($is_admin == false)
             {
                 $results = DB::table('posts')->select('id', 'post_title', 'post_content', 'category_id', 'date')
-                    ->where('visibility', '=', 1)->where(function ($query) use ($value){
-                    $query->where('post_title', 'like', '%' . $value . '%');
-                    $query->orWhere('post_content', 'like', '%' . $value . '%');
+                    ->where('visibility', '=', 1)->where(function ($query) use ($val){
+                    $query->where('post_title', 'like', '%' . $val . '%');
+                    $query->orWhere('post_content', 'like', '%' . $val . '%');
                     })->orderBy('id', 'desc')->get();
             }
             //if user is admin, show all posts
             else if ($is_admin == true)
             {
-                $results = App\Post::where('post_title', 'like', '%' . $value . '%')
-                    ->orWhere('post_content', 'like', '%' . $value . '%')
+                $results = App\Post::where('post_title', 'like', '%' . $val . '%')
+                    ->orWhere('post_content', 'like', '%' . $val . '%')
                     ->orderBy('id', 'desc')->get();
             }
             
@@ -462,15 +462,15 @@ class ControlPanelController extends Controller
         else if ($request->type == "comment")
         {
             $type = $request->type;
-            $value = $request->search_value;
+            $val = $request->search_value;
             if($is_admin == true)
             {
                 $results = App\Comment::select('comments.post_id as post_id','comments.comment_content as comment_content',
                 'comments.username as username', 'comments.date as date', 'comments.id as id', 
                 'comments.visibility as visibility','users.name as real_username')
                 ->leftJoin('users','users.id','=','comments.is_logged_on')
-                ->where('name','like','%'.$value.'%')->orWhere('username','like','%'.$value.'%')
-                ->orWhere('comment_content','like','%'.$value.'%')->orderBy('date','desc')->get();
+                ->where('name','like','%'.$val.'%')->orWhere('username','like','%'.$val.'%')
+                ->orWhere('comment_content','like','%'.$val.'%')->orderBy('date','desc')->get();
            
                 foreach($results as $res)
                 { $res->post_title = App\Post::where('id','=',$res->post_id)->get()->first()->post_title; }
@@ -485,15 +485,15 @@ class ControlPanelController extends Controller
         else if ($request->type == "media")
         {
             $type = $request->type;
-            $value = $request->search_value;
+            $val = $request->search_value;
             $results = App\Media::select('media.id as id', 'media.display_name as display_name',
             'media.actual_name as actual_name', 'media.created_at as created_at', 'media.media_type as media_type',
             'media.media_url as media_url', 'media.thumbnail_url as thumbnail_url', 'posts.post_title as post_title', 
             'posts.id as post_id', 'posts.post_title as post_title')
             ->leftJoin('posts','posts.id','=','media.post_id')
-            ->where('display_name','like','%'.$value.'%')
-            ->orWhere('actual_name','like','%'.$value.'%')
-            ->orWhere('post_title','like','%'.$value.'%')->orderBy('created_at','desc')->get();
+            ->where('display_name','like','%'.$val.'%')
+            ->orWhere('actual_name','like','%'.$val.'%')
+            ->orWhere('post_title','like','%'.$val.'%')->orderBy('created_at','desc')->get();
 
             return view('search/search_control_panel', compact('results','val','type'));
         }
@@ -501,6 +501,7 @@ class ControlPanelController extends Controller
         //else, redirect to main page
         else
         { return redirect('/'); }
+
     }
 }
 
