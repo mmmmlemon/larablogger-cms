@@ -86,6 +86,12 @@ class MediaController extends Controller
             //save display name
             $media->display_name = $request->display_name;
 
+            //attached post
+            if($request->edit_post_id != null)
+            { $media->post_id = $request->edit_post_id; }
+            else
+            { $media->post_id = null; }
+
             //save visibility options
             if($request->visibility == "on")
             { $media->visibility = 1; }

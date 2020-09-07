@@ -213,3 +213,88 @@ $("#submit_form").on('click',function(e){
     $(this).attr("disabled","disabled");
     $("#form").submit();
 });
+
+//on "Edit post" button clicked
+$("#edit_post").on("click", function(){
+    var post_field = $("#post_field");
+    var id;
+    var title;
+
+    if($(this).data("id") === undefined)
+    { id = ""; }
+    else
+    { id = $(this).data("id"); }
+
+    if($(this).data("title") === undefined)
+    { title = ""; }
+    else
+    { title = $(this).data("title"); }
+
+    $(post_field).html(`<div><label id="edit_post_label"}">Attach to post: None</label>
+        <input class="input is-link post_search" type="text" value="${title}" id="edit_post_input" data-num="" placeholder="Type in the post name...">
+        <input id="edit_post_id" name="edit_post_id" value="${id}" data-poo="" class="invisibl"> 
+        </div>
+        <div class="white-bg view_media_search_results" id="search_results">`);
+
+        if(id != "" && title != "")
+        {
+            $(`#edit_post_label`).html(`Attach to post: <a href="/post/${$(this).data("id")}" target="_blank">${$(this).data("title")}</a> <a class="X_button">X</a>`);
+        }
+    
+});
+
+//on post search
+$(document).on('keyup','.post_search', function(){
+    var value = $(this).val();
+    var num = $(this).data("num");
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/control/find_post',
+        data: {
+            search_value: value
+        },
+        success: function(response){
+           var result = JSON.parse(response);
+           $(`#search_results`).html("");
+           for(post of result)
+           {
+               $(`#search_results`).append(`<div class="white-bg columns"><div style="display:inline-block">
+               <a target="_blank" href="/post/${post.id}">${post.post_title}</a>
+               <p style="font-size:10pt;">${post.date}</p><p style="font-size:10pt;"><a href="/category/${post.category}">${post.category}</a></p>
+               <a class="button is-success add_post"
+                data-title="${post.post_title}" data-id="${post.id}">
+                <span class="icon"><i class="fas fa-check"></i></span>
+               </a>
+               </div>
+               </div>`)
+           }
+        }
+    });
+});
+
+//on Add Post clicked
+$(document).on("click", ".add_post", function(){
+    var num = $(this).data("num");
+    var title = $(this).data("title");
+    var id = $(this).data("id");
+    $(`#edit_post_input`).val(title);
+    $(`#edit_post_label`).html(`Attach to post: <a href="/post/${id}" target="_blank">${title}</a> <a class="X_button">X</a>`);
+    $("#edit_post_id").val(id);
+    $(`#search_results`).html("");
+});
+
+//on X clicked
+$(document).on("click", ".X_button", function(){
+    var num = $(this).data("num");
+    var id = $(`#post_edit_${num}`).data("id");
+    $(`#edit_post_label`).html("Attach to post: None");
+    $(`#edit_post_input`).val("");
+    $(`#edit_post_id`).val("")
+});

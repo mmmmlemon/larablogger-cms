@@ -24,9 +24,18 @@
         <form action="/control/media/edit_media/{{$media->id}}" method="POST" enctype="multipart/form-data" id="form">
             @csrf
             <div class="field">
-                <label class="label">Post</label>
-                <div class="control">
-                    <a target="_blank" @if($media->post_id != null) href="/post/{{$media->post_id}}"@endif >{{Str::limit($media->post_title,30,"...")}}</a>
+              
+                  <label class="label">Post</label>
+                <div id="post_field">
+                  <div class="control" style="display: inline-block; margin-right:10px;">
+                      <a target="_blank" @if($media->post_id != null) href="/post/{{$media->post_id}}"@endif >{{Str::limit($media->post_title,30,"...")}}</a>
+                  </div>
+                  <a id="edit_post" class="button is-link is-small" data-tooltip="Edit attached post"
+                  @if($media->post_id != null) data-id="{{$media->post_id}}" data-title="{{$media->post_title}}" @endif">
+                    <span>
+                      <i class="fas fa-edit"></i>
+                    </span>
+                  </a>
                 </div>
             </div>
 
