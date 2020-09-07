@@ -2,7 +2,7 @@
 @section('title', 'Error 503'." -")
 @section('content')
     <div class="container white-bg">
-        <div class="column bounce-in has-text-centered">
+        <div class="column zoom-in has-text-centered">
             <h1 class="title post_title">500</h1>
             <span class="icon is=large">
                 <i class="fas fa-3x fa-exclamation-triangle"></i>

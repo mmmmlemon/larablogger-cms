@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $categ->category_name." -")
+@section('title', $category->category_name." -")
 @section('content')
     {{-- grid/list view --}}
     {{-- search --}}
@@ -8,7 +8,7 @@
     @endif
     <div class="container">
         <div class="white-bg has-text-centered">
-            <h1 class="title post_title">{{$categ->category_name}}</h1>
+            <h1 class="title post_title">{{$category->category_name}}</h1>
         </div>
         @if(count($posts)>0)
             @if($view_type == 'grid' && $isMobile == false)

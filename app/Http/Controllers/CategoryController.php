@@ -127,7 +127,7 @@ class CategoryController extends Controller
         $category = App\Category::where('category_name', '=', $category_name)->first();
 
         //get all the posts in this Category by its id
-        $posts = App\Post::where('category_id', '=', $categ->id)
+        $posts = App\Post::where('category_id', '=', $category->id)
             ->where('visibility','=','1')
             ->where('date','<=',Carbon::now()->format('Y-m-d'))
             ->orderBy('pinned','desc')
@@ -179,7 +179,7 @@ class CategoryController extends Controller
           }
         }
         
-        return view('category_view', compact('categ', 'posts','isMobile','view_type'));
+        return view('category_view', compact('category', 'posts','isMobile','view_type'));
     }
 
     //raise a Category in the list of Categories

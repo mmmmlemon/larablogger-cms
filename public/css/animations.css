@@ -23,12 +23,12 @@
     -ms-animation: fadeIn ease 0.15s;
   }
 
-  .bounce-in{
-    animation: bounceIn ease 0.3s;
-    -webkit-animation: bounceIn ease 0.3s;
-    -moz-animation: bounceIn ease 0.3s;
-    -o-animation: bounceIn ease 0.3s;
-    -ms-animation: bounceIn ease 0.3s;
+  .zoom-in{
+    animation: zoomIn ease-in-out 0.4s;
+    -webkit-animation: zoomIn ease-in-out 0.4s;
+    -moz-animation: zoomIn ease-in-out 0.4s;
+    -o-animation: zoomIn ease-in-out 0.4s;
+    -ms-animation: zoomIn ease-in-out 0.4s;
   }
 
   .slideDown{
@@ -40,30 +40,22 @@
   }
 
   .slideUp{
-    animation: slideUp ease 0.2s;
-    -webkit-animation: slideUp ease 0.3s;
-    -moz-animation: slideUp ease 0.3s;
-    -o-animation: slideUp ease 0.3s;
-    -ms-animation: slideUp ease 0.3s;
+    animation: slideUp ease-in-out 0.2s;
+    -webkit-animation: slideUp ease-in-out 0.3s;
+    -moz-animation: slideUp ease-in-out 0.3s;
+    -o-animation: slideUp ease-in-out 0.3s;
+    -ms-animation: slideUp ease-in-out 0.3s;
   }
 
 
-  @keyframes bounceIn{
+  @keyframes zoomIn{
     0%{
       opacity: 0;
       transform: scale(0.3) translate3d(0,0,0);
     }
-    50%{
-      opacity: 0.9;
-      transform: scale(1.1);
-    }
-    80%{
-      opacity: 1;
-      transform: scale(0.89);
-    }
     100%{
       opacity: 1;
-      transform: scale(1) translate3d(0,0,0);
+      transform: scale(1.0);
     }
   }
 

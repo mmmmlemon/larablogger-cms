@@ -21,7 +21,7 @@
 </head>
 <body style="background-color: rgb(207, 177, 121);">
     <div class="container white-bg" style="top:20%;">
-        <div class="column bounce-in has-text-centered">
+        <div class="column zoom-in has-text-centered">
             <h1 class="title post_title">The web-site is under maintenance</h1>
             <span class="icon is=large">
                 <i class="fas fa-3x fa-wrench"></i>

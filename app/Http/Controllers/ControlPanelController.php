@@ -417,7 +417,7 @@ class ControlPanelController extends Controller
                 $r->date = date('d.m.Y', strtotime($r->date)); //format date
                 $r->category = App\Category::find($r->category_id)->category_name; //add category name
 
-                $pos = strpos(strtolower($r->post_content) , strtolower($value));  //find the position of the search value
+                $pos = strpos(strtolower($r->post_content) , strtolower($val));  //find the position of the search value
 
                 if (strlen($r->post_content) < 120)
                 {
