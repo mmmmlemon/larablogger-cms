@@ -232,7 +232,7 @@ $("#edit_post").on("click", function(){
 
     $(post_field).html(`<div><label id="edit_post_label"}">Attach to post: None</label>
         <input class="input is-link post_search" type="text" value="${title}" id="edit_post_input" data-num="" placeholder="Type in the post name...">
-        <input id="edit_post_id" name="edit_post_id" value="${id}" data-poo="" class="invisibl"> 
+        <input id="edit_post_id" name="edit_post_id" value="${id}" data-poo="" class="invisible"> 
         </div>
         <div class="white-bg view_media_search_results" id="search_results">`);
 
