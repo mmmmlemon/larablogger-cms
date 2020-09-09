@@ -321,6 +321,8 @@
     @elseif($type == "media")
         <script src="{{ asset('js/plyr.js') }}"></script>
         <script src="{{ asset('js/custom/control_panel/media.js') }}"></script>
+    @elseif($type == "comment")
+        <script src="{{ asset('js/custom/control_panel/comments.js') }}"></script>
     @endif
 
 @endpush

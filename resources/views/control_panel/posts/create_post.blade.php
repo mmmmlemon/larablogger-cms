@@ -54,7 +54,7 @@ $blank="";
     <div class="field">
       <input class="is-checkradio is-link" name="pinned" id="pinned_checkbox" type="checkbox">
       <label class="label" for="pinned_checkbox">Pinned</label>
-      <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be pinned to the top of the page"">
+      <span class="has-tooltip-multiline" data-tooltip="If checked, the post will be pinned to the top of the home page"">
         <i class="fas fa-question-circle"></i>
       </span>
     </div>
