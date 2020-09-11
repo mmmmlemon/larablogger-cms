@@ -749,7 +749,7 @@ class PostsController extends Controller
     //pin/unpin post
     public function pin_post(Request $request)
     {
-        $post = App\Post::find(5454);
+        $post = App\Post::find($request->id);
 
         if($post != null)
         {

@@ -18,6 +18,7 @@ class CreateTableCategories extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('category_name');
+            $table->integer('visual_order')->default(0)->nullable();
             $table->timestamps();
         });
 
@@ -27,16 +28,19 @@ class CreateTableCategories extends Migration
             array(
                 array(
                     'category_name' => 'blank',
+                    'visual_order' => 0,
                     'created_at' => Carbon\Carbon::now(),
                     'updated_at' => Carbon\Carbon::now()
                 ),
                  array(
                     'category_name' => 'Videos',
+                    'visual_order' => 1,
                     'created_at' => Carbon\Carbon::now(),
                     'updated_at' => Carbon\Carbon::now()
                 ),
                 array(
                     'category_name' => 'Gallery',
+                    'visual_order' => 2,
                     'created_at' => Carbon\Carbon::now(),
                     'updated_at' => Carbon\Carbon::now()
                 ),)
