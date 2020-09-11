@@ -455,14 +455,12 @@ class PostsController extends Controller
             if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
             {
                 $comments = App\Comment::where('post_id','=', $id)
-                    ->where('reply_to','=',null)
                     ->orderBy('date','asc')
                     ->orderBy('id','asc')->get();
             }
             else
             {
                 $comments = App\Comment::where('post_id','=', $id)
-                    ->where('reply_to','=',null)
                     ->where('visibility','=',1)
                     ->orderBy('date','asc')
                     ->orderBy('id','asc')->get();
@@ -486,7 +484,10 @@ class PostsController extends Controller
                         foreach($replies as $r)
                         {
                             if($r->reply_to != null)
-                            { $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username; }                        
+                            { 
+                                //
+                                $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username; 
+                            }                        
                         }
 
                         $a->replies = $replies;
@@ -503,6 +504,7 @@ class PostsController extends Controller
                             if($r->reply_to != null)
                             { $r->reply_user = App\Comment::where('id','=',$r->reply_to)->get()[0]->username; }
                         }
+
                         $a->replies = $replies;
                     
                         prepare_comments($replies, $admin);
@@ -511,7 +513,7 @@ class PostsController extends Controller
             }
 
             prepare_comments($comments, $is_admin);
-
+  
             //count comment
             if($is_admin == true)
             { $post->comment_count = count(App\Comment::where('post_id','=', $id)->get()); }
@@ -544,7 +546,7 @@ class PostsController extends Controller
             { return view('post', compact('post','username','comments','media','is_admin')); }
             //check if user is logged in
             else
-            {   
+            {  
                 //if its Admin
                 if(Globals::check_admin() == true)
                 { return view('post', compact('post','username','media','comments','is_admin')); } 
@@ -723,7 +725,16 @@ class PostsController extends Controller
             }
             else if($request->action == "delete")
             {
-                $comment = App\Comment::find($request->comment_id);
+                $comment->deleted = 1;
+                $comment->save();
+            }
+            else if($request->action == "restore")
+            {
+                $comment->deleted = 0;
+                $comment->save();
+            }
+            else if($request->action == "purge")
+            {
                 $comment->delete();
             }
             else

@@ -466,7 +466,7 @@ class ControlPanelController extends Controller
             if($is_admin == true)
             {
                 $results = App\Comment::select('comments.post_id as post_id','comments.comment_content as comment_content',
-                'comments.username as username', 'comments.date as date', 'comments.id as id', 
+                'comments.username as username', 'comments.date as date', 'comments.id as id', 'comments.deleted as deleted',
                 'comments.visibility as visibility','users.name as real_username')
                 ->leftJoin('users','users.id','=','comments.is_logged_on')
                 ->where('name','like','%'.$val.'%')->orWhere('username','like','%'.$val.'%')

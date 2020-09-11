@@ -151,7 +151,9 @@
                         <h1 class="subtitle">{{$result->username}}
                     @endif
                     | <a style="font-size: 13pt;" href="/post/{{$result->post_id}}#comment_anchor_{{$result->id}}">{{$result->post_title}}</a></h1>
-                    <div class="post_content">{!!$result->comment_content!!}</div>
+                    <div class="post_content @if($result->deleted != 0) stroked @endif">
+                        {!!$result->comment_content!!}
+                    </div>
                     <p>{{date("d.m.Y", strtotime($result->date))}}</p>
                     <div>
                         @if($result->visibility == 1)
@@ -159,17 +161,34 @@
                             @csrf
                             <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
                             <input type="text" class="invisible "name="action" value="hide">
-                            <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+                            <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-eye-slash"></i></button>
                             </form>
                         @else
                             <form action="/post/change_comment_status" method="post" style="display:inline;">
                                 @csrf
                                 <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
                                 <input type="text" class="invisible "name="action" value="show">
-                                <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
+                                <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-eye"></i></button>
                             </form>
                         @endif
-                    <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$result->id}}"><i class="fas fa-trash"></i></button>
+                    
+                        @if($result->deleted == 0)
+                            <form action="/post/change_comment_status" method="post" style="display:inline;">
+                                @csrf
+                                <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                                <input type="text" class="invisible" name="action" value="delete">
+                                <button class="button is-warning" data-tooltip="Delete this comment"><i class="fas fa-ban"></i></button>
+                            </form>
+                        @else
+                            <form action="/post/change_comment_status" method="post" style="display:inline;">
+                                @csrf
+                                <input type="text" name="comment_id" value="{{$result->id}}" class="invisible">
+                                <input type="text" class="invisible "name="action" value="restore">
+                                <button class="button is-success" data-tooltip="Restore this comment"><i class="fas fa-check"></i></button>
+                            </form>
+                        @endif
+                        <button class="button is-danger showModalDelete" data-tooltip="Purge this comment" data-id="{{$result->id}}"><i class="fas fa-trash"></i></button>
+
                     </div>
                 </div>
             @endforeach
@@ -252,7 +271,7 @@
             <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-            <p>Are you sure you want to delete this comment?</p>
+            <p>Are you sure you want to purge (delete physically) this comment?</p>
             <b id="modal_post_title"></b>
             <p class="has-text-danger">This action cannot be undone.</p>
         </section>
@@ -260,12 +279,13 @@
             <form id="modal_form" action="/post/change_comment_status" method="post" style="display:inline;">
                     @csrf
                     <input type="text" class="invisible" id="modal_form_input" name="comment_id">
-                    <input type="text" class="invisible "name="action" value="delete">
+                    <input type="text" class="invisible "name="action" value="purge">
             </form>
             <button class="button is-danger" id="submit_modal">Delete</button>
             <button class="button cancel">Cancel</button>
         </footer>
     </div>
+
 @elseif($type == "media")
 
     <div class="modal" id="preview-modal">
@@ -322,7 +342,7 @@
         <script src="{{ asset('js/plyr.js') }}"></script>
         <script src="{{ asset('js/custom/control_panel/media.js') }}"></script>
     @elseif($type == "comment")
-        <script src="{{ asset('js/custom/control_panel/comments.js') }}"></script>
+        <script src="{{ asset('js/custom/control_panel/comments.js') }}"></script> 
     @endif
 
 @endpush

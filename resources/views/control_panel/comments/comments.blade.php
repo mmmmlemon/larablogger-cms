@@ -61,7 +61,13 @@
       <tbody>
         @foreach($comments as $c)
           <tr>
-          <td style="width:40%;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" data-tooltip="Go to this comment" class="comment_link">{!!$c->comment_content!!}</a></td>
+          <td style="width:40%;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" data-tooltip="Go to this comment" class="comment_link">
+            @if($c->deleted == 0)
+              {!!$c->comment_content!!}
+            @else
+              <s>{!!$c->comment_content!!}</s>
+            @endif
+          </a></td>
           <td>{{$c->username}}</td>
           <td><a  href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{Str::limit($c->post_title,30,"...")}}</a></td>
 
@@ -72,17 +78,35 @@
                 @csrf
                 <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
                 <input type="text" class="invisible "name="action" value="hide">
-                <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+                <button class="button is-warning" data-tooltip="Hide this comment"><i class="fas fa-eye-slash"></i></button>
               </form>
             @else
             <form action="/post/change_comment_status" method="post" style="display:inline;">
               @csrf
               <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
               <input type="text" class="invisible "name="action" value="show">
-              <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
+              <button class="button is-success" data-tooltip="Show this comment"><i class="fas fa-eye"></i></button>
             </form>
             @endif
-          <button class="button is-danger showModalDelete" data-tooltip="Delete this comment" data-id="{{$c->id}}"><i class="fas fa-trash"></i></button>
+
+            @if($c->deleted == 0)
+              <form action="/post/change_comment_status" method="post" style="display:inline;">
+                @csrf
+                <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
+                <input type="text" class="invisible "name="action" value="delete">
+                <button class="button is-warning" data-tooltip="Delete this comment"><i class="fas fa-ban"></i></button>
+              </form>
+            @else
+              <form action="/post/change_comment_status" method="post" style="display:inline;">
+                @csrf
+                <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
+                <input type="text" class="invisible "name="action" value="restore">
+                <button class="button is-success" data-tooltip="Restore this comment"><i class="fas fa-check"></i></button>
+              </form>
+            @endif
+
+            <button class="button is-danger showModalDelete" data-tooltip="Purge this comment" data-id="{{$c->id}}"><i class="fas fa-trash"></i></button>
+
           </td>
           </tr>
         @endforeach
@@ -96,7 +120,13 @@
 						<td >
 							<p><b>{{$c->username}}</b></p>
 						
-							<p style="word-wrap: break-word;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" class="comment_link">{!!$c->comment_content!!}</a></p>
+              <p style="word-wrap: break-word;"><a href="{{ url('/post/'.$c->post_id."#comment_anchor_".$c->id)}}" target="_blank" class="comment_link">
+                @if($c->deleted == 0)
+                    {!!$c->comment_content!!}
+                @else
+                  <s>{!!$c->comment_content!!}</s>
+                @endif
+              </a></p>
 							<p style="margin-top:5px; font-size:10pt;"><a href="{{ url('/post/'.$c->post_id)}}" data-tooltip="Go to this post" target="_blank">{{Str::limit($c->post_title,30,"...")}}</a></p>
 							<p style="margin-top:5px; font-size:10pt;
 							">{{date('d.m.Y',strtotime($c->date))}}</p>
@@ -108,19 +138,36 @@
 										@csrf
 										<input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
 										<input type="text" class="invisible "name="action" value="hide">
-										<button class="button is-warning is-small" data-tooltip="Hide this comment"><i class="fas fa-ban"></i></button>
+										<button class="button is-warning is-small" data-tooltip="Hide this comment"><i class="fas fa-eye-slash"></i></button>
 										</form>
 									@else
 									<form action="/post/change_comment_status" method="post" style="display:inline;">
 										@csrf
 										<input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
 										<input type="text" class="invisible "name="action" value="show">
-										<button class="button is-success is-small" data-tooltip="Show this comment"><i class="fas fa-check"></i></button>
+										<button class="button is-success is-small" data-tooltip="Show this comment"><i class="fas fa-eye"></i></button>
 									</form>
 									@endif
 								</p>
 								<p class="control">
-									<button class="button is-danger showModalDelete is-small" data-tooltip="Delete this comment" data-id="{{$c->id}}"><i class="fas fa-trash"></i></button>
+                  @if($c->deleted == 0)
+                    <form action="/post/change_comment_status" method="post" style="display:inline;">
+                      @csrf
+                      <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
+                      <input type="text" class="invisible "name="action" value="delete">
+                      <button class="button is-warning is-small" data-tooltip="Delete this comment"><i class="fas fa-ban"></i></button>
+                    </form>
+                  @else
+                    <form action="/post/change_comment_status" method="post" style="display:inline;">
+                      @csrf
+                      <input type="text" name="comment_id" value="{{$c->id}}" class="invisible">
+                      <input type="text" class="invisible "name="action" value="restore">
+                      <button class="button is-success is-small" data-tooltip="Restore this comment"><i class="fas fa-check"></i></button>
+                    </form>
+                  @endif
+
+                  <button class="button is-danger showModalDelete is-small" data-tooltip="Purge this comment" data-id="{{$c->id}}"><i class="fas fa-trash"></i></button>
+
 								</p>
 								
 							  </div>
@@ -149,7 +196,7 @@
       <button class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
-      <p>Are you sure you want to delete this comment?</p>
+      <p>Are you sure you want to purge (delete physically) this comment?</p>
       <b id="modal_post_title"></b>
       <p class="has-text-danger">This action cannot be undone.</p>
     </section>
@@ -157,14 +204,13 @@
         <form id="modal_form" action="/post/change_comment_status" method="post" style="display:inline;">
               @csrf
               <input type="text" class="invisible" id="modal_form_input" name="comment_id">
-              <input type="text" class="invisible "name="action" value="delete">
+              <input type="text" class="invisible "name="action" value="purge">
       </form>
       <button class="button is-danger" id="submit_modal">Delete</button>
       <button class="button cancel">Cancel</button>
     </footer>
   </div>
 @endsection
-
 
 @push('scripts')
 <script src="{{ asset('js/custom/control_panel/comments.js') }}"></script>
