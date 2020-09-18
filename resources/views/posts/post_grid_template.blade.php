@@ -36,14 +36,16 @@
                             <i class="fas fa-thumbtack pin" style="display:inline-block;" ></i>
                         @endif
                     </div>
-                
-                    <div class="level">
+      
+                    <div class="level" style="margin-bottom:5px;">
                         <div class="level-left">
                             <div class="level-item" style="padding-top:10px;">
                                 <p class="subtitle is-6" style="margin-bottom:10px;"><a href="/category/{{$post->category}}">{{$post->category}}</a> </p>
                             </div>
                    
                         </div>
+                    </div>
+                    <div class="level">
                         <div class="level-right">
                             <div class="level-item">
                                 <nav class="breadcrumb" style="margin-top:0;" aria-label="breadcrumbs" id="share_{{$post->id}}">

@@ -70,6 +70,9 @@
                             <tr>
                                 <td>
                                     <b><a href="/control/media/{{$m->id}}">{{$m->display_name}}</a></b>
+                                    @if($m->media_type == "video")
+                                        <p class="view_count_posts">{{$m->view_count}} views</p>
+                                    @endif
                                 </td>
                                 <td>
                                     {{$m->media_type}}

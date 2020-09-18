@@ -108,6 +108,11 @@
 
                     //show OK button
                     $("#contact_okay").removeAttr("disabled");
+
+                    //empty the editor
+                    $('.contact_feedback').trumbowyg('empty');
+
+
                 }   
             });
         }

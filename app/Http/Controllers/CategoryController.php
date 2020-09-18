@@ -119,7 +119,7 @@ class CategoryController extends Controller
         if($view_type == null)
         { $view_type = config('settings')->view_type; }
         if($view_type == 'grid')
-        { $paginate = 27; }
+        { $paginate = 9; }
 
         $isMobile = config('isMobile');
 

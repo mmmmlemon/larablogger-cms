@@ -39,7 +39,7 @@ class HomeController extends Controller
 
         //pagination if view type is 'grid'
         if($view_type == 'grid')
-        { $paginate = 27; }
+        { $paginate = 9; }
 
         if($view_type == null)
         { $view_type = config('settings')->view_type; }

@@ -187,7 +187,7 @@ class PostsController extends Controller
     {
         $request->validate([
             'post_title' => 'string|max:70',
-            'post_content' => 'string|max:100000',
+            'post_content' => 'string|max:100000|nullable',
             'post_visibility' => 'string',
             'tags' => 'string|nullable'
         ]);
@@ -389,7 +389,7 @@ class PostsController extends Controller
         if($post != null)
         {   
             //+1 to view counter
-            $post->view_count = $post->view_count + 1;
+            // $post->view_count = $post->view_count + 1;
             $post->save();
     
             //get media files
@@ -455,12 +455,14 @@ class PostsController extends Controller
             if($is_admin == true) //if user is admin, get all of the comments, if not, get only visible comments
             {
                 $comments = App\Comment::where('post_id','=', $id)
+                    ->where('reply_to','=',null)
                     ->orderBy('date','asc')
                     ->orderBy('id','asc')->get();
             }
             else
             {
                 $comments = App\Comment::where('post_id','=', $id)
+                    ->where('reply_to','=',null)
                     ->where('visibility','=',1)
                     ->orderBy('date','asc')
                     ->orderBy('id','asc')->get();
@@ -473,8 +475,8 @@ class PostsController extends Controller
                 {   
                     if($a->is_logged_on != -1)
                     {   
-                        $username = App\User::where('id','=',$a->is_logged_on)->get()[0]->name;
-                        $a->username = $username;
+                        $username = App\User::where('id','=',$a->is_logged_on)->get();
+                        $a->username = $username[0]->name;
                     }
             
                     if($admin == true)

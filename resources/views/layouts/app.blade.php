@@ -1,8 +1,7 @@
 
-
 <!--ОСНОВНОЙ ЛЕЙАУТ САЙТА-->
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background-image: url({{asset('/storage/'.config('settings')->bg_image) }})">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}")>
     {{-- HEAD --}}
     <head>
         @include('feed::links')
@@ -51,7 +50,10 @@
 
         <link href="{{ asset('css/bulma_override.css') }}" rel="stylesheet">
     </head>
-    <body>
+<body style="background-color: {{config('settings')->bg_color}}">
+        <div id="background_elem" style="background-image: url({{asset('/storage/'.config('settings')->bg_image) }}"">
+            <h1>&nbsp;</h1>
+        </div>
 
       <button class="rollup_button invisible" id="rollup_button">
           <span>

@@ -182,6 +182,12 @@ class ControlPanelController extends Controller
                 $img->contrast(-20);
             }
 
+            //pick HEX of color from 0,0 position for bg_color
+            $color_hex = $img->pickColor(0,0, 'hex');
+            $settings = App\Settings::get()[0];
+            $settings->bg_color = $color_hex;
+            $settings->save();
+
             //delete the old background image
             $files = File::files(storage_path("app/public/images/bg"));
 
@@ -266,8 +272,6 @@ class ControlPanelController extends Controller
         }
         else
         { return abort(500, "Could't get the user from the database"); }
-
-
 
     }
 

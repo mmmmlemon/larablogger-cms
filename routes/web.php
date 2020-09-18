@@ -34,7 +34,7 @@ Route::get('/post/{id}', 'PostsController@show_post'); //view post
 Route::post('/submit_comment/{id}', 'PostsController@submit_comment'); //submit comment
 Route::get('/about', 'HomeController@view_about_page'); //view About page
 Route::post('/send_feedback','FeedbackController@mail'); //submit Feedback e-mail 
-Route::post('/control/increment_view_count', 'MediaController@increment_view_count'); //increment view count for video
+Route::post('/control/increment_view_count', 'MediaController@increment_view_count_for_video'); //increment view count for video
 
 
 

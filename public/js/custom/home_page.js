@@ -81,5 +81,6 @@ for(var player of players)
 
 // show grid after the page has been loaded
 $(window).on('load',function(){
+    $("#spinner").addClass("invisible");
     $(".grid_element").removeClass("transparent").addClass("fade-in");
 })

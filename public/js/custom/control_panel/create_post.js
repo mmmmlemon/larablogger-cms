@@ -12,7 +12,7 @@ var uploaded_files = [];
 var dropzone = $("#file_form").dropzone({
     autoProcessQueue: true, 
     chunking: true, 
-    chunkSize: 20000000, //20 Mb
+    chunkSize: 5000000, //5 Mb
     retryChunks: false,
     addRemoveLinks: true,
     paramName: 'file',
@@ -20,6 +20,7 @@ var dropzone = $("#file_form").dropzone({
     maxFiles: 20,
     maxFilesize: 4000, // 4 Gb
     parallelUploads: 20,
+    timeout:180000,
     acceptedFiles: '.jpg,.jpeg,.png,.mp4',
 
     //attach events to dropzone
@@ -33,6 +34,12 @@ var dropzone = $("#file_form").dropzone({
             console.log(`%cSending file ${file.name}`, 'color:grey;');
 
             data.append("filename", file.name);
+
+            xhr.ontimeout = function(e) {
+                //Output timeout error message here
+                console.log('Server Timeout');
+    
+            };
         });
 
         //on cancel, remove all files from dropzone and clear temp folder
