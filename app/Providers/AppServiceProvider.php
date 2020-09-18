@@ -55,5 +55,5 @@ class AppServiceProvider extends ServiceProvider
     //     //categoires
     //     $categories = App\Category::where('category_name','!=','blank')->orderBy('visual_order','asc')->get();
     //     config(['categories' => $categories]);
-    // }
+    }
 }
