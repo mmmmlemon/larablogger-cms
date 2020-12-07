@@ -35,8 +35,8 @@
         <p>DB_USERNAME=*database_username*</p>
         <p>DB_PASSWORD=*database_password*</p>
     </blockquote>
-        <li> Open <i>AppServiceProvider.php</i> file that is in <i>app/Providers</i> folder and uncomment the boot function.</li>
         <li>Install <a href="https://getcomposer.org/" target="_blank">Composer</a> and run <i>"composer update"</i> command in your project derictory. That will install all of the project dependencies.</li>
+    <li> Open <i>AppServiceProvider.php</i> file that is in <i>app/Providers</i> folder and uncomment the boot function.</li>
     <li>Run <i>"php artisan migrate"</i> command, that will fill your database with tables and predefined data.</li>
     <li>Run <i>"php artisan storage:link"</i> command, that will enable the file storage for your web-site.</li>
     <li>Run <i>"php artisan key:generate"</i> command, that will generate the encryption key for your web-site.</li>
