@@ -545,13 +545,25 @@ class PostsController extends Controller
             
             //check post status, if visibility == 1, the post is visible to everyone
             if($post->visibility == 1)
-            { return view('post', compact('post','username','comments','media','is_admin')); }
+            { 
+                // two random numbers for capcha
+                $rome_numbers = Globals::rome_numbers();
+                $randNums = [];
+                array_push($randNums, array_keys($rome_numbers)[rand(0,4)]);
+                array_push($randNums, array_keys($rome_numbers)[rand(0,4)]);
+
+                $question = $randNums[0] . " + " . $randNums[1] . " = ";
+
+                return view('post', compact('post','username','comments','media','is_admin', 'question', 'randNums')); 
+            }
             //check if user is logged in
             else
             {  
                 //if its Admin
                 if(Globals::check_admin() == true)
-                { return view('post', compact('post','username','media','comments','is_admin')); } 
+                { 
+                    return view('post', compact('post','username','media','comments','is_admin')); 
+                } 
                 else //if logged in but not Admin, throw 404
                 { return abort(403, "You must be logged in to view this page."); }
             } 
@@ -675,11 +687,21 @@ class PostsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:25',
-            'comment_content' => 'required|max:1000'
+            'comment_content' => 'required|max:1000',
+            'question_answer' => 'required|numeric'
         ]);
-
+        
         if($validator->fails())
         { return redirect(url()->previous() . "#comment_form")->withErrors($validator)->withInput(); }
+
+        $answer = $request->question_answer;
+        $rome_numbers = Globals::rome_numbers();
+        $real_answer = $rome_numbers[$request->question_1] + $rome_numbers[$request->question_2];
+
+        if(intval($answer) !== $real_answer)
+        {
+            return redirect(url()->previous() . "#comment_form")->withInput();
+        }
 
         $comment = new App\Comment;
 

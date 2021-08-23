@@ -207,7 +207,7 @@
             <div class="media-content">
                 <div class="field">
                     <p class="control">
-                        <input class="input" name="username" placeholder="Username" maxlength="25" id="username" value="{{$username}}" required 
+                        <input class="input" name="username" placeholder="Username" maxlength="25" id="username" value="{{ $username }}" required 
                             @if($username != "") readonly @endif/>
                         <input type="text" id="reply_to" class="invisible" value="" name="reply_to">
                         <a id="reply_p"></a>
@@ -217,11 +217,26 @@
                         <p class="help is-danger"><b> {{ $message }}</b></p>  
                     @enderror
                 </div>
-                <textarea class="textarea" name="comment_content" id="comment_textarea" placeholder="Add a comment..." required></textarea>
+                <textarea class="textarea" name="comment_content" id="comment_textarea" placeholder="Add a comment..." srequired>
+                    {{ old('comment_content') }}
+                </textarea>
                 @error('comment_content')
                     <p class="help is-danger"><b> {{ $message }}</b></p>  
                 @enderror
-                <br>
+                <div class="columns is-vcentered is-left">
+                    <div class="column is-1 has-text-centered">{{$question}}</div>
+                    <div class="column is-2">
+                        <input type="text" name="question_1" class="invisible" value="{{$randNums[0]}}">
+                        <input type="text" name="question_2" class="invisible" value="{{$randNums[1]}}">
+                        <input type="text" name="question_answer" class="input is-normal" placeholder="Answer" value="{{ old('question_answer') }}" required>
+                    </div>
+                    <p class="is-size-7">Example: I + II = 3</p>
+                    @error('question_answer')
+                        &nbsp;&nbsp;<p class="help is-danger"><b> {{ $message }}</b></p>  
+                     @enderror
+                </div>
+        
+            
                 <nav class="level">
                     <div class="level-left">
                         <div class="level-item">
